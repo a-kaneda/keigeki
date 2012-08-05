@@ -31,5 +31,7 @@
 + (GameScene *)sharedInstance;
 // 自機の移動
 - (void)movePlayerByVX:(float)vx VY:(float)vy;
+// 自機弾の発射
+- (void)filePlayerShot;
 
 @end

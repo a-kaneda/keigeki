@@ -28,10 +28,29 @@ static float Accel2Ratio(float accel);
         return nil;
     }
     
+    // ショットボタンの生成
+    m_shotButton = [CCSprite spriteWithFile:@"ShotButton.png"];
+    m_shotButton.position = ccp(SHOT_BUTTON_POS_X, SHOT_BUTTON_POS_Y);
+    [self addChild:m_shotButton];
+    
     // 加速度センサーを有効にする
     self.isAccelerometerEnabled = YES;
     
     return self;
+}
+
+/*!
+ @method インスタンス解放時処理
+ @abstruct インスタンス解放時にオブジェクトを解放する。
+ */
+- (void)dealloc
+{
+    // ショットボタンの画像の解放
+    [m_shotButton release];
+    m_shotButton = nil;
+    
+    // スーパークラスの解放処理
+    [super dealloc];
 }
 
 /*!
@@ -87,7 +106,27 @@ static float Accel2Ratio(float accel);
  */
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
+    CGPoint locationInView; // タッチ位置。画面上の座標。
+    CGPoint location;       // タッチ位置。cocos2dの座標系。
+        
     DBGLOG(0, @"タッチ開始");
+    
+    // タッチ位置を取得し、cocos2dの座標系に変換する。
+    locationInView = [touch locationInView:[touch view]];
+    location = [[CCDirector sharedDirector] convertToGL:locationInView];
+    
+    // タッチ位置判定
+    // ショットボタンの内側の場合
+    if (location.x >= SHOT_BUTTON_POS_X - SHOT_BUTTON_SIZE / 2 &&
+        location.x <= SHOT_BUTTON_POS_X + SHOT_BUTTON_SIZE / 2 &&
+        location.y >= SHOT_BUTTON_POS_Y - SHOT_BUTTON_SIZE / 2 &&
+        location.y <= SHOT_BUTTON_POS_Y + SHOT_BUTTON_SIZE / 2) {
+        
+        // 自機弾を発射する
+        [[GameScene sharedInstance] filePlayerShot];
+        DBGLOG(0, "自機弾発射:x=%f y=%f", location.x, location.y);
+    }
+    
     return YES;
 }
 

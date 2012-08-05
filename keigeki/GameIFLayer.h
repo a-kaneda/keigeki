@@ -9,12 +9,20 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 
+// ショットボタンのサイズ
+#define SHOT_BUTTON_SIZE 64
+// ショットボタンの配置位置x座標
+#define SHOT_BUTTON_POS_X 430
+// ショットボタンの配置位置y座標
+#define SHOT_BUTTON_POS_Y 50
+
 /*!
  @class ゲームプレイ画面インターフェース
  @abstruct ゲームプレイ画面のインターフェースを管理する。
  */
 @interface GameIFLayer : CCLayer {
-    
+    // ショットボタンの画像
+    CCSprite *m_shotButton;
 }
 
 @end

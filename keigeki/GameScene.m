@@ -58,7 +58,7 @@ static GameScene *g_scene = nil;
     
     // インターフェースレイヤーを貼り付ける
     m_interface = [GameIFLayer node];
-    [m_baseLayer addChild:m_interface z:0];
+    [self addChild:m_interface z:1];
     
     // 背景の生成
     m_background = [Background node];
@@ -130,7 +130,7 @@ static GameScene *g_scene = nil;
     
     // 画面の回転
     m_baseLayer.rotation = angle;
-    DBGLOG(1, @"m_baseLayer angle=%f", m_baseLayer.rotation);
+    DBGLOG(0, @"m_baseLayer angle=%f", m_baseLayer.rotation);
 }
 
 /*!
@@ -142,5 +142,14 @@ static GameScene *g_scene = nil;
 - (void)movePlayerByVX:(float)vx VY:(float)vy
 {
     [m_player setVelocityX:vx Y:vy];
+}
+
+/*!
+ @method 自機弾の発射
+ @abstruct 自機弾を発車する。
+ */
+- (void)filePlayerShot
+{
+    
 }
 @end

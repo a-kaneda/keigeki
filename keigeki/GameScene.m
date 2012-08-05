@@ -3,15 +3,22 @@
 //  keigeki
 //
 //  Created by 金田 明浩 on 12/05/03.
-//  Copyright 2012年 KANEDA Akihiro. All rights reserved.
+//  Copyright 2012 KANEDA Akihiro. All rights reserved.
 //
 
 #import "GameScene.h"
+#import "PlayerShot.h"
 
 @implementation GameScene
 
 // シングルトンオブジェクト
 static GameScene *g_scene = nil;
+
+@synthesize baseLayer = m_baseLayer;
+@synthesize interface = m_interface;
+@synthesize background = m_background;
+@synthesize player = m_player;
+@synthesize playerShotPool = m_playerShotPool;
 
 /*!
  @method シングルトンオブジェクト取得
@@ -46,7 +53,7 @@ static GameScene *g_scene = nil;
     }
     
     // キャラクターを配置するレイヤーを生成する
-    m_baseLayer = [CCLayer node];
+    self.baseLayer = [CCLayer node];
     [self addChild:m_baseLayer z:0];
     
     // 自機を中心に画面を回転させるためにアンカーポイントを自機の位置に移動する
@@ -57,16 +64,20 @@ static GameScene *g_scene = nil;
     DBGLOG(0, @"m_baseLayer.anchorPoint=(%f, %f)", m_baseLayer.anchorPoint.x, m_baseLayer.anchorPoint.y);
     
     // インターフェースレイヤーを貼り付ける
-    m_interface = [GameIFLayer node];
+    self.interface = [GameIFLayer node];
     [self addChild:m_interface z:1];
     
     // 背景の生成
-    m_background = [Background node];
+    self.background = [Background node];
     [m_baseLayer addChild:m_background z:1];
     
     // 自機の生成
-    m_player = [Player node];
-    [m_background addChild:m_player z:50];
+    self.player = [Player node];
+    [m_background addChild:m_player z:PLAYER_POS_Z];
+    
+    // 自機弾プールの生成
+    self.playerShotPool = [[[CharacterPool alloc] initWithClass:[PlayerShot class]
+                    Size:MAX_PLAYER_SHOT_COUNT] autorelease];
     
     // 更新処理開始
     [self scheduleUpdate];
@@ -84,19 +95,11 @@ static GameScene *g_scene = nil;
     [self unscheduleUpdate];
     
     // リソースの解放
-    g_scene = nil;
-    
-    [m_player release];
-    m_player = nil;
-    
-    [m_background release];
-    m_background = nil;
-    
-    [m_interface release];
-    m_interface = nil;
-    
-    [m_baseLayer release];
-    m_baseLayer = nil;
+    [m_playerShotPool release];
+    [m_background removeChild:m_player cleanup:YES];
+    [m_baseLayer removeChild:m_background cleanup:YES];
+    [self removeChild:m_interface cleanup:YES];
+    [self removeChild:m_baseLayer cleanup:YES];
     
     [super dealloc];
 }
@@ -111,15 +114,25 @@ static GameScene *g_scene = nil;
     float scrx = 0.0f;      // スクリーン座標x
     float scry = 0.0f;      // スクリーン座標y
     float angle = 0.0f;     // スクリーンの向き
+    NSEnumerator *enumerator;   // キャラクター操作用列挙子
+    Character *character;       // キャラクター操作作業用バッファ
     
     // 自機の移動
     // 自機にスクリーン座標は無関係なため、0をダミーで格納する。
     [m_player move:dt ScreenX:0 ScreenY:0];
+    DBGLOG(0, @"m_player.abspos=(%f, %f)", m_player.absx, m_player.absy);
     
     // 移動後のスクリーン座標の取得
     scrx = [m_player getScreenPosX];
     scry = [m_player getScreenPosY];
     DBGLOG(0, @"x=%f y=%f", scrx, scry);
+    
+    // 自機弾の移動
+    enumerator = [m_playerShotPool.pool objectEnumerator];
+    for (character in enumerator) {
+        [character move:dt ScreenX:scrx ScreenY:scry];
+        DBGLOG(0 && character.isStaged, @"playerShot.abxpos=(%f, %f)", character.absx, character.absy);
+    }
     
     // 背景の移動
     [m_background moveWithScreenX:scrx ScreenY:scry];
@@ -129,7 +142,7 @@ static GameScene *g_scene = nil;
     angle = -1 * CnvAngleRad2Scr(m_player.angle);
     
     // 画面の回転
-    m_baseLayer.rotation = angle;
+//    m_baseLayer.rotation = angle;
     DBGLOG(0, @"m_baseLayer angle=%f", m_baseLayer.rotation);
 }
 
@@ -150,6 +163,19 @@ static GameScene *g_scene = nil;
  */
 - (void)filePlayerShot
 {
+    PlayerShot *shot = nil;   // 自機弾
     
+    // プールから未使用のメモリを取得する
+    shot = [m_playerShotPool getNext];
+    if (shot == nil) {
+        // 空きがない場合は処理終了
+        DBGLOG(1, @"自機弾プールに空きなし");
+        return;
+    }
+    
+    // 自機弾を生成する
+    // 位置と向きは自機と同じとする
+    [shot createWithX:m_player.absx Y:m_player.absy Z:PLAYER_SHOT_POS_Z
+                Angle:m_player.angle Parent:m_background];
 }
 @end

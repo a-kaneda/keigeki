@@ -3,7 +3,7 @@
 //  keigeki
 //
 //  Created by 金田 明浩 on 12/05/03.
-//  Copyright 2012年 KANEDA Akihiro. All rights reserved.
+//  Copyright 2012 KANEDA Akihiro. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -11,6 +11,15 @@
 #import "GameIFLayer.h"
 #import "Background.h"
 #import "Player.h"
+#import "CharacterPool.h"
+
+// 同時に生成可能な自機弾の最大数
+#define MAX_PLAYER_SHOT_COUNT   16
+
+// 自機の配置z座標
+#define PLAYER_POS_Z 2
+// 自機弾の配置z座標
+#define PLAYER_SHOT_POS_Z 3
 
 /*!
  @class ゲームプレイシーン
@@ -25,7 +34,15 @@
     Background *m_background;
     // 自機
     Player *m_player;
+    // 自機弾
+    CharacterPool *m_playerShotPool;
 }
+
+@property (nonatomic, retain)CCLayer *baseLayer;
+@property (nonatomic, retain)GameIFLayer *interface;
+@property (nonatomic, retain)Background *background;
+@property (nonatomic, retain)Player *player;
+@property (nonatomic, retain)CharacterPool *playerShotPool;
 
 // シングルトンオブジェクト取得
 + (GameScene *)sharedInstance;

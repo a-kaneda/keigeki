@@ -3,7 +3,7 @@
 //  keigeki
 //
 //  Created by 金田 明浩 on 12/05/16.
-//  Copyright 2012年 KANEDA Akihiro. All rights reserved.
+//  Copyright 2012 KANEDA Akihiro. All rights reserved.
 //
 
 #import "Player.h"
@@ -30,23 +30,14 @@
     // HPの設定
     m_hitPoint = 1;
     
+    // ステージ配置フラグを立てる
+    m_isStaged = YES;
+    
     // 画像の読込
-    m_image = [CCSprite spriteWithFile:@"Player.png"];
+    self.image = [CCSprite spriteWithFile:@"Player.png"];
     [self addChild:m_image];
     
     return self;
-}
-
-/*!
- @method インスタンス解放時処理
- @abstruct インスタンス解放時にオブジェクトを解放する。
- */
-- (void)dealloc
-{
-    [m_image release];
-    m_image = nil;
-    
-    [super dealloc];
 }
 
 /*!
@@ -75,7 +66,7 @@
  */
 - (float)getScreenPosX
 {
-    return RangeCheckLF(m_absx - SCREEN_WIDTH / 2 + PLAYER_POS_X, STAGE_WIDTH);
+    return RangeCheckLF(m_absx + SCREEN_WIDTH / 2 - PLAYER_POS_X, STAGE_WIDTH);
 }
 
 /*!
@@ -85,7 +76,7 @@
  */
 - (float)getScreenPosY
 {
-    return RangeCheckLF(m_absy - SCREEN_HEIGHT / 2 + PLAYER_POS_Y, STAGE_HEIGHT);
+    return RangeCheckLF(m_absy + SCREEN_HEIGHT / 2 - PLAYER_POS_Y, STAGE_HEIGHT);
 }
 
 /*!

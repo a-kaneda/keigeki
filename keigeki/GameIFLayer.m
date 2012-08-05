@@ -15,6 +15,8 @@ static float Accel2Ratio(float accel);
 
 @implementation GameIFLayer
 
+@synthesize shotButton = m_shotButton;
+
 /*!
  @method オブジェクト生成処理
  @abstruct オブジェクトの生成を行う。
@@ -29,7 +31,7 @@ static float Accel2Ratio(float accel);
     }
     
     // ショットボタンの生成
-    m_shotButton = [CCSprite spriteWithFile:@"ShotButton.png"];
+    self.shotButton = [CCSprite spriteWithFile:@"ShotButton.png"];
     m_shotButton.position = ccp(SHOT_BUTTON_POS_X, SHOT_BUTTON_POS_Y);
     [self addChild:m_shotButton];
     
@@ -47,7 +49,6 @@ static float Accel2Ratio(float accel);
 {
     // ショットボタンの画像の解放
     [m_shotButton release];
-    m_shotButton = nil;
     
     // スーパークラスの解放処理
     [super dealloc];

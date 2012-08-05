@@ -22,6 +22,8 @@
     CCSprite *m_image;
 }
 
+@property (nonatomic, retain)CCSprite *image;
+
 // 移動処理
 - (void)moveWithScreenX:(NSInteger)scrx ScreenY:(NSInteger)scry;
 

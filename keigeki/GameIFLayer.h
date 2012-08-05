@@ -25,4 +25,6 @@
     CCSprite *m_shotButton;
 }
 
+@property (nonatomic, retain)CCSprite *shotButton;
+
 @end

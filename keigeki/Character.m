@@ -3,7 +3,7 @@
 //  keigeki
 //
 //  Created by 金田 明浩 on 12/05/06.
-//  Copyright 2012年 KANEDA Akihiro. All rights reserved.
+//  Copyright 2012 KANEDA Akihiro. All rights reserved.
 //
 
 #import <math.h>
@@ -12,12 +12,16 @@
 
 @implementation Character
 
+@synthesize image = m_image;
 @synthesize width = m_width;
 @synthesize height = m_height;
+@synthesize absx = m_absx;
+@synthesize absy = m_absy;
 @synthesize speed = m_speed;
 @synthesize angle = m_angle;
 @synthesize rotSpeed = m_rotSpeed;
 @synthesize hitPoint = m_hitPoint;
+@synthesize isStaged = m_isStaged;
 
 /*!
  @method オブジェクト生成処理
@@ -41,10 +45,8 @@
     m_speed = 0.0f;
     m_angle = 0.0f;
     m_rotSpeed = 0.0f;
-    m_hitPoint = 0;
-    
-    // ステージ配置フラグを立てる
-    m_isStaged = YES;
+    m_hitPoint = 0;    
+    m_isStaged = NO;
     
     return self;
 }
@@ -57,7 +59,7 @@
 {
     // 画像を読み込んでいる場合はスプライトを解放する
     if (m_image != nil) {
-        [m_image release];
+        [self removeChild:m_image cleanup:YES];
         m_image = nil;
     }
     
@@ -119,8 +121,8 @@
     // スクリーン位置中心からの距離 + スクリーンサイズの半分
     // スクリーン位置中心からの距離はステージサイズの半分を超えているときは反対側にいるものとして判定する。
     // これはマーカーの表示のため。
-    posx = RangeCheckLI(absx - scrx, STAGE_WIDTH / 2) + SCREEN_WIDTH / 2;
-    posy = RangeCheckLI(absy - scry, STAGE_HEIGHT / 2) + SCREEN_HEIGHT / 2;
+    posx = RangeCheckLI(absx - scrx + SCREEN_WIDTH / 2, STAGE_WIDTH / 2);
+    posy = RangeCheckLI(absy - scry + SCREEN_HEIGHT / 2, STAGE_HEIGHT / 2);
     
     DBGLOG(0, @"vx=%f vy=%f ax=%f ay=%f px=%f py=%f sx=%d sy=%d", velx, vely, absx, absy, posx, posy, scrx, scry);
     

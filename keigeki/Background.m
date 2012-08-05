@@ -11,6 +11,8 @@
 
 @implementation Background
 
+@synthesize image = m_image;
+
 /*!
  @method オブジェクト生成処理
  @abstruct オブジェクトの生成を行う。
@@ -25,7 +27,7 @@
     }
     
     // タイルの生成
-    m_image = [CCSprite spriteWithFile:@"Back.png"];
+    self.image = [CCSprite spriteWithFile:@"Back.png"];
     [self addChild:m_image z:1];
     
     // 位置の設定
@@ -41,8 +43,7 @@
 - (void)dealloc
 {
     // 背景画像の解放
-    [m_image release];
-    m_image = nil;
+    [self removeChild:m_image cleanup:YES];
     
     // スーパークラスの解放処理
     [super dealloc];

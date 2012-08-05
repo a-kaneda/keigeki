@@ -12,7 +12,7 @@
 #import "common.h"
 
 // 速度の最大値
-#define PLAYER_SPEED        240
+#define PLAYER_SPEED        60
 // 自機の回転速度
 #define PLAYER_ROT_SPEED    1
 

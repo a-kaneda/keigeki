@@ -3,7 +3,7 @@
 //  keigeki
 //
 //  Created by 金田 明浩 on 12/05/06.
-//  Copyright 2012年 KANEDA Akihiro. All rights reserved.
+//  Copyright 2012 KANEDA Akihiro. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -36,12 +36,16 @@
     BOOL m_isStaged;
 }
 
+@property (nonatomic, retain)CCSprite *image;
 @property (nonatomic)NSInteger width;
 @property (nonatomic)NSInteger height;
+@property (nonatomic)float absx;
+@property (nonatomic)float absy;
 @property (nonatomic)float speed;
 @property (nonatomic)float angle;
 @property (nonatomic)float rotSpeed;
 @property (nonatomic)NSInteger hitPoint;
+@property (nonatomic)BOOL isStaged;
 
 // 移動処理
 - (void)move:(ccTime)dt ScreenX:(NSInteger)scrx ScreenY:(NSInteger)scry;

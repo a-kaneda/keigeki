@@ -30,6 +30,9 @@
     // HPの設定
     m_hitPoint = 1;
     
+    // 速度の設定
+    m_speed = PLAYER_SPEED;
+    
     // ステージ配置フラグを立てる
     m_isStaged = YES;
     
@@ -56,7 +59,7 @@
     self.position = ccp(PLAYER_POS_X, PLAYER_POS_Y);
     
     DBGLOG(0, @"player pos=(%f, %f)", self.position.x, self.position.y);
-    DBGLOG(0, @"player angle=%f", m_angle);
+    DBGLOG(0, @"player angle=%f speed=%f", m_angle, m_speed);
 }
 
 /*!
@@ -66,7 +69,7 @@
  */
 - (float)getScreenPosX
 {
-    return RangeCheckLF(m_absx + SCREEN_WIDTH / 2 - PLAYER_POS_X, STAGE_WIDTH);
+    return RangeCheckLF(m_absx + SCREEN_WIDTH / 2 - PLAYER_POS_X, 0.0f, STAGE_WIDTH);
 }
 
 /*!
@@ -76,7 +79,7 @@
  */
 - (float)getScreenPosY
 {
-    return RangeCheckLF(m_absy + SCREEN_HEIGHT / 2 - PLAYER_POS_Y, STAGE_HEIGHT);
+    return RangeCheckLF(m_absy + SCREEN_HEIGHT / 2 - PLAYER_POS_Y, 0.0f, STAGE_HEIGHT);
 }
 
 /*!
@@ -87,11 +90,45 @@
  */
 - (void)setVelocityX:(float)vx Y:(float)vy
 {
-    // スピードは縦方向の傾きから決定する
-    m_speed = (vy + 1.5) * PLAYER_SPEED;
+    float destangle = 0.0f; // 入力角度
+    float destsin = 0.0f;   // sin(入力角度 - 現在の角度)
+    float destcos = 0.0f;   // cos(入力角度 - 現在の角度)
     
-    // 角速度は横方向の傾きから決定する
-    m_rotSpeed = -1 * vx * PLAYER_ROT_SPEED;
+    // 角度を計算する
+    destangle = atan(vy / vx);
+    
+    // 第3象限、第4象限の場合はπ進める
+    if (vx < 0.0f) {
+        destangle += M_PI;
+    }
+    
+    // 現在の角度から見て入力角度が時計回りの側か反時計回りの側か調べる
+    // sin(入力角度 - 現在の角度) > 0の場合は反時計回り
+    // sin(入力角度 - 現在の角度) < 0の場合は時計回り
+    // 反対向きの場合は反時計回りとする
+    destsin = sin(destangle - m_angle);
+    
+    // 入力の方向に進むように回転速度を設定する
+    if (destsin > 0.0f) {
+        m_rotSpeed = PLAYER_ROT_SPEED;
+    }
+    else if (destsin < 0.0f) {
+        m_rotSpeed = -PLAYER_ROT_SPEED;
+    }
+    else {
+        // 上記判定でこのelseに入るのは入力角度が同じ向きか反対向きのときだけ
+        // 同じ向きか反対向きか調べる
+        // cos(入力角度 - 現在角度) < 0の場合は反対向き
+        destcos = cos(destangle - m_angle);
+        if (destcos < 0.0f) {
+            m_rotSpeed = PLAYER_ROT_SPEED;
+        }
+        else {
+            m_rotSpeed = 0;
+        }
+    }
+    
+    DBGLOG(0, @"vx=%f vy=%f angle=%f m_angle=%f m_rotSpeed=%f", vx, vy, destangle, m_angle, m_rotSpeed);
 }
 
 @end

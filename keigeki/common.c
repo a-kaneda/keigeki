@@ -10,29 +10,6 @@
 #include <math.h>
 
 /*!
- @function 範囲チェック(ループ、整数)
- @abstruct 値が範囲内にあるかチェックし、範囲外にあれば反対側にループする。二倍以上超えている場合は考慮しない。
- @param val 値
- @param max 最大値
- @return 補正結果
- */
-int RangeCheckLI(int val, int max)
-{
-    // 最小値未満
-    if (val < 0) {
-        return val + max;
-    }
-    // 最大値超過
-    else if (val > max) {
-        return val - max;
-    }
-    // 範囲内
-    else {
-        return val;
-    }
-}
-
-/*!
  @function 範囲チェック(実数)
  @abstruct 値が範囲内にあるかチェックし、範囲外にあれば範囲内の値に補正する。
  @param 値
@@ -58,20 +35,21 @@ float RangeCheckF(float val, float min, float max)
 
 /*!
  @function 範囲チェック(ループ、 実数)
- @abstruct 値が範囲内にあるかチェックし、範囲外にあれば反対側にループする。二倍以上超えている場合は考慮しない。
+ @abstruct 値が範囲内にあるかチェックし、範囲外にあれば反対側にループする。
  @param val 値
+ @param min 最小値
  @param max 最大値
  @return 補正結果
  */
-float RangeCheckLF(float val, float max)
+float RangeCheckLF(float val, float min, float max)
 {
     // 最小値未満
-    if (val < 0) {
-        return val + max;
+    if (val < min) {
+        return RangeCheckLF(val + (max - min), min, max);
     }
     // 最大値超過
     else if (val > max) {
-        return val - max;
+        return RangeCheckLF(val - (max - min), min, max);
     }
     // 範囲内
     else {

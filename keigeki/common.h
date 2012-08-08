@@ -3,7 +3,7 @@
 //  keigeki
 //
 //  Created by 金田 明浩 on 12/05/26.
-//  Copyright (c) 2012年 KANEDA Akihiro. All rights reserved.
+//  Copyright (c) 2012 KANEDA Akihiro. All rights reserved.
 //
 
 #ifndef keigeki_common_h
@@ -23,7 +23,7 @@
 // 自機の表示位置(x座標)
 #define PLAYER_POS_X    (SCREEN_WIDTH / 2)
 // 自機の表示位置(y座標)
-#define PLAYER_POS_Y    (SCREEN_HEIGHT / 4)
+#define PLAYER_POS_Y    (SCREEN_HEIGHT / 2)
 
 #ifdef DEBUG
 // デバッグログ。出力条件の指定が可能。ログの先頭にメソッド名と行数を付加する。
@@ -33,8 +33,7 @@
 #endif
 
 // 範囲チェック
-int RangeCheckLI(int val, int max);
-float RangeCheckLF(float val, float max);
+float RangeCheckLF(float val, float min, float max);
 float RangeCheckF(float val, float min, float max);
 
 // 角度変換

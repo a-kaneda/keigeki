@@ -11,7 +11,7 @@
 #import "Character.h"
 
 // 自機弾の射程距離
-#define PLAYER_SHOT_RANGE   480
+#define PLAYER_SHOT_RANGE   600
 // 自機弾のスピード
 #define PLAYER_SHOT_SPEED   600
 // 自機弾の幅

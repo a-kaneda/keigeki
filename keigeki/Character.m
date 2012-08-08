@@ -114,15 +114,15 @@
     absy += (vely * dt);
     
     // ステージの外に出ているかチェックする
-    absx = RangeCheckLI(absx, STAGE_WIDTH);
-    absy = RangeCheckLI(absy, STAGE_HEIGHT);
+    absx = RangeCheckLF(absx, 0.0f, STAGE_WIDTH);
+    absy = RangeCheckLF(absy, 0.0f, STAGE_HEIGHT);
     
     // 表示位置の計算
     // スクリーン位置中心からの距離 + スクリーンサイズの半分
     // スクリーン位置中心からの距離はステージサイズの半分を超えているときは反対側にいるものとして判定する。
     // これはマーカーの表示のため。
-    posx = RangeCheckLI(absx - scrx + SCREEN_WIDTH / 2, STAGE_WIDTH / 2);
-    posy = RangeCheckLI(absy - scry + SCREEN_HEIGHT / 2, STAGE_HEIGHT / 2);
+    posx = RangeCheckLF(absx - scrx + SCREEN_WIDTH / 2, -(STAGE_WIDTH / 2), STAGE_WIDTH / 2);
+    posy = RangeCheckLF(absy - scry + SCREEN_HEIGHT / 2, -(STAGE_HEIGHT / 2), STAGE_HEIGHT / 2);
     
     DBGLOG(0, @"vx=%f vy=%f ax=%f ay=%f px=%f py=%f sx=%d sy=%d", velx, vely, absx, absy, posx, posy, scrx, scry);
     

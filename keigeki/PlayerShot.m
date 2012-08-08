@@ -7,6 +7,7 @@
 //
 
 #import "PlayerShot.h"
+#import "common.h"
 
 @implementation PlayerShot
 
@@ -54,6 +55,9 @@
 
     // スーパークラスの移動処理
     [super move:dt ScreenX:scrx ScreenY:scry];
+
+    DBGLOG(0, @"pos_y=%f abs_y=%f scr_y=%d", self.position.y, m_absy, scry);
+    DBGLOG(0, @"m_distance=%f isStaged=%d", m_distance, m_isStaged);
 }
 
 /*!

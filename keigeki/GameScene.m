@@ -43,9 +43,6 @@ static GameScene *g_scene = nil;
  */
 - (id)init
 {
-    float anchor_x = 0.0f;  // 画面回転の中心点x座標
-    float anchor_y = 0.0f;  // 画面回転の中心点y座標
-    
     // スーパークラスの生成処理
     self = [super init];
     if (!self) {
@@ -55,13 +52,6 @@ static GameScene *g_scene = nil;
     // キャラクターを配置するレイヤーを生成する
     self.baseLayer = [CCLayer node];
     [self addChild:m_baseLayer z:0];
-    
-    // 自機を中心に画面を回転させるためにアンカーポイントを自機の位置に移動する
-    anchor_x = ((float)SCREEN_WIDTH / SCREEN_HEIGHT) * ((float)PLAYER_POS_X / SCREEN_WIDTH);
-    anchor_y = ((float)SCREEN_HEIGHT / SCREEN_WIDTH) * ((float)PLAYER_POS_Y / SCREEN_HEIGHT);
-    m_baseLayer.anchorPoint = ccp(anchor_x, anchor_y);
-    DBGLOG(0, @"m_baseLayer.contentSize=(%f, %f)", m_baseLayer.contentSize.width, m_baseLayer.contentSize.height);
-    DBGLOG(0, @"m_baseLayer.anchorPoint=(%f, %f)", m_baseLayer.anchorPoint.x, m_baseLayer.anchorPoint.y);
     
     // インターフェースレイヤーを貼り付ける
     self.interface = [GameIFLayer node];
@@ -113,7 +103,6 @@ static GameScene *g_scene = nil;
 {
     float scrx = 0.0f;      // スクリーン座標x
     float scry = 0.0f;      // スクリーン座標y
-    float angle = 0.0f;     // スクリーンの向き
     NSEnumerator *enumerator;   // キャラクター操作用列挙子
     Character *character;       // キャラクター操作作業用バッファ
     
@@ -136,14 +125,6 @@ static GameScene *g_scene = nil;
     
     // 背景の移動
     [m_background moveWithScreenX:scrx ScreenY:scry];
-
-    // 自機の向きの取得
-    // 自機の向きと反対方向に画面を回転させるため、符号反転
-    angle = -1 * CnvAngleRad2Scr(m_player.angle);
-    
-    // 画面の回転
-//    m_baseLayer.rotation = angle;
-    DBGLOG(0, @"m_baseLayer angle=%f", m_baseLayer.rotation);
 }
 
 /*!

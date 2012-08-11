@@ -24,6 +24,16 @@
 #define PLAYER_POS_X    (SCREEN_WIDTH / 2)
 // 自機の表示位置(y座標)
 #define PLAYER_POS_Y    (SCREEN_HEIGHT / 2)
+// ステージの個数
+#define STAGE_COUNT 5
+
+// 敵の種類
+enum ENEMY_TYPE {
+    NORMAL_DEVIL = 0,   // 通常タイプ
+    FIRE_DEVIL,         // 火を撃ってくる
+    ARMORED_DEVIL,      // 鎧を付けている
+    ENEMY_TYPE_COUNT    // 敵の種類の数
+};
 
 #ifdef DEBUG
 // デバッグログ。出力条件の指定が可能。ログの先頭にメソッド名と行数を付加する。

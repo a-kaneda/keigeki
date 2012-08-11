@@ -43,6 +43,9 @@ static GameScene *g_scene = nil;
  */
 - (id)init
 {
+    float anchor_x = 0.0f;  // 画面回転時の中心点x座標
+    float anchor_y = 0.0f;  // 画面回転時の中心点y座標
+    
     // スーパークラスの生成処理
     self = [super init];
     if (!self) {
@@ -52,6 +55,16 @@ static GameScene *g_scene = nil;
     // キャラクターを配置するレイヤーを生成する
     self.baseLayer = [CCLayer node];
     [self addChild:m_baseLayer z:0];
+    
+    // 画面回転時の中心点を求める
+    // CCLayerのサイズは320x480だが、画面サイズはLandscape時は480x320のため、
+    // 画面右上の点が(480 / 320, 320 / 480)となる。
+    // 中心点座標のCCLayer上での比率に上の値をかけて、画面上での比率を求める。
+    anchor_x = ((float)PLAYER_POS_X / SCREEN_WIDTH) * ((float)SCREEN_WIDTH / SCREEN_HEIGHT);
+    anchor_y = ((float)PLAYER_POS_Y / SCREEN_HEIGHT) * ((float)SCREEN_HEIGHT / SCREEN_WIDTH);
+    
+    // 画面回転時の中心点を設定する
+    self.baseLayer.anchorPoint = ccp(anchor_x, anchor_y);
     
     // インターフェースレイヤーを貼り付ける
     self.interface = [GameIFLayer node];

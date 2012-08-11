@@ -3,9 +3,11 @@
 //  keigeki
 //
 //  Created by 金田 明浩 on 2012/07/30.
-//  Copyright __MyCompanyName__ 2012年. All rights reserved.
+//  Copyright 2012 KANEDA Akihiro. All rights reserved.
 //
 
+#import <stdlib.h>
+#import <time.h>
 #import "cocos2d.h"
 
 #import "AppDelegate.h"
@@ -74,7 +76,6 @@
 
 	// and add the scene to the stack. The director will run it when it automatically when the view is displayed.
 	[director_ pushScene: [GameScene sharedInstance]];
-
 	
 	// Create a Navigation Controller with the Director
 	navController_ = [[UINavigationController alloc] initWithRootViewController:director_];
@@ -87,6 +88,9 @@
 	// make main window visible
 	[window_ makeKeyAndVisible];
 	
+    // 乱数の種を設定する
+    srand((unsigned int)time(NULL));
+    
 	return YES;
 }
 

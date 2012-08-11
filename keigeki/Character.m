@@ -136,6 +136,19 @@
     
     // 回転処理
     [self setRotation:CnvAngleRad2Scr(m_angle)];
+    
+    // キャラクター固有の動作を行う
+    [self action:dt];
+}
+
+/*!
+ @method キャラクター固有の動作
+ @abstruct キャラクター種別ごとの動作を行う。
+ @param dt フレーム更新間隔
+ */
+- (void)action:(ccTime)dt
+{
+    // 派生クラスで動作を定義する
 }
 
 /*!

@@ -49,6 +49,8 @@
 
 // 移動処理
 - (void)move:(ccTime)dt ScreenX:(NSInteger)scrx ScreenY:(NSInteger)scry;
+// キャラクター固有の動作
+- (void)action:(ccTime)dt;
 // 破壊処理
 - (void)destroy;
 

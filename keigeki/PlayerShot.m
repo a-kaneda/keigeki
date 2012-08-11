@@ -32,19 +32,12 @@
 }
 
 /*!
- @method 移動処理
- @abstruct 速度によって位置を移動する。自機の表示位置は固定とする。
+ @method キャラクター固有の動作
+ @abstruct 射程距離を外れたとき画面から取り除く。
  @param dt フレーム更新間隔
- @param scrx スクリーン座標x
- @param scry スクリーン座標y
  */
-- (void)move:(ccTime)dt ScreenX:(NSInteger)scrx ScreenY:(NSInteger)scry
+- (void)action:(ccTime)dt
 {
-    // 画面に配置されていないときは無処理
-    if (!m_isStaged) {
-        return;
-    }
-    
     // 移動距離をカウントする
     m_distance += m_speed * dt;
     
@@ -52,12 +45,6 @@
     if (m_distance > PLAYER_SHOT_RANGE) {
         m_hitPoint = -1.0f;
     }
-
-    // スーパークラスの移動処理
-    [super move:dt ScreenX:scrx ScreenY:scry];
-
-    DBGLOG(0, @"pos_y=%f abs_y=%f scr_y=%d", self.position.y, m_absy, scry);
-    DBGLOG(0, @"m_distance=%f isStaged=%d", m_distance, m_isStaged);
 }
 
 /*!

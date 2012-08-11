@@ -44,17 +44,12 @@
 }
 
 /*!
- @method 移動処理
+ @method キャラクター固有の動作
  @abstruct 速度によって位置を移動する。自機の表示位置は固定とする。
  @param dt フレーム更新間隔
- @param scrx スクリーン座標x
- @param scry スクリーン座標y
  */
-- (void)move:(ccTime)dt ScreenX:(NSInteger)scrx ScreenY:(NSInteger)scry
+- (void)action:(ccTime)dt
 {
-    // スーパークラスの移動処理
-    [super move:dt ScreenX:scrx ScreenY:scry];
-    
     // 自機の表示座標は画面中央下部に固定
     self.position = ccp(PLAYER_POS_X, PLAYER_POS_Y);
     

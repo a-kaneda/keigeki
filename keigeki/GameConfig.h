@@ -1,9 +1,9 @@
 //
 //  GameConfig.h
-//  keigeki
+//  keigeki:傾撃
 //
-//  Created by 金田 明浩 on 12/03/03.
-//  Copyright 2012年 KANEDA Akihiro. All rights reserved.
+//  Created by 金田 明浩 on 2012/03/03.
+//  Copyright 2012 KANEDA Akihiro. All rights reserved.
 //
 
 #ifndef __GAME_CONFIG_H

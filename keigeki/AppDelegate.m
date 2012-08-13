@@ -1,6 +1,6 @@
 //
 //  AppDelegate.m
-//  keigeki
+//  keigeki:傾撃
 //
 //  Created by 金田 明浩 on 2012/07/30.
 //  Copyright 2012 KANEDA Akihiro. All rights reserved.
@@ -11,7 +11,7 @@
 #import "cocos2d.h"
 
 #import "AppDelegate.h"
-#import "GameScene.h"
+#import "AKGameScene.h"
 
 @implementation AppController
 
@@ -75,7 +75,7 @@
 	[CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
 
 	// and add the scene to the stack. The director will run it when it automatically when the view is displayed.
-	[director_ pushScene: [GameScene sharedInstance]];
+	[director_ pushScene: [AKGameScene sharedInstance]];
 	
 	// Create a Navigation Controller with the Director
 	navController_ = [[UINavigationController alloc] initWithRootViewController:director_];

@@ -1,9 +1,9 @@
 //
 //  AppDelegate.h
-//  keigeki
+//  keigeki:傾撃
 //
 //  Created by 金田 明浩 on 2012/07/30.
-//  Copyright __MyCompanyName__ 2012年. All rights reserved.
+//  Copyright 2012 KANEDA Akihiro. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

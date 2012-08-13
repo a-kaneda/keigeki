@@ -1,9 +1,9 @@
 //
 //  common.h
-//  keigeki
+//  keigeki:傾撃
 //
-//  Created by 金田 明浩 on 12/05/26.
-//  Copyright (c) 2012 KANEDA Akihiro. All rights reserved.
+//  Created by 金田 明浩 on 2012/05/26.
+//  Copyright 2012 KANEDA Akihiro. All rights reserved.
 //
 
 #ifndef keigeki_common_h
@@ -35,17 +35,17 @@
 #endif
 
 // 範囲チェック
-float RangeCheckLF(float val, float min, float max);
-float RangeCheckF(float val, float min, float max);
+float AKRangeCheckLF(float val, float min, float max);
+float AKRangeCheckF(float val, float min, float max);
 
 // 角度変換
-float CnvAngleRad2Deg(float radAngle);
-float CnvAngleRad2Scr(float radAngle);
+float AKCnvAngleRad2Deg(float radAngle);
+float AKCnvAngleRad2Scr(float radAngle);
 
 // 2点間の角度計算
-float CalcDestAngle(float srcx, float srcy, float dstx, float dsty);
+float AKCalcDestAngle(float srcx, float srcy, float dstx, float dsty);
 
 // 回転方向の計算
-int CalcRotDirect(float angle, float srcx, float srcy, float dstx, float dsty);
+int AKCalcRotDirect(float angle, float srcx, float srcy, float dstx, float dsty);
 
 #endif

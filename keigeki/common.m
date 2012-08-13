@@ -1,9 +1,9 @@
 //
 //  common.c
-//  keigeki
+//  keigeki:傾撃
 //
-//  Created by 金田 明浩 on 12/05/26.
-//  Copyright (c) 2012 KANEDA Akihiro. All rights reserved.
+//  Created by 金田 明浩 on 2012/05/26.
+//  Copyright 2012 KANEDA Akihiro. All rights reserved.
 //
 
 #import <stdio.h>
@@ -18,7 +18,7 @@
  @param 最大値
  @return 補正結果
  */
-float RangeCheckF(float val, float min, float max)
+float AKRangeCheckF(float val, float min, float max)
 {
     // 最小値未満
     if (val < min) {
@@ -42,15 +42,15 @@ float RangeCheckF(float val, float min, float max)
  @param max 最大値
  @return 補正結果
  */
-float RangeCheckLF(float val, float min, float max)
+float AKRangeCheckLF(float val, float min, float max)
 {
     // 最小値未満
     if (val < min) {
-        return RangeCheckLF(val + (max - min), min, max);
+        return AKRangeCheckLF(val + (max - min), min, max);
     }
     // 最大値超過
     else if (val > max) {
-        return RangeCheckLF(val - (max - min), min, max);
+        return AKRangeCheckLF(val - (max - min), min, max);
     }
     // 範囲内
     else {
@@ -64,7 +64,7 @@ float RangeCheckLF(float val, float min, float max)
  @param radAngle rad角度
  @return deg角度
  */
-float CnvAngleRad2Deg(float radAngle)
+float AKCnvAngleRad2Deg(float radAngle)
 {
     // radianからdegreeへ変換する
     return radAngle / (2 * M_PI) * 360;
@@ -76,12 +76,12 @@ float CnvAngleRad2Deg(float radAngle)
  @param radAngle rad角度
  @return スクリーン角度
  */
-float CnvAngleRad2Scr(float radAngle)
+float AKCnvAngleRad2Scr(float radAngle)
 {
     float srcAngle = 0.0f;
     
     // radianからdegreeへ変換する
-    srcAngle = CnvAngleRad2Deg(radAngle);
+    srcAngle = AKCnvAngleRad2Deg(radAngle);
     
     // 上向きを0°とするため、90°ずらす。
     srcAngle -= 90;
@@ -101,7 +101,7 @@ float CnvAngleRad2Scr(float radAngle)
  @param dsty 到達点y座標
  @return 2点間の角度
  */
-float CalcDestAngle(float srcx, float srcy, float dstx, float dsty)
+float AKCalcDestAngle(float srcx, float srcy, float dstx, float dsty)
 {
     float vx = 0.0f;        // x方向のベクトルの大きさ
     float vy = 0.0f;        // y方向のベクトルの大きさ
@@ -117,7 +117,7 @@ float CalcDestAngle(float srcx, float srcy, float dstx, float dsty)
         angle += M_PI;
     }
 
-    DBGLOG(0, @"angle=%f vy=%f vx=%f vy/vx=%f", CnvAngleRad2Deg(angle), vy, vx, vy / vx);
+    DBGLOG(0, @"angle=%f vy=%f vx=%f vy/vx=%f", AKCnvAngleRad2Deg(angle), vy, vx, vy / vx);
     
     return angle;
 }
@@ -132,17 +132,17 @@ float CalcDestAngle(float srcx, float srcy, float dstx, float dsty)
  @param dsty 到達点y座標
  @return 1:反時計回り、-1:時計回り、0:直進
  */
-int CalcRotDirect(float angle, float srcx, float srcy, float dstx, float dsty)
+int AKCalcRotDirect(float angle, float srcx, float srcy, float dstx, float dsty)
 {
     int rotdirect = 0;      // 回転方向(1:反時計回り、-1:時計回り、0:直進)
     float destangle = 0.0f; // 目的角度
     float destsin = 0.0f;   // sin(目的角度 - 現在の角度)
     float destcos = 0.0f;   // cos(目的角度 - 現在の角度)
     
-    DBGLOG(0, @"angle=%f src=(%f, %f) dst=(%f, %f)", CnvAngleRad2Deg(angle), srcx, srcy, dstx, dsty);
+    DBGLOG(0, @"angle=%f src=(%f, %f) dst=(%f, %f)", AKCnvAngleRad2Deg(angle), srcx, srcy, dstx, dsty);
  
     // 角度を計算する
-    destangle = CalcDestAngle(srcx, srcy, dstx, dsty);
+    destangle = AKCalcDestAngle(srcx, srcy, dstx, dsty);
         
     // 現在の角度から見て入力角度が時計回りの側か反時計回りの側か調べる
     // sin(目的角度 - 現在の角度) > 0の場合は反時計回り

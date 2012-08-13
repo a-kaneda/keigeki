@@ -9,9 +9,10 @@
 /* Begin PBXBuildFile section */
 		0C1928AF15D9361A00496717 /* Marker.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C1928AE15D9361A00496717 /* Marker.png */; };
 		0C1928B215D9362800496717 /* Radar.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C1928B115D9362800496717 /* Radar.png */; };
-		0C21F1AF15CE6477004C64E9 /* CharacterPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C21F1AE15CE6474004C64E9 /* CharacterPool.m */; };
-		0C21F1B915D3F4CA004C64E9 /* Enemy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C21F1B815D3F4C9004C64E9 /* Enemy.m */; };
-		0C2A39F115D460B2005B9272 /* Enemy+Noraml.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2A39F015D460B2005B9272 /* Enemy+Noraml.m */; };
+		0C1928B515D99CD000496717 /* AKRadar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C1928B415D99CCF00496717 /* AKRadar.m */; };
+		0C21F1AF15CE6477004C64E9 /* AKCharacterPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C21F1AE15CE6474004C64E9 /* AKCharacterPool.m */; };
+		0C21F1B915D3F4CA004C64E9 /* AKEnemy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C21F1B815D3F4C9004C64E9 /* AKEnemy.m */; };
+		0C2A39F115D460B2005B9272 /* AKEnemy+Noraml.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2A39F015D460B2005B9272 /* AKEnemy+Noraml.m */; };
 		0C2A39FD15D6397D005B9272 /* stage1_1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C2A39FC15D6397D005B9272 /* stage1_1.txt */; };
 		0C2A3A2115D7493A005B9272 /* fps_images-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C2A3A1315D64A47005B9272 /* fps_images-hd.png */; };
 		0C2A3A2215D7493E005B9272 /* Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C2A3A1015D64A47005B9272 /* Back.png */; };
@@ -142,24 +143,28 @@
 		0C37077715C6BED200295D96 /* vec4.c in Sources */ = {isa = PBXBuildFile; fileRef = 0C37077615C6BED200295D96 /* vec4.c */; };
 		0C37077C15C6BED200295D96 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C37077B15C6BED200295D96 /* main.m */; };
 		0C37077F15C6BED200295D96 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C37077E15C6BED200295D96 /* AppDelegate.m */; };
-		0C3707B415C6C82C00295D96 /* Background.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707A615C6C82B00295D96 /* Background.m */; };
-		0C3707B515C6C82C00295D96 /* Character.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707A815C6C82B00295D96 /* Character.m */; };
+		0C3707B415C6C82C00295D96 /* AKBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707A615C6C82B00295D96 /* AKBackground.m */; };
+		0C3707B515C6C82C00295D96 /* AKCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707A815C6C82B00295D96 /* AKCharacter.m */; };
 		0C3707B615C6C82C00295D96 /* common.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707A915C6C82B00295D96 /* common.m */; };
-		0C3707B715C6C82C00295D96 /* GameIFLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707AD15C6C82B00295D96 /* GameIFLayer.m */; };
-		0C3707B815C6C82C00295D96 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707AF15C6C82C00295D96 /* GameScene.m */; };
-		0C3707B915C6C82C00295D96 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707B115C6C82C00295D96 /* Player.m */; };
-		0C3707BA15C6C82C00295D96 /* PlayerShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707B315C6C82C00295D96 /* PlayerShot.m */; };
+		0C3707B715C6C82C00295D96 /* AKGameIFLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707AD15C6C82B00295D96 /* AKGameIFLayer.m */; };
+		0C3707B815C6C82C00295D96 /* AKGameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707AF15C6C82C00295D96 /* AKGameScene.m */; };
+		0C3707B915C6C82C00295D96 /* AKPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707B115C6C82C00295D96 /* AKPlayer.m */; };
+		0C3707BA15C6C82C00295D96 /* AKPlayerShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707B315C6C82C00295D96 /* AKPlayerShot.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0C1928AE15D9361A00496717 /* Marker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Marker.png; sourceTree = "<group>"; };
 		0C1928B115D9362800496717 /* Radar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Radar.png; sourceTree = "<group>"; };
-		0C21F1AD15CE6472004C64E9 /* CharacterPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterPool.h; sourceTree = "<group>"; };
-		0C21F1AE15CE6474004C64E9 /* CharacterPool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CharacterPool.m; sourceTree = "<group>"; };
-		0C21F1B715D3F4C9004C64E9 /* Enemy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Enemy.h; sourceTree = "<group>"; };
-		0C21F1B815D3F4C9004C64E9 /* Enemy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Enemy.m; sourceTree = "<group>"; };
-		0C2A39EF15D460B2005B9272 /* Enemy+Noraml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Enemy+Noraml.h"; sourceTree = "<group>"; };
-		0C2A39F015D460B2005B9272 /* Enemy+Noraml.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Enemy+Noraml.m"; sourceTree = "<group>"; };
+		0C1928B315D99CCF00496717 /* AKRadar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKRadar.h; sourceTree = "<group>"; };
+		0C1928B415D99CCF00496717 /* AKRadar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKRadar.m; sourceTree = "<group>"; };
+		0C1928B615D9A19D00496717 /* AKBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKBackground.h; sourceTree = "<group>"; };
+		0C1928B715D9A43200496717 /* AKPlayerShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayerShot.h; sourceTree = "<group>"; };
+		0C21F1AD15CE6472004C64E9 /* AKCharacterPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKCharacterPool.h; sourceTree = "<group>"; };
+		0C21F1AE15CE6474004C64E9 /* AKCharacterPool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKCharacterPool.m; sourceTree = "<group>"; };
+		0C21F1B715D3F4C9004C64E9 /* AKEnemy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEnemy.h; sourceTree = "<group>"; };
+		0C21F1B815D3F4C9004C64E9 /* AKEnemy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKEnemy.m; sourceTree = "<group>"; };
+		0C2A39EF15D460B2005B9272 /* AKEnemy+Noraml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AKEnemy+Noraml.h"; sourceTree = "<group>"; };
+		0C2A39F015D460B2005B9272 /* AKEnemy+Noraml.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AKEnemy+Noraml.m"; sourceTree = "<group>"; };
 		0C2A39FC15D6397D005B9272 /* stage1_1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage1_1.txt; path = keigeki/StageScript/stage1_1.txt; sourceTree = SOURCE_ROOT; };
 		0C2A3A1015D64A47005B9272 /* Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Back.png; sourceTree = "<group>"; };
 		0C2A3A1115D64A47005B9272 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
@@ -424,21 +429,19 @@
 		0C37077B15C6BED200295D96 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0C37077D15C6BED200295D96 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		0C37077E15C6BED200295D96 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		0C3707A515C6C82B00295D96 /* Background.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Background.h; sourceTree = "<group>"; };
-		0C3707A615C6C82B00295D96 /* Background.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Background.m; sourceTree = "<group>"; };
-		0C3707A715C6C82B00295D96 /* Character.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Character.h; sourceTree = "<group>"; };
-		0C3707A815C6C82B00295D96 /* Character.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Character.m; sourceTree = "<group>"; };
+		0C3707A615C6C82B00295D96 /* AKBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKBackground.m; sourceTree = "<group>"; };
+		0C3707A715C6C82B00295D96 /* AKCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKCharacter.h; sourceTree = "<group>"; };
+		0C3707A815C6C82B00295D96 /* AKCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKCharacter.m; sourceTree = "<group>"; };
 		0C3707A915C6C82B00295D96 /* common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = common.m; sourceTree = "<group>"; };
 		0C3707AA15C6C82B00295D96 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
 		0C3707AB15C6C82B00295D96 /* GameConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
-		0C3707AC15C6C82B00295D96 /* GameIFLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameIFLayer.h; sourceTree = "<group>"; };
-		0C3707AD15C6C82B00295D96 /* GameIFLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameIFLayer.m; sourceTree = "<group>"; };
-		0C3707AE15C6C82C00295D96 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
-		0C3707AF15C6C82C00295D96 /* GameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
-		0C3707B015C6C82C00295D96 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
-		0C3707B115C6C82C00295D96 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
-		0C3707B215C6C82C00295D96 /* PlayerShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerShot.h; sourceTree = "<group>"; };
-		0C3707B315C6C82C00295D96 /* PlayerShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerShot.m; sourceTree = "<group>"; };
+		0C3707AC15C6C82B00295D96 /* AKGameIFLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKGameIFLayer.h; sourceTree = "<group>"; };
+		0C3707AD15C6C82B00295D96 /* AKGameIFLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKGameIFLayer.m; sourceTree = "<group>"; };
+		0C3707AE15C6C82C00295D96 /* AKGameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKGameScene.h; sourceTree = "<group>"; };
+		0C3707AF15C6C82C00295D96 /* AKGameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKGameScene.m; sourceTree = "<group>"; };
+		0C3707B015C6C82C00295D96 /* AKPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayer.h; sourceTree = "<group>"; };
+		0C3707B115C6C82C00295D96 /* AKPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayer.m; sourceTree = "<group>"; };
+		0C3707B315C6C82C00295D96 /* AKPlayerShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayerShot.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -508,26 +511,28 @@
 				0C37077D15C6BED200295D96 /* AppDelegate.h */,
 				0C37077E15C6BED200295D96 /* AppDelegate.m */,
 				0C3707AB15C6C82B00295D96 /* GameConfig.h */,
-				0C3707A515C6C82B00295D96 /* Background.h */,
-				0C3707A615C6C82B00295D96 /* Background.m */,
-				0C3707A715C6C82B00295D96 /* Character.h */,
-				0C3707A815C6C82B00295D96 /* Character.m */,
+				0C1928B615D9A19D00496717 /* AKBackground.h */,
+				0C3707A615C6C82B00295D96 /* AKBackground.m */,
+				0C3707A715C6C82B00295D96 /* AKCharacter.h */,
+				0C3707A815C6C82B00295D96 /* AKCharacter.m */,
 				0C3707A915C6C82B00295D96 /* common.m */,
 				0C3707AA15C6C82B00295D96 /* common.h */,
-				0C21F1B715D3F4C9004C64E9 /* Enemy.h */,
-				0C21F1B815D3F4C9004C64E9 /* Enemy.m */,
-				0C2A39EF15D460B2005B9272 /* Enemy+Noraml.h */,
-				0C2A39F015D460B2005B9272 /* Enemy+Noraml.m */,
-				0C21F1AD15CE6472004C64E9 /* CharacterPool.h */,
-				0C21F1AE15CE6474004C64E9 /* CharacterPool.m */,
-				0C3707AC15C6C82B00295D96 /* GameIFLayer.h */,
-				0C3707AD15C6C82B00295D96 /* GameIFLayer.m */,
-				0C3707AE15C6C82C00295D96 /* GameScene.h */,
-				0C3707AF15C6C82C00295D96 /* GameScene.m */,
-				0C3707B015C6C82C00295D96 /* Player.h */,
-				0C3707B115C6C82C00295D96 /* Player.m */,
-				0C3707B215C6C82C00295D96 /* PlayerShot.h */,
-				0C3707B315C6C82C00295D96 /* PlayerShot.m */,
+				0C21F1B715D3F4C9004C64E9 /* AKEnemy.h */,
+				0C21F1B815D3F4C9004C64E9 /* AKEnemy.m */,
+				0C2A39EF15D460B2005B9272 /* AKEnemy+Noraml.h */,
+				0C2A39F015D460B2005B9272 /* AKEnemy+Noraml.m */,
+				0C21F1AD15CE6472004C64E9 /* AKCharacterPool.h */,
+				0C21F1AE15CE6474004C64E9 /* AKCharacterPool.m */,
+				0C3707AC15C6C82B00295D96 /* AKGameIFLayer.h */,
+				0C3707AD15C6C82B00295D96 /* AKGameIFLayer.m */,
+				0C3707AE15C6C82C00295D96 /* AKGameScene.h */,
+				0C3707AF15C6C82C00295D96 /* AKGameScene.m */,
+				0C3707B015C6C82C00295D96 /* AKPlayer.h */,
+				0C3707B115C6C82C00295D96 /* AKPlayer.m */,
+				0C1928B715D9A43200496717 /* AKPlayerShot.h */,
+				0C3707B315C6C82C00295D96 /* AKPlayerShot.m */,
+				0C1928B315D99CCF00496717 /* AKRadar.h */,
+				0C1928B415D99CCF00496717 /* AKRadar.m */,
 				0C2A3A2015D64B12005B9272 /* StageScript */,
 				0C37060615C6BEC900295D96 /* Resources */,
 				0C37062015C6BEC900295D96 /* libs */,
@@ -1090,16 +1095,17 @@
 				0C37077715C6BED200295D96 /* vec4.c in Sources */,
 				0C37077C15C6BED200295D96 /* main.m in Sources */,
 				0C37077F15C6BED200295D96 /* AppDelegate.m in Sources */,
-				0C3707B415C6C82C00295D96 /* Background.m in Sources */,
-				0C3707B515C6C82C00295D96 /* Character.m in Sources */,
+				0C3707B415C6C82C00295D96 /* AKBackground.m in Sources */,
+				0C3707B515C6C82C00295D96 /* AKCharacter.m in Sources */,
 				0C3707B615C6C82C00295D96 /* common.m in Sources */,
-				0C3707B715C6C82C00295D96 /* GameIFLayer.m in Sources */,
-				0C3707B815C6C82C00295D96 /* GameScene.m in Sources */,
-				0C3707B915C6C82C00295D96 /* Player.m in Sources */,
-				0C3707BA15C6C82C00295D96 /* PlayerShot.m in Sources */,
-				0C21F1AF15CE6477004C64E9 /* CharacterPool.m in Sources */,
-				0C21F1B915D3F4CA004C64E9 /* Enemy.m in Sources */,
-				0C2A39F115D460B2005B9272 /* Enemy+Noraml.m in Sources */,
+				0C3707B715C6C82C00295D96 /* AKGameIFLayer.m in Sources */,
+				0C3707B815C6C82C00295D96 /* AKGameScene.m in Sources */,
+				0C3707B915C6C82C00295D96 /* AKPlayer.m in Sources */,
+				0C3707BA15C6C82C00295D96 /* AKPlayerShot.m in Sources */,
+				0C21F1AF15CE6477004C64E9 /* AKCharacterPool.m in Sources */,
+				0C21F1B915D3F4CA004C64E9 /* AKEnemy.m in Sources */,
+				0C2A39F115D460B2005B9272 /* AKEnemy+Noraml.m in Sources */,
+				0C1928B515D99CD000496717 /* AKRadar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

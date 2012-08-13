@@ -25,6 +25,8 @@
     int i = 0;                  // ループ変数
     Character *character = nil; // キャラクター生成用バッファ
     
+    DBGLOG(0, @"class=%@ size=%d", characlass, size);
+    
     // スーパークラスの生成処理
     self = [super init];
     if (!self) {
@@ -40,7 +42,7 @@
 
     // キャラクターの生成
     for (i = 0; i < m_size; i++) {
-        character = [[m_class node] retain];
+        character = [m_class node];
         [m_pool addObject:character];
     }
     
@@ -84,6 +86,8 @@
     int i = 0;              // ループ変数
     Character *ret = nil;   // 戻り値
     Character *work = nil;  // ワーク変数
+    
+    DBGLOG(0, @"m_size=%d", m_size);
     
     // 未使用のキャラクターを検索する
     for (i = 0; i < m_size; i++) {

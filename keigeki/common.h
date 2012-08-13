@@ -17,27 +17,19 @@
 #define SCREEN_HEIGHT 320
 // <注意> ループ時に背景が飛ばないようにステージサイズは背景のサイズの倍数とすること。
 // ステージ幅
-#define STAGE_WIDTH SCREEN_WIDTH * 4
+#define STAGE_WIDTH SCREEN_WIDTH * 8
 // ステージ高さ
-#define STAGE_HEIGHT SCREEN_HEIGHT * 4
+#define STAGE_HEIGHT SCREEN_HEIGHT * 8
 // 自機の表示位置(x座標)
 #define PLAYER_POS_X    (SCREEN_WIDTH / 2)
 // 自機の表示位置(y座標)
-#define PLAYER_POS_Y    (SCREEN_HEIGHT / 2)
+#define PLAYER_POS_Y    (SCREEN_HEIGHT / 8)
 // ステージの個数
 #define STAGE_COUNT 5
 
-// 敵の種類
-enum ENEMY_TYPE {
-    NORMAL_DEVIL = 0,   // 通常タイプ
-    FIRE_DEVIL,         // 火を撃ってくる
-    ARMORED_DEVIL,      // 鎧を付けている
-    ENEMY_TYPE_COUNT    // 敵の種類の数
-};
-
 #ifdef DEBUG
 // デバッグログ。出力条件の指定が可能。ログの先頭にメソッド名と行数を付加する。
-#define DBGLOG(cond, fmt, ...) if (cond) NSLog(@"[%s][%d] " fmt, __FUNCTION__, __LINE__, ## __VA_ARGS__)
+#define DBGLOG(cond, fmt, ...) if (cond) NSLog(@"%s(%d) " fmt, __FUNCTION__, __LINE__, ## __VA_ARGS__)
 #else
 #define DBGLOG(cond, fmt, ...) 
 #endif
@@ -47,6 +39,13 @@ float RangeCheckLF(float val, float min, float max);
 float RangeCheckF(float val, float min, float max);
 
 // 角度変換
+float CnvAngleRad2Deg(float radAngle);
 float CnvAngleRad2Scr(float radAngle);
+
+// 2点間の角度計算
+float CalcDestAngle(float srcx, float srcy, float dstx, float dsty);
+
+// 回転方向の計算
+int CalcRotDirect(float angle, float srcx, float srcy, float dstx, float dsty);
 
 #endif

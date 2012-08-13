@@ -13,7 +13,7 @@
 // 自機弾の射程距離
 #define PLAYER_SHOT_RANGE   600
 // 自機弾のスピード
-#define PLAYER_SHOT_SPEED   600
+#define PLAYER_SHOT_SPEED   1200
 // 自機弾の幅
 #define PLAYER_SHOT_WIDTH   2
 // 自機弾の高さ

@@ -8,6 +8,7 @@
 
 #import "GameScene.h"
 #import "PlayerShot.h"
+#import "Enemy.h"
 
 @implementation GameScene
 
@@ -19,6 +20,7 @@ static GameScene *g_scene = nil;
 @synthesize background = m_background;
 @synthesize player = m_player;
 @synthesize playerShotPool = m_playerShotPool;
+@synthesize enemyPool = m_enemyPool;
 
 /*!
  @method シングルトンオブジェクト取得
@@ -52,6 +54,11 @@ static GameScene *g_scene = nil;
         return nil;
     }
     
+    // シーンの状態、ステージ番号、ウェイブ番号を初期化する
+    m_state = GAME_STATE_START;
+    m_stageNo = 1;
+    m_waveNo = 1;
+    
     // キャラクターを配置するレイヤーを生成する
     self.baseLayer = [CCLayer node];
     [self addChild:m_baseLayer z:0];
@@ -80,7 +87,11 @@ static GameScene *g_scene = nil;
     
     // 自機弾プールの生成
     self.playerShotPool = [[[CharacterPool alloc] initWithClass:[PlayerShot class]
-                    Size:MAX_PLAYER_SHOT_COUNT] autorelease];
+                                                           Size:MAX_PLAYER_SHOT_COUNT] autorelease];
+    
+    // 敵プールの生成
+    self.enemyPool = [[[CharacterPool alloc] initWithClass:[Enemy class]
+                                                      Size:MAX_ENEMY_COUNT] autorelease];
     
     // 更新処理開始
     [self scheduleUpdate];
@@ -109,15 +120,135 @@ static GameScene *g_scene = nil;
 
 /*!
  @method 更新処理
- @abstruct 各キャラクターの移動処理、衝突判定を行う。
+ @abstruct ゲームの状態によって、更新処理を行う。
  @param dt フレーム更新間隔 
  */
 - (void)update:(ccTime)dt
 {
+    // ゲームの状態によって処理を分岐する
+    switch (m_state) {
+        case GAME_STATE_START:   // ゲーム開始時
+            [self updateStart:dt];
+            break;
+            
+        case GAME_STATE_PLAYING:        // プレイ中
+            [self updatePlaying:dt];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+/*!
+ @method ゲーム開始時の更新処理
+ @abstruct ステージ定義ファイルを読み込み、敵を配置する。
+ @param dt フレーム更新間隔
+ */
+- (void)updateStart:(ccTime)dt
+{
+    NSRange lineRange = {0};        // 処理対象の行の範囲
+    NSString *fileName = nil;       // ステージ定義ファイルのファイル名
+    NSString *filePath = nil;       // ステージ定義ファイルのパス
+    NSString *stageScript = nil;    // ステージ定義ファイルの内容
+    NSString *line = nil;           // 処理対象の行の文字列
+    NSError *error = nil;           // ファイル読み込みエラー内容
+    NSBundle *bundle = nil;         // バンドル
+    NSArray *params = nil;          // ステージ定義ファイルの1行のパラメータ
+    NSString *param = nil;          // ステージ定義ファイルの1個のパラメータ
+    enum ENEMY_TYPE enemyType = 0;  // 敵の種類
+    NSInteger enemyPosX = 0;        // 敵の配置位置x座標
+    NSInteger enemyPosY = 0;        // 敵の配置位置y座標
+    float enemyAngle = 0.0f;        // 敵の向き
+    
+    // ファイル名をステージ番号、ウェイブ番号から決定する
+    fileName = [NSString stringWithFormat:@"stage%d_%d", m_stageNo, m_waveNo];
+    DBGLOG(0, @"fileName=%@", fileName);
+    
+    // ファイルパスをバンドルから取得する
+    bundle = [NSBundle mainBundle];
+    filePath = [bundle pathForResource:fileName ofType:@"txt"];
+    DBGLOG(0, @"filePath=%@", filePath);
+    
+    // ステージ定義ファイルを読み込む
+    stageScript = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding
+                                               error:&error];
+    // ファイル読み込みエラー
+    if (stageScript == nil && error != nil) {
+        DBGLOG(0, @"%@", [error localizedDescription]);
+    }
+        
+    // ステージ定義ファイルの範囲の間は処理を続ける
+    while (lineRange.location < stageScript.length) {
+        
+        // 1行の範囲を取得する
+        lineRange = [stageScript lineRangeForRange:lineRange];
+        
+        // 1行の文字列を取得する
+        line = [stageScript substringWithRange:lineRange];
+        DBGLOG(0, @"%@", line);
+        
+        // 1文字目が"#"の場合は処理を飛ばす
+        if ([[line substringToIndex:1] isEqualToString:@"#"]) {
+            DBGLOG(0, @"コメント:%@", line);
+        }
+        // コメントでない場合はパラメータを読み込む
+        else {
+            // カンマ区切りでパラメータを分割する
+            params = [line componentsSeparatedByString:@","];
+            
+            // 1個目のパラメータは敵の種類として扱う。
+            param = [params objectAtIndex:0];
+            enemyType = [param integerValue];
+            
+            // 敵の種類は0始まりとするため、-1する。
+            enemyType--;
+            
+            // 2個目のパラメータはx座標として扱う
+            param = [params objectAtIndex:1];
+            enemyPosX = [param integerValue];
+            
+            // 3個目のパラメータはy座標として扱う
+            param = [params objectAtIndex:2];
+            enemyPosY = [param integerValue];
+            
+            DBGLOG(1, @"type=%d posx=%d posy=%d", enemyType, enemyPosX, enemyPosY);
+            
+            // 角度を自機のいる位置に設定する
+            // スクリプト上の座標は自機の位置からの相対位置なので目標座標は(0, 0)
+            enemyAngle = CalcDestAngle(enemyPosX, enemyPosY, 0, 0);
+            
+            DBGLOG(1, @"angle=%f", CnvAngleRad2Deg(enemyAngle));
+            
+            // 生成位置は自機の位置からの相対位置とする
+            enemyPosX += m_player.absx;
+            enemyPosY += m_player.absy;
+            
+            // 敵を生成する
+            [self entryEnemy:(enum ENEMY_TYPE)enemyType PosX:enemyPosX PosY:enemyPosY Angle:enemyAngle];
+        }
+        
+        // 次の行へ処理を進める
+        lineRange.location = lineRange.location + lineRange.length;
+        lineRange.length = 0;
+    }
+    
+    // 状態をプレイ中へと進める
+    m_state = GAME_STATE_PLAYING;
+}
+
+/*!
+ @method プレイ中の更新処理
+ @abstruct 各キャラクターの移動処理、衝突判定を行う。
+ @param dt フレーム更新間隔
+ */
+- (void)updatePlaying:(ccTime)dt
+{
     float scrx = 0.0f;      // スクリーン座標x
     float scry = 0.0f;      // スクリーン座標y
-    NSEnumerator *enumerator;   // キャラクター操作用列挙子
-    Character *character;       // キャラクター操作作業用バッファ
+    float angle = 0.0f;     // スクリーンの向き
+    NSEnumerator *enumerator = nil;   // キャラクター操作用列挙子
+    Character *character = nil;       // キャラクター操作作業用バッファ
     
     // 自機の移動
     // 自機にスクリーン座標は無関係なため、0をダミーで格納する。
@@ -133,11 +264,27 @@ static GameScene *g_scene = nil;
     enumerator = [m_playerShotPool.pool objectEnumerator];
     for (character in enumerator) {
         [character move:dt ScreenX:scrx ScreenY:scry];
-        DBGLOG(0 && character.isStaged, @"playerShot.abxpos=(%f, %f)", character.absx, character.absy);
+        DBGLOG(0 && character.isStaged, @"playerShot.abxpos=(%f, %f)",
+               character.absx, character.absy);
+    }
+    
+    // 敵の移動
+    enumerator = [m_enemyPool.pool objectEnumerator];
+    for (character in enumerator) {
+        DBGLOG(0 && character.isStaged, @"enemy move start.");
+        [character move:dt ScreenX:scrx ScreenY:scry];
     }
     
     // 背景の移動
     [m_background moveWithScreenX:scrx ScreenY:scry];
+    
+    // 自機の向きの取得
+    // 自機の向きと反対方向に画面を回転させるため、符号反転
+    angle = -1 * CnvAngleRad2Scr(m_player.angle);
+    
+    // 画面の回転
+    m_baseLayer.rotation = angle;
+    DBGLOG(0, @"m_baseLayer angle=%f", m_baseLayer.rotation);
 }
 
 /*!
@@ -157,7 +304,8 @@ static GameScene *g_scene = nil;
  */
 - (void)filePlayerShot
 {
-    PlayerShot *shot = nil;   // 自機弾
+    float angle = 0.0f;     // 発射の方向
+    PlayerShot *shot = nil; // 自機弾
     
     // プールから未使用のメモリを取得する
     shot = [m_playerShotPool getNext];
@@ -167,9 +315,56 @@ static GameScene *g_scene = nil;
         return;
     }
     
+    // 発射する方向は自機の角度に回転速度を加算する
+    angle = m_player.angle;
+    
     // 自機弾を生成する
     // 位置と向きは自機と同じとする
     [shot createWithX:m_player.absx Y:m_player.absy Z:PLAYER_SHOT_POS_Z
-                Angle:m_player.angle Parent:m_background];
+                Angle:angle Parent:m_background];
+}
+
+/*!
+ @method 敵の生成
+ @abstruct 敵を生成する。
+ @param type 敵の種類
+ @param posx 生成位置x座標
+ @param posy 生成位置y座標
+ @param angle 敵の向き
+ */
+- (void)entryEnemy:(enum ENEMY_TYPE)type PosX:(NSInteger)posx PosY:(NSInteger)posy Angle:(float)angle
+{
+    Enemy *enemy = nil;     // 敵
+    SEL createEnemy = nil;  // 敵生成のメソッド
+    
+    DBGLOG(1, @"type=%d posx=%d posy=%d angle=%f", type, posx, posy, CnvAngleRad2Deg(angle));
+    
+    // プールから未使用のメモリを取得する
+    enemy = [m_enemyPool getNext];
+    if (enemy == nil) {
+        // 空きがない場合は処理終了
+        DBGLOG(1, @"敵プールに空きなし");
+        return;
+    }
+    
+    // 敵の種類によって生成するメソッドを変える
+    switch (type) {
+        case NORMAL:    // 雑魚
+            createEnemy = @selector(createNoraml);
+            break;
+            
+        default:        // その他
+            // エラー
+            assert(0);
+            DBGLOG(1, @"不正な敵の種類:%d", type);
+            
+            // 仮に雑魚を設定
+            createEnemy = @selector(createNoraml);
+            break;
+    }
+    
+    // 敵を生成する
+    [enemy createWithX:posx Y:posy Z:ENEMY_POS_Z Angle:angle
+                Parent:m_background CreateSel:createEnemy];
 }
 @end

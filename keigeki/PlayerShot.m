@@ -26,6 +26,9 @@
     
     // 画像の読込
     self.image = [CCSprite spriteWithFile:@"PlayerShot.png"];
+    assert(m_image != nil);
+    
+    // 画像をノードに追加する
     [self addChild:m_image];
     
     return self;
@@ -60,9 +63,9 @@
               Parent:(CCNode *)parent
 {
     // パラメータの内容をメンバに設定する
-    m_absx = x;
-    m_absy = y;
-    m_angle = angle;
+    self.absx = x;
+    self.absy = y;
+    self.angle = angle;
     
     // メンバの初期値を設定する
     m_hitPoint = 1;

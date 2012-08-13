@@ -28,7 +28,10 @@
     
     // タイルの生成
     self.image = [CCSprite spriteWithFile:@"Back.png"];
-    [self addChild:m_image z:1];
+    assert(self.image != nil);
+    
+    // 画像をノードに配置する
+    [self addChild:self.image z:1];
     
     // 位置の設定
     [self moveWithScreenX:0 ScreenY:0];
@@ -43,7 +46,7 @@
 - (void)dealloc
 {
     // 背景画像の解放
-    [self removeChild:m_image cleanup:YES];
+    [self removeChild:self.image cleanup:YES];
     
     // スーパークラスの解放処理
     [super dealloc];
@@ -67,7 +70,7 @@
     DBGLOG(0, @"basex=%f basey=%f", pos, posy);
     
     // 背景画像の位置を移動する。
-    m_image.position = ccp(pos, posy);
+    self.image.position = ccp(pos, posy);
 }
 
 @end

@@ -1,0 +1,174 @@
+//
+//  common.c
+//  keigeki
+//
+//  Created by 金田 明浩 on 12/05/26.
+//  Copyright (c) 2012 KANEDA Akihiro. All rights reserved.
+//
+
+#import <stdio.h>
+#import <math.h>
+#import "common.h"
+
+/*!
+ @function 範囲チェック(実数)
+ @abstruct 値が範囲内にあるかチェックし、範囲外にあれば範囲内の値に補正する。
+ @param 値
+ @param 最小値
+ @param 最大値
+ @return 補正結果
+ */
+float RangeCheckF(float val, float min, float max)
+{
+    // 最小値未満
+    if (val < min) {
+        return min;
+    }
+    // 最大値超過
+    else if (val > max) {
+        return max;
+    }
+    // 範囲内
+    else {
+        return val;
+    }
+}
+
+/*!
+ @function 範囲チェック(ループ、 実数)
+ @abstruct 値が範囲内にあるかチェックし、範囲外にあれば反対側にループする。
+ @param val 値
+ @param min 最小値
+ @param max 最大値
+ @return 補正結果
+ */
+float RangeCheckLF(float val, float min, float max)
+{
+    // 最小値未満
+    if (val < min) {
+        return RangeCheckLF(val + (max - min), min, max);
+    }
+    // 最大値超過
+    else if (val > max) {
+        return RangeCheckLF(val - (max - min), min, max);
+    }
+    // 範囲内
+    else {
+        return val;
+    }
+}
+
+/*!
+ @function rad角度からdeg角度への変換
+ @abstruct fadianからdegreeへ変換する。
+ @param radAngle rad角度
+ @return deg角度
+ */
+float CnvAngleRad2Deg(float radAngle)
+{
+    // radianからdegreeへ変換する
+    return radAngle / (2 * M_PI) * 360;
+}
+
+/*!
+ @function rad角度からスクリーン角度への変換
+ @abstruct radianからdegreeへ変換し、上向きを0°とする。時計回りを正とする。
+ @param radAngle rad角度
+ @return スクリーン角度
+ */
+float CnvAngleRad2Scr(float radAngle)
+{
+    float srcAngle = 0.0f;
+    
+    // radianからdegreeへ変換する
+    srcAngle = CnvAngleRad2Deg(radAngle);
+    
+    // 上向きを0°とするため、90°ずらす。
+    srcAngle -= 90;
+    
+    // 時計回りを正とするため符号を反転する。
+    srcAngle *= -1;
+    
+    return srcAngle;
+}
+
+/*!
+ @function 2点間の角度計算
+ @abstruct 2点間を線で結んだときの角度を計算する。
+ @param srcx 出発点x座標
+ @param srcy 出発点y座標
+ @param dstx 到達点x座標
+ @param dsty 到達点y座標
+ @return 2点間の角度
+ */
+float CalcDestAngle(float srcx, float srcy, float dstx, float dsty)
+{
+    float vx = 0.0f;        // x方向のベクトルの大きさ
+    float vy = 0.0f;        // y方向のベクトルの大きさ
+    float angle = 0.0f;     // 2点間の角度
+    
+    // 角度を計算する
+    vx = dstx - srcx;
+    vy = dsty - srcy;
+    angle = atan(vy / vx);
+
+    // 第2象限、第3象限の場合はπ進める
+    if (vx < 0.0f) {
+        angle += M_PI;
+    }
+
+    DBGLOG(0, @"angle=%f vy=%f vx=%f vy/vx=%f", CnvAngleRad2Deg(angle), vy, vx, vy / vx);
+    
+    return angle;
+}
+
+/*!
+ @function 回転方向の計算
+ @abstruct 現在の角度から見て、到達点が時計回りの側にあるか反時計回りの側にあるかを計算する。
+ @param angle 現在の角度
+ @param srcx 出発点x座標
+ @param srcy 出発点y座標
+ @param dstx 到達点x座標
+ @param dsty 到達点y座標
+ @return 1:反時計回り、-1:時計回り、0:直進
+ */
+int CalcRotDirect(float angle, float srcx, float srcy, float dstx, float dsty)
+{
+    int rotdirect = 0;      // 回転方向(1:反時計回り、-1:時計回り、0:直進)
+    float destangle = 0.0f; // 目的角度
+    float destsin = 0.0f;   // sin(目的角度 - 現在の角度)
+    float destcos = 0.0f;   // cos(目的角度 - 現在の角度)
+    
+    DBGLOG(0, @"angle=%f src=(%f, %f) dst=(%f, %f)", CnvAngleRad2Deg(angle), srcx, srcy, dstx, dsty);
+ 
+    // 角度を計算する
+    destangle = CalcDestAngle(srcx, srcy, dstx, dsty);
+        
+    // 現在の角度から見て入力角度が時計回りの側か反時計回りの側か調べる
+    // sin(目的角度 - 現在の角度) > 0の場合は反時計回り
+    // sin(目的角度 - 現在の角度) < 0の場合は時計回り
+    destsin = sin(destangle - angle);
+    
+    // 回転方向を設定する
+    if (destsin > 0.0f) {
+        rotdirect = 1;
+    }
+    else if (destsin < 0.0f) {
+        rotdirect = -1;
+    }
+    else {
+        // 上記判定でこのelseに入るのは入力角度が同じ向きか反対向きのときだけ
+        // 同じ向きか反対向きか調べる
+        // cos(入力角度 - 現在角度) < 0の場合は反対向き
+        // 反対向きの場合は反時計回りとする
+        destcos = cos(destangle - angle);
+        if (destcos < 0.0f) {
+            rotdirect = 1;
+        }
+        else {
+            rotdirect = 0;
+        }
+    }
+    
+    return rotdirect;
+}

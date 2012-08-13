@@ -56,9 +56,9 @@
 - (void)createWithX:(NSInteger)x Y:(NSInteger)y Z:(NSInteger)z Angle:(float)angle Parent:(CCNode *)parent CreateSel:(SEL)create
 {
     // パラメータの内容をメンバに設定する
-    m_absx = x;
-    m_absy = y;
-    m_angle = angle;
+    self.absx = x;
+    self.absy = y;
+    self.angle = angle;
     
     // 配置フラグを立てる
     m_isStaged = YES;

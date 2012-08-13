@@ -14,7 +14,7 @@
 // 速度の最大値
 #define PLAYER_SPEED        240
 // 自機の回転速度
-#define PLAYER_ROT_SPEED    1
+#define PLAYER_ROT_SPEED    0.5
 
 /*!
  @class 自機クラス

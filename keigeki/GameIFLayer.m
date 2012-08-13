@@ -30,11 +30,16 @@ static float Accel2Ratio(float accel);
         return nil;
     }
     
-    // ショットボタンの生成
+    // ショットボタンの画像を読み込む
     self.shotButton = [CCSprite spriteWithFile:@"ShotButton.png"];
-    m_shotButton.position = ccp(SHOT_BUTTON_POS_X, SHOT_BUTTON_POS_Y);
+    assert(m_shotButton != nil);
+    
+    // ショットボタンをレイヤーに配置する
     [self addChild:m_shotButton];
     
+    // ショットボタンの位置を設定する
+    m_shotButton.position = ccp(SHOT_BUTTON_POS_X, SHOT_BUTTON_POS_Y);
+
     // 加速度センサーを有効にする
     self.isAccelerometerEnabled = YES;
     

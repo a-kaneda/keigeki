@@ -15,8 +15,6 @@
 @synthesize image = m_image;
 @synthesize width = m_width;
 @synthesize height = m_height;
-@synthesize absx = m_absx;
-@synthesize absy = m_absy;
 @synthesize speed = m_speed;
 @synthesize angle = m_angle;
 @synthesize rotSpeed = m_rotSpeed;
@@ -37,16 +35,16 @@
     }
     
     // 各メンバを0で初期化する
-    m_image = nil;
-    m_width = 0;
-    m_height = 0;
-    m_absx = 0;
-    m_absy = 0;
-    m_speed = 0.0f;
-    m_angle = 0.0f;
-    m_rotSpeed = 0.0f;
-    m_hitPoint = 0;    
-    m_isStaged = NO;
+    self.image = nil;
+    self.width = 0;
+    self.height = 0;
+    self.absx = 0;
+    self.absy = 0;
+    self.speed = 0.0f;
+    self.angle = 0.0f;
+    self.rotSpeed = 0.0f;
+    self.hitPoint = 0;
+    self.isStaged = NO;
     
     return self;
 }
@@ -58,15 +56,56 @@
 - (void)dealloc
 {
     // 画像を読み込んでいる場合はスプライトを解放する
-    if (m_image != nil) {
+    if (self.image != nil) {
         [self removeChild:m_image cleanup:YES];
-        m_image = nil;
+        self.image = nil;
     }
     
     // スーパークラスの解放処理
     [super dealloc];
 }
 
+/*!
+ @method 絶対座標xのgetter
+ @abstruct 絶対座標xを返す
+ @return 絶対座標x
+ */
+- (float)absx
+{
+    return m_absx;
+}
+
+/*!
+ @method 絶対座標xのsetter
+ @abstruct 絶対座標xに値を設定する。ステージサイズの範囲内に収まるように調整する。
+ @param 絶対座標x
+ */
+- (void)setAbsx:(float)absx
+{
+    // ステージの範囲内に収まるように値を設定する
+    m_absx = RangeCheckLF(absx, 0.0f, STAGE_WIDTH);
+}
+
+/*!
+ @method 絶対座標yのgetter
+ @abstruct 絶対座標yを返す
+ @return 絶対座標y
+ */
+- (float)absy
+{
+    return m_absy;
+}
+
+/*!
+ @method 絶対座標yのsetter
+ @abstruct 絶対座標yに値を設定する。ステージサイズの範囲内に収まるように調整する。
+ @param 絶対座標y
+ */
+- (void)setAbsy:(float)absy
+{
+    // ステージの範囲内に収まるように値を設定する
+    m_absy = RangeCheckLF(absy, 0.0f, STAGE_HEIGHT);
+}
 /*!
  @method 移動処理
  @abstruct 速度によって位置を移動する。
@@ -76,66 +115,49 @@
  */
 - (void)move:(ccTime)dt ScreenX:(NSInteger)scrx ScreenY:(NSInteger)scry
 {
-    float absx = 0.0f;      // 絶対座標x
-    float absy = 0.0f;      // 絶対座標y
     float posx = 0.0f;      // スクリーン座標x
     float posy = 0.0f;      // スクリーン座標y
     float velx = 0.0f;      // x方向の速度
     float vely = 0.0f;      // y方向の速度
-    float angle = 0.0f;     // 角度
 
     // 画面に配置されていない場合は無処理
-    if (!m_isStaged) {
+    if (!self.isStaged) {
         return;
     }
     
     // HPが0になった場合は破壊処理を行う
-    if (m_hitPoint <= 0) {
+    if (self.hitPoint <= 0) {
         [self destroy];
         return;
     }
-    
-    // 現在位置、角度の取得
-    absx = m_absx;
-    absy = m_absy;
-    angle = m_angle;
-    
+        
     // 向きを更新する
-    angle += (m_rotSpeed * dt);
+    self.angle += (self.rotSpeed * dt);
     
     // 速度をx方向、y方向に分解する
-    velx = m_speed * cosf(angle);
-    vely = m_speed * sinf(angle);
+    velx = self.speed * cosf(self.angle);
+    vely = self.speed * sinf(self.angle);
     
-    DBGLOG(0, @"angle=%f vx=%f vy=%f", angle / M_PI * 180, velx / m_speed, vely / m_speed);
+    DBGLOG(0, @"angle=%f vx=%f vy=%f", self.angle / M_PI * 180, velx / self.speed, vely / self.speed);
     
     // 座標の移動
-    absx += (velx * dt);
-    absy += (vely * dt);
-    
-    // ステージの外に出ているかチェックする
-    absx = RangeCheckLF(absx, 0.0f, STAGE_WIDTH);
-    absy = RangeCheckLF(absy, 0.0f, STAGE_HEIGHT);
-    
+    self.absx += (velx * dt);
+    self.absy += (vely * dt);
+        
     // 表示位置の計算
     // スクリーン位置中心からの距離 + スクリーンサイズの半分
     // スクリーン位置中心からの距離はステージサイズの半分を超えているときは反対側にいるものとして判定する。
     // これはマーカーの表示のため。
-    posx = RangeCheckLF(absx - scrx + SCREEN_WIDTH / 2, -(STAGE_WIDTH / 2), STAGE_WIDTH / 2);
-    posy = RangeCheckLF(absy - scry + SCREEN_HEIGHT / 2, -(STAGE_HEIGHT / 2), STAGE_HEIGHT / 2);
+    posx = RangeCheckLF(self.absx - scrx + SCREEN_WIDTH / 2, -(STAGE_WIDTH / 2), STAGE_WIDTH / 2);
+    posy = RangeCheckLF(self.absy - scry + SCREEN_HEIGHT / 2, -(STAGE_HEIGHT / 2), STAGE_HEIGHT / 2);
     
-    DBGLOG(0, @"vx=%f vy=%f ax=%f ay=%f px=%f py=%f sx=%d sy=%d", velx, vely, absx, absy, posx, posy, scrx, scry);
-    
-    // メンバ変数への反映
-    m_absx = absx;
-    m_absy = absy;
-    m_angle = angle;
-    
+    DBGLOG(0, @"vx=%f vy=%f ax=%f ay=%f px=%f py=%f sx=%d sy=%d", velx, vely, self.absx, self.absy, posx, posy, scrx, scry);
+        
     // 表示座標の設定
     self.position = ccp(posx, posy);
     
     // 回転処理
-    [self setRotation:CnvAngleRad2Scr(m_angle)];
+    [self setRotation:CnvAngleRad2Scr(self.angle)];
     
     // キャラクター固有の動作を行う
     [self action:dt];
@@ -158,7 +180,7 @@
 - (void)destroy
 {
     // ステージ配置フラグを落とす
-    m_isStaged = NO;
+    self.isStaged = NO;
     
     // 画面から取り除く
     [self removeFromParentAndCleanup:YES];

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C1928AF15D9361A00496717 /* Marker.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C1928AE15D9361A00496717 /* Marker.png */; };
+		0C1928B215D9362800496717 /* Radar.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C1928B115D9362800496717 /* Radar.png */; };
 		0C21F1AF15CE6477004C64E9 /* CharacterPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C21F1AE15CE6474004C64E9 /* CharacterPool.m */; };
 		0C21F1B915D3F4CA004C64E9 /* Enemy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C21F1B815D3F4C9004C64E9 /* Enemy.m */; };
 		0C2A39F115D460B2005B9272 /* Enemy+Noraml.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2A39F015D460B2005B9272 /* Enemy+Noraml.m */; };
@@ -150,6 +152,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0C1928AE15D9361A00496717 /* Marker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Marker.png; sourceTree = "<group>"; };
+		0C1928B115D9362800496717 /* Radar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Radar.png; sourceTree = "<group>"; };
 		0C21F1AD15CE6472004C64E9 /* CharacterPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterPool.h; sourceTree = "<group>"; };
 		0C21F1AE15CE6474004C64E9 /* CharacterPool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CharacterPool.m; sourceTree = "<group>"; };
 		0C21F1B715D3F4C9004C64E9 /* Enemy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Enemy.h; sourceTree = "<group>"; };
@@ -535,6 +539,8 @@
 		0C37060615C6BEC900295D96 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0C1928B115D9362800496717 /* Radar.png */,
+				0C1928AE15D9361A00496717 /* Marker.png */,
 				0C2A3A3315D754B6005B9272 /* Enemy_1.png */,
 				0C2A3A3115D75469005B9272 /* ShotButton.png */,
 				0C2A3A1015D64A47005B9272 /* Back.png */,
@@ -970,6 +976,8 @@
 				0C2A3A3015D7497D005B9272 /* PlayerShot.png in Resources */,
 				0C2A3A3215D7546A005B9272 /* ShotButton.png in Resources */,
 				0C2A3A3415D754B7005B9272 /* Enemy_1.png in Resources */,
+				0C1928AF15D9361A00496717 /* Marker.png in Resources */,
+				0C1928B215D9362800496717 /* Radar.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

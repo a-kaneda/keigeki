@@ -25,6 +25,13 @@
 // 敵の配置z座標
 #define ENEMY_POS_Z 3
 
+// レーダーのサイズ
+#define RADAR_SIZE 128
+// レーダーの配置位置x座標
+#define RADAR_POS_X (SCREEN_WIDTH - 80)
+// レーダーの配置位置y座標
+#define RADAR_POS_Y (SCREEN_HEIGHT - 130)
+
 // ゲームプレイの状態
 enum GAME_STATE {
     GAME_STATE_START = 0,   // ゲーム開始時
@@ -54,6 +61,8 @@ enum ENEMY_TYPE {
     NSInteger m_waveNo;
     // キャラクターを配置するレイヤー
     CCLayer *m_baseLayer;
+    // キャラクター以外を配置するレイヤー
+    CCLayer *m_infoLayer;
     // インターフェースレイヤー
     GameIFLayer *m_interface;
     // 背景
@@ -64,14 +73,18 @@ enum ENEMY_TYPE {
     CharacterPool *m_playerShotPool;
     // 敵
     CharacterPool *m_enemyPool;
+    // レーダーの画像
+    CCSprite *m_radar;
 }
 
 @property (nonatomic, retain)CCLayer *baseLayer;
+@property (nonatomic, retain)CCLayer *infoLayer;
 @property (nonatomic, retain)GameIFLayer *interface;
 @property (nonatomic, retain)Background *background;
 @property (nonatomic, retain)Player *player;
 @property (nonatomic, retain)CharacterPool *playerShotPool;
 @property (nonatomic, retain)CharacterPool *enemyPool;
+@property (nonatomic, retain)CCSprite *rader;
 
 // シングルトンオブジェクト取得
 + (GameScene *)sharedInstance;

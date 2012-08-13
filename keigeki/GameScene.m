@@ -16,11 +16,13 @@
 static GameScene *g_scene = nil;
 
 @synthesize baseLayer = m_baseLayer;
+@synthesize infoLayer = m_infoLayer;
 @synthesize interface = m_interface;
 @synthesize background = m_background;
 @synthesize player = m_player;
 @synthesize playerShotPool = m_playerShotPool;
 @synthesize enemyPool = m_enemyPool;
+@synthesize rader = m_radar;
 
 /*!
  @method シングルトンオブジェクト取得
@@ -61,7 +63,7 @@ static GameScene *g_scene = nil;
     
     // キャラクターを配置するレイヤーを生成する
     self.baseLayer = [CCLayer node];
-    [self addChild:m_baseLayer z:0];
+    [self addChild:self.baseLayer z:0];
     
     // 画面回転時の中心点を求める
     // CCLayerのサイズは320x480だが、画面サイズはLandscape時は480x320のため、
@@ -73,17 +75,21 @@ static GameScene *g_scene = nil;
     // 画面回転時の中心点を設定する
     self.baseLayer.anchorPoint = ccp(anchor_x, anchor_y);
     
+    // キャラクター以外の情報を配置するレイヤーを生成する
+    self.infoLayer = [CCLayer node];
+    [self addChild:self.infoLayer z:1];
+    
     // インターフェースレイヤーを貼り付ける
     self.interface = [GameIFLayer node];
-    [self addChild:m_interface z:1];
+    [self addChild:self.interface z:2];
     
     // 背景の生成
     self.background = [Background node];
-    [m_baseLayer addChild:m_background z:1];
+    [self.baseLayer addChild:self.background z:1];
     
     // 自機の生成
     self.player = [Player node];
-    [m_background addChild:m_player z:PLAYER_POS_Z];
+    [self.background addChild:self.player z:PLAYER_POS_Z];
     
     // 自機弾プールの生成
     self.playerShotPool = [[[CharacterPool alloc] initWithClass:[PlayerShot class]
@@ -92,7 +98,17 @@ static GameScene *g_scene = nil;
     // 敵プールの生成
     self.enemyPool = [[[CharacterPool alloc] initWithClass:[Enemy class]
                                                       Size:MAX_ENEMY_COUNT] autorelease];
+
+    // レーダーの画像を読み込む
+    self.rader = [CCSprite spriteWithFile:@"Radar.png"];
+    assert(self.rader != nil);
     
+    // レーダーをレイヤーに配置する
+    [self.infoLayer addChild:self.rader];
+    
+    // レーダーの位置を設定する
+    self.rader.position = ccp(RADAR_POS_X, RADAR_POS_Y);
+        
     // 更新処理開始
     [self scheduleUpdate];
     
@@ -109,11 +125,13 @@ static GameScene *g_scene = nil;
     [self unscheduleUpdate];
     
     // リソースの解放
-    [m_playerShotPool release];
-    [m_background removeChild:m_player cleanup:YES];
-    [m_baseLayer removeChild:m_background cleanup:YES];
-    [self removeChild:m_interface cleanup:YES];
-    [self removeChild:m_baseLayer cleanup:YES];
+    [self.playerShotPool release];
+    [self.background removeChild:self.player cleanup:YES];
+    [self.infoLayer removeChild:self.rader cleanup:YES];
+    [self.baseLayer removeChild:self.background cleanup:YES];
+    [self removeChild:self.interface cleanup:YES];
+    [self removeChild:self.baseLayer cleanup:YES];
+    [self removeChild:self.infoLayer cleanup:YES];
     
     [super dealloc];
 }

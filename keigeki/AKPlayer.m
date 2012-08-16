@@ -67,7 +67,7 @@
  */
 - (float)getScreenPosX
 {
-    return RangeCheckLF(self.absx + SCREEN_WIDTH / 2 - PLAYER_POS_X, 0.0f, STAGE_WIDTH);
+    return AKRangeCheckLF(self.absx + SCREEN_WIDTH / 2 - PLAYER_POS_X, 0.0f, STAGE_WIDTH);
 }
 
 /*!
@@ -77,7 +77,7 @@
  */
 - (float)getScreenPosY
 {
-    return RangeCheckLF(self.absy + SCREEN_HEIGHT / 2 - PLAYER_POS_Y, 0.0f, STAGE_HEIGHT);
+    return AKRangeCheckLF(self.absy + SCREEN_HEIGHT / 2 - PLAYER_POS_Y, 0.0f, STAGE_HEIGHT);
 }
 
 /*!

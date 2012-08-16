@@ -23,9 +23,15 @@
  */
 @interface AKRadar : CCNode {
     // レーダーの画像
-    CCSprite *m_image;
+    CCSprite *m_radarImage;
+    // マーカーの画像
+    NSMutableArray *m_markerImage;
 }
 
-@property (nonatomic, retain)CCSprite *image;
+@property (nonatomic, retain)CCSprite *radarImage;
+@property (nonatomic, retain)NSMutableArray *markerImage;
+
+// マーカーの配置位置更新処理
+- (void)updateMarker:(const NSArray *)enemys ScreenAngle:(float)screenAngle;
 
 @end

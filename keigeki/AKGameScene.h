@@ -13,9 +13,8 @@
 #import "AKPlayer.h"
 #import "AKCharacterPool.h"
 #import "AKRadar.h"
+#import "common.h"
 
-// 同時に生成可能な敵の最大数
-#define MAX_ENEMY_COUNT 16
 // 同時に生成可能な自機弾の最大数
 #define MAX_PLAYER_SHOT_COUNT 16
 

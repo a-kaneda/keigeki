@@ -88,7 +88,7 @@ static AKGameScene *g_scene = nil;
     [self.baseLayer addChild:self.background z:1];
     
     // 自機の生成
-    self.player = [Player node];
+    self.player = [AKPlayer node];
     [self.background addChild:self.player z:PLAYER_POS_Z];
     
     // 自機弾プールの生成
@@ -121,7 +121,8 @@ static AKGameScene *g_scene = nil;
     [self unscheduleUpdate];
     
     // リソースの解放
-    [self.playerShotPool release];
+    self.playerShotPool = nil;
+    self.enemyPool = nil;
     [self.background removeChild:self.player cleanup:YES];
     [self.infoLayer removeChild:self.rader cleanup:YES];
     [self.baseLayer removeChild:self.background cleanup:YES];
@@ -226,13 +227,13 @@ static AKGameScene *g_scene = nil;
             param = [params objectAtIndex:2];
             enemyPosY = [param integerValue];
             
-            DBGLOG(1, @"type=%d posx=%d posy=%d", enemyType, enemyPosX, enemyPosY);
+            DBGLOG(0, @"type=%d posx=%d posy=%d", enemyType, enemyPosX, enemyPosY);
             
             // 角度を自機のいる位置に設定する
             // スクリプト上の座標は自機の位置からの相対位置なので目標座標は(0, 0)
             enemyAngle = AKCalcDestAngle(enemyPosX, enemyPosY, 0, 0);
             
-            DBGLOG(1, @"angle=%f", AKCnvAngleRad2Deg(enemyAngle));
+            DBGLOG(0, @"angle=%f", AKCnvAngleRad2Deg(enemyAngle));
             
             // 生成位置は自機の位置からの相対位置とする
             enemyPosX += m_player.absx;
@@ -266,16 +267,16 @@ static AKGameScene *g_scene = nil;
     
     // 自機の移動
     // 自機にスクリーン座標は無関係なため、0をダミーで格納する。
-    [m_player move:dt ScreenX:0 ScreenY:0];
-    DBGLOG(0, @"m_player.abspos=(%f, %f)", m_player.absx, m_player.absy);
+    [self.player move:dt ScreenX:0 ScreenY:0];
+    DBGLOG(0, @"m_player.abspos=(%f, %f)", self.player.absx, self.player.absy);
     
     // 移動後のスクリーン座標の取得
-    scrx = [m_player getScreenPosX];
-    scry = [m_player getScreenPosY];
+    scrx = [self.player getScreenPosX];
+    scry = [self.player getScreenPosY];
     DBGLOG(0, @"x=%f y=%f", scrx, scry);
     
     // 自機弾の移動
-    enumerator = [m_playerShotPool.pool objectEnumerator];
+    enumerator = [self.playerShotPool.pool objectEnumerator];
     for (character in enumerator) {
         [character move:dt ScreenX:scrx ScreenY:scry];
         DBGLOG(0 && character.isStaged, @"playerShot.abxpos=(%f, %f)",
@@ -283,22 +284,25 @@ static AKGameScene *g_scene = nil;
     }
     
     // 敵の移動
-    enumerator = [m_enemyPool.pool objectEnumerator];
+    enumerator = [self.enemyPool.pool objectEnumerator];
     for (character in enumerator) {
         DBGLOG(0 && character.isStaged, @"enemy move start.");
         [character move:dt ScreenX:scrx ScreenY:scry];
     }
     
     // 背景の移動
-    [m_background moveWithScreenX:scrx ScreenY:scry];
+    [self.background moveWithScreenX:scrx ScreenY:scry];
+    
+    // レーダーの更新
+    [self.rader updateMarker:self.enemyPool.pool ScreenAngle:self.player.angle];
     
     // 自機の向きの取得
     // 自機の向きと反対方向に画面を回転させるため、符号反転
-    angle = -1 * AKCnvAngleRad2Scr(m_player.angle);
+    angle = -1 * AKCnvAngleRad2Scr(self.player.angle);
     
     // 画面の回転
-    m_baseLayer.rotation = angle;
-    DBGLOG(0, @"m_baseLayer angle=%f", m_baseLayer.rotation);
+    self.baseLayer.rotation = angle;
+    DBGLOG(0, @"m_baseLayer angle=%f", self.baseLayer.rotation);
 }
 
 /*!
@@ -351,7 +355,7 @@ static AKGameScene *g_scene = nil;
     AKEnemy *enemy = nil;     // 敵
     SEL createEnemy = nil;  // 敵生成のメソッド
     
-    DBGLOG(1, @"type=%d posx=%d posy=%d angle=%f", type, posx, posy, AKCnvAngleRad2Deg(angle));
+    DBGLOG(0, @"type=%d posx=%d posy=%d angle=%f", type, posx, posy, AKCnvAngleRad2Deg(angle));
     
     // プールから未使用のメモリを取得する
     enemy = [m_enemyPool getNext];

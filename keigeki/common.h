@@ -26,6 +26,8 @@
 #define PLAYER_POS_Y    (SCREEN_HEIGHT / 8)
 // ステージの個数
 #define STAGE_COUNT 5
+// 同時に生成可能な敵の最大数
+#define MAX_ENEMY_COUNT 16
 
 #ifdef DEBUG
 // デバッグログ。出力条件の指定が可能。ログの先頭にメソッド名と行数を付加する。

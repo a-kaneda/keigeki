@@ -59,7 +59,7 @@ static float Accel2Ratio(float accel);
 - (void)dealloc
 {
     // ショットボタンの画像の解放
-    [m_shotButton release];
+    [self removeAllChildrenWithCleanup:YES];
     
     // スーパークラスの解放処理
     [super dealloc];

@@ -12,6 +12,8 @@
 		0C1928B515D99CD000496717 /* AKRadar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C1928B415D99CCF00496717 /* AKRadar.m */; };
 		0C1928B915DF3C3500496717 /* fire.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C1928B815DF3C3500496717 /* fire.png */; };
 		0C1928BC15DF4D4000496717 /* AKEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C1928BB15DF4D3F00496717 /* AKEffect.m */; };
+		0C1928BE15DFC1AD00496717 /* Life.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C1928BD15DFC1AC00496717 /* Life.png */; };
+		0C1928C115DFC29700496717 /* AKLifeMark.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C1928C015DFC29500496717 /* AKLifeMark.m */; };
 		0C21F1AF15CE6477004C64E9 /* AKCharacterPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C21F1AE15CE6474004C64E9 /* AKCharacterPool.m */; };
 		0C21F1B915D3F4CA004C64E9 /* AKEnemy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C21F1B815D3F4C9004C64E9 /* AKEnemy.m */; };
 		0C2A39F115D460B2005B9272 /* AKEnemy+Normal.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2A39F015D460B2005B9272 /* AKEnemy+Normal.m */; };
@@ -164,6 +166,9 @@
 		0C1928B815DF3C3500496717 /* fire.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fire.png; sourceTree = "<group>"; };
 		0C1928BA15DF4D3D00496717 /* AKEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEffect.h; sourceTree = "<group>"; };
 		0C1928BB15DF4D3F00496717 /* AKEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKEffect.m; sourceTree = "<group>"; };
+		0C1928BD15DFC1AC00496717 /* Life.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Life.png; sourceTree = "<group>"; };
+		0C1928BF15DFC29300496717 /* AKLifeMark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKLifeMark.h; sourceTree = "<group>"; };
+		0C1928C015DFC29500496717 /* AKLifeMark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKLifeMark.m; sourceTree = "<group>"; };
 		0C21F1AD15CE6472004C64E9 /* AKCharacterPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKCharacterPool.h; sourceTree = "<group>"; };
 		0C21F1AE15CE6474004C64E9 /* AKCharacterPool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKCharacterPool.m; sourceTree = "<group>"; };
 		0C21F1B715D3F4C9004C64E9 /* AKEnemy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEnemy.h; sourceTree = "<group>"; };
@@ -540,6 +545,8 @@
 				0C1928B415D99CCF00496717 /* AKRadar.m */,
 				0C1928BA15DF4D3D00496717 /* AKEffect.h */,
 				0C1928BB15DF4D3F00496717 /* AKEffect.m */,
+				0C1928BF15DFC29300496717 /* AKLifeMark.h */,
+				0C1928C015DFC29500496717 /* AKLifeMark.m */,
 				0C2A3A2015D64B12005B9272 /* StageScript */,
 				0C37060615C6BEC900295D96 /* Resources */,
 				0C37062015C6BEC900295D96 /* libs */,
@@ -551,6 +558,7 @@
 		0C37060615C6BEC900295D96 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0C1928BD15DFC1AC00496717 /* Life.png */,
 				0C1928B815DF3C3500496717 /* fire.png */,
 				0C1928B115D9362800496717 /* Radar.png */,
 				0C1928AE15D9361A00496717 /* Marker.png */,
@@ -992,6 +1000,7 @@
 				0C1928AF15D9361A00496717 /* Marker.png in Resources */,
 				0C1928B215D9362800496717 /* Radar.png in Resources */,
 				0C1928B915DF3C3500496717 /* fire.png in Resources */,
+				0C1928BE15DFC1AD00496717 /* Life.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1116,6 +1125,7 @@
 				0C2A39F115D460B2005B9272 /* AKEnemy+Normal.m in Sources */,
 				0C1928B515D99CD000496717 /* AKRadar.m in Sources */,
 				0C1928BC15DF4D4000496717 /* AKEffect.m in Sources */,
+				0C1928C115DFC29700496717 /* AKLifeMark.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

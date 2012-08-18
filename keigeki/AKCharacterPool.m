@@ -68,15 +68,13 @@
     AKCharacter *character = nil;     // キャラクター
     
     // キャラクターのメモリを開放する
-    enumerator = [m_pool objectEnumerator];
+    enumerator = [self.pool objectEnumerator];
     for (character in enumerator) {
         [character removeFromParentAndCleanup:YES];
-        [character release];
     }
     
     // プールのメモリを解放する
-    [m_pool release];
-    m_pool = nil;
+    self.pool = nil;
     
     // スーパークラスの解放処理
     [super dealloc];

@@ -29,6 +29,7 @@ static AKGameScene *g_scene = nil;
 @synthesize enemyPool = m_enemyPool;
 @synthesize rader = m_radar;
 @synthesize effectPool = m_effectPool;
+@synthesize lifeMark = m_lifeMark;
 
 /*!
  @brief シングルトンオブジェクト取得
@@ -63,10 +64,12 @@ static AKGameScene *g_scene = nil;
         return nil;
     }
     
-    // シーンの状態、ステージ番号、ウェイブ番号を初期化する
+    // 各種メンバを初期化する
     m_state = GAME_STATE_START;
     m_stageNo = 1;
     m_waveNo = 1;
+    m_life = START_LIFE_COUNT;
+    m_rebirthInterval = 0.0f;
     
     // キャラクターを配置するレイヤーを生成する
     self.baseLayer = [CCLayer node];
@@ -115,6 +118,15 @@ static AKGameScene *g_scene = nil;
     
     // レーダーをレイヤーに配置する
     [self.infoLayer addChild:self.rader];
+    
+    // 残機マークの生成
+    self.lifeMark = [AKLifeMark node];
+    
+    // 残機マークをレイヤーに配置する
+    [self.infoLayer addChild:self.lifeMark];
+    
+    // 残機マークの初期個数を反映させる
+    [self.lifeMark updateImage:m_life];
         
     // 更新処理開始
     [self scheduleUpdate];
@@ -136,12 +148,10 @@ static AKGameScene *g_scene = nil;
     self.playerShotPool = nil;
     self.enemyPool = nil;
     self.effectPool = nil;
-    [self.background removeChild:self.player cleanup:YES];
-    [self.infoLayer removeChild:self.rader cleanup:YES];
-    [self.baseLayer removeChild:self.background cleanup:YES];
-    [self removeChild:self.interface cleanup:YES];
-    [self removeChild:self.baseLayer cleanup:YES];
-    [self removeChild:self.infoLayer cleanup:YES];
+    [self.background removeAllChildrenWithCleanup:YES];
+    [self.infoLayer removeAllChildrenWithCleanup:YES];
+    [self.baseLayer removeAllChildrenWithCleanup:YES];
+    [self removeAllChildrenWithCleanup:YES];
     
     [super dealloc];
 }
@@ -156,11 +166,11 @@ static AKGameScene *g_scene = nil;
 {
     // ゲームの状態によって処理を分岐する
     switch (m_state) {
-        case GAME_STATE_START:   // ゲーム開始時
+        case GAME_STATE_START:      // ゲーム開始時
             [self updateStart:dt];
             break;
             
-        case GAME_STATE_PLAYING:        // プレイ中
+        case GAME_STATE_PLAYING:    // プレイ中
             [self updatePlaying:dt];
             break;
             
@@ -281,6 +291,20 @@ static AKGameScene *g_scene = nil;
     NSEnumerator *enumerator = nil;   // キャラクター操作用列挙子
     AKCharacter *character = nil;       // キャラクター操作作業用バッファ
     
+    // 自機が破壊されている場合は復活までの時間をカウントする
+    if (!self.player.isStaged) {
+        
+        m_rebirthInterval -= dt;
+        
+        // 復活までの時間が経過している場合は自機を復活する
+        if (m_rebirthInterval < 0) {
+            
+            // 自機を復活させる
+            [self.player rebirth];
+            [self.background addChild:self.player z:PLAYER_POS_Z];
+        }
+    }
+    
     // 自機の移動
     // 自機にスクリーン座標は無関係なため、0をダミーで格納する。
     [self.player move:dt ScreenX:0 ScreenY:0];
@@ -312,8 +336,12 @@ static AKGameScene *g_scene = nil;
         [character hit:[self.enemyPool.pool objectEnumerator]];
     }
     
-    // 自機と敵の当たり判定処理を行う
-    [self.player hit:[self.enemyPool.pool objectEnumerator]];
+    // 自機が無敵状態でない場合は当たり判定処理を行う
+    if (!self.player.isInvincible) {
+     
+        // 自機と敵の当たり判定処理を行う
+        [self.player hit:[self.enemyPool.pool objectEnumerator]];
+    }
     
     // 画面効果の移動
     enumerator = [self.effectPool.pool objectEnumerator];
@@ -353,12 +381,17 @@ static AKGameScene *g_scene = nil;
 /*!
  @brief 自機弾の発射
 
- 自機弾を発車する。
+ 自機弾を発射する。
  */
 - (void)filePlayerShot
 {
     float angle = 0.0f;     // 発射の方向
     AKPlayerShot *shot = nil; // 自機弾
+    
+    // 自機が破壊されているときは発射しない
+    if (!self.player.isStaged) {
+        return;
+    }
     
     // プールから未使用のメモリを取得する
     shot = [m_playerShotPool getNext];
@@ -455,5 +488,31 @@ static AKGameScene *g_scene = nil;
     DBGLOG(0, @"player=(%f, %f) pos=(%f, %f)", self.player.absx, self.player.absy, posx, posy);
     // 画面効果を生成する
     [effect startEffect:time PosX:posx PosY:posy PosZ:EFFECT_POS_Z Parent:m_background];
+}
+
+/*!
+ @brief 自機破壊時の処理
+ 
+ 自機が破壊されたときの処理を行う。残機の数を一つ減らして自機を復活させる。
+ 残機が0の場合はゲームオーバーとする。
+ */
+- (void)miss
+{
+    // 残機が残っている場合は残機を減らして復活する
+    if (m_life > 0) {
+
+        // ライフを一つ減らす
+        m_life--;
+        
+        // 残機の表示を更新する
+        [self.lifeMark updateImage:m_life];
+        
+        // 自機復活までの間隔を設定する
+        m_rebirthInterval = REBIRTH_INTERVAL;
+    }
+    // 残機がなければゲームオーバーとする
+    else {
+        // [TODO] : ゲームオーバー処理を実装するs
+    }
 }
 @end

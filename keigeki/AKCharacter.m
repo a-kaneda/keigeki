@@ -63,11 +63,8 @@
  */
 - (void)dealloc
 {
-    // 画像を読み込んでいる場合はスプライトを解放する
-    if (self.image != nil) {
-        [self removeChild:m_image cleanup:YES];
-        self.image = nil;
-    }
+    // スプライトを解放する
+    [self removeAllChildrenWithCleanup:YES];
     
     // スーパークラスの解放処理
     [super dealloc];
@@ -198,6 +195,7 @@
     self.isStaged = NO;
     
     // 画面から取り除く
+    DBGLOG(0, @"removeFromParentAndCleanup実行");
     [self removeFromParentAndCleanup:YES];
 }
 

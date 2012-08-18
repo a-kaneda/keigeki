@@ -12,12 +12,18 @@
 #import "AKPlayer.h"
 #import "AKCharacterPool.h"
 #import "AKRadar.h"
+#import "AKLifeMark.h"
 #import "common.h"
 
 /// 同時に生成可能な自機弾の最大数
 #define MAX_PLAYER_SHOT_COUNT 16
 /// 同時に生成可能な画面効果の最大数
 #define MAX_EFFECT_COUNT 16
+
+/// 初期残機数
+#define START_LIFE_COUNT 2
+/// 自機復活までの間隔
+#define REBIRTH_INTERVAL 1
 
 /// 自機の配置z座標
 #define PLAYER_POS_Z 2
@@ -52,6 +58,10 @@ enum ENEMY_TYPE {
     NSInteger m_stageNo;
     /// 現在のウェイブ番号
     NSInteger m_waveNo;
+    /// 残機の数
+    NSInteger m_life;
+    /// 自機復活までの間隔
+    float m_rebirthInterval;
     /// キャラクターを配置するレイヤー
     CCLayer *m_baseLayer;
     /// キャラクター以外を配置するレイヤー
@@ -70,6 +80,8 @@ enum ENEMY_TYPE {
     AKCharacterPool *m_effectPool;
     /// レーダー
     AKRadar *m_radar;
+    /// 残機表示
+    AKLifeMark *m_lifeMark;
 }
 
 /// キャラクターを配置するレイヤー
@@ -90,6 +102,8 @@ enum ENEMY_TYPE {
 @property (nonatomic, retain)AKCharacterPool *effectPool;
 /// レーダー
 @property (nonatomic, retain)AKRadar *rader;
+/// 残機表示
+@property (nonatomic, retain)AKLifeMark *lifeMark;
 
 // シングルトンオブジェクト取得
 + (AKGameScene *)sharedInstance;
@@ -105,4 +119,6 @@ enum ENEMY_TYPE {
 - (void)entryEnemy:(enum ENEMY_TYPE)type PosX:(NSInteger)posx PosY:(NSInteger)posy Angle:(float)angle;
 // 画面効果の生成
 - (void)entryEffect:(CCParticleSystem *)particle Time:(float)time PosX:(float)posx PosY:(float)posy;
+// 自機破壊時の処理
+- (void)miss;
 @end

@@ -51,7 +51,7 @@
 - (void)dealloc
 {
     // 背景画像の解放
-    [self removeChild:self.image cleanup:YES];
+    [self removeAllChildrenWithCleanup:YES];
     
     // スーパークラスの解放処理
     [super dealloc];

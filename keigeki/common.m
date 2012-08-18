@@ -9,6 +9,11 @@
 #import <math.h>
 #import "common.h"
 
+#ifdef DEBUG
+/// デバッグログON/OFF用フラグ
+unsigned int g_debugflg = 0;
+#endif
+
 /*!
  @brief 範囲チェック(実数)
 

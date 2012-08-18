@@ -74,14 +74,9 @@
  */
 - (void)dealloc
 {
-    NSEnumerator *enumerator = nil; // マーカー処理用の列挙子
-    CCNode *marker = nil;           // マーカー
-    
     // マーカーを解放する
-    enumerator = [self.markerImage objectEnumerator];
-    for (marker in enumerator) {
-        [self.radarImage removeChild:marker cleanup:YES];
-    }
+    self.markerImage = nil;
+    [self.radarImage removeAllChildrenWithCleanup:YES];
     
     // レーダーの画像を解放する
     [self removeChild:self.radarImage cleanup:YES];

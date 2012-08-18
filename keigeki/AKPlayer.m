@@ -16,6 +16,8 @@
  */
 @implementation AKPlayer
 
+@synthesize isInvincible = m_isInvincible;
+
 /*!
  @brief オブジェクト生成処理
 
@@ -46,6 +48,10 @@
     // ステージ配置フラグを立てる
     m_isStaged = YES;
     
+    // 無敵状態はOFFにする
+    m_isInvincible = NO;
+    m_invincivleTime = 0.0f;
+    
     // 画像の読込
     self.image = [CCSprite spriteWithFile:@"Player.png"];
     assert(m_image != nil);
@@ -64,6 +70,16 @@
  */
 - (void)action:(ccTime)dt
 {
+    // 無敵状態の時は無敵時間をカウントする
+    if (m_isInvincible) {
+        m_invincivleTime -= dt;
+        
+        // 無敵時間が切れている場合は通常状態に戻す
+        if (m_invincivleTime < 0) {
+            m_isInvincible = NO;
+        }
+    }
+    
     // 自機の表示座標は画面中央下部に固定
     self.position = ccp(PLAYER_POS_X, PLAYER_POS_Y);
     
@@ -92,6 +108,9 @@
     
     // スーパークラスの処理を行う
     [super destroy];
+    
+    // 自機破壊時の処理を行う
+    [[AKGameScene sharedInstance] miss];
 }
 
 /*!
@@ -132,4 +151,27 @@
     m_rotSpeed = -1 * vx * PLAYER_ROT_SPEED;
 }
 
+/*!
+ @brief 復活
+ 
+ 破壊された自機を復活させる。
+ */
+- (void)rebirth
+{
+    id blink = nil;     // ブリンクアクション
+    
+    // HPの設定
+    m_hitPoint = 1;
+    
+    // ステージ配置フラグを立てる
+    m_isStaged = YES;
+    
+    // 無敵状態にする
+    m_isInvincible = YES;
+    m_invincivleTime = INVINCIBLE_TIME;
+    
+    // 無敵中はブリンクする
+    blink = [CCBlink actionWithDuration:INVINCIBLE_TIME blinks:INVINCIBLE_TIME * 8];
+    [self.image runAction:blink];
+}
 @end

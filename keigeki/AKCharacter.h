@@ -53,5 +53,6 @@
 - (void)action:(ccTime)dt;
 // 破壊処理
 - (void)destroy;
-
+// 衝突判定
+- (void)hit:(const NSEnumerator *)characters;
 @end

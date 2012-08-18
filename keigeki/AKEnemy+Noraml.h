@@ -14,6 +14,8 @@
 #define ENEMY_NORAML_ROTSPEED 0.5
 // 雑魚の方向変更の時間
 #define ENEMY_NORMAL_ACTIONTIME 5
+// 雑魚の敵のサイズ
+#define ENEMY_NORMAL_SIZE 16
 
 /*!
  @class 雑魚クラス

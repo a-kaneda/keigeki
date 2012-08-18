@@ -6,8 +6,6 @@
 //  Copyright 2012 KANEDA Akihiro. All rights reserved.
 //
 
-#import <stdlib.h>
-#import <time.h>
 #import "cocos2d.h"
 
 #import "AppDelegate.h"
@@ -87,9 +85,6 @@
 	
 	// make main window visible
 	[window_ makeKeyAndVisible];
-	
-    // 乱数の種を設定する
-    srand((unsigned int)time(NULL));
     
 	return YES;
 }

@@ -185,4 +185,69 @@
     // 画面から取り除く
     [self removeFromParentAndCleanup:YES];
 }
+
+/*!
+ @method 衝突判定
+ @abstruct キャラクターが衝突しているか調べ、衝突しているときはHPを減らす。
+ @param characters 判定対象のキャラクター群
+ */
+- (void)hit:(const NSEnumerator *)characters
+{
+    AKCharacter *target = nil;      // 判定対象のキャラクター
+    float myleft = 0.0f;            // 自キャラの左端
+    float myright = 0.0f;           // 自キャラの右端
+    float mytop = 0.0f;             // 自キャラの上端
+    float mybottom = 0.0f;          // 自キャラの下端
+    float targetleft = 0.0f;        // 相手の左端
+    float targetright = 0.0f;       // 相手の右端
+    float targettop = 0.0f;         // 相手の上端
+    float targetbottom = 0.0f;      // 相手の下端
+    
+    // 画面に配置されていない場合は処理しない
+    if (!self.isStaged) {
+        return;
+    }
+    
+    // 自キャラの上下左右の端を計算する
+    myleft = self.position.x - self.width / 2.0f;
+    myright = self.position.x + self.width / 2.0f;
+    mytop = self.position.y + self.height / 2.0f;
+    mybottom = self.position.y - self.height / 2.0f;
+    
+    DBGLOG(0, @"    my=(%f, %f, %f, %f)", myleft, myright, mytop, mybottom);
+    
+    // 判定対象のキャラクターごとに判定を行う
+    for (target in characters) {
+        
+        // 相手が画面に配置されていない場合は処理しない
+        if (!target.isStaged) {
+            continue;
+        }
+        
+        // 相手の上下左右の端を計算する
+        targetleft = target.position.x - target.width / 2.0f;
+        targetright = target.position.x + target.width / 2.0f;
+        targettop = target.position.y + target.height / 2.0f;
+        targetbottom = target.position.y - target.height / 2.0f;
+        
+        DBGLOG(0, @"target=(%f, %f, %f, %f)", targetleft, targetright, targettop, targetbottom);
+        
+        // 以下のすべての条件を満たしている時、衝突していると判断する。
+        //   ・相手の右端が自キャラの左端よりも右側にある
+        //   ・相手の左端が自キャラの右端よりも左側にある
+        //   ・相手の上端が自キャラの下端よりも上側にある
+        //   ・相手の下端が自キャラの上端よりも下側にある
+        if ((targetright > myleft) &&
+            (targetleft < myright) &&
+            (targettop > mybottom) &&
+            (targetbottom < mytop)) {
+            
+            // 自分と相手のHPを減らす
+            self.hitPoint--;
+            target.hitPoint--;
+            
+            DBGLOG(0, @"self.hitPoint=%d, target.hitPoint=%d", self.hitPoint, target.hitPoint);
+        }
+    }
+}
 @end

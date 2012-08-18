@@ -112,6 +112,7 @@
         
         // 敵が画面に配置されていない場合はマーカーの表示を消す
         if (!enemy.isStaged) {
+            DBGLOG(0 && marker.visible, @"visible=NO i=%d", i);
             marker.visible = NO;
             continue;
         }

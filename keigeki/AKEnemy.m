@@ -41,6 +41,9 @@
     // 画像の解放
     [self removeChild:m_image cleanup:YES];
     m_image = nil;
+    
+    // スーパークラスの処理を行う
+    [super destroy];
 }
 
 /*!

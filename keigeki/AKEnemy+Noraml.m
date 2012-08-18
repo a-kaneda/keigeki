@@ -27,6 +27,10 @@
     self.image = [CCSprite spriteWithFile:@"Enemy_1.png"];
     assert(m_image != nil);
     
+    // 当たり判定サイズを設定する
+    self.width = ENEMY_NORMAL_SIZE;
+    self.height = ENEMY_NORMAL_SIZE;
+    
     // 画像をノードに追加する
     [self addChild:self.image];
     

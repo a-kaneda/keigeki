@@ -290,6 +290,12 @@ static AKGameScene *g_scene = nil;
         [character move:dt ScreenX:scrx ScreenY:scry];
     }
     
+    // 自機弾の当たり判定処理を行う
+    enumerator = [self.playerShotPool.pool objectEnumerator];
+    for (character in enumerator) {
+        [character hit:[self.enemyPool.pool objectEnumerator]];
+    }
+    
     // 背景の移動
     [self.background moveWithScreenX:scrx ScreenY:scry];
     

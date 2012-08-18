@@ -306,17 +306,20 @@ static AKGameScene *g_scene = nil;
         [character move:dt ScreenX:scrx ScreenY:scry];
     }
     
-    // 自機弾の当たり判定処理を行う
+    // 自機弾と敵の当たり判定処理を行う
     enumerator = [self.playerShotPool.pool objectEnumerator];
     for (character in enumerator) {
         [character hit:[self.enemyPool.pool objectEnumerator]];
     }
     
+    // 自機と敵の当たり判定処理を行う
+    [self.player hit:[self.enemyPool.pool objectEnumerator]];
+    
     // 画面効果の移動
     enumerator = [self.effectPool.pool objectEnumerator];
     for (character in enumerator) {
         [character move:dt ScreenX:scrx ScreenY:scry];
-        DBGLOG(character.isStaged, @"effect=(%f, %f) player=(%f, %f)", character.position.x,
+        DBGLOG(0 && character.isStaged, @"effect=(%f, %f) player=(%f, %f)", character.position.x,
                character.position.y, self.player.position.x, self.player.position.y);
     }
     
@@ -449,7 +452,7 @@ static AKGameScene *g_scene = nil;
     particle.positionType = kCCPositionTypeRelative;
     [effect addChild:particle];
     
-    DBGLOG(1, @"player=(%f, %f) pos=(%f, %f)", self.player.absx, self.player.absy, posx, posy);
+    DBGLOG(0, @"player=(%f, %f) pos=(%f, %f)", self.player.absx, self.player.absy, posx, posy);
     // 画面効果を生成する
     [effect startEffect:time PosX:posx PosY:posy PosZ:EFFECT_POS_Z Parent:m_background];
 }

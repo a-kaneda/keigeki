@@ -14,6 +14,8 @@
 #define PLAYER_SPEED        240
 /// 自機の回転速度
 #define PLAYER_ROT_SPEED    1
+/// 自機のサイズ
+#define PLAYER_SIZE         16
 
 // 自機クラス
 @interface AKPlayer : AKCharacter {

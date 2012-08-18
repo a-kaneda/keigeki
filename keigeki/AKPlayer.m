@@ -5,8 +5,9 @@
  自機を管理するクラスを定義する。
  */
 
-#import "AKPlayer.h"
 #import <math.h>
+#import "AKPlayer.h"
+#import "AKGameScene.h"
 
 /*!
  @brief 自機クラス
@@ -38,6 +39,10 @@
     // 速度の設定
     m_speed = PLAYER_SPEED;
     
+    // サイズを設定する
+    m_width = PLAYER_SIZE;
+    m_height = PLAYER_SIZE;
+    
     // ステージ配置フラグを立てる
     m_isStaged = YES;
     
@@ -64,6 +69,29 @@
     
     DBGLOG(0, @"player pos=(%f, %f)", self.position.x, self.position.y);
     DBGLOG(0, @"player angle=%f speed=%f", m_angle, m_speed);
+}
+
+/*!
+ @brief 破壊処理
+ 
+ HPが0になったときに爆発エフェクトを生成する。
+ */
+- (void)destroy
+{
+    CCParticleSystem *bomb = nil;   // 爆発エフェクト
+        
+    // 爆発エフェクトを生成する
+    bomb = [CCParticleSun node];
+    bomb.duration = 0.3f;
+    bomb.life = 0.5f;
+    bomb.speed = 40;
+    bomb.scale = 1.5f;
+    
+    // 画面効果を生成する
+    [[AKGameScene sharedInstance] entryEffect:bomb Time:1.0f PosX:self.absx PosY:self.absy];
+    
+    // スーパークラスの処理を行う
+    [super destroy];
 }
 
 /*!

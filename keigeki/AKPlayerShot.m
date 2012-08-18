@@ -1,19 +1,24 @@
-//
-//  AKPlayerShot.m
-//  keigeki:傾撃
-//
-//  Created by 金田 明浩 on 2012/07/23.
-//  Copyright 2012 KANEDA Akihiro. All rights reserved.
-//
+/*!
+ @file AKPlayerShot.m
+ @brief 自機弾クラス定義
+ 
+ 自機弾を管理するクラスを定義する。
+ */
 
 #import "AKPlayerShot.h"
 #import "common.h"
 
+/*!
+ @brief 自機弾クラス
+
+ 自機弾を管理するクラス。
+ */
 @implementation AKPlayerShot
 
 /*!
- @method オブジェクト生成処理
- @abstruct オブジェクトの生成を行う。
+ @brief オブジェクト生成処理
+
+ オブジェクトの生成を行う。
  @return 生成したオブジェクト。失敗時はnilを返す。
  */
 - (id)init
@@ -35,8 +40,9 @@
 }
 
 /*!
- @method キャラクター固有の動作
- @abstruct 射程距離を外れたとき画面から取り除く。
+ @brief キャラクター固有の動作
+
+ 射程距離を外れたとき画面から取り除く。
  @param dt フレーム更新間隔
  */
 - (void)action:(ccTime)dt
@@ -51,8 +57,9 @@
 }
 
 /*!
- @method 生成処理
- @abstruct 自機弾を生成する。
+ @brief 生成処理
+
+ 自機弾を生成する。
  @param x 生成位置x座標
  @param y 生成位置y座標
  @param z 生成位置z座標

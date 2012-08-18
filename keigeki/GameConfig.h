@@ -1,10 +1,9 @@
-//
-//  GameConfig.h
-//  keigeki:傾撃
-//
-//  Created by 金田 明浩 on 2012/03/03.
-//  Copyright 2012 KANEDA Akihiro. All rights reserved.
-//
+/*!
+ @file GameConfig.h
+ @brief cocos2d定数定義
+ 
+ cocos2dのテンプレートで自動生成される定数定義ファイル。
+ */
 
 #ifndef __GAME_CONFIG_H
 #define __GAME_CONFIG_H
@@ -15,8 +14,11 @@
 //		UIViewController,
 //		CCDirector
 //
+/// Supported Autorotations:None
 #define kGameAutorotationNone 0
+/// Supported Autorotations:CCDirector
 #define kGameAutorotationCCDirector 1
+/// Supported Autorotations:UIViewController,
 #define kGameAutorotationUIViewController 2
 
 //
@@ -27,10 +29,12 @@
 // TIP:
 // To improve the performance, you should set this value to "kGameAutorotationNone" or "kGameAutorotationCCDirector"
 #if defined(__ARM_NEON__) || TARGET_IPHONE_SIMULATOR
+/// Game Autorotation定数定義。CPU種別で変わる。
 #define GAME_AUTOROTATION kGameAutorotationUIViewController
 
 // ARMv6 (1st and 2nd generation devices): Don't rotate. It is very expensive
 #elif __arm__
+/// Game Autorotation定数定義。CPU種別で変わる。
 #define GAME_AUTOROTATION kGameAutorotationNone
 
 

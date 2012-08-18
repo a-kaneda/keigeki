@@ -1,15 +1,19 @@
-//
-//  AKGameScene.m
-//  keigeki:傾撃
-//
-//  Created by 金田 明浩 on 2012/05/03.
-//  Copyright 2012 KANEDA Akihiro. All rights reserved.
-//
+/*!
+ @file AKGameScene.m
+ @brief ゲームプレイシーンクラス定義
+ 
+ ゲームプレイのメインのシーンを管理するクラスを定義する。
+ */
 
 #import "AKGameScene.h"
 #import "AKPlayerShot.h"
 #import "AKEnemy.h"
 
+/*!
+ @brief ゲームプレイシーン
+ 
+ ゲームプレイのメインのシーンを管理する。
+ */
 @implementation AKGameScene
 
 // シングルトンオブジェクト
@@ -25,8 +29,9 @@ static AKGameScene *g_scene = nil;
 @synthesize rader = m_radar;
 
 /*!
- @method シングルトンオブジェクト取得
- @abstruct シングルトンオブジェクトを返す。初回呼び出し時はオブジェクトを作成して返す。
+ @brief シングルトンオブジェクト取得
+
+ シングルトンオブジェクトを返す。初回呼び出し時はオブジェクトを作成して返す。
  @return シングルトンオブジェクト
  */
 + (AKGameScene *)sharedInstance
@@ -112,8 +117,9 @@ static AKGameScene *g_scene = nil;
 }
 
 /*!
- @method インスタンス解放時処理
- @abstruct インスタンス解放時にオブジェクトを解放する。
+ @brief インスタンス解放時処理
+
+ インスタンス解放時にオブジェクトを解放する。
  */
 - (void)dealloc
 {
@@ -134,8 +140,9 @@ static AKGameScene *g_scene = nil;
 }
 
 /*!
- @method 更新処理
- @abstruct ゲームの状態によって、更新処理を行う。
+ @brief 更新処理
+
+ ゲームの状態によって、更新処理を行う。
  @param dt フレーム更新間隔 
  */
 - (void)update:(ccTime)dt
@@ -156,8 +163,9 @@ static AKGameScene *g_scene = nil;
 }
 
 /*!
- @method ゲーム開始時の更新処理
- @abstruct ステージ定義ファイルを読み込み、敵を配置する。
+ @brief ゲーム開始時の更新処理
+
+ ステージ定義ファイルを読み込み、敵を配置する。
  @param dt フレーム更新間隔
  */
 - (void)updateStart:(ccTime)dt
@@ -253,8 +261,9 @@ static AKGameScene *g_scene = nil;
 }
 
 /*!
- @method プレイ中の更新処理
- @abstruct 各キャラクターの移動処理、衝突判定を行う。
+ @brief プレイ中の更新処理
+
+ 各キャラクターの移動処理、衝突判定を行う。
  @param dt フレーム更新間隔
  */
 - (void)updatePlaying:(ccTime)dt
@@ -312,10 +321,11 @@ static AKGameScene *g_scene = nil;
 }
 
 /*!
- @method 自機の移動
- @abstruct 自機の速度を-1.0〜1.0の範囲で設定する。
- @param ax x軸方向の速度
- @param ay y軸方向の速度
+ @brief 自機の移動
+
+ 自機の速度を-1.0〜1.0の範囲で設定する。
+ @param vx x軸方向の速度
+ @param vy y軸方向の速度
  */
 - (void)movePlayerByVX:(float)vx VY:(float)vy
 {
@@ -323,8 +333,9 @@ static AKGameScene *g_scene = nil;
 }
 
 /*!
- @method 自機弾の発射
- @abstruct 自機弾を発車する。
+ @brief 自機弾の発射
+
+ 自機弾を発車する。
  */
 - (void)filePlayerShot
 {
@@ -349,8 +360,9 @@ static AKGameScene *g_scene = nil;
 }
 
 /*!
- @method 敵の生成
- @abstruct 敵を生成する。
+ @brief 敵の生成
+
+ 敵を生成する。
  @param type 敵の種類
  @param posx 生成位置x座標
  @param posy 生成位置y座標

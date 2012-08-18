@@ -1,19 +1,24 @@
-//
-//  AKPlayer.m
-//  keigeki:傾撃
-//
-//  Created by 金田 明浩 on 2012/05/16.
-//  Copyright 2012 KANEDA Akihiro. All rights reserved.
-//
+/*!
+ @file AKPlayer.m
+ @brief 自機クラス定義
+ 
+ 自機を管理するクラスを定義する。
+ */
 
 #import "AKPlayer.h"
 #import <math.h>
 
+/*!
+ @brief 自機クラス
+
+ 自機を管理する。
+ */
 @implementation AKPlayer
 
 /*!
- @method オブジェクト生成処理
- @abstruct オブジェクトの生成を行う。
+ @brief オブジェクト生成処理
+
+ オブジェクトの生成を行う。
  @return 生成したオブジェクト。失敗時はnilを返す。
  */
 - (id)init
@@ -47,8 +52,9 @@
 }
 
 /*!
- @method キャラクター固有の動作
- @abstruct 速度によって位置を移動する。自機の表示位置は固定とする。
+ @brief キャラクター固有の動作
+
+ 速度によって位置を移動する。自機の表示位置は固定とする。
  @param dt フレーム更新間隔
  */
 - (void)action:(ccTime)dt
@@ -61,8 +67,9 @@
 }
 
 /*!
- @method スクリーン座標(x座標)の取得
- @abstruct 自機の絶対座標からスクリーン座標を計算して返す。x座標を求める。
+ @brief スクリーン座標(x座標)の取得
+
+ 自機の絶対座標からスクリーン座標を計算して返す。x座標を求める。
  @return スクリーン座標(x座標)
  */
 - (float)getScreenPosX
@@ -71,8 +78,9 @@
 }
 
 /*!
- @method スクリーン座標(y座標)の取得
- @abstruct 自機の絶対座標からスクリーン座標を計算して返す。x座標を求める。
+ @brief スクリーン座標(y座標)の取得
+
+ 自機の絶対座標からスクリーン座標を計算して返す。x座標を求める。
  @return スクリーン座標(y座標)
  */
 - (float)getScreenPosY
@@ -81,8 +89,9 @@
 }
 
 /*!
- @method 速度の設定
- @abstruct 速度を設定する。-0.1〜0.1の範囲で指定する。
+ @brief 速度の設定
+
+ 速度を設定する。-0.1〜0.1の範囲で指定する。
  @param vx x軸方向の速度
  @param vy y軸方向の速度
  */

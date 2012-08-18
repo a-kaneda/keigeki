@@ -1,16 +1,20 @@
-//
-//  AppDelegate.m
-//  keigeki:傾撃
-//
-//  Created by 金田 明浩 on 2012/07/30.
-//  Copyright 2012 KANEDA Akihiro. All rights reserved.
-//
+/*!
+ @file AppDelegate.m
+ @brief Application controller定義
+ 
+ Application controllerを定義する。
+ */
 
 #import "cocos2d.h"
 
 #import "AppDelegate.h"
 #import "AKGameScene.h"
 
+/*!
+ @brief Application controller
+ 
+ Application controller。
+ */
 @implementation AppController
 
 @synthesize window=window_, navController=navController_, director=director_;

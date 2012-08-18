@@ -10,9 +10,11 @@
 		0C1928AF15D9361A00496717 /* Marker.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C1928AE15D9361A00496717 /* Marker.png */; };
 		0C1928B215D9362800496717 /* Radar.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C1928B115D9362800496717 /* Radar.png */; };
 		0C1928B515D99CD000496717 /* AKRadar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C1928B415D99CCF00496717 /* AKRadar.m */; };
+		0C1928B915DF3C3500496717 /* fire.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C1928B815DF3C3500496717 /* fire.png */; };
+		0C1928BC15DF4D4000496717 /* AKEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C1928BB15DF4D3F00496717 /* AKEffect.m */; };
 		0C21F1AF15CE6477004C64E9 /* AKCharacterPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C21F1AE15CE6474004C64E9 /* AKCharacterPool.m */; };
 		0C21F1B915D3F4CA004C64E9 /* AKEnemy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C21F1B815D3F4C9004C64E9 /* AKEnemy.m */; };
-		0C2A39F115D460B2005B9272 /* AKEnemy+Noraml.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2A39F015D460B2005B9272 /* AKEnemy+Noraml.m */; };
+		0C2A39F115D460B2005B9272 /* AKEnemy+Normal.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2A39F015D460B2005B9272 /* AKEnemy+Normal.m */; };
 		0C2A39FD15D6397D005B9272 /* stage1_1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C2A39FC15D6397D005B9272 /* stage1_1.txt */; };
 		0C2A3A2115D7493A005B9272 /* fps_images-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C2A3A1315D64A47005B9272 /* fps_images-hd.png */; };
 		0C2A3A2215D7493E005B9272 /* Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C2A3A1015D64A47005B9272 /* Back.png */; };
@@ -159,12 +161,15 @@
 		0C1928B415D99CCF00496717 /* AKRadar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKRadar.m; sourceTree = "<group>"; };
 		0C1928B615D9A19D00496717 /* AKBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKBackground.h; sourceTree = "<group>"; };
 		0C1928B715D9A43200496717 /* AKPlayerShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayerShot.h; sourceTree = "<group>"; };
+		0C1928B815DF3C3500496717 /* fire.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fire.png; sourceTree = "<group>"; };
+		0C1928BA15DF4D3D00496717 /* AKEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEffect.h; sourceTree = "<group>"; };
+		0C1928BB15DF4D3F00496717 /* AKEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKEffect.m; sourceTree = "<group>"; };
 		0C21F1AD15CE6472004C64E9 /* AKCharacterPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKCharacterPool.h; sourceTree = "<group>"; };
 		0C21F1AE15CE6474004C64E9 /* AKCharacterPool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKCharacterPool.m; sourceTree = "<group>"; };
 		0C21F1B715D3F4C9004C64E9 /* AKEnemy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEnemy.h; sourceTree = "<group>"; };
 		0C21F1B815D3F4C9004C64E9 /* AKEnemy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKEnemy.m; sourceTree = "<group>"; };
-		0C2A39EF15D460B2005B9272 /* AKEnemy+Noraml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AKEnemy+Noraml.h"; sourceTree = "<group>"; };
-		0C2A39F015D460B2005B9272 /* AKEnemy+Noraml.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AKEnemy+Noraml.m"; sourceTree = "<group>"; };
+		0C2A39EF15D460B2005B9272 /* AKEnemy+Normal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AKEnemy+Normal.h"; sourceTree = "<group>"; };
+		0C2A39F015D460B2005B9272 /* AKEnemy+Normal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AKEnemy+Normal.m"; sourceTree = "<group>"; };
 		0C2A39FC15D6397D005B9272 /* stage1_1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage1_1.txt; path = keigeki/StageScript/stage1_1.txt; sourceTree = SOURCE_ROOT; };
 		0C2A3A1015D64A47005B9272 /* Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Back.png; sourceTree = "<group>"; };
 		0C2A3A1115D64A47005B9272 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
@@ -519,8 +524,8 @@
 				0C3707A815C6C82B00295D96 /* AKCharacter.m */,
 				0C21F1B715D3F4C9004C64E9 /* AKEnemy.h */,
 				0C21F1B815D3F4C9004C64E9 /* AKEnemy.m */,
-				0C2A39EF15D460B2005B9272 /* AKEnemy+Noraml.h */,
-				0C2A39F015D460B2005B9272 /* AKEnemy+Noraml.m */,
+				0C2A39EF15D460B2005B9272 /* AKEnemy+Normal.h */,
+				0C2A39F015D460B2005B9272 /* AKEnemy+Normal.m */,
 				0C21F1AD15CE6472004C64E9 /* AKCharacterPool.h */,
 				0C21F1AE15CE6474004C64E9 /* AKCharacterPool.m */,
 				0C3707AC15C6C82B00295D96 /* AKGameIFLayer.h */,
@@ -533,6 +538,8 @@
 				0C3707B315C6C82C00295D96 /* AKPlayerShot.m */,
 				0C1928B315D99CCF00496717 /* AKRadar.h */,
 				0C1928B415D99CCF00496717 /* AKRadar.m */,
+				0C1928BA15DF4D3D00496717 /* AKEffect.h */,
+				0C1928BB15DF4D3F00496717 /* AKEffect.m */,
 				0C2A3A2015D64B12005B9272 /* StageScript */,
 				0C37060615C6BEC900295D96 /* Resources */,
 				0C37062015C6BEC900295D96 /* libs */,
@@ -544,6 +551,7 @@
 		0C37060615C6BEC900295D96 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0C1928B815DF3C3500496717 /* fire.png */,
 				0C1928B115D9362800496717 /* Radar.png */,
 				0C1928AE15D9361A00496717 /* Marker.png */,
 				0C2A3A3315D754B6005B9272 /* Enemy_1.png */,
@@ -983,6 +991,7 @@
 				0C2A3A3415D754B7005B9272 /* Enemy_1.png in Resources */,
 				0C1928AF15D9361A00496717 /* Marker.png in Resources */,
 				0C1928B215D9362800496717 /* Radar.png in Resources */,
+				0C1928B915DF3C3500496717 /* fire.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1104,8 +1113,9 @@
 				0C3707BA15C6C82C00295D96 /* AKPlayerShot.m in Sources */,
 				0C21F1AF15CE6477004C64E9 /* AKCharacterPool.m in Sources */,
 				0C21F1B915D3F4CA004C64E9 /* AKEnemy.m in Sources */,
-				0C2A39F115D460B2005B9272 /* AKEnemy+Noraml.m in Sources */,
+				0C2A39F115D460B2005B9272 /* AKEnemy+Normal.m in Sources */,
 				0C1928B515D99CD000496717 /* AKRadar.m in Sources */,
+				0C1928BC15DF4D4000496717 /* AKEffect.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,21 +1,25 @@
-//
-//  AKBackground.m
-//  keigeki:傾撃
-//
-//  Created by 金田 明浩 on 2012/06/03.
-//  Copyright 2012 KANEDA Akihiro. All rights reserved.
-//
+/*!
+ @file AKBackground.m
+ @brief 背景クラス定義
+ 
+ 背景の描画を行うクラスを定義する。
+ */
 
 #import "AKBackground.h"
 
-
+/*!
+ @brief 背景クラス
+ 
+ 背景の描画を行う。
+ */
 @implementation AKBackground
 
 @synthesize image = m_image;
 
 /*!
- @method オブジェクト生成処理
- @abstruct オブジェクトの生成を行う。
+ @brief オブジェクト生成処理
+
+ オブジェクトの生成を行う。
  @return 生成したオブジェクト。失敗時はnilを返す。
  */
 - (id)init
@@ -40,8 +44,9 @@
 }
 
 /*!
- @method インスタンス解放時処理
- @abstruct インスタンス解放時にオブジェクトを解放する。
+ @brief インスタンス解放時処理
+ 
+ インスタンス解放時にオブジェクトを解放する。
  */
 - (void)dealloc
 {
@@ -53,8 +58,9 @@
 }
 
 /*!
- @method 移動処理
- @abstruct スクリーン座標から背景画像の位置を決める。
+ @brief 移動処理
+ 
+ スクリーン座標から背景画像の位置を決める。
  @param scrx スクリーン座標x
  @param scry スクリーン座標y
  */

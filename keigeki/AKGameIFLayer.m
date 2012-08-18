@@ -1,25 +1,30 @@
-//
-//  AKGameIFLayer.m
-//  keigeki:傾撃
-//
-//  Created by 金田 明浩 on 2012/05/20.
-//  Copyright 2012 KANEDA Akihiro. All rights reserved.
-//
+/*!
+ @file AKGameIFLayer.m
+ @brief ゲームプレイ画面インターフェース定義
+ 
+ ゲームプレイ画面のインターフェースを管理するを定義する。
+ */
 
 #import "AKGameIFLayer.h"
 #import "AKGameScene.h"
 #import "common.h"
 
-/* 加速度センサーの値を比率換算する */
+// 加速度センサーの値を比率換算する
 static float Accel2Ratio(float accel);
 
+/*!
+ @brief ゲームプレイ画面インターフェースクラス
+ 
+ ゲームプレイ画面のインターフェースを管理する。
+ */
 @implementation AKGameIFLayer
 
 @synthesize shotButton = m_shotButton;
 
 /*!
- @method オブジェクト生成処理
- @abstruct オブジェクトの生成を行う。
+ @brief オブジェクト生成処理
+
+ オブジェクトの生成を行う。
  @return 生成したオブジェクト。失敗時はnilを返す。
  */
 - (id)init
@@ -47,8 +52,9 @@ static float Accel2Ratio(float accel);
 }
 
 /*!
- @method インスタンス解放時処理
- @abstruct インスタンス解放時にオブジェクトを解放する。
+ @brief インスタンス解放時処理
+
+ インスタンス解放時にオブジェクトを解放する。
  */
 - (void)dealloc
 {
@@ -60,8 +66,9 @@ static float Accel2Ratio(float accel);
 }
 
 /*!
- @method 加速度情報受信処理
- @abstruct 加速度センサーの情報を受信する。
+ @brief 加速度情報受信処理
+
+ 加速度センサーの情報を受信する。
  @param accelerometer 加速度センサー
  @param acceleration 加速度情報
  */
@@ -85,8 +92,9 @@ static float Accel2Ratio(float accel);
 }
 
 /*!
- @method レイヤー表示時処理
- @abstruct レイヤーが表示された際の処理。タッチイベント処理を開始する。
+ @brief レイヤー表示時処理
+
+ レイヤーが表示された際の処理。タッチイベント処理を開始する。
  */
 - (void)onEnter
 {
@@ -95,8 +103,9 @@ static float Accel2Ratio(float accel);
 }
 
 /*!
- @method レイヤー非表示時処理
- @abstruct レイヤーが非表示になった際の処理。タッチイベント処理を終了する。
+ @brief レイヤー非表示時処理
+
+ レイヤーが非表示になった際の処理。タッチイベント処理を終了する。
  */
 - (void)onExit
 {
@@ -104,8 +113,9 @@ static float Accel2Ratio(float accel);
 }
 
 /*!
- @method タッチ開始処理
- @abstruct タッチが開始されたときの処理。
+ @brief タッチ開始処理
+
+ タッチが開始されたときの処理。
  @param touch タッチ情報
  @param event イベント情報
  @return タッチイベントをこのメソッドで終了するかどうか
@@ -137,8 +147,9 @@ static float Accel2Ratio(float accel);
 }
 
 /*!
- @method タッチ移動処理
- @abstruct タッチ場所が移動したときの処理。
+ @brief タッチ移動処理
+
+ タッチ場所が移動したときの処理。
  @param touch タッチ情報
  @param event イベント情報
  */
@@ -148,8 +159,9 @@ static float Accel2Ratio(float accel);
 }
 
 /*!
- @method タッチ終了処理
- @abstruct タッチが終了したときの処理。
+ @brief タッチ終了処理
+
+ タッチが終了したときの処理。
  @param touch タッチ情報
  @param event イベント情報
  */
@@ -159,8 +171,9 @@ static float Accel2Ratio(float accel);
 }
 
 /*!
- @method タッチキャンセル処理
- @abstruct タッチがキャンセルされたときの処理。
+ @brief タッチキャンセル処理
+
+ タッチがキャンセルされたときの処理。
  @param touch タッチ情報
  @param event イベント情報
  */
@@ -171,8 +184,9 @@ static float Accel2Ratio(float accel);
 @end
 
 /*!
- @function 加速度センサーの値を比率換算する
- @abstruct 加速度センサーの入力値を最大から最小までの比率に換算する。
+ @brief 加速度センサーの値を比率換算する
+
+ 加速度センサーの入力値を最大から最小までの比率に換算する。
  @param accel 加速度センサーの入力値
  @return 比率
  */

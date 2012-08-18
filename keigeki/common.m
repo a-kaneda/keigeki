@@ -1,21 +1,21 @@
-//
-//  common.c
-//  keigeki:傾撃
-//
-//  Created by 金田 明浩 on 2012/05/26.
-//  Copyright 2012 KANEDA Akihiro. All rights reserved.
-//
+/*!
+ @file common.m
+ @brief 共通関数、共通定数定義
+ 
+ アプリケーション全体で共通に使用する関数、定数の定義を行う。
+ */
 
 #import <stdio.h>
 #import <math.h>
 #import "common.h"
 
 /*!
- @function 範囲チェック(実数)
- @abstruct 値が範囲内にあるかチェックし、範囲外にあれば範囲内の値に補正する。
- @param 値
- @param 最小値
- @param 最大値
+ @brief 範囲チェック(実数)
+
+ 値が範囲内にあるかチェックし、範囲外にあれば範囲内の値に補正する。
+ @param val 値
+ @param min 最小値
+ @param max 最大値
  @return 補正結果
  */
 float AKRangeCheckF(float val, float min, float max)
@@ -35,8 +35,9 @@ float AKRangeCheckF(float val, float min, float max)
 }
 
 /*!
- @function 範囲チェック(ループ、 実数)
- @abstruct 値が範囲内にあるかチェックし、範囲外にあれば反対側にループする。
+ @brief 範囲チェック(ループ、 実数)
+
+ 値が範囲内にあるかチェックし、範囲外にあれば反対側にループする。
  @param val 値
  @param min 最小値
  @param max 最大値
@@ -59,8 +60,9 @@ float AKRangeCheckLF(float val, float min, float max)
 }
 
 /*!
- @function rad角度からdeg角度への変換
- @abstruct fadianからdegreeへ変換する。
+ @brief rad角度からdeg角度への変換
+
+ fadianからdegreeへ変換する。
  @param radAngle rad角度
  @return deg角度
  */
@@ -71,8 +73,9 @@ float AKCnvAngleRad2Deg(float radAngle)
 }
 
 /*!
- @function rad角度からスクリーン角度への変換
- @abstruct radianからdegreeへ変換し、上向きを0°とする。時計回りを正とする。
+ @brief rad角度からスクリーン角度への変換
+
+ radianからdegreeへ変換し、上向きを0°とする。時計回りを正とする。
  @param radAngle rad角度
  @return スクリーン角度
  */
@@ -93,8 +96,9 @@ float AKCnvAngleRad2Scr(float radAngle)
 }
 
 /*!
- @function 2点間の角度計算
- @abstruct 2点間を線で結んだときの角度を計算する。
+ @brief 2点間の角度計算
+
+ 2点間を線で結んだときの角度を計算する。
  @param srcx 出発点x座標
  @param srcy 出発点y座標
  @param dstx 到達点x座標
@@ -123,8 +127,9 @@ float AKCalcDestAngle(float srcx, float srcy, float dstx, float dsty)
 }
 
 /*!
- @function 回転方向の計算
- @abstruct 現在の角度から見て、到達点が時計回りの側にあるか反時計回りの側にあるかを計算する。
+ @brief 回転方向の計算
+
+ 現在の角度から見て、到達点が時計回りの側にあるか反時計回りの側にあるかを計算する。
  @param angle 現在の角度
  @param srcx 出発点x座標
  @param srcy 出発点y座標

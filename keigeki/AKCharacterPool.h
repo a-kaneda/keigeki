@@ -1,30 +1,27 @@
-//
-//  AKCharacterPool.h
-//  keigeki:傾撃
-//
-//  Created by 金田 明浩 on 2012/08/05.
-//  Copyright 2012 KANEDA Akihiro. All rights reserved.
-//
+/*!
+ @file AKCharacterPool.h
+ @brief キャラクタープールクラス定義
+ 
+ 複数のキャラクターのメモリ管理を行うクラスを定義する。
+ */
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "AKCharacter.h"
 
-/*!
- @class キャラクタープールクラス
- @abstruct 複数のキャラクターのメモリ管理を行う。
- */
+// キャラクタープールクラス
 @interface AKCharacterPool : NSObject {
-    // キャラクターを管理する配列
+    /// キャラクターを管理する配列
     NSMutableArray *m_pool;
-    // キャラクターのクラス
+    /// キャラクターのクラス
     Class m_class;
-    // 配列サイズ
+    /// 配列サイズ
     NSInteger m_size;
-    // 次にキャラクターを追加するインデックス
+    /// 次にキャラクターを追加するインデックス
     NSInteger m_next;
 }
 
+/// キャラクターを管理する配列
 @property (nonatomic, retain)NSMutableArray *pool;
 
 // 初期化処理

@@ -1,25 +1,21 @@
-//
-//  AKPlayer.h
-//  keigeki:傾撃
-//
-//  Created by 金田 明浩 on 2012/05/16.
-//  Copyright 2012 KANEDA Akihiro. All rights reserved.
-//
+/*!
+ @file AKPlayer.h
+ @brief 自機クラス定義
+ 
+ 自機を管理するクラスを定義する。
+ */
 
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 #import "AKCharacter.h"
 #import "common.h"
 
-// 速度の最大値
+/// 速度の最大値
 #define PLAYER_SPEED        240
-// 自機の回転速度
+/// 自機の回転速度
 #define PLAYER_ROT_SPEED    1
 
-/*!
- @class 自機クラス
- @abstruct 自機を管理する
- */
+// 自機クラス
 @interface AKPlayer : AKCharacter {
 }
 

@@ -1,21 +1,26 @@
-//
-//  AKCharacterPool.m
-//  keigeki:傾撃
-//
-//  Created by 金田 明浩 on 2012/08/05.
-//  Copyright 2012 KANEDA Akihiro. All rights reserved.
-//
+/*!
+ @file AKCharacterPool.m
+ @brief キャラクタープールクラス定義
+ 
+ 複数のキャラクターのメモリ管理を行うクラスを定義する。
+ */
 
 #import "AKCharacterPool.h"
 #import "common.h"
 
+/*!
+ @brief キャラクタープールクラス
+
+ 複数のキャラクターのメモリ管理を行う。
+ */
 @implementation AKCharacterPool
 
 @synthesize pool = m_pool;
 
 /*!
- @method オブジェクト生成処理
- @abstruct オブジェクトの生成を行う。
+ @brief オブジェクト生成処理
+
+ オブジェクトの生成を行う。
  @param characlass 管理するキャラクターのクラス
  @param size 管理するプールのサイズ
  @return 生成したオブジェクト。失敗時はnilを返す。
@@ -53,8 +58,9 @@
 }
 
 /*!
- @method インスタンス解放時処理
- @abstruct インスタンス解放時にオブジェクトを解放する。
+ @brief インスタンス解放時処理
+
+ インスタンス解放時にオブジェクトを解放する。
  */
 - (void)dealloc
 {
@@ -77,8 +83,9 @@
 }
 
 /*!
- @method 未使用キャラクター取得
- @abstruct キャラクタープールの中から未使用のキャラクターを検索して返す。
+ @brief 未使用キャラクター取得
+
+ キャラクタープールの中から未使用のキャラクターを検索して返す。
  @return 未使用キャラクター。見つからないときはnilを返す。
  */
 - (id)getNext

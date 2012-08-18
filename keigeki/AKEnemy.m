@@ -1,18 +1,23 @@
-//
-//  AKEnemy.m
-//  keigeki:傾撃
-//
-//  Created by 金田 明浩 on 2012/08/09.
-//  Copyright 2012 KANEDA Akihiro. All rights reserved.
-//
+/*!
+ @file AKEnemy.m
+ @brief 敵クラス定義
+ 
+ 敵キャラクターのクラスの定義をする。
+ */
 
 #import "AKEnemy.h"
 
+/*!
+ @brief 敵クラス
+ 
+ 敵キャラクターのクラス。
+ */
 @implementation AKEnemy
 
 /*!
- @method キャラクター固有の動作
- @abstruct 生成時に指定されたセレクタを呼び出す。
+ @brief キャラクター固有の動作
+
+ 生成時に指定されたセレクタを呼び出す。
  @param dt フレーム更新間隔
  */
 - (void)action:(ccTime)dt
@@ -30,8 +35,9 @@
 }
 
 /*!
- @method 破壊処理
- @abstruct HPが0になったときに敵種別固有の破壊処理を呼び出す。
+ @brief 破壊処理
+
+ HPが0になったときに敵種別固有の破壊処理を呼び出す。
  */
 - (void)destroy
 {
@@ -47,8 +53,9 @@
 }
 
 /*!
- @method 生成処理
- @abstruct 敵キャラを生成する。
+ @brief 生成処理
+
+ 敵キャラを生成する。
  @param x 生成位置x座標
  @param y 生成位置y座標
  @param z 生成位置z座標

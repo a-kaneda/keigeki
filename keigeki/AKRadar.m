@@ -1,22 +1,27 @@
-//
-//  AKRadar.m
-//  keigeki:傾撃
-//
-//  Created by 金田 明浩 on 2012/08/14.
-//  Copyright 2012 KANEDA Akihiro. All rights reserved.
-//
+/*!
+ @file AKRadar.m
+ @brief レーダークラス定義
+ 
+ 敵のいる方向を示すレーダーを管理するクラスを定義する。
+ */
 
 #import "AKRadar.h"
 #import "AKCharacter.h"
 
+/*!
+ @brief レーダークラス
+
+ 敵のいる方向を示すレーダーを管理するクラス。
+ */
 @implementation AKRadar
 
 @synthesize radarImage = m_radarImage;
 @synthesize markerImage = m_markerImage;
 
 /*!
- @method オブジェクト生成処理
- @abstruct オブジェクトの生成を行う。
+ @brief オブジェクト生成処理
+
+ オブジェクトの生成を行う。
  @return 生成したオブジェクト。失敗時はnilを返す。
  */
 - (id)init
@@ -63,8 +68,9 @@
 }
 
 /*!
- @method インスタンス解放時処理
- @abstruct インスタンス解放時にオブジェクトを解放する。
+ @brief インスタンス解放時処理
+
+ インスタンス解放時にオブジェクトを解放する。
  */
 - (void)dealloc
 {
@@ -85,8 +91,9 @@
 }
 
 /*!
- @method マーカーの配置位置更新処理
- @abstruct マーカーの配置位置を敵の座標情報から更新する。
+ @brief マーカーの配置位置更新処理
+
+ マーカーの配置位置を敵の座標情報から更新する。
  @param enemys 敵情報配列
  @param screenAngle 画面の傾き
  */

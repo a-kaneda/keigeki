@@ -1,39 +1,51 @@
-//
-//  common.h
-//  keigeki:傾撃
-//
-//  Created by 金田 明浩 on 2012/05/26.
-//  Copyright 2012 KANEDA Akihiro. All rights reserved.
-//
+/*!
+ @file common.h
+ @brief 共通関数、共通定数定義
+ 
+ アプリケーション全体で共通に使用する関数、定数の定義を行う。
+ */
 
 #ifndef keigeki_common_h
 #define keigeki_common_h
 
 #import <Foundation/Foundation.h>
 
-// スクリーン幅
+/// スクリーン幅
 #define SCREEN_WIDTH 480
-// スクリーン高さ
+/// スクリーン高さ
 #define SCREEN_HEIGHT 320
 // <注意> ループ時に背景が飛ばないようにステージサイズは背景のサイズの倍数とすること。
-// ステージ幅
+/// ステージ幅
 #define STAGE_WIDTH SCREEN_WIDTH * 8
-// ステージ高さ
+/// ステージ高さ
 #define STAGE_HEIGHT SCREEN_HEIGHT * 8
-// 自機の表示位置(x座標)
+/// 自機の表示位置(x座標)
 #define PLAYER_POS_X    (SCREEN_WIDTH / 2)
-// 自機の表示位置(y座標)
+/// 自機の表示位置(y座標)
 #define PLAYER_POS_Y    (SCREEN_HEIGHT / 8)
-// ステージの個数
+/// ステージの個数
 #define STAGE_COUNT 5
-// 同時に生成可能な敵の最大数
+/// 同時に生成可能な敵の最大数
 #define MAX_ENEMY_COUNT 16
 
 #ifdef DEBUG
-// デバッグログ。出力条件の指定が可能。ログの先頭にメソッド名と行数を付加する。
+/*!
+ @brief デバッグログ
+ 
+ デバッグログ。出力条件の指定が可能。ログの先頭にメソッド名と行数を付加する。
+ @param cond 出力条件
+ @param fmt 出力フォーマット
+ */
 #define DBGLOG(cond, fmt, ...) if (cond) NSLog(@"%s(%d) " fmt, __FUNCTION__, __LINE__, ## __VA_ARGS__)
 #else
-#define DBGLOG(cond, fmt, ...) 
+/*!
+ @brief デバッグログ
+ 
+ デバッグログ。出力条件の指定が可能。ログの先頭にメソッド名と行数を付加する。
+ @param cond 出力条件
+ @param fmt 出力フォーマット
+ */
+#define DBGLOG(cond, fmt, ...)
 #endif
 
 // 範囲チェック

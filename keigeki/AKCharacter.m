@@ -1,29 +1,36 @@
-//
-//  AKCharacter.m
-//  keigeki:傾撃
-//
-//  Created by 金田 明浩 on 2012/05/06.
-//  Copyright 2012 KANEDA Akihiro. All rights reserved.
-//
+/*!
+ @file AKCharacter.m
+ @brief キャラクタークラス定義
+ 
+ 当たり判定を持つオブジェクトの基本クラスを定義する。
+ */
 
 #import <math.h>
 #import "AKCharacter.h"
 #import "common.h"
 
+/*!
+ @brief キャラクタークラス
+ 
+ 当たり判定を持つオブジェクトの基本クラス。
+ */
 @implementation AKCharacter
 
 @synthesize image = m_image;
 @synthesize width = m_width;
 @synthesize height = m_height;
 @synthesize speed = m_speed;
+@synthesize absx = m_absx;
+@synthesize absy = m_absy;
 @synthesize angle = m_angle;
 @synthesize rotSpeed = m_rotSpeed;
 @synthesize hitPoint = m_hitPoint;
 @synthesize isStaged = m_isStaged;
 
 /*!
- @method オブジェクト生成処理
- @abstruct オブジェクトの生成を行う。
+ @brief オブジェクト生成処理
+
+ オブジェクトの生成を行う。
  @return 生成したオブジェクト。失敗時はnilを返す。
  */
 - (id)init
@@ -50,8 +57,9 @@
 }
 
 /*!
- @method インスタンス解放時処理
- @abstruct インスタンス解放時にオブジェクトを解放する。
+ @brief インスタンス解放時処理
+
+ インスタンス解放時にオブジェクトを解放する。
  */
 - (void)dealloc
 {
@@ -66,8 +74,9 @@
 }
 
 /*!
- @method 絶対座標xのgetter
- @abstruct 絶対座標xを返す
+ @brief 絶対座標xのgetter
+
+ 絶対座標xを返す
  @return 絶対座標x
  */
 - (float)absx
@@ -76,8 +85,9 @@
 }
 
 /*!
- @method 絶対座標xのsetter
- @abstruct 絶対座標xに値を設定する。ステージサイズの範囲内に収まるように調整する。
+ @brief 絶対座標xのsetter
+
+ 絶対座標xに値を設定する。ステージサイズの範囲内に収まるように調整する。
  @param 絶対座標x
  */
 - (void)setAbsx:(float)absx
@@ -87,8 +97,9 @@
 }
 
 /*!
- @method 絶対座標yのgetter
- @abstruct 絶対座標yを返す
+ @brief 絶対座標yのgetter
+
+ 絶対座標yを返す
  @return 絶対座標y
  */
 - (float)absy
@@ -97,8 +108,9 @@
 }
 
 /*!
- @method 絶対座標yのsetter
- @abstruct 絶対座標yに値を設定する。ステージサイズの範囲内に収まるように調整する。
+ @brief 絶対座標yのsetter
+
+ 絶対座標yに値を設定する。ステージサイズの範囲内に収まるように調整する。
  @param 絶対座標y
  */
 - (void)setAbsy:(float)absy
@@ -107,8 +119,9 @@
     m_absy = AKRangeCheckLF(absy, 0.0f, STAGE_HEIGHT);
 }
 /*!
- @method 移動処理
- @abstruct 速度によって位置を移動する。
+ @brief 移動処理
+
+ 速度によって位置を移動する。
  @param dt フレーム更新間隔
  @param scrx スクリーン座標x
  @param scry スクリーン座標y
@@ -164,8 +177,9 @@
 }
 
 /*!
- @method キャラクター固有の動作
- @abstruct キャラクター種別ごとの動作を行う。
+ @brief キャラクター固有の動作
+
+ キャラクター種別ごとの動作を行う。
  @param dt フレーム更新間隔
  */
 - (void)action:(ccTime)dt
@@ -174,8 +188,9 @@
 }
 
 /*!
- @method 破壊処理
- @abstruct HPが0になったときの処理
+ @brief 破壊処理
+
+ HPが0になったときの処理
  */
 - (void)destroy
 {
@@ -187,8 +202,9 @@
 }
 
 /*!
- @method 衝突判定
- @abstruct キャラクターが衝突しているか調べ、衝突しているときはHPを減らす。
+ @brief 衝突判定
+
+ キャラクターが衝突しているか調べ、衝突しているときはHPを減らす。
  @param characters 判定対象のキャラクター群
  */
 - (void)hit:(const NSEnumerator *)characters

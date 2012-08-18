@@ -94,10 +94,8 @@
     bomb.life = 0.5f;
     bomb.speed = 40;
     bomb.scale = 1.5f;
-    bomb.position = self.position;
-    bomb.autoRemoveOnFinish = YES;
     
-    // ゲームシーンのレイヤーに配置する
-    [[AKGameScene sharedInstance].baseLayer addChild:bomb z:BOMB_POS_Z];
+    // 画面効果を生成する
+    [[AKGameScene sharedInstance] entryEffect:bomb Time:1.0f PosX:self.absx PosY:self.absy];
 }
 @end

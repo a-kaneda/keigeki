@@ -16,6 +16,8 @@
 
 /// 同時に生成可能な自機弾の最大数
 #define MAX_PLAYER_SHOT_COUNT 16
+/// 同時に生成可能な画面効果の最大数
+#define MAX_EFFECT_COUNT 16
 
 /// 自機の配置z座標
 #define PLAYER_POS_Z 2
@@ -23,8 +25,8 @@
 #define PLAYER_SHOT_POS_Z 4
 /// 敵の配置z座標
 #define ENEMY_POS_Z 3
-/// 爆発エフェクトの配置z座標
-#define BOMB_POS_Z 5
+/// 画面効果の配置z座標
+#define EFFECT_POS_Z 5
 
 /// ゲームプレイの状態
 enum GAME_STATE {
@@ -64,6 +66,8 @@ enum ENEMY_TYPE {
     AKCharacterPool *m_playerShotPool;
     /// 敵
     AKCharacterPool *m_enemyPool;
+    /// 画面効果
+    AKCharacterPool *m_effectPool;
     /// レーダー
     AKRadar *m_radar;
 }
@@ -82,6 +86,8 @@ enum ENEMY_TYPE {
 @property (nonatomic, retain)AKCharacterPool *playerShotPool;
 /// 敵
 @property (nonatomic, retain)AKCharacterPool *enemyPool;
+/// 画面効果
+@property (nonatomic, retain)AKCharacterPool *effectPool;
 /// レーダー
 @property (nonatomic, retain)AKRadar *rader;
 
@@ -97,4 +103,6 @@ enum ENEMY_TYPE {
 - (void)filePlayerShot;
 // 敵の生成
 - (void)entryEnemy:(enum ENEMY_TYPE)type PosX:(NSInteger)posx PosY:(NSInteger)posy Angle:(float)angle;
+// 画面効果の生成
+- (void)entryEffect:(CCParticleSystem *)particle Time:(float)time PosX:(float)posx PosY:(float)posy;
 @end

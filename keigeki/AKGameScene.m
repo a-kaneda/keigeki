@@ -8,6 +8,7 @@
 #import "AKGameScene.h"
 #import "AKPlayerShot.h"
 #import "AKEnemy.h"
+#import "AKEffect.h"
 
 /*!
  @brief ゲームプレイシーン
@@ -27,6 +28,7 @@ static AKGameScene *g_scene = nil;
 @synthesize playerShotPool = m_playerShotPool;
 @synthesize enemyPool = m_enemyPool;
 @synthesize rader = m_radar;
+@synthesize effectPool = m_effectPool;
 
 /*!
  @brief シングルトンオブジェクト取得
@@ -98,12 +100,16 @@ static AKGameScene *g_scene = nil;
     
     // 自機弾プールの生成
     self.playerShotPool = [[[AKCharacterPool alloc] initWithClass:[AKPlayerShot class]
-                                                           Size:MAX_PLAYER_SHOT_COUNT] autorelease];
+                                                             Size:MAX_PLAYER_SHOT_COUNT] autorelease];
     
     // 敵プールの生成
     self.enemyPool = [[[AKCharacterPool alloc] initWithClass:[AKEnemy class]
-                                                      Size:MAX_ENEMY_COUNT] autorelease];
+                                                        Size:MAX_ENEMY_COUNT] autorelease];
 
+    // 画面効果プールの生成
+    self.effectPool = [[[AKCharacterPool alloc] initWithClass:[AKEffect class]
+                                                         Size:MAX_EFFECT_COUNT] autorelease];
+    
     // レーダーの生成
     self.rader = [AKRadar node];
     
@@ -129,6 +135,7 @@ static AKGameScene *g_scene = nil;
     // リソースの解放
     self.playerShotPool = nil;
     self.enemyPool = nil;
+    self.effectPool = nil;
     [self.background removeChild:self.player cleanup:YES];
     [self.infoLayer removeChild:self.rader cleanup:YES];
     [self.baseLayer removeChild:self.background cleanup:YES];
@@ -305,6 +312,14 @@ static AKGameScene *g_scene = nil;
         [character hit:[self.enemyPool.pool objectEnumerator]];
     }
     
+    // 画面効果の移動
+    enumerator = [self.effectPool.pool objectEnumerator];
+    for (character in enumerator) {
+        [character move:dt ScreenX:scrx ScreenY:scry];
+        DBGLOG(character.isStaged, @"effect=(%f, %f) player=(%f, %f)", character.position.x,
+               character.position.y, self.player.position.x, self.player.position.y);
+    }
+    
     // 背景の移動
     [self.background moveWithScreenX:scrx ScreenY:scry];
     
@@ -347,6 +362,7 @@ static AKGameScene *g_scene = nil;
     if (shot == nil) {
         // 空きがない場合は処理終了
         DBGLOG(1, @"自機弾プールに空きなし");
+        assert(0);
         return;
     }
     
@@ -379,6 +395,7 @@ static AKGameScene *g_scene = nil;
     enemy = [m_enemyPool getNext];
     if (enemy == nil) {
         // 空きがない場合は処理終了
+        assert(0);
         DBGLOG(1, @"敵プールに空きなし");
         return;
     }
@@ -402,5 +419,38 @@ static AKGameScene *g_scene = nil;
     // 敵を生成する
     [enemy createWithX:posx Y:posy Z:ENEMY_POS_Z Angle:angle
                 Parent:m_background CreateSel:createEnemy];
+}
+
+/*!
+ @brief 画面効果の生成
+ 
+ 画面効果を生成する。
+ @param particle 画面効果のパーティクル
+ @param time 画面効果の生存時間
+ @param posx 画面効果の絶対座標x座標
+ @param posy 画面効果の絶対座標y座標
+ */
+- (void)entryEffect:(CCParticleSystem *)particle Time:(float)time PosX:(float)posx PosY:(float)posy
+{
+    AKEffect *effect = nil;     // 画面効果
+    
+    // プールから未使用のメモリを取得する
+    effect = [self.effectPool getNext];
+    if (effect == nil) {
+        // 空きがない場合は処理終了
+        DBGLOG(1, @"画面効果プールに空きなし");
+        assert(0);
+        return;
+    }
+    
+    // 画面効果にパーティクルを追加する
+    particle.autoRemoveOnFinish = YES;
+    particle.position = ccp(0, 0);
+    particle.positionType = kCCPositionTypeRelative;
+    [effect addChild:particle];
+    
+    DBGLOG(1, @"player=(%f, %f) pos=(%f, %f)", self.player.absx, self.player.absy, posx, posy);
+    // 画面効果を生成する
+    [effect startEffect:time PosX:posx PosY:posy PosZ:EFFECT_POS_Z Parent:m_background];
 }
 @end

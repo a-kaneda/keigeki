@@ -33,6 +33,10 @@
 #define ENEMY_POS_Z 3
 /// 画面効果の配置z座標
 #define EFFECT_POS_Z 5
+/// スコアの表示位置x座標
+#define SCORE_POS_X 380
+/// スコアの表示位置y座標
+#define SCORE_POS_Y 310
 
 /// ゲームプレイの状態
 enum GAME_STATE {
@@ -60,6 +64,8 @@ enum ENEMY_TYPE {
     NSInteger m_waveNo;
     /// 残機の数
     NSInteger m_life;
+    /// スコア
+    NSInteger m_score;
     /// 自機復活までの間隔
     float m_rebirthInterval;
     /// キャラクターを配置するレイヤー
@@ -84,6 +90,8 @@ enum ENEMY_TYPE {
     AKLifeMark *m_lifeMark;
     /// ゲームオーバーの画像
     CCSprite *m_gameOverImage;
+    /// スコアのラベル
+    CCLabelTTF *m_scoreLabel;
 }
 
 /// 現在の状態
@@ -110,6 +118,8 @@ enum ENEMY_TYPE {
 @property (nonatomic, retain)AKLifeMark *lifeMark;
 /// ゲームオーバーの画像
 @property (nonatomic, retain)CCSprite *gameOverImage;
+/// スコアのラベル
+@property (nonatomic, retain)CCLabelTTF *scoreLabel;
 
 // シングルトンオブジェクト取得
 + (AKGameScene *)sharedInstance;
@@ -129,4 +139,6 @@ enum ENEMY_TYPE {
 - (void)miss;
 // ゲーム状態リセット
 - (void)resetAll;
+/// スコア加算
+- (void)addScore:(NSInteger)score;
 @end

@@ -10,6 +10,9 @@
 #import "AKCharacter.h"
 #import "common.h"
 
+/// 敵を倒したときのスコア
+#define ENEMY_SCORE 100
+
 // 敵クラス
 @interface AKEnemy : AKCharacter {
     /// 動作開始からの経過時間(各敵種別で使用)

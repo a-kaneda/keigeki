@@ -6,6 +6,7 @@
  */
 
 #import "AKEnemy.h"
+#import "AKGameScene.h"
 
 /*!
  @brief 敵クラス
@@ -41,8 +42,19 @@
  */
 - (void)destroy
 {
+    NSInteger score = 0;    // 加算スコア
+    float destAngle = 0.0f; // 敵から自機への角度
+    
     // 敵種別ごとの処理を実行
     [self performSelector:m_destroy];
+    
+    // 敵の向きによって加算するスコアを変える。
+    // 後ろを向いている場合が最大とする。
+    destAngle = AKCalcDestAngle(self.position.x, self.position.y, PLAYER_POS_X, PLAYER_POS_Y);
+    score = ENEMY_SCORE * (2 - cos(destAngle - self.angle));
+    
+    // スコアを加算する
+    [[AKGameScene sharedInstance] addScore:score];
     
     // 画像の解放
     [self removeChild:m_image cleanup:YES];

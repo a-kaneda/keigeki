@@ -31,6 +31,7 @@ static AKGameScene *g_scene = nil;
 @synthesize rader = m_radar;
 @synthesize effectPool = m_effectPool;
 @synthesize lifeMark = m_lifeMark;
+@synthesize scoreLabel = m_scoreLabel;
 
 /*!
  @brief シングルトンオブジェクト取得
@@ -118,6 +119,11 @@ static AKGameScene *g_scene = nil;
     
     // 残機マークをレイヤーに配置する
     [self.infoLayer addChild:self.lifeMark];
+    
+    // スコアラベルを生成する
+    self.scoreLabel = [CCLabelTTF labelWithString:@"SCORE:00000000" fontName:@"Helvetica" fontSize:22];
+    self.scoreLabel.position = ccp(SCORE_POS_X, SCORE_POS_Y);
+    [self.infoLayer addChild:self.scoreLabel];
 
     // 状態を初期化する
     [self resetAll];
@@ -530,16 +536,23 @@ static AKGameScene *g_scene = nil;
  */
 - (void)resetAll
 {
+    NSString *scoreString = nil;    // スコアの文字列
+
     // 各種メンバを初期化する
     m_state = GAME_STATE_START;
     m_stageNo = 1;
     m_waveNo = 1;
     m_life = START_LIFE_COUNT;
     m_rebirthInterval = 0.0f;
+    m_score = 0;
     
     // 残機マークの初期個数を反映させる
     [self.lifeMark updateImage:m_life];
     
+    // ラベルの内容を更新する
+    scoreString = [NSString stringWithFormat:@"SCORE:%08d", m_score];
+    [self.scoreLabel setString:scoreString];
+
     // 自機の状態を初期化する
     [self.player reset];
 
@@ -553,5 +566,22 @@ static AKGameScene *g_scene = nil;
         [self.infoLayer removeChild:self.gameOverImage cleanup:YES];
         self.gameOverImage = nil;
     }
+}
+
+/*!
+ @brief スコア加算
+ 
+ スコアを加算する。
+ */
+- (void)addScore:(NSInteger)score
+{
+    NSString *scoreString = nil;    // スコアの文字列
+    
+    // スコアを加算する
+    m_score += score;
+    
+    // ラベルの内容を更新する
+    scoreString = [NSString stringWithFormat:@"SCORE:%08d", m_score];
+    [self.scoreLabel setString:scoreString];
 }
 @end

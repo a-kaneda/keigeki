@@ -34,9 +34,13 @@
 /// 画面効果の配置z座標
 #define EFFECT_POS_Z 5
 /// スコアの表示位置x座標
-#define SCORE_POS_X 380
+#define SCORE_POS_X 470
 /// スコアの表示位置y座標
-#define SCORE_POS_Y 310
+#define SCORE_POS_Y 280
+/// ハイスコアの表示位置x座標
+#define HISCORE_POS_X 470
+/// ハイスコアの表示位置y座標
+#define HISCORE_POS_Y 300
 
 /// ゲームプレイの状態
 enum GAME_STATE {
@@ -66,6 +70,8 @@ enum ENEMY_TYPE {
     NSInteger m_life;
     /// スコア
     NSInteger m_score;
+    /// ハイスコア
+    NSInteger m_hiScore;
     /// 自機復活までの間隔
     float m_rebirthInterval;
     /// キャラクターを配置するレイヤー
@@ -92,6 +98,8 @@ enum ENEMY_TYPE {
     CCSprite *m_gameOverImage;
     /// スコアのラベル
     CCLabelTTF *m_scoreLabel;
+    /// ハイスコアのラベル
+    CCLabelTTF *m_hiScoreLabel;
 }
 
 /// 現在の状態
@@ -120,6 +128,8 @@ enum ENEMY_TYPE {
 @property (nonatomic, retain)CCSprite *gameOverImage;
 /// スコアのラベル
 @property (nonatomic, retain)CCLabelTTF *scoreLabel;
+/// ハイスコアのラベル
+@property (nonatomic, retain)CCLabelTTF *hiScoreLabel;
 
 // シングルトンオブジェクト取得
 + (AKGameScene *)sharedInstance;

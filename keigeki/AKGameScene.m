@@ -9,6 +9,7 @@
 #import "AKPlayerShot.h"
 #import "AKEnemy.h"
 #import "AKEffect.h"
+#import "AKHiScoreFile.h"
 
 /*!
  @brief ゲームプレイシーン
@@ -32,6 +33,7 @@ static AKGameScene *g_scene = nil;
 @synthesize effectPool = m_effectPool;
 @synthesize lifeMark = m_lifeMark;
 @synthesize scoreLabel = m_scoreLabel;
+@synthesize hiScoreLabel = m_hiScoreLabel;
 
 /*!
  @brief シングルトンオブジェクト取得
@@ -59,6 +61,8 @@ static AKGameScene *g_scene = nil;
 {
     float anchor_x = 0.0f;  // 画面回転時の中心点x座標
     float anchor_y = 0.0f;  // 画面回転時の中心点y座標
+    AKHiScoreFile *hiScoreFile = nil;   // ハイスコアファイル
+    NSString *hiScoreString = nil;      // ハイスコア文字列
     
     // スーパークラスの生成処理
     self = [super init];
@@ -122,8 +126,29 @@ static AKGameScene *g_scene = nil;
     
     // スコアラベルを生成する
     self.scoreLabel = [CCLabelTTF labelWithString:@"SCORE:00000000" fontName:@"Helvetica" fontSize:22];
-    self.scoreLabel.position = ccp(SCORE_POS_X, SCORE_POS_Y);
     [self.infoLayer addChild:self.scoreLabel];
+    
+    // スコアラベルの位置を設定する。
+    // ハイスコアと右揃えにするためにアンカーポイントを右端に設定する。
+    self.scoreLabel.anchorPoint = ccp(1.0f, 0.5f);
+    self.scoreLabel.position = ccp(SCORE_POS_X, SCORE_POS_Y);
+    
+    // ハイスコアファイルの読み込みを行う
+    hiScoreFile = [[[AKHiScoreFile alloc] init] autorelease];
+    [hiScoreFile read];
+    
+    // ハイスコアをメンバに設定する
+    m_hiScore = hiScoreFile.hiscore;
+    
+    // ハイスコアラベルを生成する
+    hiScoreString = [NSString stringWithFormat:@"HI:%08d", m_hiScore];
+    self.hiScoreLabel = [CCLabelTTF labelWithString:hiScoreString fontName:@"Helvetica" fontSize:22];
+    [self.infoLayer addChild:self.hiScoreLabel];
+
+    // ハイスコアラベルの位置を設定する。
+    // スコアと右揃えにするためにアンカーポイントを右端に設定する。
+    self.hiScoreLabel.anchorPoint = ccp(1.0f, 0.5f);
+    self.hiScoreLabel.position = ccp(HISCORE_POS_X, HISCORE_POS_Y);
 
     // 状態を初期化する
     [self resetAll];
@@ -295,6 +320,7 @@ static AKGameScene *g_scene = nil;
     float angle = 0.0f;     // スクリーンの向き
     NSEnumerator *enumerator = nil;   // キャラクター操作用列挙子
     AKCharacter *character = nil;       // キャラクター操作作業用バッファ
+    AKHiScoreFile *hiScoreFile = nil;   // ハイスコアファイル
     
     // 自機が破壊されている場合は復活までの時間をカウントする
     if (!self.player.isStaged) {
@@ -368,6 +394,15 @@ static AKGameScene *g_scene = nil;
     // 画面の回転
     self.baseLayer.rotation = angle;
     DBGLOG(0, @"m_baseLayer angle=%f", self.baseLayer.rotation);
+    
+    // ゲームオーバーになっていた場合はハイスコアをファイルに書き込む
+    // (ゲームオーバーになった時点で書き込みを行わないのはupdateの途中でスコアが変動する可能性があるため)
+    if (m_state == GAME_STATE_GAMEOVER) {
+        // ハイスコアをファイルに書き込む
+        hiScoreFile = [[[AKHiScoreFile alloc] init] autorelease];
+        hiScoreFile.hiscore = m_hiScore;
+        [hiScoreFile write];
+    }
 }
 
 /*!
@@ -576,6 +611,7 @@ static AKGameScene *g_scene = nil;
 - (void)addScore:(NSInteger)score
 {
     NSString *scoreString = nil;    // スコアの文字列
+    NSString *hiScoreString = nil;  // ハイスコアの文字列
     
     // スコアを加算する
     m_score += score;
@@ -583,5 +619,16 @@ static AKGameScene *g_scene = nil;
     // ラベルの内容を更新する
     scoreString = [NSString stringWithFormat:@"SCORE:%08d", m_score];
     [self.scoreLabel setString:scoreString];
+    
+    // ハイスコアを更新している場合はハイスコアを設定する
+    if (m_score > m_hiScore) {
+        
+        // ハイスコアにスコアの値を設定する
+        m_hiScore = m_score;
+        
+        // ラベルの内容を更新する
+        hiScoreString = [NSString stringWithFormat:@"HI:%08d", m_hiScore];
+        [self.hiScoreLabel setString:hiScoreString];
+    }
 }
 @end

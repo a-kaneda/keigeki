@@ -38,5 +38,7 @@
 - (void)setVelocityX:(float)vx Y:(float)vy;
 // 復活
 - (void)rebirth;
+// 初期化
+- (void)reset;
 
 @end

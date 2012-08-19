@@ -127,22 +127,36 @@ static float Accel2Ratio(float accel);
         
     DBGLOG(0, @"タッチ開始");
     
-    // タッチ位置を取得し、cocos2dの座標系に変換する。
-    locationInView = [touch locationInView:[touch view]];
-    location = [[CCDirector sharedDirector] convertToGL:locationInView];
-    
-    // タッチ位置判定
-    // ショットボタンの内側の場合
-    if (location.x >= SHOT_BUTTON_POS_X - SHOT_BUTTON_SIZE / 2 &&
-        location.x <= SHOT_BUTTON_POS_X + SHOT_BUTTON_SIZE / 2 &&
-        location.y >= SHOT_BUTTON_POS_Y - SHOT_BUTTON_SIZE / 2 &&
-        location.y <= SHOT_BUTTON_POS_Y + SHOT_BUTTON_SIZE / 2) {
-        
-        // 自機弾を発射する
-        [[AKGameScene sharedInstance] filePlayerShot];
-        DBGLOG(0, "自機弾発射:x=%f y=%f", location.x, location.y);
+    // ゲームシーンの状態により処理を分岐する
+    switch ([AKGameScene sharedInstance].state) {
+        case GAME_STATE_PLAYING:    // プレイ中
+
+            // タッチ位置を取得し、cocos2dの座標系に変換する。
+            locationInView = [touch locationInView:[touch view]];
+            location = [[CCDirector sharedDirector] convertToGL:locationInView];
+            
+            // タッチ位置判定
+            // ショットボタンの内側の場合
+            if (location.x >= SHOT_BUTTON_POS_X - SHOT_BUTTON_SIZE / 2 &&
+                location.x <= SHOT_BUTTON_POS_X + SHOT_BUTTON_SIZE / 2 &&
+                location.y >= SHOT_BUTTON_POS_Y - SHOT_BUTTON_SIZE / 2 &&
+                location.y <= SHOT_BUTTON_POS_Y + SHOT_BUTTON_SIZE / 2) {
+                
+                // 自機弾を発射する
+                [[AKGameScene sharedInstance] filePlayerShot];
+                DBGLOG(0, "自機弾発射:x=%f y=%f", location.x, location.y);
+            }
+            
+            break;
+            
+        case GAME_STATE_GAMEOVER:   // ゲームオーバー
+            
+            // 状態をリセットする
+            [[AKGameScene sharedInstance] resetAll];
+            
+        default:
+            break;
     }
-    
     return YES;
 }
 

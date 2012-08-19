@@ -28,4 +28,6 @@
 - (id)initWithClass:(Class)characlass Size:(NSInteger)size;
 // 未使用キャラクター取得
 - (id)getNext;
+// 全キャラクター削除
+- (void)reset;
 @end

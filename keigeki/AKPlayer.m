@@ -31,13 +31,7 @@
     if (!self) {
         return nil;
     }
-    
-    // 初期角度は垂直上向き
-    m_angle = M_PI / 2;
-    
-    // HPの設定
-    m_hitPoint = 1;
-    
+
     // 速度の設定
     m_speed = PLAYER_SPEED;
     
@@ -45,12 +39,8 @@
     m_width = PLAYER_SIZE;
     m_height = PLAYER_SIZE;
     
-    // ステージ配置フラグを立てる
-    m_isStaged = YES;
-    
-    // 無敵状態はOFFにする
-    m_isInvincible = NO;
-    m_invincivleTime = 0.0f;
+    // 状態を初期化する
+    [self reset];
     
     // 画像の読込
     self.image = [CCSprite spriteWithFile:@"Player.png"];
@@ -106,8 +96,11 @@
     // 画面効果を生成する
     [[AKGameScene sharedInstance] entryEffect:bomb Time:1.0f PosX:self.absx PosY:self.absy];
     
-    // スーパークラスの処理を行う
-    [super destroy];
+    // 配置フラグを落とす
+    self.isStaged = NO;
+    
+    // 非表示とする
+    self.visible = NO;
     
     // 自機破壊時の処理を行う
     [[AKGameScene sharedInstance] miss];
@@ -166,6 +159,9 @@
     // ステージ配置フラグを立てる
     m_isStaged = YES;
     
+    // 表示させる
+    self.visible = YES;
+    
     // 無敵状態にする
     m_isInvincible = YES;
     m_invincivleTime = INVINCIBLE_TIME;
@@ -173,5 +169,35 @@
     // 無敵中はブリンクする
     blink = [CCBlink actionWithDuration:INVINCIBLE_TIME blinks:INVINCIBLE_TIME * 8];
     [self.image runAction:blink];
+}
+
+/*!
+ @brief 初期化
+ 
+ 状態を初期化する。
+ */
+- (void)reset
+{
+    // 初期位置は原点
+    self.position = ccp(0, 0);
+    
+    // 初期角度は垂直上向き
+    m_angle = M_PI / 2;
+    
+    // HPの設定
+    m_hitPoint = 1;
+    
+    // ステージ配置フラグを立てる
+    m_isStaged = YES;
+    
+    // 表示させる
+    self.visible = YES;
+    
+    // 無敵状態はOFFにする
+    m_isInvincible = NO;
+    m_invincivleTime = 0.0f;
+    
+    // アクションはすべて停止する
+    [self.image stopAllActions];
 }
 @end

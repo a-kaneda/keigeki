@@ -82,8 +82,12 @@ enum ENEMY_TYPE {
     AKRadar *m_radar;
     /// 残機表示
     AKLifeMark *m_lifeMark;
+    /// ゲームオーバーの画像
+    CCSprite *m_gameOverImage;
 }
 
+/// 現在の状態
+@property (nonatomic, readonly)enum GAME_STATE state;
 /// キャラクターを配置するレイヤー
 @property (nonatomic, retain)CCLayer *baseLayer;
 /// キャラクター以外を配置するレイヤー
@@ -104,6 +108,8 @@ enum ENEMY_TYPE {
 @property (nonatomic, retain)AKRadar *rader;
 /// 残機表示
 @property (nonatomic, retain)AKLifeMark *lifeMark;
+/// ゲームオーバーの画像
+@property (nonatomic, retain)CCSprite *gameOverImage;
 
 // シングルトンオブジェクト取得
 + (AKGameScene *)sharedInstance;
@@ -121,4 +127,6 @@ enum ENEMY_TYPE {
 - (void)entryEffect:(CCParticleSystem *)particle Time:(float)time PosX:(float)posx PosY:(float)posy;
 // 自機破壊時の処理
 - (void)miss;
+// ゲーム状態リセット
+- (void)resetAll;
 @end

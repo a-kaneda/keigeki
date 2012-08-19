@@ -65,7 +65,7 @@
 - (void)dealloc
 {
     NSEnumerator *enumerator = nil; // キャラクター解放作業用列挙子
-    AKCharacter *character = nil;     // キャラクター
+    AKCharacter *character = nil;   // キャラクター
     
     // キャラクターのメモリを開放する
     enumerator = [self.pool objectEnumerator];
@@ -115,5 +115,34 @@
     }
     
     return ret;
+}
+
+/*!
+ @brief 全キャラクター削除
+ 
+ すべてのキャラクターを画面から取り除く。
+ */
+- (void)reset
+{
+    NSEnumerator *enumerator = nil; // キャラクター解放作業用列挙子
+    AKCharacter *character = nil;   // キャラクター
+    
+    // 各キャラクターを画面から取り除く
+    enumerator = [self.pool objectEnumerator];
+    for (character in enumerator) {
+        
+        // 画面上に配置されている場合は削除する
+        if (character.isStaged) {
+            
+            // 配置フラグを落とす
+            character.isStaged = NO;
+            
+            // 親ノードから取り除く
+            [character removeFromParentAndCleanup:YES];
+        }
+    }
+    
+    // インデックスを初期化する
+    m_next = 0;
 }
 @end

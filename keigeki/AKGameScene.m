@@ -20,6 +20,7 @@
 // シングルトンオブジェクト
 static AKGameScene *g_scene = nil;
 
+@synthesize state = m_state;
 @synthesize baseLayer = m_baseLayer;
 @synthesize infoLayer = m_infoLayer;
 @synthesize interface = m_interface;
@@ -63,13 +64,6 @@ static AKGameScene *g_scene = nil;
     if (!self) {
         return nil;
     }
-    
-    // 各種メンバを初期化する
-    m_state = GAME_STATE_START;
-    m_stageNo = 1;
-    m_waveNo = 1;
-    m_life = START_LIFE_COUNT;
-    m_rebirthInterval = 0.0f;
     
     // キャラクターを配置するレイヤーを生成する
     self.baseLayer = [CCLayer node];
@@ -124,10 +118,10 @@ static AKGameScene *g_scene = nil;
     
     // 残機マークをレイヤーに配置する
     [self.infoLayer addChild:self.lifeMark];
+
+    // 状態を初期化する
+    [self resetAll];
     
-    // 残機マークの初期個数を反映させる
-    [self.lifeMark updateImage:m_life];
-        
     // 更新処理開始
     [self scheduleUpdate];
     
@@ -148,6 +142,7 @@ static AKGameScene *g_scene = nil;
     self.playerShotPool = nil;
     self.enemyPool = nil;
     self.effectPool = nil;
+    self.gameOverImage = nil;
     [self.background removeAllChildrenWithCleanup:YES];
     [self.infoLayer removeAllChildrenWithCleanup:YES];
     [self.baseLayer removeAllChildrenWithCleanup:YES];
@@ -172,6 +167,10 @@ static AKGameScene *g_scene = nil;
             
         case GAME_STATE_PLAYING:    // プレイ中
             [self updatePlaying:dt];
+            break;
+            
+        case GAME_STATE_GAMEOVER:   // ゲームオーバー
+            // 画面に変化はないため無処理
             break;
             
         default:
@@ -301,7 +300,6 @@ static AKGameScene *g_scene = nil;
             
             // 自機を復活させる
             [self.player rebirth];
-            [self.background addChild:self.player z:PLAYER_POS_Z];
         }
     }
     
@@ -512,7 +510,48 @@ static AKGameScene *g_scene = nil;
     }
     // 残機がなければゲームオーバーとする
     else {
-        // [TODO] : ゲームオーバー処理を実装するs
+        
+        // ゲームの状態をゲームオーバーに変更する
+        m_state = GAME_STATE_GAMEOVER;
+        
+        // ゲームオーバーの画像を読み込む
+        self.gameOverImage = [CCSprite spriteWithFile:@"GameOver.png"];
+        [self.infoLayer addChild:self.gameOverImage];
+        
+        // 画面の中心に配置する
+        self.gameOverImage.position = ccp(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+    }
+}
+
+/*!
+ @brief ゲーム状態リセット
+ 
+ ゲームの状態を初期状態にリセットする。
+ */
+- (void)resetAll
+{
+    // 各種メンバを初期化する
+    m_state = GAME_STATE_START;
+    m_stageNo = 1;
+    m_waveNo = 1;
+    m_life = START_LIFE_COUNT;
+    m_rebirthInterval = 0.0f;
+    
+    // 残機マークの初期個数を反映させる
+    [self.lifeMark updateImage:m_life];
+    
+    // 自機の状態を初期化する
+    [self.player reset];
+
+    // 画面上の全キャラクターを削除する
+    [self.playerShotPool reset];
+    [self.enemyPool reset];
+    [self.effectPool reset];
+    
+    // ゲームオーバーを表示している場合は削除する
+    if (self.gameOverImage != nil) {
+        [self.infoLayer removeChild:self.gameOverImage cleanup:YES];
+        self.gameOverImage = nil;
     }
 }
 @end

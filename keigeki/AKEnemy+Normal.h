@@ -12,7 +12,7 @@
 #define ENEMY_NORMAL_SPEED 240
 /// 雑魚の回転速度
 #define ENEMY_NORAML_ROTSPEED 0.5
-/// 雑魚の方向変更の時間
+/// 雑魚の弾発射の時間
 #define ENEMY_NORMAL_ACTIONTIME 5
 /// 雑魚の敵のサイズ
 #define ENEMY_NORMAL_SIZE 16
@@ -25,4 +25,6 @@
 - (void)actionNoraml:(ccTime)dt;
 // 破壊処理
 - (void)destroyNormal;
+// 通常弾発射
+- (void)fireNormal;
 @end

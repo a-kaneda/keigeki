@@ -57,7 +57,7 @@
  */
 - (void)actionNoraml:(ccTime)dt
 {
-    int rotdirect = 0;  // 回転方向
+    int rotdirect = 0;      // 回転方向
     
     // 回転方向を自機のある方に決定する
     rotdirect = AKCalcRotDirect(m_angle, self.position.x, self.position.y, PLAYER_POS_X, PLAYER_POS_Y);
@@ -68,7 +68,9 @@
     
     // 一定時間経過しているときは自機を狙う1-way弾を発射する
     if (m_time > ENEMY_NORMAL_ACTIONTIME) {
-        // [TODO] 弾発射処理を作成する
+        
+        // 弾を発射する
+        [self fireNormal];
         
         // 動作時間の初期化を行う
         m_time = 0.0f;
@@ -97,5 +99,17 @@
     
     // 画面効果を生成する
     [[AKGameScene sharedInstance] entryEffect:bomb Time:1.0f PosX:self.absx PosY:self.absy];
+}
+
+/*!
+ @brief 通常弾の発射
+ 
+ 通常弾の発射を行う。
+ */
+- (void)fireNormal
+{
+    // 通常弾を生成する
+    [[AKGameScene sharedInstance] fireEnemyShot:ENEMY_SHOT_TYPE_NORMAL
+                                           PosX:self.absx PosY:self.absy Angle:self.angle];
 }
 @end

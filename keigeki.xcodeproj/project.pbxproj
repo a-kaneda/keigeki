@@ -156,6 +156,9 @@
 		0C3707B815C6C82C00295D96 /* AKGameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707AF15C6C82C00295D96 /* AKGameScene.m */; };
 		0C3707B915C6C82C00295D96 /* AKPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707B115C6C82C00295D96 /* AKPlayer.m */; };
 		0C3707BA15C6C82C00295D96 /* AKPlayerShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707B315C6C82C00295D96 /* AKPlayerShot.m */; };
+		0C69227115E1231C002656AD /* AKShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C69227015E1231C002656AD /* AKShot.m */; };
+		0C69227815E127A8002656AD /* AKEnemyShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C69227715E127A8002656AD /* AKEnemyShot.m */; };
+		0C69227A15E18F56002656AD /* EnemyShot.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C69227915E18F56002656AD /* EnemyShot.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -457,6 +460,11 @@
 		0C3707B015C6C82C00295D96 /* AKPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayer.h; sourceTree = "<group>"; };
 		0C3707B115C6C82C00295D96 /* AKPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayer.m; sourceTree = "<group>"; };
 		0C3707B315C6C82C00295D96 /* AKPlayerShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayerShot.m; sourceTree = "<group>"; };
+		0C69226F15E1231C002656AD /* AKShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKShot.h; sourceTree = "<group>"; };
+		0C69227015E1231C002656AD /* AKShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKShot.m; sourceTree = "<group>"; };
+		0C69227615E127A8002656AD /* AKEnemyShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEnemyShot.h; sourceTree = "<group>"; };
+		0C69227715E127A8002656AD /* AKEnemyShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKEnemyShot.m; sourceTree = "<group>"; };
+		0C69227915E18F56002656AD /* EnemyShot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EnemyShot.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -544,8 +552,12 @@
 				0C3707AF15C6C82C00295D96 /* AKGameScene.m */,
 				0C3707B015C6C82C00295D96 /* AKPlayer.h */,
 				0C3707B115C6C82C00295D96 /* AKPlayer.m */,
+				0C69226F15E1231C002656AD /* AKShot.h */,
+				0C69227015E1231C002656AD /* AKShot.m */,
 				0C1928B715D9A43200496717 /* AKPlayerShot.h */,
 				0C3707B315C6C82C00295D96 /* AKPlayerShot.m */,
+				0C69227615E127A8002656AD /* AKEnemyShot.h */,
+				0C69227715E127A8002656AD /* AKEnemyShot.m */,
 				0C1928B315D99CCF00496717 /* AKRadar.h */,
 				0C1928B415D99CCF00496717 /* AKRadar.m */,
 				0C1928BA15DF4D3D00496717 /* AKEffect.h */,
@@ -565,6 +577,7 @@
 		0C37060615C6BEC900295D96 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0C69227915E18F56002656AD /* EnemyShot.png */,
 				0C1928C215E0618100496717 /* GameOver.png */,
 				0C1928BD15DFC1AC00496717 /* Life.png */,
 				0C1928B815DF3C3500496717 /* fire.png */,
@@ -1010,6 +1023,7 @@
 				0C1928B915DF3C3500496717 /* fire.png in Resources */,
 				0C1928BE15DFC1AD00496717 /* Life.png in Resources */,
 				0C1928C315E0618300496717 /* GameOver.png in Resources */,
+				0C69227A15E18F56002656AD /* EnemyShot.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1136,6 +1150,8 @@
 				0C1928BC15DF4D4000496717 /* AKEffect.m in Sources */,
 				0C1928C115DFC29700496717 /* AKLifeMark.m in Sources */,
 				0C1928C615E0D10700496717 /* AKHiScoreFile.m in Sources */,
+				0C69227115E1231C002656AD /* AKShot.m in Sources */,
+				0C69227815E127A8002656AD /* AKEnemyShot.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

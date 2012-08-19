@@ -13,10 +13,13 @@
 #import "AKCharacterPool.h"
 #import "AKRadar.h"
 #import "AKLifeMark.h"
+#import "AKEnemyShot.h"
 #import "common.h"
 
 /// 同時に生成可能な自機弾の最大数
 #define MAX_PLAYER_SHOT_COUNT 16
+/// 同時に生成可能な敵弾の最大数
+#define MAX_ENEMY_SHOT_COUNT 64
 /// 同時に生成可能な画面効果の最大数
 #define MAX_EFFECT_COUNT 16
 
@@ -31,6 +34,8 @@
 #define PLAYER_SHOT_POS_Z 4
 /// 敵の配置z座標
 #define ENEMY_POS_Z 3
+/// 敵弾の配置z座標
+#define ENEMY_SHOT_POS_Z 5
 /// 画面効果の配置z座標
 #define EFFECT_POS_Z 5
 /// スコアの表示位置x座標
@@ -54,8 +59,8 @@ enum GAME_STATE {
 
 /// 敵の種類
 enum ENEMY_TYPE {
-    NORMAL = 0,         ///< 雑魚
-    ENEMY_TYPE_COUNT    ///< 敵の種類の数
+    ENEMY_TYPE_NORMAL = 0,  ///< 雑魚
+    ENEMY_TYPE_COUNT        ///< 敵の種類の数
 };
 
 // ゲームプレイシーン
@@ -84,11 +89,13 @@ enum ENEMY_TYPE {
     AKBackground *m_background;
     /// 自機
     AKPlayer *m_player;
-    /// 自機弾
+    /// 自機弾プール
     AKCharacterPool *m_playerShotPool;
-    /// 敵
+    /// 敵プール
     AKCharacterPool *m_enemyPool;
-    /// 画面効果
+    /// 敵弾プール
+    AKCharacterPool *m_enemyShotPool;
+    /// 画面効果プール
     AKCharacterPool *m_effectPool;
     /// レーダー
     AKRadar *m_radar;
@@ -114,11 +121,13 @@ enum ENEMY_TYPE {
 @property (nonatomic, retain)AKBackground *background;
 /// 自機
 @property (nonatomic, retain)AKPlayer *player;
-/// 自機弾
+/// 自機弾プール
 @property (nonatomic, retain)AKCharacterPool *playerShotPool;
-/// 敵
+/// 敵プール
 @property (nonatomic, retain)AKCharacterPool *enemyPool;
-/// 画面効果
+/// 敵弾プール
+@property (nonatomic, retain)AKCharacterPool *enemyShotPool;
+/// 画面効果プール
 @property (nonatomic, retain)AKCharacterPool *effectPool;
 /// レーダー
 @property (nonatomic, retain)AKRadar *rader;
@@ -143,6 +152,8 @@ enum ENEMY_TYPE {
 - (void)filePlayerShot;
 // 敵の生成
 - (void)entryEnemy:(enum ENEMY_TYPE)type PosX:(NSInteger)posx PosY:(NSInteger)posy Angle:(float)angle;
+// 敵弾の生成
+- (void)fireEnemyShot:(enum ENEMY_SHOT_TYPE)type PosX:(NSInteger)posx PosY:(NSInteger)posy Angle:(float)angle;
 // 画面効果の生成
 - (void)entryEffect:(CCParticleSystem *)particle Time:(float)time PosX:(float)posx PosY:(float)posy;
 // 自機破壊時の処理

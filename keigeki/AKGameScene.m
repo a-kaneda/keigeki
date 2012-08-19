@@ -8,6 +8,7 @@
 #import "AKGameScene.h"
 #import "AKPlayerShot.h"
 #import "AKEnemy.h"
+#import "AKEnemyShot.h"
 #import "AKEffect.h"
 #import "AKHiScoreFile.h"
 
@@ -29,6 +30,7 @@ static AKGameScene *g_scene = nil;
 @synthesize player = m_player;
 @synthesize playerShotPool = m_playerShotPool;
 @synthesize enemyPool = m_enemyPool;
+@synthesize enemyShotPool = m_enemyShotPool;
 @synthesize rader = m_radar;
 @synthesize effectPool = m_effectPool;
 @synthesize lifeMark = m_lifeMark;
@@ -107,6 +109,10 @@ static AKGameScene *g_scene = nil;
     // 敵プールの生成
     self.enemyPool = [[[AKCharacterPool alloc] initWithClass:[AKEnemy class]
                                                         Size:MAX_ENEMY_COUNT] autorelease];
+    
+    // 敵弾プールの生成
+    self.enemyShotPool = [[[AKCharacterPool alloc] initWithClass:[AKEnemyShot class]
+                                                            Size:MAX_ENEMY_SHOT_COUNT] autorelease];
 
     // 画面効果プールの生成
     self.effectPool = [[[AKCharacterPool alloc] initWithClass:[AKEffect class]
@@ -172,6 +178,7 @@ static AKGameScene *g_scene = nil;
     // リソースの解放
     self.playerShotPool = nil;
     self.enemyPool = nil;
+    self.enemyShotPool = nil;
     self.effectPool = nil;
     self.gameOverImage = nil;
     [self.background removeAllChildrenWithCleanup:YES];
@@ -360,6 +367,12 @@ static AKGameScene *g_scene = nil;
         [character move:dt ScreenX:scrx ScreenY:scry];
     }
     
+    // 敵弾の移動
+    enumerator = [self.enemyShotPool.pool objectEnumerator];
+    for (character in enumerator) {
+        [character move:dt ScreenX:scrx ScreenY:scry];
+    }
+    
     // 自機弾と敵の当たり判定処理を行う
     enumerator = [self.playerShotPool.pool objectEnumerator];
     for (character in enumerator) {
@@ -371,6 +384,9 @@ static AKGameScene *g_scene = nil;
      
         // 自機と敵の当たり判定処理を行う
         [self.player hit:[self.enemyPool.pool objectEnumerator]];
+        
+        // 自機と敵弾の当たり判定処理を行う
+        [self.player hit:[self.enemyShotPool.pool objectEnumerator]];
     }
     
     // 画面効果の移動
@@ -433,21 +449,21 @@ static AKGameScene *g_scene = nil;
     }
     
     // プールから未使用のメモリを取得する
-    shot = [m_playerShotPool getNext];
+    shot = [self.playerShotPool getNext];
     if (shot == nil) {
-        // 空きがない場合は処理終了
+        // 空きがない場合は処理終了s
         DBGLOG(1, @"自機弾プールに空きなし");
         assert(0);
         return;
     }
     
     // 発射する方向は自機の角度に回転速度を加算する
-    angle = m_player.angle;
+    angle = self.player.angle;
     
     // 自機弾を生成する
     // 位置と向きは自機と同じとする
-    [shot createWithX:m_player.absx Y:m_player.absy Z:PLAYER_SHOT_POS_Z
-                Angle:angle Parent:m_background];
+    [shot createWithX:self.player.absx Y:self.player.absy Z:PLAYER_SHOT_POS_Z
+                Angle:angle Parent:self.background];
 }
 
 /*!
@@ -467,7 +483,7 @@ static AKGameScene *g_scene = nil;
     DBGLOG(0, @"type=%d posx=%d posy=%d angle=%f", type, posx, posy, AKCnvAngleRad2Deg(angle));
     
     // プールから未使用のメモリを取得する
-    enemy = [m_enemyPool getNext];
+    enemy = [self.enemyPool getNext];
     if (enemy == nil) {
         // 空きがない場合は処理終了
         assert(0);
@@ -477,7 +493,7 @@ static AKGameScene *g_scene = nil;
     
     // 敵の種類によって生成するメソッドを変える
     switch (type) {
-        case NORMAL:    // 雑魚
+        case ENEMY_TYPE_NORMAL:    // 雑魚
             createEnemy = @selector(createNoraml);
             break;
             
@@ -493,7 +509,32 @@ static AKGameScene *g_scene = nil;
     
     // 敵を生成する
     [enemy createWithX:posx Y:posy Z:ENEMY_POS_Z Angle:angle
-                Parent:m_background CreateSel:createEnemy];
+                Parent:self.background CreateSel:createEnemy];
+}
+
+/*!
+ @brief 敵弾の生成
+ 
+ 敵弾を生成する。
+ @param type 敵弾の種類
+ @param posx 生成位置x座標
+ @param posy 生成位置y座標
+ @param angle 敵弾の向き
+ */
+- (void)fireEnemyShot:(enum ENEMY_SHOT_TYPE)type PosX:(NSInteger)posx PosY:(NSInteger)posy Angle:(float)angle
+{
+    AKEnemyShot *enemyShot = nil;   // 敵弾
+    
+    // プールから未使用のメモリを取得する
+    enemyShot = [self.enemyShotPool getNext];
+    if (enemyShot == nil) {
+        // 空きがない場合は処理を終了する
+        assert(0);
+        return;
+    }
+    
+    // 敵弾を生成する
+    [enemyShot createWithType:type X:posx Y:posy Z:ENEMY_SHOT_POS_Z Angle:angle Parent:self.background];
 }
 
 /*!

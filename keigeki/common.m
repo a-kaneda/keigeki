@@ -182,3 +182,43 @@ int AKCalcRotDirect(float angle, float srcx, float srcy, float dstx, float dsty)
     
     return rotdirect;
 }
+
+/*!
+ @brief n-way弾発射時の方向計算
+ 
+ n-way弾を発射するときの角度を計算する。
+ @param count 弾の数
+ @param centerAngle n-way弾の中心の角度
+ @param space 2点間の間隔
+ @return n-way弾の角度配列(autorelease済)
+ */
+NSArray* AKCalcNWayAngle(int count, float centerAngle, float space)
+{
+    int i = 0;                          // ループ変数
+    float angle = 0.0f;                 // 弾を発射する角度
+    float minAngle = 0.0f;              // n-way弾の最小の角度
+    NSNumber *angleObj = nil;           // 角度をNSArrayに格納するためのオブジェクト
+    NSMutableArray *angleArray = nil;   // n-way弾の角度配列
+    
+    // 角度格納用配列を生成する
+    angleArray = [NSMutableArray arrayWithCapacity:count];
+    
+    // 最小値の角度を計算する
+    minAngle = centerAngle - (space * (count - 1)) / 2.0f;
+    
+    // 各弾の発射角度を計算する
+    for (i = 0; i < count; i++) {
+        
+        // 弾の角度を計算する
+        angle = minAngle + i * space;
+        
+        // NSArrayに格納するためにオブジェクトを作成する
+        angleObj = [NSNumber numberWithFloat:angle];
+        
+        // 戻り値の配列に追加する
+        [angleArray addObject:angleObj];
+    }
+    
+    // 計算した角度の配列を返す
+    return angleArray;
+}

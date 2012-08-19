@@ -5,13 +5,10 @@
  自機弾を管理するクラスを定義する。
  */
 
-
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
-#import "AKCharacter.h"
+#import "AKShot.h"
 
-/// 自機弾の射程距離
-#define PLAYER_SHOT_RANGE   600
 /// 自機弾のスピード
 #define PLAYER_SHOT_SPEED   1200
 /// 自機弾の幅
@@ -20,12 +17,8 @@
 #define PLAYER_SHOT_HEIGHT  8
 
 // 自機弾クラス
-@interface AKPlayerShot : AKCharacter {
-    /// 移動距離
-    float m_distance;
+@interface AKPlayerShot : AKShot {
+    
 }
 
-// 生成処理
-- (void)createWithX:(NSInteger)x Y:(NSInteger)y Z:(NSInteger)z Angle:(float)angle
-             Parent:(CCNode*)parent;
 @end

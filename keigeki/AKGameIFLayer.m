@@ -20,6 +20,7 @@ static float Accel2Ratio(float accel);
 @implementation AKGameIFLayer
 
 @synthesize shotButton = m_shotButton;
+@synthesize pauseButton = m_pauseButton;
 
 /*!
  @brief オブジェクト生成処理
@@ -37,13 +38,23 @@ static float Accel2Ratio(float accel);
     
     // ショットボタンの画像を読み込む
     self.shotButton = [CCSprite spriteWithFile:@"ShotButton.png"];
-    assert(m_shotButton != nil);
+    assert(self.shotButton != nil);
     
     // ショットボタンをレイヤーに配置する
-    [self addChild:m_shotButton];
+    [self addChild:self.shotButton];
     
     // ショットボタンの位置を設定する
-    m_shotButton.position = ccp(SHOT_BUTTON_POS_X, SHOT_BUTTON_POS_Y);
+    self.shotButton.position = ccp(SHOT_BUTTON_POS_X, SHOT_BUTTON_POS_Y);
+    
+    // ポーズボタンの画像を読み込む
+    self.pauseButton = [CCSprite spriteWithFile:@"PauseButton.png"];
+    assert(self.pauseButton != nil);
+    
+    // ポーズボタンをレイヤーに配置する
+    [self addChild:self.pauseButton];
+    
+    // ポーズボタンの位置を設定する
+    self.pauseButton.position = ccp(PAUSE_BUTTON_POS_X, PAUSE_BUTTON_POS_Y);
 
     // 加速度センサーを有効にする
     self.isAccelerometerEnabled = YES;
@@ -58,7 +69,7 @@ static float Accel2Ratio(float accel);
  */
 - (void)dealloc
 {
-    // ショットボタンの画像の解放
+    // 配置した画像を解放する
     [self removeAllChildrenWithCleanup:YES];
     
     // スーパークラスの解放処理
@@ -122,37 +133,29 @@ static float Accel2Ratio(float accel);
  */
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    CGPoint locationInView; // タッチ位置。画面上の座標。
-    CGPoint location;       // タッチ位置。cocos2dの座標系。
         
     DBGLOG(0, @"タッチ開始");
     
     // ゲームシーンの状態により処理を分岐する
     switch ([AKGameScene sharedInstance].state) {
+
         case GAME_STATE_PLAYING:    // プレイ中
 
-            // タッチ位置を取得し、cocos2dの座標系に変換する。
-            locationInView = [touch locationInView:[touch view]];
-            location = [[CCDirector sharedDirector] convertToGL:locationInView];
-            
-            // タッチ位置判定
-            // ショットボタンの内側の場合
-            if (location.x >= SHOT_BUTTON_POS_X - SHOT_BUTTON_SIZE / 2 &&
-                location.x <= SHOT_BUTTON_POS_X + SHOT_BUTTON_SIZE / 2 &&
-                location.y >= SHOT_BUTTON_POS_Y - SHOT_BUTTON_SIZE / 2 &&
-                location.y <= SHOT_BUTTON_POS_Y + SHOT_BUTTON_SIZE / 2) {
-                
-                // 自機弾を発射する
-                [[AKGameScene sharedInstance] filePlayerShot];
-                DBGLOG(0, "自機弾発射:x=%f y=%f", location.x, location.y);
-            }
-            
+            // プレイ中のタッチ開始処理を実行する
+            [self touchBeganInPlaying:touch];
             break;
             
         case GAME_STATE_GAMEOVER:   // ゲームオーバー
             
             // 状態をリセットする
             [[AKGameScene sharedInstance] resetAll];
+            break;
+            
+        case GAME_STATE_PUASE:      // ポーズ中
+            
+            // ポーズを解除する
+            [[AKGameScene sharedInstance] resume];
+            break;
             
         default:
             break;
@@ -194,6 +197,43 @@ static float Accel2Ratio(float accel);
 - (void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
 {
     DBGLOG(0, @"タッチキャンセル");
+}
+
+/*!
+ @brief プレイ中タッチ開始処理
+ 
+ ゲームプレイ中の時にタッチが開始されたときの処理。
+ @param touch タッチ情報
+ */
+- (void)touchBeganInPlaying:(UITouch *)touch
+{
+    CGPoint locationInView; // タッチ位置。画面上の座標。
+    CGPoint location;       // タッチ位置。cocos2dの座標系。
+    
+    // タッチ位置を取得し、cocos2dの座標系に変換する。
+    locationInView = [touch locationInView:[touch view]];
+    location = [[CCDirector sharedDirector] convertToGL:locationInView];
+    
+    // タッチ位置判定
+    // ショットボタンの内側の場合
+    if (location.x >= SHOT_BUTTON_POS_X - SHOT_BUTTON_SIZE / 2 &&
+        location.x <= SHOT_BUTTON_POS_X + SHOT_BUTTON_SIZE / 2 &&
+        location.y >= SHOT_BUTTON_POS_Y - SHOT_BUTTON_SIZE / 2 &&
+        location.y <= SHOT_BUTTON_POS_Y + SHOT_BUTTON_SIZE / 2) {
+        
+        // 自機弾を発射する
+        [[AKGameScene sharedInstance] filePlayerShot];
+        DBGLOG(0, "自機弾発射:x=%f y=%f", location.x, location.y);
+    }
+    // ポーズボタンの内側の場合
+    else if (location.x >= PAUSE_BUTTON_POS_X - PAUSE_BUTTON_SIZE / 2 &&
+             location.x <= PAUSE_BUTTON_POS_X + PAUSE_BUTTON_SIZE / 2 &&
+             location.y >= PAUSE_BUTTON_POS_Y - PAUSE_BUTTON_SIZE / 2 &&
+             location.y <= PAUSE_BUTTON_POS_Y + PAUSE_BUTTON_SIZE / 2) {
+        
+        // ポーズ処理を実行する
+        [[AKGameScene sharedInstance] pause];
+    }
 }
 @end
 

@@ -39,13 +39,18 @@
 /// 画面効果の配置z座標
 #define EFFECT_POS_Z 5
 /// スコアの表示位置x座標
-#define SCORE_POS_X 470
+#define SCORE_POS_X 10
 /// スコアの表示位置y座標
-#define SCORE_POS_Y 280
+#define SCORE_POS_Y 300
 /// ハイスコアの表示位置x座標
-#define HISCORE_POS_X 470
+#define HISCORE_POS_X 280
 /// ハイスコアの表示位置y座標
 #define HISCORE_POS_Y 300
+
+/// スコア表示のフォーマット
+#define SCORE_FORMAT @"SCORE:%08d"
+/// ハイスコア表示のフォーマット
+#define HISCORE_FORMAT @"HI:%08d"
 
 /// ゲームプレイの状態
 enum GAME_STATE {
@@ -107,6 +112,8 @@ enum ENEMY_TYPE {
     CCLabelTTF *m_scoreLabel;
     /// ハイスコアのラベル
     CCLabelTTF *m_hiScoreLabel;
+    /// 一時停止中の画像
+    CCSprite *m_pauseImage;
 }
 
 /// 現在の状態
@@ -139,6 +146,8 @@ enum ENEMY_TYPE {
 @property (nonatomic, retain)CCLabelTTF *scoreLabel;
 /// ハイスコアのラベル
 @property (nonatomic, retain)CCLabelTTF *hiScoreLabel;
+/// 一時停止中の画像
+@property (nonatomic, retain)CCSprite *pauseImage;
 
 // シングルトンオブジェクト取得
 + (AKGameScene *)sharedInstance;
@@ -160,6 +169,10 @@ enum ENEMY_TYPE {
 - (void)miss;
 // ゲーム状態リセット
 - (void)resetAll;
-/// スコア加算
+// スコア加算
 - (void)addScore:(NSInteger)score;
+// ポーズ
+- (void)pause;
+// ゲーム再開
+- (void)resume;
 @end

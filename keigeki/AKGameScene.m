@@ -36,6 +36,7 @@ static AKGameScene *g_scene = nil;
 @synthesize lifeMark = m_lifeMark;
 @synthesize scoreLabel = m_scoreLabel;
 @synthesize hiScoreLabel = m_hiScoreLabel;
+@synthesize pauseImage = m_pauseImage;
 
 /*!
  @brief シングルトンオブジェクト取得
@@ -65,6 +66,7 @@ static AKGameScene *g_scene = nil;
     float anchor_y = 0.0f;  // 画面回転時の中心点y座標
     AKHiScoreFile *hiScoreFile = nil;   // ハイスコアファイル
     NSString *hiScoreString = nil;      // ハイスコア文字列
+    NSString *scoreString = nil;        // スコア文字列
     
     // スーパークラスの生成処理
     self = [super init];
@@ -131,12 +133,13 @@ static AKGameScene *g_scene = nil;
     [self.infoLayer addChild:self.lifeMark];
     
     // スコアラベルを生成する
-    self.scoreLabel = [CCLabelTTF labelWithString:@"SCORE:00000000" fontName:@"Helvetica" fontSize:22];
+    scoreString = [NSString stringWithFormat:SCORE_FORMAT, m_score];
+    self.scoreLabel = [CCLabelTTF labelWithString:scoreString fontName:@"Helvetica" fontSize:22];
     [self.infoLayer addChild:self.scoreLabel];
     
-    // スコアラベルの位置を設定する。
-    // ハイスコアと右揃えにするためにアンカーポイントを右端に設定する。
-    self.scoreLabel.anchorPoint = ccp(1.0f, 0.5f);
+    // スコアラベルの位置を設定する
+    // アンカーポイントは左端に設定する
+    self.scoreLabel.anchorPoint = ccp(0.0f, 0.5f);
     self.scoreLabel.position = ccp(SCORE_POS_X, SCORE_POS_Y);
     
     // ハイスコアファイルの読み込みを行う
@@ -147,13 +150,11 @@ static AKGameScene *g_scene = nil;
     m_hiScore = hiScoreFile.hiscore;
     
     // ハイスコアラベルを生成する
-    hiScoreString = [NSString stringWithFormat:@"HI:%08d", m_hiScore];
+    hiScoreString = [NSString stringWithFormat:HISCORE_FORMAT, m_hiScore];
     self.hiScoreLabel = [CCLabelTTF labelWithString:hiScoreString fontName:@"Helvetica" fontSize:22];
     [self.infoLayer addChild:self.hiScoreLabel];
 
     // ハイスコアラベルの位置を設定する。
-    // スコアと右揃えにするためにアンカーポイントを右端に設定する。
-    self.hiScoreLabel.anchorPoint = ccp(1.0f, 0.5f);
     self.hiScoreLabel.position = ccp(HISCORE_POS_X, HISCORE_POS_Y);
 
     // 状態を初期化する
@@ -181,6 +182,7 @@ static AKGameScene *g_scene = nil;
     self.enemyShotPool = nil;
     self.effectPool = nil;
     self.gameOverImage = nil;
+    self.pauseImage = nil;
     [self.background removeAllChildrenWithCleanup:YES];
     [self.infoLayer removeAllChildrenWithCleanup:YES];
     [self.baseLayer removeAllChildrenWithCleanup:YES];
@@ -626,7 +628,7 @@ static AKGameScene *g_scene = nil;
     [self.lifeMark updateImage:m_life];
     
     // ラベルの内容を更新する
-    scoreString = [NSString stringWithFormat:@"SCORE:%08d", m_score];
+    scoreString = [NSString stringWithFormat:SCORE_FORMAT, m_score];
     [self.scoreLabel setString:scoreString];
 
     // 自機の状態を初期化する
@@ -637,11 +639,9 @@ static AKGameScene *g_scene = nil;
     [self.enemyPool reset];
     [self.effectPool reset];
     
-    // ゲームオーバーを表示している場合は削除する
-    if (self.gameOverImage != nil) {
-        [self.infoLayer removeChild:self.gameOverImage cleanup:YES];
-        self.gameOverImage = nil;
-    }
+    // ゲームオーバーの表示を削除する
+    [self.gameOverImage removeFromParentAndCleanup:YES];
+    self.gameOverImage = nil;
 }
 
 /*!
@@ -658,7 +658,7 @@ static AKGameScene *g_scene = nil;
     m_score += score;
     
     // ラベルの内容を更新する
-    scoreString = [NSString stringWithFormat:@"SCORE:%08d", m_score];
+    scoreString = [NSString stringWithFormat:SCORE_FORMAT, m_score];
     [self.scoreLabel setString:scoreString];
     
     // ハイスコアを更新している場合はハイスコアを設定する
@@ -668,8 +668,123 @@ static AKGameScene *g_scene = nil;
         m_hiScore = m_score;
         
         // ラベルの内容を更新する
-        hiScoreString = [NSString stringWithFormat:@"HI:%08d", m_hiScore];
+        hiScoreString = [NSString stringWithFormat:HISCORE_FORMAT, m_hiScore];
         [self.hiScoreLabel setString:hiScoreString];
     }
+}
+
+/*!
+ @brief ポーズ
+ 
+ プレイ中の状態からゲームを一時停止する。
+ */
+- (void)pause
+{
+    CCNode *obj = nil;              // オブジェクト
+    AKCharacter *character = nil;   // キャラクター
+    NSEnumerator *enumerator = nil; // キャラクター操作用列挙子
+    
+    // プレイ中から以外の変更の場合はエラー
+    assert(m_state == GAME_STATE_PLAYING);
+    
+    // ゲーム状態を一時停止に変更する
+    m_state = GAME_STATE_PUASE;
+    
+    // すべてのキャラクターのアニメーションを停止する
+    // 自機
+    CCARRAY_FOREACH(self.player.children, obj) {
+        [obj pauseSchedulerAndActions];
+    }
+    // 自機弾
+    enumerator = [self.playerShotPool.pool objectEnumerator];
+    for (character in enumerator) {
+        CCARRAY_FOREACH(character.children, obj) {
+            [obj pauseSchedulerAndActions];
+        }
+    }
+    // 敵
+    enumerator = [self.enemyPool.pool objectEnumerator];
+    for (character in enumerator) {
+        CCARRAY_FOREACH(character.children, obj) {
+            [obj pauseSchedulerAndActions];
+        }
+    }
+    // 敵弾
+    enumerator = [self.enemyShotPool.pool objectEnumerator];
+    for (character in enumerator) {
+        CCARRAY_FOREACH(character.children, obj) {
+            [obj pauseSchedulerAndActions];
+        }
+    }
+    // 画面効果
+    enumerator = [self.effectPool.pool objectEnumerator];
+    for (character in enumerator) {
+        CCARRAY_FOREACH(character.children, obj) {
+            [obj pauseSchedulerAndActions];
+        }
+    }
+    
+    // 一時停止中の画像を読み込む
+    self.pauseImage = [CCSprite spriteWithFile:@"Pause.png"];
+    [self.infoLayer addChild:self.pauseImage];
+    
+    // 画面の中心に配置する
+    self.pauseImage.position = ccp(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+}
+
+/*!
+ @brief ゲーム再開
+ 
+ 一時停止中の状態からゲームを再会する。
+ */
+- (void)resume
+{
+    CCNode *obj = nil;              // オブジェクト
+    AKCharacter *character = nil;   // キャラクター
+    NSEnumerator *enumerator = nil; // キャラクター操作用列挙子
+    
+    // 一時停止中から以外の変更の場合はエラー
+    assert(m_state == GAME_STATE_PUASE);
+
+    // ゲーム状態をプレイ中に変更する
+    m_state = GAME_STATE_PLAYING;
+    
+    // すべてのキャラクターのアニメーションを再開する
+    // 自機
+    CCARRAY_FOREACH(self.player.children, obj) {
+        [obj resumeSchedulerAndActions];
+    }
+    // 自機弾
+    enumerator = [self.playerShotPool.pool objectEnumerator];
+    for (character in enumerator) {
+        CCARRAY_FOREACH(character.children, obj) {
+            [obj resumeSchedulerAndActions];
+        }
+    }
+    // 敵
+    enumerator = [self.enemyPool.pool objectEnumerator];
+    for (character in enumerator) {
+        CCARRAY_FOREACH(character.children, obj) {
+            [obj resumeSchedulerAndActions];
+        }
+    }
+    // 敵弾
+    enumerator = [self.enemyShotPool.pool objectEnumerator];
+    for (character in enumerator) {
+        CCARRAY_FOREACH(character.children, obj) {
+            [obj resumeSchedulerAndActions];
+        }
+    }
+    // 画面効果
+    enumerator = [self.effectPool.pool objectEnumerator];
+    for (character in enumerator) {
+        CCARRAY_FOREACH(character.children, obj) {
+            [obj resumeSchedulerAndActions];
+        }
+    }
+    
+    // 一時停止中の画像を取り除く
+    [self.pauseImage removeFromParentAndCleanup:YES];
+    self.pauseImage = nil;
 }
 @end

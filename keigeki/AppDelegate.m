@@ -118,11 +118,25 @@
 		[director_ resume];
 }
 
+/*!
+ @brief Tells the delegate that the application is now in the background.
+ 
+ Tells the delegate that the application is now in the background.
+ @param application The singleton application instance.
+ */
 -(void) applicationDidEnterBackground:(UIApplication*)application
 {
-	if( [navController_ visibleViewController] == director_ )
+    DBGLOG(1, @"applicationDidEnterBackground start.");
+	if( [navController_ visibleViewController] == director_ ) {
 		[director_ stopAnimation];
+        
+        // ゲームプレイ中の場合は一時停止状態にする
+        if ([AKGameScene sharedInstance].state == GAME_STATE_PLAYING) {
+            [[AKGameScene sharedInstance] pause];
+        }
+    }
 }
+
 
 -(void) applicationWillEnterForeground:(UIApplication*)application
 {

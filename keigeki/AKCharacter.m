@@ -64,7 +64,8 @@
 - (void)dealloc
 {
     // スプライトを解放する
-    [self removeAllChildrenWithCleanup:YES];
+    [self.image removeFromParentAndCleanup:YES];
+    self.image = nil;
     
     // スーパークラスの解放処理
     [super dealloc];
@@ -164,10 +165,10 @@
     DBGLOG(0, @"vx=%f vy=%f ax=%f ay=%f px=%f py=%f sx=%d sy=%d", velx, vely, self.absx, self.absy, posx, posy, scrx, scry);
         
     // 表示座標の設定
-    self.position = ccp(posx, posy);
+    self.image.position = ccp(posx, posy);
     
     // 回転処理
-    [self setRotation:AKCnvAngleRad2Scr(self.angle)];
+    [self.image setRotation:AKCnvAngleRad2Scr(self.angle)];
     
     // キャラクター固有の動作を行う
     [self action:dt];
@@ -196,7 +197,7 @@
     
     // 画面から取り除く
     DBGLOG(0, @"removeFromParentAndCleanup実行");
-    [self removeFromParentAndCleanup:YES];
+    [self.image removeFromParentAndCleanup:YES];
 }
 
 /*!
@@ -223,10 +224,10 @@
     }
     
     // 自キャラの上下左右の端を計算する
-    myleft = self.position.x - self.width / 2.0f;
-    myright = self.position.x + self.width / 2.0f;
-    mytop = self.position.y + self.height / 2.0f;
-    mybottom = self.position.y - self.height / 2.0f;
+    myleft = self.image.position.x - self.width / 2.0f;
+    myright = self.image.position.x + self.width / 2.0f;
+    mytop = self.image.position.y + self.height / 2.0f;
+    mybottom = self.image.position.y - self.height / 2.0f;
     
     DBGLOG(0, @"    my=(%f, %f, %f, %f)", myleft, myright, mytop, mybottom);
     
@@ -239,10 +240,10 @@
         }
         
         // 相手の上下左右の端を計算する
-        targetleft = target.position.x - target.width / 2.0f;
-        targetright = target.position.x + target.width / 2.0f;
-        targettop = target.position.y + target.height / 2.0f;
-        targetbottom = target.position.y - target.height / 2.0f;
+        targetleft = target.image.position.x - target.width / 2.0f;
+        targetright = target.image.position.x + target.width / 2.0f;
+        targettop = target.image.position.y + target.height / 2.0f;
+        targetbottom = target.image.position.y - target.height / 2.0f;
         
         DBGLOG(0, @"target=(%f, %f, %f, %f)", targetleft, targetright, targettop, targetbottom);
         

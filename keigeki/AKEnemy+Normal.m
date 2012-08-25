@@ -36,10 +36,7 @@
     // 当たり判定サイズを設定する
     self.width = ENEMY_NORMAL_SIZE;
     self.height = ENEMY_NORMAL_SIZE;
-    
-    // 画像をノードに追加する
-    [self addChild:self.image];
-    
+        
     // 速度を設定する
     m_speed = ENEMY_NORMAL_SPEED;
     
@@ -60,7 +57,8 @@
     int rotdirect = 0;      // 回転方向
     
     // 回転方向を自機のある方に決定する
-    rotdirect = AKCalcRotDirect(m_angle, self.position.x, self.position.y, PLAYER_POS_X, PLAYER_POS_Y);
+    rotdirect = AKCalcRotDirect(m_angle, self.image.position.x, self.image.position.y,
+                                PLAYER_POS_X, PLAYER_POS_Y);
     
     // 自機の方に向かって向きを回転する
     self.rotSpeed = rotdirect * ENEMY_NORAML_ROTSPEED;
@@ -76,7 +74,8 @@
         m_time = 0.0f;
     }
     
-    DBGLOG(0, @"pos=(%f, %f) angle=%f", self.position.x, self.position.y, AKCnvAngleRad2Deg(m_angle));
+    DBGLOG(0, @"pos=(%f, %f) angle=%f", self.image.position.x, self.image.position.y,
+           AKCnvAngleRad2Deg(m_angle));
 }
 
 /*!

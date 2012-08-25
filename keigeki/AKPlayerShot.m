@@ -33,9 +33,6 @@
     self.image = [CCSprite spriteWithFile:@"PlayerShot.png"];
     assert(m_image != nil);
     
-    // 画像をノードに追加する
-    [self addChild:m_image];
-
     // 各種パラメータを設定する
     m_speed = PLAYER_SHOT_SPEED;
     m_width = PLAYER_SHOT_WIDTH;

@@ -16,6 +16,27 @@
 @implementation AKEffect
 
 /*!
+ @brief オブジェクト生成処理
+ 
+ オブジェクトの生成を行う。
+ @return 生成したオブジェクト。失敗時はnilを返す。
+ */
+- (id)init
+{
+    // スーパークラスの生成処理
+    self = [super init];
+    if (!self) {
+        return nil;
+    }
+    
+    // パーティクルを配置するためダミーのノードを作成する
+    self.image = [CCNode node];
+    assert(m_image != nil);
+        
+    return self;
+}
+
+/*!
  @brief キャラクター固有の動作
  
  生存時間を経過している場合は画面から取り除く。
@@ -24,7 +45,7 @@
 - (void)action:(ccTime)dt
 {
     DBGLOG(0, @"lifetime=%f dt=%f", m_lifetime, dt);
-    DBGLOG(0, @"position=(%f, %f)", self.position.x, self.position.y);
+    DBGLOG(0, @"position=(%f, %f)", self.image.position.x, self.image.position.y);
     DBGLOG(0, @"abspos=(%f, %f)", self.absx, self.absy);
     
     // 生存時間を減らす
@@ -62,6 +83,6 @@
     self.hitPoint = 1;
     
     // 親ノードに追加する
-    [parent addChild:self z:posz];
+    [parent addChild:self.image z:posz];
 }
 @end

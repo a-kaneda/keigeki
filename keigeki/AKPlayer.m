@@ -46,9 +46,6 @@
     self.image = [CCSprite spriteWithFile:@"Player.png"];
     assert(m_image != nil);
     
-    // 画像をノードに配置する
-    [self addChild:m_image];
-    
     return self;
 }
 
@@ -71,9 +68,9 @@
     }
     
     // 自機の表示座標は画面中央下部に固定
-    self.position = ccp(PLAYER_POS_X, PLAYER_POS_Y);
+    self.image.position = ccp(PLAYER_POS_X, PLAYER_POS_Y);
     
-    DBGLOG(0, @"player pos=(%f, %f)", self.position.x, self.position.y);
+    DBGLOG(0, @"player pos=(%f, %f)", self.image.position.x, self.image.position.y);
     DBGLOG(0, @"player angle=%f speed=%f", m_angle, m_speed);
 }
 
@@ -100,7 +97,7 @@
     self.isStaged = NO;
     
     // 非表示とする
-    self.visible = NO;
+    self.image.visible = NO;
     
     // 自機破壊時の処理を行う
     [[AKGameScene sharedInstance] miss];
@@ -160,7 +157,7 @@
     m_isStaged = YES;
     
     // 表示させる
-    self.visible = YES;
+    self.image.visible = YES;
     
     // 無敵状態にする
     m_isInvincible = YES;
@@ -179,7 +176,7 @@
 - (void)reset
 {
     // 初期位置は原点
-    self.position = ccp(0, 0);
+    self.image.position = ccp(0, 0);
     
     // 初期角度は垂直上向き
     m_angle = M_PI / 2;
@@ -191,7 +188,7 @@
     m_isStaged = YES;
     
     // 表示させる
-    self.visible = YES;
+    self.image.visible = YES;
     
     // 無敵状態はOFFにする
     m_isInvincible = NO;

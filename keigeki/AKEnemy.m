@@ -50,15 +50,16 @@
     
     // 敵の向きによって加算するスコアを変える。
     // 後ろを向いている場合が最大とする。
-    destAngle = AKCalcDestAngle(self.position.x, self.position.y, PLAYER_POS_X, PLAYER_POS_Y);
+    destAngle = AKCalcDestAngle(self.image.position.x, self.image.position.y,
+                                PLAYER_POS_X, PLAYER_POS_Y);
     score = ENEMY_SCORE * (2 - cos(destAngle - self.angle));
     
     // スコアを加算する
     [[AKGameScene sharedInstance] addScore:score];
     
     // 画像の解放
-    [self removeChild:m_image cleanup:YES];
-    m_image = nil;
+    [self.image removeFromParentAndCleanup:YES];
+    self.image = nil;
     
     // スーパークラスの処理を行う
     [super destroy];
@@ -92,6 +93,6 @@
     [self performSelector:create];
     
     // レイヤーに配置する
-    [parent addChild:self z:z];
+    [parent addChild:self.image z:z];
 }
 @end

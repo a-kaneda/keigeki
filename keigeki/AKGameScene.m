@@ -34,9 +34,6 @@ static AKGameScene *g_scene = nil;
 @synthesize rader = m_radar;
 @synthesize effectPool = m_effectPool;
 @synthesize lifeMark = m_lifeMark;
-@synthesize scoreLabel = m_scoreLabel;
-@synthesize hiScoreLabel = m_hiScoreLabel;
-@synthesize pauseImage = m_pauseImage;
 
 /*!
  @brief シングルトンオブジェクト取得
@@ -67,6 +64,8 @@ static AKGameScene *g_scene = nil;
     AKHiScoreFile *hiScoreFile = nil;   // ハイスコアファイル
     NSString *hiScoreString = nil;      // ハイスコア文字列
     NSString *scoreString = nil;        // スコア文字列
+    CCLabelTTF *scoreLabel = nil;       // スコアのラベル
+    CCLabelTTF *hiScoreLabel = nil;     // ハイスコアのラベル
     
     // スーパークラスの生成処理
     self = [super init];
@@ -101,8 +100,8 @@ static AKGameScene *g_scene = nil;
     [self.baseLayer addChild:self.background z:1];
     
     // 自機の生成
-    self.player = [AKPlayer node];
-    [self.background addChild:self.player z:PLAYER_POS_Z];
+    self.player = [[[AKPlayer alloc] init] autorelease];
+    [self.background addChild:self.player.image z:PLAYER_POS_Z];
     
     // 自機弾プールの生成
     self.playerShotPool = [[[AKCharacterPool alloc] initWithClass:[AKPlayerShot class]
@@ -134,13 +133,14 @@ static AKGameScene *g_scene = nil;
     
     // スコアラベルを生成する
     scoreString = [NSString stringWithFormat:SCORE_FORMAT, m_score];
-    self.scoreLabel = [CCLabelTTF labelWithString:scoreString fontName:@"Helvetica" fontSize:22];
-    [self.infoLayer addChild:self.scoreLabel];
+    scoreLabel = [CCLabelTTF labelWithString:scoreString fontName:@"Helvetica" fontSize:22];
+    scoreLabel.tag = INFOLAYER_TAG_SCORE;
+    [self.infoLayer addChild:scoreLabel];
     
     // スコアラベルの位置を設定する
     // アンカーポイントは左端に設定する
-    self.scoreLabel.anchorPoint = ccp(0.0f, 0.5f);
-    self.scoreLabel.position = ccp(SCORE_POS_X, SCORE_POS_Y);
+    scoreLabel.anchorPoint = ccp(0.0f, 0.5f);
+    scoreLabel.position = ccp(SCORE_POS_X, SCORE_POS_Y);
     
     // ハイスコアファイルの読み込みを行う
     hiScoreFile = [[[AKHiScoreFile alloc] init] autorelease];
@@ -151,11 +151,12 @@ static AKGameScene *g_scene = nil;
     
     // ハイスコアラベルを生成する
     hiScoreString = [NSString stringWithFormat:HISCORE_FORMAT, m_hiScore];
-    self.hiScoreLabel = [CCLabelTTF labelWithString:hiScoreString fontName:@"Helvetica" fontSize:22];
-    [self.infoLayer addChild:self.hiScoreLabel];
+    hiScoreLabel = [CCLabelTTF labelWithString:hiScoreString fontName:@"Helvetica" fontSize:22];
+    hiScoreLabel.tag = INFOLAYER_TAG_HISCORE;
+    [self.infoLayer addChild:hiScoreLabel];
 
     // ハイスコアラベルの位置を設定する。
-    self.hiScoreLabel.position = ccp(HISCORE_POS_X, HISCORE_POS_Y);
+    hiScoreLabel.position = ccp(HISCORE_POS_X, HISCORE_POS_Y);
 
     // 状態を初期化する
     [self resetAll];
@@ -181,8 +182,6 @@ static AKGameScene *g_scene = nil;
     self.enemyPool = nil;
     self.enemyShotPool = nil;
     self.effectPool = nil;
-    self.gameOverImage = nil;
-    self.pauseImage = nil;
     [self.background removeAllChildrenWithCleanup:YES];
     [self.infoLayer removeAllChildrenWithCleanup:YES];
     [self.baseLayer removeAllChildrenWithCleanup:YES];
@@ -226,91 +225,8 @@ static AKGameScene *g_scene = nil;
  */
 - (void)updateStart:(ccTime)dt
 {
-    NSRange lineRange = {0};        // 処理対象の行の範囲
-    NSString *fileName = nil;       // ステージ定義ファイルのファイル名
-    NSString *filePath = nil;       // ステージ定義ファイルのパス
-    NSString *stageScript = nil;    // ステージ定義ファイルの内容
-    NSString *line = nil;           // 処理対象の行の文字列
-    NSError *error = nil;           // ファイル読み込みエラー内容
-    NSBundle *bundle = nil;         // バンドル
-    NSArray *params = nil;          // ステージ定義ファイルの1行のパラメータ
-    NSString *param = nil;          // ステージ定義ファイルの1個のパラメータ
-    enum ENEMY_TYPE enemyType = 0;  // 敵の種類
-    NSInteger enemyPosX = 0;        // 敵の配置位置x座標
-    NSInteger enemyPosY = 0;        // 敵の配置位置y座標
-    float enemyAngle = 0.0f;        // 敵の向き
-    
-    // ファイル名をステージ番号、ウェイブ番号から決定する
-    fileName = [NSString stringWithFormat:@"stage%d_%d", m_stageNo, m_waveNo];
-    DBGLOG(0, @"fileName=%@", fileName);
-    
-    // ファイルパスをバンドルから取得する
-    bundle = [NSBundle mainBundle];
-    filePath = [bundle pathForResource:fileName ofType:@"txt"];
-    DBGLOG(0, @"filePath=%@", filePath);
-    
-    // ステージ定義ファイルを読み込む
-    stageScript = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding
-                                               error:&error];
-    // ファイル読み込みエラー
-    if (stageScript == nil && error != nil) {
-        DBGLOG(0, @"%@", [error localizedDescription]);
-    }
-        
-    // ステージ定義ファイルの範囲の間は処理を続ける
-    while (lineRange.location < stageScript.length) {
-        
-        // 1行の範囲を取得する
-        lineRange = [stageScript lineRangeForRange:lineRange];
-        
-        // 1行の文字列を取得する
-        line = [stageScript substringWithRange:lineRange];
-        DBGLOG(0, @"%@", line);
-        
-        // 1文字目が"#"の場合は処理を飛ばす
-        if ([[line substringToIndex:1] isEqualToString:@"#"]) {
-            DBGLOG(0, @"コメント:%@", line);
-        }
-        // コメントでない場合はパラメータを読み込む
-        else {
-            // カンマ区切りでパラメータを分割する
-            params = [line componentsSeparatedByString:@","];
-            
-            // 1個目のパラメータは敵の種類として扱う。
-            param = [params objectAtIndex:0];
-            enemyType = [param integerValue];
-            
-            // 敵の種類は0始まりとするため、-1する。
-            enemyType--;
-            
-            // 2個目のパラメータはx座標として扱う
-            param = [params objectAtIndex:1];
-            enemyPosX = [param integerValue];
-            
-            // 3個目のパラメータはy座標として扱う
-            param = [params objectAtIndex:2];
-            enemyPosY = [param integerValue];
-            
-            DBGLOG(0, @"type=%d posx=%d posy=%d", enemyType, enemyPosX, enemyPosY);
-            
-            // 角度を自機のいる位置に設定する
-            // スクリプト上の座標は自機の位置からの相対位置なので目標座標は(0, 0)
-            enemyAngle = AKCalcDestAngle(enemyPosX, enemyPosY, 0, 0);
-            
-            DBGLOG(0, @"angle=%f", AKCnvAngleRad2Deg(enemyAngle));
-            
-            // 生成位置は自機の位置からの相対位置とする
-            enemyPosX += m_player.absx;
-            enemyPosY += m_player.absy;
-            
-            // 敵を生成する
-            [self entryEnemy:(enum ENEMY_TYPE)enemyType PosX:enemyPosX PosY:enemyPosY Angle:enemyAngle];
-        }
-        
-        // 次の行へ処理を進める
-        lineRange.location = lineRange.location + lineRange.length;
-        lineRange.length = 0;
-    }
+    // ステージ構成スクリプトを読み込む
+    [self readScriptOfStage:m_stageNo Wave:m_waveNo];
     
     // 状態をプレイ中へと進める
     m_state = GAME_STATE_PLAYING;
@@ -330,6 +246,7 @@ static AKGameScene *g_scene = nil;
     NSEnumerator *enumerator = nil;   // キャラクター操作用列挙子
     AKCharacter *character = nil;       // キャラクター操作作業用バッファ
     AKHiScoreFile *hiScoreFile = nil;   // ハイスコアファイル
+    BOOL isClear = NO;      // 敵、敵弾がすべていなくなっているか
     
     // 自機が破壊されている場合は復活までの時間をカウントする
     if (!self.player.isStaged) {
@@ -362,17 +279,28 @@ static AKGameScene *g_scene = nil;
                character.absx, character.absy);
     }
     
+    // ウェーブをクリアしたかどうかを判定するため、
+    // 敵または敵弾がひとつでも存在するかどうかを調べる。
+    // 最初にフラグを立てておいて、一つでも存在する場合はフラグを落とす。
+    isClear = YES;
+    
     // 敵の移動
     enumerator = [self.enemyPool.pool objectEnumerator];
     for (character in enumerator) {
-        DBGLOG(0 && character.isStaged, @"enemy move start.");
-        [character move:dt ScreenX:scrx ScreenY:scry];
+        if (character.isStaged) {
+            DBGLOG(0, @"enemy move start.");
+            [character move:dt ScreenX:scrx ScreenY:scry];
+            isClear = NO;
+        }
     }
     
     // 敵弾の移動
     enumerator = [self.enemyShotPool.pool objectEnumerator];
     for (character in enumerator) {
-        [character move:dt ScreenX:scrx ScreenY:scry];
+        if (character.isStaged) {
+            [character move:dt ScreenX:scrx ScreenY:scry];
+            isClear = NO;
+        }
     }
     
     // 自機弾と敵の当たり判定処理を行う
@@ -395,8 +323,9 @@ static AKGameScene *g_scene = nil;
     enumerator = [self.effectPool.pool objectEnumerator];
     for (character in enumerator) {
         [character move:dt ScreenX:scrx ScreenY:scry];
-        DBGLOG(0 && character.isStaged, @"effect=(%f, %f) player=(%f, %f)", character.position.x,
-               character.position.y, self.player.position.x, self.player.position.y);
+        DBGLOG(0 && character.isStaged, @"effect=(%f, %f) player=(%f, %f)",
+               character.image.position.x, character.image.position.y,
+               self.player.image.position.x, self.player.image.position.y);
     }
     
     // 背景の移動
@@ -412,6 +341,30 @@ static AKGameScene *g_scene = nil;
     // 画面の回転
     self.baseLayer.rotation = angle;
     DBGLOG(0, @"m_baseLayer angle=%f", self.baseLayer.rotation);
+    
+    // 敵と敵弾がひとつも存在しない場合は次のウェーブ開始までの時間をカウントする
+    if (isClear) {
+        m_waveInterval -= dt;
+        
+        // ウェーブ開始の間隔が経過した場合は次のウェーブへと進める
+        if (m_waveInterval < 0.0f) {
+            
+            // ウェーブを進める
+            m_waveNo++;
+            
+            // ウェーブ間隔をリセットする
+            m_waveInterval = WAVE_INTERVAL;
+            
+            // ステージのウェーブ個数を超えている場合はステージクリア
+            if (m_waveNo > WAVE_COUNT) {
+                // [TODO] ステージクリア処理を実装する。s
+            }
+            // ステージクリアでない場合は次のウェーブのスクリプトを読み込む
+            else {
+                [self readScriptOfStage:m_stageNo Wave:m_waveNo];
+            }
+        }
+    }
     
     // ゲームオーバーになっていた場合はハイスコアをファイルに書き込む
     // (ゲームオーバーになった時点で書き込みを行わないのはupdateの途中でスコアが変動する可能性があるため)
@@ -536,7 +489,8 @@ static AKGameScene *g_scene = nil;
     }
     
     // 敵弾を生成する
-    [enemyShot createWithType:type X:posx Y:posy Z:ENEMY_SHOT_POS_Z Angle:angle Parent:self.background];
+    [enemyShot createWithType:type X:posx Y:posy Z:ENEMY_SHOT_POS_Z
+                        Angle:angle Parent:self.background];
 }
 
 /*!
@@ -565,7 +519,7 @@ static AKGameScene *g_scene = nil;
     particle.autoRemoveOnFinish = YES;
     particle.position = ccp(0, 0);
     particle.positionType = kCCPositionTypeRelative;
-    [effect addChild:particle];
+    [effect.image addChild:particle];
     
     DBGLOG(0, @"player=(%f, %f) pos=(%f, %f)", self.player.absx, self.player.absy, posx, posy);
     // 画面効果を生成する
@@ -580,6 +534,8 @@ static AKGameScene *g_scene = nil;
  */
 - (void)miss
 {
+    CCSprite *gameOverSprite = nil;     // ゲームオーバーのスプライト
+    
     // 残機が残っている場合は残機を減らして復活する
     if (m_life > 0) {
 
@@ -599,11 +555,12 @@ static AKGameScene *g_scene = nil;
         m_state = GAME_STATE_GAMEOVER;
         
         // ゲームオーバーの画像を読み込む
-        self.gameOverImage = [CCSprite spriteWithFile:@"GameOver.png"];
-        [self.infoLayer addChild:self.gameOverImage];
+        gameOverSprite = [CCSprite spriteWithFile:@"GameOver.png"];
+        gameOverSprite.tag = INFOLAYER_TAG_GAMEOVER;
+        [self.infoLayer addChild:gameOverSprite];
         
         // 画面の中心に配置する
-        self.gameOverImage.position = ccp(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+        gameOverSprite.position = ccp(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
     }
 }
 
@@ -615,6 +572,7 @@ static AKGameScene *g_scene = nil;
 - (void)resetAll
 {
     NSString *scoreString = nil;    // スコアの文字列
+    CCLabelTTF *scoreLabel = nil;   // スコアのラベル
 
     // 各種メンバを初期化する
     m_state = GAME_STATE_START;
@@ -622,6 +580,7 @@ static AKGameScene *g_scene = nil;
     m_waveNo = 1;
     m_life = START_LIFE_COUNT;
     m_rebirthInterval = 0.0f;
+    m_waveInterval = WAVE_INTERVAL;
     m_score = 0;
     
     // 残機マークの初期個数を反映させる
@@ -629,7 +588,8 @@ static AKGameScene *g_scene = nil;
     
     // ラベルの内容を更新する
     scoreString = [NSString stringWithFormat:SCORE_FORMAT, m_score];
-    [self.scoreLabel setString:scoreString];
+    scoreLabel = (CCLabelTTF *)[self.infoLayer getChildByTag:INFOLAYER_TAG_SCORE];
+    [scoreLabel setString:scoreString];
 
     // 自機の状態を初期化する
     [self.player reset];
@@ -640,8 +600,7 @@ static AKGameScene *g_scene = nil;
     [self.effectPool reset];
     
     // ゲームオーバーの表示を削除する
-    [self.gameOverImage removeFromParentAndCleanup:YES];
-    self.gameOverImage = nil;
+    [self.infoLayer removeChildByTag:INFOLAYER_TAG_GAMEOVER cleanup:YES];
 }
 
 /*!
@@ -653,13 +612,16 @@ static AKGameScene *g_scene = nil;
 {
     NSString *scoreString = nil;    // スコアの文字列
     NSString *hiScoreString = nil;  // ハイスコアの文字列
+    CCLabelTTF *scoreLabel = nil;   // スコアのラベル
+    CCLabelTTF *hiScoreLabel = nil; // ハイスコアのラベル
     
     // スコアを加算する
     m_score += score;
     
     // ラベルの内容を更新する
     scoreString = [NSString stringWithFormat:SCORE_FORMAT, m_score];
-    [self.scoreLabel setString:scoreString];
+    scoreLabel = (CCLabelTTF *)[self.infoLayer getChildByTag:INFOLAYER_TAG_SCORE];
+    [scoreLabel setString:scoreString];
     
     // ハイスコアを更新している場合はハイスコアを設定する
     if (m_score > m_hiScore) {
@@ -669,7 +631,8 @@ static AKGameScene *g_scene = nil;
         
         // ラベルの内容を更新する
         hiScoreString = [NSString stringWithFormat:HISCORE_FORMAT, m_hiScore];
-        [self.hiScoreLabel setString:hiScoreString];
+        hiScoreLabel = (CCLabelTTF *)[self.infoLayer getChildByTag:INFOLAYER_TAG_HISCORE];
+        [hiScoreLabel setString:hiScoreString];
     }
 }
 
@@ -680,9 +643,9 @@ static AKGameScene *g_scene = nil;
  */
 - (void)pause
 {
-    CCNode *obj = nil;              // オブジェクト
     AKCharacter *character = nil;   // キャラクター
     NSEnumerator *enumerator = nil; // キャラクター操作用列挙子
+    CCSprite *pauseSprite = nil;    // 一時停止中の画像
     
     // プレイ中から以外の変更の場合はエラー
     assert(m_state == GAME_STATE_PLAYING);
@@ -692,44 +655,42 @@ static AKGameScene *g_scene = nil;
     
     // すべてのキャラクターのアニメーションを停止する
     // 自機
-    CCARRAY_FOREACH(self.player.children, obj) {
-        [obj pauseSchedulerAndActions];
-    }
+    [self.player.image pauseSchedulerAndActions];
+
     // 自機弾
     enumerator = [self.playerShotPool.pool objectEnumerator];
     for (character in enumerator) {
-        CCARRAY_FOREACH(character.children, obj) {
-            [obj pauseSchedulerAndActions];
-        }
+        [character.image pauseSchedulerAndActions];
     }
+    
     // 敵
     enumerator = [self.enemyPool.pool objectEnumerator];
     for (character in enumerator) {
-        CCARRAY_FOREACH(character.children, obj) {
-            [obj pauseSchedulerAndActions];
-        }
+        [character.image pauseSchedulerAndActions];
     }
+
     // 敵弾
     enumerator = [self.enemyShotPool.pool objectEnumerator];
     for (character in enumerator) {
-        CCARRAY_FOREACH(character.children, obj) {
-            [obj pauseSchedulerAndActions];
-        }
+        [character.image pauseSchedulerAndActions];
     }
+
     // 画面効果
     enumerator = [self.effectPool.pool objectEnumerator];
     for (character in enumerator) {
-        CCARRAY_FOREACH(character.children, obj) {
-            [obj pauseSchedulerAndActions];
-        }
+        [character.image pauseSchedulerAndActions];
     }
     
     // 一時停止中の画像を読み込む
-    self.pauseImage = [CCSprite spriteWithFile:@"Pause.png"];
-    [self.infoLayer addChild:self.pauseImage];
-    
+    pauseSprite = [CCSprite spriteWithFile:@"Pause.png"];
+    pauseSprite.tag = INFOLAYER_TAG_PAUSE;
+
     // 画面の中心に配置する
-    self.pauseImage.position = ccp(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+    pauseSprite.position = ccp(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+    
+    // 情報レイヤーに配置する
+    [self.infoLayer addChild:pauseSprite];
+    
 }
 
 /*!
@@ -739,7 +700,6 @@ static AKGameScene *g_scene = nil;
  */
 - (void)resume
 {
-    CCNode *obj = nil;              // オブジェクト
     AKCharacter *character = nil;   // キャラクター
     NSEnumerator *enumerator = nil; // キャラクター操作用列挙子
     
@@ -751,40 +711,129 @@ static AKGameScene *g_scene = nil;
     
     // すべてのキャラクターのアニメーションを再開する
     // 自機
-    CCARRAY_FOREACH(self.player.children, obj) {
-        [obj resumeSchedulerAndActions];
-    }
+    [self.player.image resumeSchedulerAndActions];
+
     // 自機弾
     enumerator = [self.playerShotPool.pool objectEnumerator];
     for (character in enumerator) {
-        CCARRAY_FOREACH(character.children, obj) {
-            [obj resumeSchedulerAndActions];
-        }
+        [character.image resumeSchedulerAndActions];
     }
+
     // 敵
     enumerator = [self.enemyPool.pool objectEnumerator];
     for (character in enumerator) {
-        CCARRAY_FOREACH(character.children, obj) {
-            [obj resumeSchedulerAndActions];
-        }
+        [character.image resumeSchedulerAndActions];
     }
+
     // 敵弾
     enumerator = [self.enemyShotPool.pool objectEnumerator];
     for (character in enumerator) {
-        CCARRAY_FOREACH(character.children, obj) {
-            [obj resumeSchedulerAndActions];
-        }
+        [character.image resumeSchedulerAndActions];
     }
+
     // 画面効果
     enumerator = [self.effectPool.pool objectEnumerator];
     for (character in enumerator) {
-        CCARRAY_FOREACH(character.children, obj) {
-            [obj resumeSchedulerAndActions];
-        }
+        [character.image resumeSchedulerAndActions];
     }
     
     // 一時停止中の画像を取り除く
-    [self.pauseImage removeFromParentAndCleanup:YES];
-    self.pauseImage = nil;
+    [self.infoLayer removeChildByTag:INFOLAYER_TAG_PAUSE cleanup:YES];
+}
+
+/*!
+ @brief スクリプト読込
+ 
+ ステージ構成のスクリプトファイルを読み込んで敵を配置する。
+ @param stage ステージ番号
+ @param wave ウェーブ番号
+ */
+- (void)readScriptOfStage:(NSInteger)stage Wave:(NSInteger)wave
+{
+    NSRange lineRange = {0};        // 処理対象の行の範囲
+    NSString *fileName = nil;       // ステージ定義ファイルのファイル名
+    NSString *filePath = nil;       // ステージ定義ファイルのパス
+    NSString *stageScript = nil;    // ステージ定義ファイルの内容
+    NSString *line = nil;           // 処理対象の行の文字列
+    NSError *error = nil;           // ファイル読み込みエラー内容
+    NSBundle *bundle = nil;         // バンドル
+    NSArray *params = nil;          // ステージ定義ファイルの1行のパラメータ
+    NSString *param = nil;          // ステージ定義ファイルの1個のパラメータ
+    enum ENEMY_TYPE enemyType = 0;  // 敵の種類
+    NSInteger enemyPosX = 0;        // 敵の配置位置x座標
+    NSInteger enemyPosY = 0;        // 敵の配置位置y座標
+    float enemyAngle = 0.0f;        // 敵の向き
+    
+    // ファイル名をステージ番号、ウェイブ番号から決定する
+    fileName = [NSString stringWithFormat:@"stage%d_%d", stage, wave];
+    DBGLOG(0, @"fileName=%@", fileName);
+    
+    // ファイルパスをバンドルから取得する
+    bundle = [NSBundle mainBundle];
+    filePath = [bundle pathForResource:fileName ofType:@"txt"];
+    DBGLOG(0, @"filePath=%@", filePath);
+    
+    // ステージ定義ファイルを読み込む
+    stageScript = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding
+                                               error:&error];
+    // ファイル読み込みエラー
+    if (stageScript == nil && error != nil) {
+        DBGLOG(0, @"%@", [error localizedDescription]);
+    }
+    
+    // ステージ定義ファイルの範囲の間は処理を続ける
+    while (lineRange.location < stageScript.length) {
+        
+        // 1行の範囲を取得する
+        lineRange = [stageScript lineRangeForRange:lineRange];
+        
+        // 1行の文字列を取得する
+        line = [stageScript substringWithRange:lineRange];
+        DBGLOG(0, @"%@", line);
+        
+        // 1文字目が"#"の場合は処理を飛ばす
+        if ([[line substringToIndex:1] isEqualToString:@"#"]) {
+            DBGLOG(0, @"コメント:%@", line);
+        }
+        // コメントでない場合はパラメータを読み込む
+        else {
+            // カンマ区切りでパラメータを分割する
+            params = [line componentsSeparatedByString:@","];
+            
+            // 1個目のパラメータは敵の種類として扱う。
+            param = [params objectAtIndex:0];
+            enemyType = [param integerValue];
+            
+            // 敵の種類は0始まりとするため、-1する。
+            enemyType--;
+            
+            // 2個目のパラメータはx座標として扱う
+            param = [params objectAtIndex:1];
+            enemyPosX = [param integerValue];
+            
+            // 3個目のパラメータはy座標として扱う
+            param = [params objectAtIndex:2];
+            enemyPosY = [param integerValue];
+            
+            DBGLOG(0, @"type=%d posx=%d posy=%d", enemyType, enemyPosX, enemyPosY);
+            
+            // 角度を自機のいる位置に設定する
+            // スクリプト上の座標は自機の位置からの相対位置なので目標座標は(0, 0)
+            enemyAngle = AKCalcDestAngle(enemyPosX, enemyPosY, 0, 0);
+            
+            DBGLOG(0, @"angle=%f", AKCnvAngleRad2Deg(enemyAngle));
+            
+            // 生成位置は自機の位置からの相対位置とする
+            enemyPosX += m_player.absx;
+            enemyPosY += m_player.absy;
+            
+            // 敵を生成する
+            [self entryEnemy:(enum ENEMY_TYPE)enemyType PosX:enemyPosX PosY:enemyPosY Angle:enemyAngle];
+        }
+        
+        // 次の行へ処理を進める
+        lineRange.location = lineRange.location + lineRange.length;
+        lineRange.length = 0;
+    }
 }
 @end

@@ -58,9 +58,6 @@ static const int ENEMY_SHOT_HEIGHT[ENEMY_SHOT_TYPE_COUNT] = {
     self.image = [CCSprite spriteWithFile:fileName];
     assert(m_image != nil);
     
-    // 画像をノードに追加する
-    [self addChild:m_image];
-    
     // 各種パラメータを設定する
     m_speed = ENEMY_SHOT_SPEED[type];
     m_width = ENEMY_SHOT_WIDTH[type];
@@ -77,6 +74,6 @@ static const int ENEMY_SHOT_HEIGHT[ENEMY_SHOT_TYPE_COUNT] = {
     m_distance = 0.0f;
     
     // レイヤーに配置する
-    [parent addChild:self z:z];
+    [parent addChild:self.image z:z];
 }
 @end

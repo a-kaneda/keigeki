@@ -9,9 +9,9 @@
 #import "cocos2d.h"
 
 // キャラクタークラス
-@interface AKCharacter : CCNode {
+@interface AKCharacter : NSObject {
     /// 画像
-    CCSprite *m_image;
+    CCNode *m_image;
     /// 当たり判定サイズ幅
     NSInteger m_width;
     /// 当たり判定サイズ高さ
@@ -33,7 +33,7 @@
 }
 
 /// 画像
-@property (nonatomic, retain)CCSprite *image;
+@property (nonatomic, retain)CCNode *image;
 /// 当たり判定サイズ幅
 @property (nonatomic)NSInteger width;
 /// 当たり判定サイズ高さ

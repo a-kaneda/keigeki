@@ -28,6 +28,11 @@
 /// 自機復活までの間隔
 #define REBIRTH_INTERVAL 1
 
+/// 1ステージのウェイブの数
+#define WAVE_COUNT 10
+/// ウェイブが始まるまでの間隔
+#define WAVE_INTERVAL 2
+
 /// 自機の配置z座標
 #define PLAYER_POS_Z 2
 /// 自機弾の配置z座標
@@ -68,6 +73,15 @@ enum ENEMY_TYPE {
     ENEMY_TYPE_COUNT        ///< 敵の種類の数
 };
 
+/// 情報レイヤーに配置するノードのタグ
+enum INFOLAYER_TAG {
+    INFOLAYER_TAG_PAUSE = 0,    ///< 一時停止
+    INFOLAYER_TAG_GAMEOVER,     ///< ゲームオーバー
+    INFOLAYER_TAG_SCORE,        ///< スコア
+    INFOLAYER_TAG_HISCORE,      ///< ハイスコア
+    INFOLAYER_TAG_COUNT         ///< タグの種類の数
+};
+
 // ゲームプレイシーン
 @interface AKGameScene : CCScene {
     /// 現在の状態
@@ -84,6 +98,8 @@ enum ENEMY_TYPE {
     NSInteger m_hiScore;
     /// 自機復活までの間隔
     float m_rebirthInterval;
+    /// 次のウェーブ開始までの間隔
+    float m_waveInterval;
     /// キャラクターを配置するレイヤー
     CCLayer *m_baseLayer;
     /// キャラクター以外を配置するレイヤー
@@ -106,14 +122,6 @@ enum ENEMY_TYPE {
     AKRadar *m_radar;
     /// 残機表示
     AKLifeMark *m_lifeMark;
-    /// ゲームオーバーの画像
-    CCSprite *m_gameOverImage;
-    /// スコアのラベル
-    CCLabelTTF *m_scoreLabel;
-    /// ハイスコアのラベル
-    CCLabelTTF *m_hiScoreLabel;
-    /// 一時停止中の画像
-    CCSprite *m_pauseImage;
 }
 
 /// 現在の状態
@@ -140,14 +148,6 @@ enum ENEMY_TYPE {
 @property (nonatomic, retain)AKRadar *rader;
 /// 残機表示
 @property (nonatomic, retain)AKLifeMark *lifeMark;
-/// ゲームオーバーの画像
-@property (nonatomic, retain)CCSprite *gameOverImage;
-/// スコアのラベル
-@property (nonatomic, retain)CCLabelTTF *scoreLabel;
-/// ハイスコアのラベル
-@property (nonatomic, retain)CCLabelTTF *hiScoreLabel;
-/// 一時停止中の画像
-@property (nonatomic, retain)CCSprite *pauseImage;
 
 // シングルトンオブジェクト取得
 + (AKGameScene *)sharedInstance;
@@ -175,4 +175,6 @@ enum ENEMY_TYPE {
 - (void)pause;
 // ゲーム再開
 - (void)resume;
+// スクリプト読込
+- (void)readScriptOfStage:(NSInteger)stage Wave:(NSInteger)wave;
 @end

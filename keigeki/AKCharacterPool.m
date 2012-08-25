@@ -47,7 +47,7 @@
 
     // キャラクターの生成
     for (i = 0; i < m_size; i++) {
-        character = [m_class node];
+        character = [[[m_class alloc] init] autorelease];
         [m_pool addObject:character];
     }
     
@@ -64,15 +64,6 @@
  */
 - (void)dealloc
 {
-    NSEnumerator *enumerator = nil; // キャラクター解放作業用列挙子
-    AKCharacter *character = nil;   // キャラクター
-    
-    // キャラクターのメモリを開放する
-    enumerator = [self.pool objectEnumerator];
-    for (character in enumerator) {
-        [character removeFromParentAndCleanup:YES];
-    }
-    
     // プールのメモリを解放する
     self.pool = nil;
     
@@ -138,7 +129,7 @@
             character.isStaged = NO;
             
             // 親ノードから取り除く
-            [character removeFromParentAndCleanup:YES];
+            [character.image removeFromParentAndCleanup:YES];
         }
     }
     

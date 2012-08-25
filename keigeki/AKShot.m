@@ -57,7 +57,9 @@
     m_isStaged = YES;
     m_distance = 0.0f;
     
+    assert(self.image != nil);
+    
     // レイヤーに配置する
-    [parent addChild:self z:z];
+    [parent addChild:self.image z:z];
 }
 @end

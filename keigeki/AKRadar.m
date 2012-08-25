@@ -122,7 +122,8 @@
         // 自機から見て敵の方向を調べる。
         // 絶対座標ではステージループの問題が発生するため
         // スクリーン座標を使用する。
-        angle = AKCalcDestAngle(PLAYER_POS_X, PLAYER_POS_Y, enemy.position.x, enemy.position.y);
+        angle = AKCalcDestAngle(PLAYER_POS_X, PLAYER_POS_Y,
+                                enemy.image.position.x, enemy.image.position.y);
         
         // 自機の向いている方向を上向きとする。
         // 上向き(π/2)を0とするので、自機の角度 - π / 2をマイナスする。
@@ -132,7 +133,9 @@
         // レーダーの中心を原点とするため、xyそれぞれレーダーの幅の半分を加算する。
         posx = ((RADAR_SIZE / 2) * cos(angle)) + (RADAR_SIZE / 2);
         posy = ((RADAR_SIZE / 2) * sin(angle)) + (RADAR_SIZE / 2);
-        DBGLOG(0, @"enemy=(%f,%f) angle=%f marker=(%f,%f)", enemy.position.x, enemy.position.y, AKCnvAngleRad2Deg(angle), posx, posy);
+        DBGLOG(0, @"enemy=(%f,%f) angle=%f marker=(%f,%f)",
+               enemy.image.position.x, enemy.image.position.y,
+               AKCnvAngleRad2Deg(angle), posx, posy);
         
         // マーカーの配置位置を設定し、表示状態にする。
         marker.position = ccp(posx, posy);

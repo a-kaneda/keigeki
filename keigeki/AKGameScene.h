@@ -7,7 +7,6 @@
 
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
-#import "AKGameIFLayer.h"
 #import "AKBackground.h"
 #import "AKPlayer.h"
 #import "AKCharacterPool.h"
@@ -29,20 +28,12 @@
 #define REBIRTH_INTERVAL 1
 
 /// 1ステージのウェイブの数
-#define WAVE_COUNT 10
+#define WAVE_COUNT 1
+/// ステージの数
+#define STAGE_COUNT 5
 /// ウェイブが始まるまでの間隔
 #define WAVE_INTERVAL 2
 
-/// 自機の配置z座標
-#define PLAYER_POS_Z 2
-/// 自機弾の配置z座標
-#define PLAYER_SHOT_POS_Z 4
-/// 敵の配置z座標
-#define ENEMY_POS_Z 3
-/// 敵弾の配置z座標
-#define ENEMY_SHOT_POS_Z 5
-/// 画面効果の配置z座標
-#define EFFECT_POS_Z 5
 /// スコアの表示位置x座標
 #define SCORE_POS_X 10
 /// スコアの表示位置y座標
@@ -82,6 +73,24 @@ enum INFOLAYER_TAG {
     INFOLAYER_TAG_COUNT         ///< タグの種類の数
 };
 
+/// レイヤーのz座標、タグの値にも使用する
+enum LAYER_POS_Z {
+    LAYER_POS_Z_BASELAYER = 0,  ///< ベースレイヤー
+    LAYER_POS_Z_INFOLAYER,      ///< 情報レイヤー
+    LAYER_POS_Z_RESULTLAYER,    ///< ステージクリアレイヤー
+    LAYER_POS_Z_INTERFACELAYER  ///< インターフェースレイヤー
+};
+
+/// キャラクターのz座標
+enum CHARA_POS_Z {
+    CHARA_POS_Z_BACKGROUND = 0, ///< 背景
+    CHARA_POS_Z_PLAYER,         ///< 自機
+    CHARA_POS_Z_ENEMY,          ///< 敵
+    CHARA_POS_Z_PLAYERSHOT,     ///< 自機弾
+    CHARA_POS_Z_ENEMYSHOT,      ///< 敵弾
+    CHARA_POS_Z_EFFECT          ///< 画面効果
+};
+
 // ゲームプレイシーン
 @interface AKGameScene : CCScene {
     /// 現在の状態
@@ -100,12 +109,6 @@ enum INFOLAYER_TAG {
     float m_rebirthInterval;
     /// 次のウェーブ開始までの間隔
     float m_waveInterval;
-    /// キャラクターを配置するレイヤー
-    CCLayer *m_baseLayer;
-    /// キャラクター以外を配置するレイヤー
-    CCLayer *m_infoLayer;
-    /// インターフェースレイヤー
-    AKGameIFLayer *m_interface;
     /// 背景
     AKBackground *m_background;
     /// 自機
@@ -126,12 +129,6 @@ enum INFOLAYER_TAG {
 
 /// 現在の状態
 @property (nonatomic, readonly)enum GAME_STATE state;
-/// キャラクターを配置するレイヤー
-@property (nonatomic, retain)CCLayer *baseLayer;
-/// キャラクター以外を配置するレイヤー
-@property (nonatomic, retain)CCLayer *infoLayer;
-/// インターフェースレイヤー
-@property (nonatomic, retain)AKGameIFLayer *interface;
 /// 背景
 @property (nonatomic, retain)AKBackground *background;
 /// 自機
@@ -177,4 +174,10 @@ enum INFOLAYER_TAG {
 - (void)resume;
 // スクリプト読込
 - (void)readScriptOfStage:(NSInteger)stage Wave:(NSInteger)wave;
+// ウェーブクリア
+- (void)clearWave;
+// ステージクリア結果スキップ
+- (void)skipResult;
+// ステージクリア
+- (void)clearStage;
 @end

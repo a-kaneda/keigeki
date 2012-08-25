@@ -19,8 +19,6 @@ static float Accel2Ratio(float accel);
  */
 @implementation AKGameIFLayer
 
-@synthesize shotButton = m_shotButton;
-@synthesize pauseButton = m_pauseButton;
 
 /*!
  @brief オブジェクト生成処理
@@ -36,25 +34,7 @@ static float Accel2Ratio(float accel);
         return nil;
     }
     
-    // ショットボタンの画像を読み込む
-    self.shotButton = [CCSprite spriteWithFile:@"ShotButton.png"];
-    assert(self.shotButton != nil);
-    
-    // ショットボタンをレイヤーに配置する
-    [self addChild:self.shotButton];
-    
-    // ショットボタンの位置を設定する
-    self.shotButton.position = ccp(SHOT_BUTTON_POS_X, SHOT_BUTTON_POS_Y);
-    
-    // ポーズボタンの画像を読み込む
-    self.pauseButton = [CCSprite spriteWithFile:@"PauseButton.png"];
-    assert(self.pauseButton != nil);
-    
-    // ポーズボタンをレイヤーに配置する
-    [self addChild:self.pauseButton];
-    
-    // ポーズボタンの位置を設定する
-    self.pauseButton.position = ccp(PAUSE_BUTTON_POS_X, PAUSE_BUTTON_POS_Y);
+
 
     // 加速度センサーを有効にする
     self.isAccelerometerEnabled = YES;
@@ -143,6 +123,12 @@ static float Accel2Ratio(float accel);
 
             // プレイ中のタッチ開始処理を実行する
             [self touchBeganInPlaying:touch];
+            break;
+            
+        case GAME_STATE_CLEAR:      // クリア
+            
+            // クリア結果画面の表示をスキップする
+            [[AKGameScene sharedInstance] skipResult];
             break;
             
         case GAME_STATE_GAMEOVER:   // ゲームオーバー

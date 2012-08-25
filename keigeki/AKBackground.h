@@ -13,7 +13,7 @@
 #define TILE_SIZE 64
 
 // 背景クラス
-@interface AKBackground : CCNode {
+@interface AKBackground : NSObject {
     /// 背景画像
     CCSprite *m_image;
 }

@@ -6,11 +6,13 @@
  */
 
 #import "AKGameScene.h"
+#import "AKGameIFLayer.h"
 #import "AKPlayerShot.h"
 #import "AKEnemy.h"
 #import "AKEnemyShot.h"
 #import "AKEffect.h"
 #import "AKHiScoreFile.h"
+#import "AKResultLayer.h"
 
 /*!
  @brief ゲームプレイシーン
@@ -23,10 +25,6 @@
 static AKGameScene *g_scene = nil;
 
 @synthesize state = m_state;
-@synthesize baseLayer = m_baseLayer;
-@synthesize infoLayer = m_infoLayer;
-@synthesize interface = m_interface;
-@synthesize background = m_background;
 @synthesize player = m_player;
 @synthesize playerShotPool = m_playerShotPool;
 @synthesize enemyPool = m_enemyPool;
@@ -66,6 +64,11 @@ static AKGameScene *g_scene = nil;
     NSString *scoreString = nil;        // スコア文字列
     CCLabelTTF *scoreLabel = nil;       // スコアのラベル
     CCLabelTTF *hiScoreLabel = nil;     // ハイスコアのラベル
+    CCLayer *baseLayer = nil;           // ベースレイヤー
+    CCLayer *infoLayer = nil;           // 情報レイヤー
+    AKGameIFLayer *interface = nil;     // インターフェースレイヤー
+    CCSprite *shotButton = nil;         // ショットボタンのスプライト
+    CCSprite *pauseButton = nil;        // ポーズボタンのスプライト
     
     // スーパークラスの生成処理
     self = [super init];
@@ -74,8 +77,9 @@ static AKGameScene *g_scene = nil;
     }
     
     // キャラクターを配置するレイヤーを生成する
-    self.baseLayer = [CCLayer node];
-    [self addChild:self.baseLayer z:0];
+    baseLayer = [CCLayer node];
+    baseLayer.tag = LAYER_POS_Z_BASELAYER;
+    [self addChild:baseLayer z:LAYER_POS_Z_BASELAYER];
     
     // 画面回転時の中心点を求める
     // CCLayerのサイズは320x480だが、画面サイズはLandscape時は480x320のため、
@@ -85,23 +89,24 @@ static AKGameScene *g_scene = nil;
     anchor_y = ((float)PLAYER_POS_Y / SCREEN_HEIGHT) * ((float)SCREEN_HEIGHT / SCREEN_WIDTH);
     
     // 画面回転時の中心点を設定する
-    self.baseLayer.anchorPoint = ccp(anchor_x, anchor_y);
+    baseLayer.anchorPoint = ccp(anchor_x, anchor_y);
     
     // キャラクター以外の情報を配置するレイヤーを生成する
-    self.infoLayer = [CCLayer node];
-    [self addChild:self.infoLayer z:1];
+    infoLayer = [CCLayer node];
+    infoLayer.tag = LAYER_POS_Z_INFOLAYER;
+    [self addChild:infoLayer z:LAYER_POS_Z_INFOLAYER];
     
     // インターフェースレイヤーを貼り付ける
-    self.interface = [AKGameIFLayer node];
-    [self addChild:self.interface z:2];
+    interface = [AKGameIFLayer node];
+    [self addChild:interface z:LAYER_POS_Z_INTERFACELAYER];
     
     // 背景の生成
-    self.background = [AKBackground node];
-    [self.baseLayer addChild:self.background z:1];
+    self.background = [[[AKBackground alloc] init] autorelease];
+    [baseLayer addChild:self.background.image z:CHARA_POS_Z_BACKGROUND];
     
     // 自機の生成
     self.player = [[[AKPlayer alloc] init] autorelease];
-    [self.background addChild:self.player.image z:PLAYER_POS_Z];
+    [baseLayer addChild:self.player.image z:CHARA_POS_Z_PLAYER];
     
     // 自機弾プールの生成
     self.playerShotPool = [[[AKCharacterPool alloc] initWithClass:[AKPlayerShot class]
@@ -119,23 +124,43 @@ static AKGameScene *g_scene = nil;
     self.effectPool = [[[AKCharacterPool alloc] initWithClass:[AKEffect class]
                                                          Size:MAX_EFFECT_COUNT] autorelease];
     
+    // ショットボタンの画像を読み込む
+    shotButton = [CCSprite spriteWithFile:@"ShotButton.png"];
+    assert(shotButton != nil);
+    
+    // ショットボタンの位置を設定する
+    shotButton.position = ccp(SHOT_BUTTON_POS_X, SHOT_BUTTON_POS_Y);
+    
+    // ショットボタンをレイヤーに配置する
+    [infoLayer addChild:shotButton];
+    
+    // ポーズボタンの画像を読み込む
+    pauseButton = [CCSprite spriteWithFile:@"PauseButton.png"];
+    assert(pauseButton != nil);
+    
+    // ポーズボタンの位置を設定する
+    pauseButton.position = ccp(PAUSE_BUTTON_POS_X, PAUSE_BUTTON_POS_Y);
+    
+    // ポーズボタンをレイヤーに配置する
+    [infoLayer addChild:pauseButton];
+    
     // レーダーの生成
     self.rader = [AKRadar node];
     
     // レーダーをレイヤーに配置する
-    [self.infoLayer addChild:self.rader];
+    [infoLayer addChild:self.rader];
     
     // 残機マークの生成
     self.lifeMark = [AKLifeMark node];
     
     // 残機マークをレイヤーに配置する
-    [self.infoLayer addChild:self.lifeMark];
+    [infoLayer addChild:self.lifeMark];
     
     // スコアラベルを生成する
     scoreString = [NSString stringWithFormat:SCORE_FORMAT, m_score];
     scoreLabel = [CCLabelTTF labelWithString:scoreString fontName:@"Helvetica" fontSize:22];
     scoreLabel.tag = INFOLAYER_TAG_SCORE;
-    [self.infoLayer addChild:scoreLabel];
+    [infoLayer addChild:scoreLabel];
     
     // スコアラベルの位置を設定する
     // アンカーポイントは左端に設定する
@@ -153,7 +178,7 @@ static AKGameScene *g_scene = nil;
     hiScoreString = [NSString stringWithFormat:HISCORE_FORMAT, m_hiScore];
     hiScoreLabel = [CCLabelTTF labelWithString:hiScoreString fontName:@"Helvetica" fontSize:22];
     hiScoreLabel.tag = INFOLAYER_TAG_HISCORE;
-    [self.infoLayer addChild:hiScoreLabel];
+    [infoLayer addChild:hiScoreLabel];
 
     // ハイスコアラベルの位置を設定する。
     hiScoreLabel.position = ccp(HISCORE_POS_X, HISCORE_POS_Y);
@@ -182,9 +207,7 @@ static AKGameScene *g_scene = nil;
     self.enemyPool = nil;
     self.enemyShotPool = nil;
     self.effectPool = nil;
-    [self.background removeAllChildrenWithCleanup:YES];
-    [self.infoLayer removeAllChildrenWithCleanup:YES];
-    [self.baseLayer removeAllChildrenWithCleanup:YES];
+    self.background = nil;
     [self removeAllChildrenWithCleanup:YES];
     
     [super dealloc];
@@ -206,6 +229,10 @@ static AKGameScene *g_scene = nil;
             
         case GAME_STATE_PLAYING:    // プレイ中
             [self updatePlaying:dt];
+            break;
+            
+        case GAME_STATE_CLEAR:      // クリア
+            // [TODO] ステージクリア画面の処理を実装する
             break;
             
         case GAME_STATE_GAMEOVER:   // ゲームオーバー
@@ -247,6 +274,7 @@ static AKGameScene *g_scene = nil;
     AKCharacter *character = nil;       // キャラクター操作作業用バッファ
     AKHiScoreFile *hiScoreFile = nil;   // ハイスコアファイル
     BOOL isClear = NO;      // 敵、敵弾がすべていなくなっているか
+    CCNode *baseLayer = nil;   // ベースレイヤー
     
     // 自機が破壊されている場合は復活までの時間をカウントする
     if (!self.player.isStaged) {
@@ -339,30 +367,23 @@ static AKGameScene *g_scene = nil;
     angle = -1 * AKCnvAngleRad2Scr(self.player.angle);
     
     // 画面の回転
-    self.baseLayer.rotation = angle;
-    DBGLOG(0, @"m_baseLayer angle=%f", self.baseLayer.rotation);
+    baseLayer = [self getChildByTag:LAYER_POS_Z_BASELAYER];
+    baseLayer.rotation = angle;
+    DBGLOG(0, @"m_baseLayer angle=%f", baseLayer.rotation);
     
     // 敵と敵弾がひとつも存在しない場合は次のウェーブ開始までの時間をカウントする
     if (isClear) {
+        // 次のウェーブ開始までの時間をカウントする
         m_waveInterval -= dt;
         
-        // ウェーブ開始の間隔が経過した場合は次のウェーブへと進める
+        // ウェーブ開始の間隔が経過した場合はウェーブクリア処理を行う
         if (m_waveInterval < 0.0f) {
             
-            // ウェーブを進める
-            m_waveNo++;
+            // ウェーブクリア処理を行う
+            [self clearWave];
             
             // ウェーブ間隔をリセットする
             m_waveInterval = WAVE_INTERVAL;
-            
-            // ステージのウェーブ個数を超えている場合はステージクリア
-            if (m_waveNo > WAVE_COUNT) {
-                // [TODO] ステージクリア処理を実装する。s
-            }
-            // ステージクリアでない場合は次のウェーブのスクリプトを読み込む
-            else {
-                [self readScriptOfStage:m_stageNo Wave:m_waveNo];
-            }
         }
     }
     
@@ -417,8 +438,8 @@ static AKGameScene *g_scene = nil;
     
     // 自機弾を生成する
     // 位置と向きは自機と同じとする
-    [shot createWithX:self.player.absx Y:self.player.absy Z:PLAYER_SHOT_POS_Z
-                Angle:angle Parent:self.background];
+    [shot createWithX:self.player.absx Y:self.player.absy Z:CHARA_POS_Z_PLAYERSHOT
+                Angle:angle Parent:[self getChildByTag:LAYER_POS_Z_BASELAYER]];
 }
 
 /*!
@@ -463,8 +484,8 @@ static AKGameScene *g_scene = nil;
     }
     
     // 敵を生成する
-    [enemy createWithX:posx Y:posy Z:ENEMY_POS_Z Angle:angle
-                Parent:self.background CreateSel:createEnemy];
+    [enemy createWithX:posx Y:posy Z:CHARA_POS_Z_ENEMY Angle:angle
+                Parent:[self getChildByTag:LAYER_POS_Z_BASELAYER] CreateSel:createEnemy];
 }
 
 /*!
@@ -489,8 +510,8 @@ static AKGameScene *g_scene = nil;
     }
     
     // 敵弾を生成する
-    [enemyShot createWithType:type X:posx Y:posy Z:ENEMY_SHOT_POS_Z
-                        Angle:angle Parent:self.background];
+    [enemyShot createWithType:type X:posx Y:posy Z:CHARA_POS_Z_ENEMYSHOT
+                        Angle:angle Parent:[self getChildByTag:LAYER_POS_Z_BASELAYER]];
 }
 
 /*!
@@ -523,7 +544,8 @@ static AKGameScene *g_scene = nil;
     
     DBGLOG(0, @"player=(%f, %f) pos=(%f, %f)", self.player.absx, self.player.absy, posx, posy);
     // 画面効果を生成する
-    [effect startEffect:time PosX:posx PosY:posy PosZ:EFFECT_POS_Z Parent:m_background];
+    [effect startEffect:time PosX:posx PosY:posy PosZ:CHARA_POS_Z_EFFECT
+                 Parent:[self getChildByTag:LAYER_POS_Z_BASELAYER]];
 }
 
 /*!
@@ -557,7 +579,7 @@ static AKGameScene *g_scene = nil;
         // ゲームオーバーの画像を読み込む
         gameOverSprite = [CCSprite spriteWithFile:@"GameOver.png"];
         gameOverSprite.tag = INFOLAYER_TAG_GAMEOVER;
-        [self.infoLayer addChild:gameOverSprite];
+        [[self getChildByTag:LAYER_POS_Z_INFOLAYER] addChild:gameOverSprite];
         
         // 画面の中心に配置する
         gameOverSprite.position = ccp(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
@@ -573,6 +595,7 @@ static AKGameScene *g_scene = nil;
 {
     NSString *scoreString = nil;    // スコアの文字列
     CCLabelTTF *scoreLabel = nil;   // スコアのラベル
+    CCNode *infoLayer = nil;       // 情報レイヤー
 
     // 各種メンバを初期化する
     m_state = GAME_STATE_START;
@@ -586,9 +609,12 @@ static AKGameScene *g_scene = nil;
     // 残機マークの初期個数を反映させる
     [self.lifeMark updateImage:m_life];
     
+    // 情報レイヤーを取得する
+    infoLayer = [self getChildByTag:LAYER_POS_Z_INFOLAYER];
+    
     // ラベルの内容を更新する
     scoreString = [NSString stringWithFormat:SCORE_FORMAT, m_score];
-    scoreLabel = (CCLabelTTF *)[self.infoLayer getChildByTag:INFOLAYER_TAG_SCORE];
+    scoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:INFOLAYER_TAG_SCORE];
     [scoreLabel setString:scoreString];
 
     // 自機の状態を初期化する
@@ -600,7 +626,7 @@ static AKGameScene *g_scene = nil;
     [self.effectPool reset];
     
     // ゲームオーバーの表示を削除する
-    [self.infoLayer removeChildByTag:INFOLAYER_TAG_GAMEOVER cleanup:YES];
+    [infoLayer removeChildByTag:INFOLAYER_TAG_GAMEOVER cleanup:YES];
 }
 
 /*!
@@ -614,13 +640,17 @@ static AKGameScene *g_scene = nil;
     NSString *hiScoreString = nil;  // ハイスコアの文字列
     CCLabelTTF *scoreLabel = nil;   // スコアのラベル
     CCLabelTTF *hiScoreLabel = nil; // ハイスコアのラベル
+    CCNode *infoLayer = nil;        // 情報レイヤー
     
     // スコアを加算する
     m_score += score;
     
+    // 情報レイヤーを取得する
+    infoLayer = [self getChildByTag:LAYER_POS_Z_INFOLAYER];
+    ;
     // ラベルの内容を更新する
     scoreString = [NSString stringWithFormat:SCORE_FORMAT, m_score];
-    scoreLabel = (CCLabelTTF *)[self.infoLayer getChildByTag:INFOLAYER_TAG_SCORE];
+    scoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:INFOLAYER_TAG_SCORE];
     [scoreLabel setString:scoreString];
     
     // ハイスコアを更新している場合はハイスコアを設定する
@@ -631,7 +661,7 @@ static AKGameScene *g_scene = nil;
         
         // ラベルの内容を更新する
         hiScoreString = [NSString stringWithFormat:HISCORE_FORMAT, m_hiScore];
-        hiScoreLabel = (CCLabelTTF *)[self.infoLayer getChildByTag:INFOLAYER_TAG_HISCORE];
+        hiScoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:INFOLAYER_TAG_HISCORE];
         [hiScoreLabel setString:hiScoreString];
     }
 }
@@ -689,7 +719,7 @@ static AKGameScene *g_scene = nil;
     pauseSprite.position = ccp(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
     
     // 情報レイヤーに配置する
-    [self.infoLayer addChild:pauseSprite];
+    [[self getChildByTag:LAYER_POS_Z_INFOLAYER] addChild:pauseSprite];
     
 }
 
@@ -738,7 +768,7 @@ static AKGameScene *g_scene = nil;
     }
     
     // 一時停止中の画像を取り除く
-    [self.infoLayer removeChildByTag:INFOLAYER_TAG_PAUSE cleanup:YES];
+    [[self getChildByTag:LAYER_POS_Z_INFOLAYER] removeChildByTag:INFOLAYER_TAG_PAUSE cleanup:YES];
 }
 
 /*!
@@ -835,5 +865,125 @@ static AKGameScene *g_scene = nil;
         lineRange.location = lineRange.location + lineRange.length;
         lineRange.length = 0;
     }
+}
+
+/*!
+ @brief ウェーブクリア
+ 
+ ウェーブクリア時の処理。次のウェーブのスクリプトを読み込む。
+ すべてのウェーブをクリアしている場合はステージクリア画面を表示する。
+ */
+- (void)clearWave
+{
+    AKResultLayer *resultLayer = nil;   // ステージクリア結果画面
+    
+    // ウェーブを進める
+    m_waveNo++;
+    
+    // ステージのウェーブ個数を超えている場合はステージクリア
+    if (m_waveNo > WAVE_COUNT) {
+        
+        // 状態をゲームクリアに移行する
+        m_state = GAME_STATE_CLEAR;
+        
+        // 結果画面を生成する
+        resultLayer = [AKResultLayer node];
+        resultLayer.tag = LAYER_POS_Z_RESULTLAYER;
+        [self addChild:resultLayer z:LAYER_POS_Z_RESULTLAYER];
+    }
+    // ステージクリアでない場合は次のウェーブのスクリプトを読み込む
+    else {
+        [self readScriptOfStage:m_stageNo Wave:m_waveNo];
+    }
+}
+
+/*!
+ @brief ステージクリア結果スキップ
+ 
+ ステージクリア画面の表示更新をスキップする。
+ すてに表示が完了している場合は次のステージを開始する。
+ */
+- (void)skipResult
+{
+    AKResultLayer *resultLayer = nil;   // ステージクリア結果画面
+    
+    // ステージクリア結果画面を取得する
+    resultLayer = (AKResultLayer *)[self getChildByTag:LAYER_POS_Z_RESULTLAYER];
+    
+    // ステージクリア画面の表示が完了している場合は次のステージを開始する
+    if (resultLayer.isFinish) {
+        [self clearStage];
+    }
+    // ステージクリア画面の表示が完了していない場合は強制的に進める
+    else {
+        // [TODO] ステージクリア画面の処理を実装する
+    }
+}
+
+/*!
+ @brief ステージクリア
+ 
+ ステージクリア時の処理。
+ スコアラベルの更新。キャラクターの初期化。次のステージスクリプト読込。
+ 全ステージをクリアしている場合はエンディング表示。
+ */
+- (void)clearStage
+{
+    NSString *scoreString = nil;    // スコアの文字列
+    NSString *hiScoreString = nil;  // ハイスコアの文字列
+    CCLabelTTF *scoreLabel = nil;   // スコアのラベル
+    CCLabelTTF *hiScoreLabel = nil; // ハイスコアのラベル
+    CCNode *infoLayer = nil;        // 情報レイヤー
+    
+    // ステージ番号を進める
+    m_stageNo++;
+    
+    // ステージクリア結果画面を削除する
+    [self removeChildByTag:LAYER_POS_Z_RESULTLAYER cleanup:YES];
+    
+    // まだ全ステージをクリアしていない場合は次のステージを開始する
+    if (m_stageNo < STAGE_COUNT) {
+        
+        // ゲームの状態をプレイ中に変更する
+        m_state = GAME_STATE_PLAYING;
+        
+        // ウェーブ番号を初期化する
+        m_waveNo = 1;
+    
+        // 自機復活までのインターバルを初期化する
+        m_rebirthInterval = 0.0f;
+
+        // 残機マークを更新する
+        [self.lifeMark updateImage:m_life];
+
+        // 情報レイヤーを取得する
+        infoLayer = [self getChildByTag:LAYER_POS_Z_INFOLAYER];
+
+        // スコアラベルの内容を更新する
+        scoreString = [NSString stringWithFormat:SCORE_FORMAT, m_score];
+        scoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:INFOLAYER_TAG_SCORE];
+        [scoreLabel setString:scoreString];
+        
+        // ハイスコアラベルの内容を更新する
+        hiScoreString = [NSString stringWithFormat:HISCORE_FORMAT, m_hiScore];
+        hiScoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:INFOLAYER_TAG_HISCORE];
+        [hiScoreLabel setString:hiScoreString];
+        
+        // 自機の状態を初期化する
+        [self.player reset];
+        
+        // 画面上の全キャラクターを削除する
+        [self.playerShotPool reset];
+        [self.enemyPool reset];
+        [self.effectPool reset];
+        
+        // 次のステージのスクリプトを読み込む
+        [self readScriptOfStage:m_stageNo Wave:m_waveNo];
+    }
+    // 全ステージクリアしている場合はエンディング画面の表示を行う
+    else {
+        // [TODO] 全ステージクリア処理を実装する
+    }
+    
 }
 @end

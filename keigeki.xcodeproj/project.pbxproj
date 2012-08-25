@@ -156,6 +156,48 @@
 		0C3707B815C6C82C00295D96 /* AKGameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707AF15C6C82C00295D96 /* AKGameScene.m */; };
 		0C3707B915C6C82C00295D96 /* AKPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707B115C6C82C00295D96 /* AKPlayer.m */; };
 		0C3707BA15C6C82C00295D96 /* AKPlayerShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707B315C6C82C00295D96 /* AKPlayerShot.m */; };
+		0C56281815E908250048F056 /* AKResultLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C56281715E908250048F056 /* AKResultLayer.m */; };
+		0C56281B15E90A510048F056 /* Result.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C56281A15E90A510048F056 /* Result.png */; };
+		0C56284415E911260048F056 /* stage2_1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56281C15E911250048F056 /* stage2_1.txt */; };
+		0C56284515E911260048F056 /* stage2_2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56281D15E911250048F056 /* stage2_2.txt */; };
+		0C56284615E911260048F056 /* stage2_3.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56281E15E911250048F056 /* stage2_3.txt */; };
+		0C56284715E911260048F056 /* stage2_4.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56281F15E911250048F056 /* stage2_4.txt */; };
+		0C56284815E911260048F056 /* stage2_5.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56282015E911250048F056 /* stage2_5.txt */; };
+		0C56284915E911260048F056 /* stage2_6.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56282115E911250048F056 /* stage2_6.txt */; };
+		0C56284A15E911260048F056 /* stage2_7.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56282215E911250048F056 /* stage2_7.txt */; };
+		0C56284B15E911260048F056 /* stage2_8.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56282315E911250048F056 /* stage2_8.txt */; };
+		0C56284C15E911260048F056 /* stage2_9.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56282415E911250048F056 /* stage2_9.txt */; };
+		0C56284D15E911260048F056 /* stage2_10.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56282515E911250048F056 /* stage2_10.txt */; };
+		0C56284E15E911260048F056 /* stage3_1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56282615E911250048F056 /* stage3_1.txt */; };
+		0C56284F15E911260048F056 /* stage3_2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56282715E911250048F056 /* stage3_2.txt */; };
+		0C56285015E911260048F056 /* stage3_3.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56282815E911250048F056 /* stage3_3.txt */; };
+		0C56285115E911260048F056 /* stage3_4.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56282915E911250048F056 /* stage3_4.txt */; };
+		0C56285215E911260048F056 /* stage3_5.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56282A15E911250048F056 /* stage3_5.txt */; };
+		0C56285315E911260048F056 /* stage3_6.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56282B15E911250048F056 /* stage3_6.txt */; };
+		0C56285415E911260048F056 /* stage3_7.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56282C15E911250048F056 /* stage3_7.txt */; };
+		0C56285515E911260048F056 /* stage3_8.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56282D15E911250048F056 /* stage3_8.txt */; };
+		0C56285615E911260048F056 /* stage3_9.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56282E15E911260048F056 /* stage3_9.txt */; };
+		0C56285715E911260048F056 /* stage3_10.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56282F15E911260048F056 /* stage3_10.txt */; };
+		0C56285815E911260048F056 /* stage4_1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56283015E911260048F056 /* stage4_1.txt */; };
+		0C56285915E911260048F056 /* stage4_2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56283115E911260048F056 /* stage4_2.txt */; };
+		0C56285A15E911260048F056 /* stage4_3.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56283215E911260048F056 /* stage4_3.txt */; };
+		0C56285B15E911260048F056 /* stage4_4.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56283315E911260048F056 /* stage4_4.txt */; };
+		0C56285C15E911260048F056 /* stage4_5.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56283415E911260048F056 /* stage4_5.txt */; };
+		0C56285D15E911260048F056 /* stage4_6.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56283515E911260048F056 /* stage4_6.txt */; };
+		0C56285E15E911260048F056 /* stage4_7.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56283615E911260048F056 /* stage4_7.txt */; };
+		0C56285F15E911260048F056 /* stage4_8.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56283715E911260048F056 /* stage4_8.txt */; };
+		0C56286015E911260048F056 /* stage4_9.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56283815E911260048F056 /* stage4_9.txt */; };
+		0C56286115E911260048F056 /* stage4_10.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56283915E911260048F056 /* stage4_10.txt */; };
+		0C56286215E911260048F056 /* stage5_1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56283A15E911260048F056 /* stage5_1.txt */; };
+		0C56286315E911260048F056 /* stage5_2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56283B15E911260048F056 /* stage5_2.txt */; };
+		0C56286415E911260048F056 /* stage5_3.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56283C15E911260048F056 /* stage5_3.txt */; };
+		0C56286515E911260048F056 /* stage5_4.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56283D15E911260048F056 /* stage5_4.txt */; };
+		0C56286615E911260048F056 /* stage5_5.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56283E15E911260048F056 /* stage5_5.txt */; };
+		0C56286715E911260048F056 /* stage5_6.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56283F15E911260048F056 /* stage5_6.txt */; };
+		0C56286815E911260048F056 /* stage5_7.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56284015E911260048F056 /* stage5_7.txt */; };
+		0C56286915E911260048F056 /* stage5_8.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56284115E911260048F056 /* stage5_8.txt */; };
+		0C56286A15E911260048F056 /* stage5_9.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56284215E911260048F056 /* stage5_9.txt */; };
+		0C56286B15E911260048F056 /* stage5_10.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56284315E911260048F056 /* stage5_10.txt */; };
 		0C69227115E1231C002656AD /* AKShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C69227015E1231C002656AD /* AKShot.m */; };
 		0C69227815E127A8002656AD /* AKEnemyShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C69227715E127A8002656AD /* AKEnemyShot.m */; };
 		0C69227A15E18F56002656AD /* EnemyShot.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C69227915E18F56002656AD /* EnemyShot.png */; };
@@ -471,6 +513,49 @@
 		0C3707B015C6C82C00295D96 /* AKPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayer.h; sourceTree = "<group>"; };
 		0C3707B115C6C82C00295D96 /* AKPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayer.m; sourceTree = "<group>"; };
 		0C3707B315C6C82C00295D96 /* AKPlayerShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayerShot.m; sourceTree = "<group>"; };
+		0C56281615E908240048F056 /* AKResultLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKResultLayer.h; sourceTree = "<group>"; };
+		0C56281715E908250048F056 /* AKResultLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKResultLayer.m; sourceTree = "<group>"; };
+		0C56281A15E90A510048F056 /* Result.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Result.png; sourceTree = "<group>"; };
+		0C56281C15E911250048F056 /* stage2_1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage2_1.txt; path = StageScript/stage2_1.txt; sourceTree = "<group>"; };
+		0C56281D15E911250048F056 /* stage2_2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage2_2.txt; path = StageScript/stage2_2.txt; sourceTree = "<group>"; };
+		0C56281E15E911250048F056 /* stage2_3.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage2_3.txt; path = StageScript/stage2_3.txt; sourceTree = "<group>"; };
+		0C56281F15E911250048F056 /* stage2_4.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage2_4.txt; path = StageScript/stage2_4.txt; sourceTree = "<group>"; };
+		0C56282015E911250048F056 /* stage2_5.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage2_5.txt; path = StageScript/stage2_5.txt; sourceTree = "<group>"; };
+		0C56282115E911250048F056 /* stage2_6.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage2_6.txt; path = StageScript/stage2_6.txt; sourceTree = "<group>"; };
+		0C56282215E911250048F056 /* stage2_7.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage2_7.txt; path = StageScript/stage2_7.txt; sourceTree = "<group>"; };
+		0C56282315E911250048F056 /* stage2_8.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage2_8.txt; path = StageScript/stage2_8.txt; sourceTree = "<group>"; };
+		0C56282415E911250048F056 /* stage2_9.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage2_9.txt; path = StageScript/stage2_9.txt; sourceTree = "<group>"; };
+		0C56282515E911250048F056 /* stage2_10.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage2_10.txt; path = StageScript/stage2_10.txt; sourceTree = "<group>"; };
+		0C56282615E911250048F056 /* stage3_1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage3_1.txt; path = StageScript/stage3_1.txt; sourceTree = "<group>"; };
+		0C56282715E911250048F056 /* stage3_2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage3_2.txt; path = StageScript/stage3_2.txt; sourceTree = "<group>"; };
+		0C56282815E911250048F056 /* stage3_3.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage3_3.txt; path = StageScript/stage3_3.txt; sourceTree = "<group>"; };
+		0C56282915E911250048F056 /* stage3_4.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage3_4.txt; path = StageScript/stage3_4.txt; sourceTree = "<group>"; };
+		0C56282A15E911250048F056 /* stage3_5.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage3_5.txt; path = StageScript/stage3_5.txt; sourceTree = "<group>"; };
+		0C56282B15E911250048F056 /* stage3_6.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage3_6.txt; path = StageScript/stage3_6.txt; sourceTree = "<group>"; };
+		0C56282C15E911250048F056 /* stage3_7.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage3_7.txt; path = StageScript/stage3_7.txt; sourceTree = "<group>"; };
+		0C56282D15E911250048F056 /* stage3_8.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage3_8.txt; path = StageScript/stage3_8.txt; sourceTree = "<group>"; };
+		0C56282E15E911260048F056 /* stage3_9.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage3_9.txt; path = StageScript/stage3_9.txt; sourceTree = "<group>"; };
+		0C56282F15E911260048F056 /* stage3_10.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage3_10.txt; path = StageScript/stage3_10.txt; sourceTree = "<group>"; };
+		0C56283015E911260048F056 /* stage4_1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage4_1.txt; path = StageScript/stage4_1.txt; sourceTree = "<group>"; };
+		0C56283115E911260048F056 /* stage4_2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage4_2.txt; path = StageScript/stage4_2.txt; sourceTree = "<group>"; };
+		0C56283215E911260048F056 /* stage4_3.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage4_3.txt; path = StageScript/stage4_3.txt; sourceTree = "<group>"; };
+		0C56283315E911260048F056 /* stage4_4.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage4_4.txt; path = StageScript/stage4_4.txt; sourceTree = "<group>"; };
+		0C56283415E911260048F056 /* stage4_5.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage4_5.txt; path = StageScript/stage4_5.txt; sourceTree = "<group>"; };
+		0C56283515E911260048F056 /* stage4_6.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage4_6.txt; path = StageScript/stage4_6.txt; sourceTree = "<group>"; };
+		0C56283615E911260048F056 /* stage4_7.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage4_7.txt; path = StageScript/stage4_7.txt; sourceTree = "<group>"; };
+		0C56283715E911260048F056 /* stage4_8.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage4_8.txt; path = StageScript/stage4_8.txt; sourceTree = "<group>"; };
+		0C56283815E911260048F056 /* stage4_9.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage4_9.txt; path = StageScript/stage4_9.txt; sourceTree = "<group>"; };
+		0C56283915E911260048F056 /* stage4_10.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage4_10.txt; path = StageScript/stage4_10.txt; sourceTree = "<group>"; };
+		0C56283A15E911260048F056 /* stage5_1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage5_1.txt; path = StageScript/stage5_1.txt; sourceTree = "<group>"; };
+		0C56283B15E911260048F056 /* stage5_2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage5_2.txt; path = StageScript/stage5_2.txt; sourceTree = "<group>"; };
+		0C56283C15E911260048F056 /* stage5_3.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage5_3.txt; path = StageScript/stage5_3.txt; sourceTree = "<group>"; };
+		0C56283D15E911260048F056 /* stage5_4.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage5_4.txt; path = StageScript/stage5_4.txt; sourceTree = "<group>"; };
+		0C56283E15E911260048F056 /* stage5_5.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage5_5.txt; path = StageScript/stage5_5.txt; sourceTree = "<group>"; };
+		0C56283F15E911260048F056 /* stage5_6.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage5_6.txt; path = StageScript/stage5_6.txt; sourceTree = "<group>"; };
+		0C56284015E911260048F056 /* stage5_7.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage5_7.txt; path = StageScript/stage5_7.txt; sourceTree = "<group>"; };
+		0C56284115E911260048F056 /* stage5_8.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage5_8.txt; path = StageScript/stage5_8.txt; sourceTree = "<group>"; };
+		0C56284215E911260048F056 /* stage5_9.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage5_9.txt; path = StageScript/stage5_9.txt; sourceTree = "<group>"; };
+		0C56284315E911260048F056 /* stage5_10.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage5_10.txt; path = StageScript/stage5_10.txt; sourceTree = "<group>"; };
 		0C69226F15E1231C002656AD /* AKShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKShot.h; sourceTree = "<group>"; };
 		0C69227015E1231C002656AD /* AKShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKShot.m; sourceTree = "<group>"; };
 		0C69227615E127A8002656AD /* AKEnemyShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEnemyShot.h; sourceTree = "<group>"; };
@@ -522,6 +607,46 @@
 				0C69228D15E6D908002656AD /* stage1_8.txt */,
 				0C69228E15E6D908002656AD /* stage1_9.txt */,
 				0C69228F15E6D908002656AD /* stage1_10.txt */,
+				0C56281C15E911250048F056 /* stage2_1.txt */,
+				0C56281D15E911250048F056 /* stage2_2.txt */,
+				0C56281E15E911250048F056 /* stage2_3.txt */,
+				0C56281F15E911250048F056 /* stage2_4.txt */,
+				0C56282015E911250048F056 /* stage2_5.txt */,
+				0C56282115E911250048F056 /* stage2_6.txt */,
+				0C56282215E911250048F056 /* stage2_7.txt */,
+				0C56282315E911250048F056 /* stage2_8.txt */,
+				0C56282415E911250048F056 /* stage2_9.txt */,
+				0C56282515E911250048F056 /* stage2_10.txt */,
+				0C56282615E911250048F056 /* stage3_1.txt */,
+				0C56282715E911250048F056 /* stage3_2.txt */,
+				0C56282815E911250048F056 /* stage3_3.txt */,
+				0C56282915E911250048F056 /* stage3_4.txt */,
+				0C56282A15E911250048F056 /* stage3_5.txt */,
+				0C56282B15E911250048F056 /* stage3_6.txt */,
+				0C56282C15E911250048F056 /* stage3_7.txt */,
+				0C56282D15E911250048F056 /* stage3_8.txt */,
+				0C56282E15E911260048F056 /* stage3_9.txt */,
+				0C56282F15E911260048F056 /* stage3_10.txt */,
+				0C56283015E911260048F056 /* stage4_1.txt */,
+				0C56283115E911260048F056 /* stage4_2.txt */,
+				0C56283215E911260048F056 /* stage4_3.txt */,
+				0C56283315E911260048F056 /* stage4_4.txt */,
+				0C56283415E911260048F056 /* stage4_5.txt */,
+				0C56283515E911260048F056 /* stage4_6.txt */,
+				0C56283615E911260048F056 /* stage4_7.txt */,
+				0C56283715E911260048F056 /* stage4_8.txt */,
+				0C56283815E911260048F056 /* stage4_9.txt */,
+				0C56283915E911260048F056 /* stage4_10.txt */,
+				0C56283A15E911260048F056 /* stage5_1.txt */,
+				0C56283B15E911260048F056 /* stage5_2.txt */,
+				0C56283C15E911260048F056 /* stage5_3.txt */,
+				0C56283D15E911260048F056 /* stage5_4.txt */,
+				0C56283E15E911260048F056 /* stage5_5.txt */,
+				0C56283F15E911260048F056 /* stage5_6.txt */,
+				0C56284015E911260048F056 /* stage5_7.txt */,
+				0C56284115E911260048F056 /* stage5_8.txt */,
+				0C56284215E911260048F056 /* stage5_9.txt */,
+				0C56284315E911260048F056 /* stage5_10.txt */,
 			);
 			name = StageScript;
 			sourceTree = "<group>";
@@ -597,6 +722,8 @@
 				0C1928C015DFC29500496717 /* AKLifeMark.m */,
 				0C1928C415E0D10400496717 /* AKHiScoreFile.h */,
 				0C1928C515E0D10500496717 /* AKHiScoreFile.m */,
+				0C56281615E908240048F056 /* AKResultLayer.h */,
+				0C56281715E908250048F056 /* AKResultLayer.m */,
 				0C2A3A2015D64B12005B9272 /* StageScript */,
 				0C37060615C6BEC900295D96 /* Resources */,
 				0C37062015C6BEC900295D96 /* libs */,
@@ -608,6 +735,7 @@
 		0C37060615C6BEC900295D96 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0C56281A15E90A510048F056 /* Result.png */,
 				0C69227D15E42E20002656AD /* Pause.png */,
 				0C69227B15E27D2C002656AD /* PauseButton.png */,
 				0C69227915E18F56002656AD /* EnemyShot.png */,
@@ -1068,6 +1196,47 @@
 				0C69229615E6D908002656AD /* stage1_8.txt in Resources */,
 				0C69229715E6D908002656AD /* stage1_9.txt in Resources */,
 				0C69229815E6D908002656AD /* stage1_10.txt in Resources */,
+				0C56281B15E90A510048F056 /* Result.png in Resources */,
+				0C56284415E911260048F056 /* stage2_1.txt in Resources */,
+				0C56284515E911260048F056 /* stage2_2.txt in Resources */,
+				0C56284615E911260048F056 /* stage2_3.txt in Resources */,
+				0C56284715E911260048F056 /* stage2_4.txt in Resources */,
+				0C56284815E911260048F056 /* stage2_5.txt in Resources */,
+				0C56284915E911260048F056 /* stage2_6.txt in Resources */,
+				0C56284A15E911260048F056 /* stage2_7.txt in Resources */,
+				0C56284B15E911260048F056 /* stage2_8.txt in Resources */,
+				0C56284C15E911260048F056 /* stage2_9.txt in Resources */,
+				0C56284D15E911260048F056 /* stage2_10.txt in Resources */,
+				0C56284E15E911260048F056 /* stage3_1.txt in Resources */,
+				0C56284F15E911260048F056 /* stage3_2.txt in Resources */,
+				0C56285015E911260048F056 /* stage3_3.txt in Resources */,
+				0C56285115E911260048F056 /* stage3_4.txt in Resources */,
+				0C56285215E911260048F056 /* stage3_5.txt in Resources */,
+				0C56285315E911260048F056 /* stage3_6.txt in Resources */,
+				0C56285415E911260048F056 /* stage3_7.txt in Resources */,
+				0C56285515E911260048F056 /* stage3_8.txt in Resources */,
+				0C56285615E911260048F056 /* stage3_9.txt in Resources */,
+				0C56285715E911260048F056 /* stage3_10.txt in Resources */,
+				0C56285815E911260048F056 /* stage4_1.txt in Resources */,
+				0C56285915E911260048F056 /* stage4_2.txt in Resources */,
+				0C56285A15E911260048F056 /* stage4_3.txt in Resources */,
+				0C56285B15E911260048F056 /* stage4_4.txt in Resources */,
+				0C56285C15E911260048F056 /* stage4_5.txt in Resources */,
+				0C56285D15E911260048F056 /* stage4_6.txt in Resources */,
+				0C56285E15E911260048F056 /* stage4_7.txt in Resources */,
+				0C56285F15E911260048F056 /* stage4_8.txt in Resources */,
+				0C56286015E911260048F056 /* stage4_9.txt in Resources */,
+				0C56286115E911260048F056 /* stage4_10.txt in Resources */,
+				0C56286215E911260048F056 /* stage5_1.txt in Resources */,
+				0C56286315E911260048F056 /* stage5_2.txt in Resources */,
+				0C56286415E911260048F056 /* stage5_3.txt in Resources */,
+				0C56286515E911260048F056 /* stage5_4.txt in Resources */,
+				0C56286615E911260048F056 /* stage5_5.txt in Resources */,
+				0C56286715E911260048F056 /* stage5_6.txt in Resources */,
+				0C56286815E911260048F056 /* stage5_7.txt in Resources */,
+				0C56286915E911260048F056 /* stage5_8.txt in Resources */,
+				0C56286A15E911260048F056 /* stage5_9.txt in Resources */,
+				0C56286B15E911260048F056 /* stage5_10.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1196,6 +1365,7 @@
 				0C1928C615E0D10700496717 /* AKHiScoreFile.m in Sources */,
 				0C69227115E1231C002656AD /* AKShot.m in Sources */,
 				0C69227815E127A8002656AD /* AKEnemyShot.m in Sources */,
+				0C56281815E908250048F056 /* AKResultLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

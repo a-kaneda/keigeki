@@ -124,25 +124,25 @@ static float Accel2Ratio(float accel);
     // ゲームシーンの状態により処理を分岐する
     switch ([AKGameScene sharedInstance].state) {
 
-        case GAME_STATE_PLAYING:    // プレイ中
+        case kAKGameStatePlaying:    // プレイ中
 
             // プレイ中のタッチ開始処理を実行する
             [self touchBeganInPlaying:touch];
             break;
             
-        case GAME_STATE_CLEAR:      // クリア
+        case kAKGameClear:      // クリア
             
             // クリア結果画面の表示をスキップする
             [[AKGameScene sharedInstance] skipResult];
             break;
             
-        case GAME_STATE_GAMEOVER:   // ゲームオーバー
+        case kAKGameStateGameOver:   // ゲームオーバー
             
             // 状態をリセットする
             [[AKGameScene sharedInstance] resetAll];
             break;
             
-        case GAME_STATE_PUASE:      // ポーズ中
+        case kAKGameStatePause:      // ポーズ中
             
             // ポーズを解除する
             [[AKGameScene sharedInstance] resume];
@@ -213,7 +213,7 @@ static float Accel2Ratio(float accel);
         location.y <= kAKShotButtonPos.y + kAKIFshotbuttonSize / 2) {
         
         // 自機弾を発射する
-        [[AKGameScene sharedInstance] filePlayerShot];
+        [[AKGameScene sharedInstance] firePlayerShot];
         DBGLOG(0, "自機弾発射:x=%f y=%f", location.x, location.y);
     }
     // ポーズボタンの内側の場合

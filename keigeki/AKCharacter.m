@@ -170,6 +170,9 @@
     // 回転処理
     [self.image setRotation:AKCnvAngleRad2Scr(self.angle)];
     
+    // 表示状態にする
+    self.image.visible = YES;
+    
     // キャラクター固有の動作を行う
     [self action:dt];
 }

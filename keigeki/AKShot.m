@@ -27,11 +27,11 @@ static const NSInteger kAKShotRange = 600;
 - (void)action:(ccTime)dt
 {
     // 移動距離をカウントする
-    m_distance += m_speed * dt;
+    m_distance -= m_speed * dt;
     DBGLOG(0, @"m_distance=%f", m_distance);
     
     // 移動距離が射程距離を超えた場合は弾を削除する
-    if (m_distance > kAKShotRange) {
+    if (m_distance < 0.0f) {
         m_hitPoint = -1.0f;
         DBGLOG(0, @"shot delete.");
     }
@@ -58,7 +58,7 @@ static const NSInteger kAKShotRange = 600;
     // メンバの初期値を設定する
     m_hitPoint = 1;
     m_isStaged = YES;
-    m_distance = 0.0f;
+    m_distance = kAKShotRange;
     
     assert(self.image != nil);
     

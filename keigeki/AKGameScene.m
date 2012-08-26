@@ -14,6 +14,33 @@
 #import "AKHiScoreFile.h"
 #import "AKResultLayer.h"
 
+/// 情報レイヤーに配置するノードのタグ
+enum {
+    kAKInfoTagPause = 0,    ///< 一時停止
+    kAKInfoTagGameOver,     ///< ゲームオーバー
+    kAKInfoTagScore,        ///< スコア
+    kAKInfoTagHiScore,      ///< ハイスコア
+    kAKInfoTagHit           ///< 命中率
+};
+
+/// レイヤーのz座標、タグの値にも使用する
+enum {
+    kAKLayerPosZBase = 0,   ///< ベースレイヤー
+    kAKLayerPosZInfo,       ///< 情報レイヤー
+    kAKLayerPosZResult,     ///< ステージクリアレイヤー
+    kAKLayerPosZInterface   ///< インターフェースレイヤー
+};
+
+/// キャラクターのz座標
+enum {
+    kAKCharaPosZBackground = 0, ///< 背景
+    kAKCharaPosZPlayer,         ///< 自機
+    kAKCharaPosZEnemy,          ///< 敵
+    kAKCharaPosZPlayerShot,     ///< 自機弾
+    kAKCharaPosZEnemyShot,      ///< 敵弾
+    kAKCharaPosZEffect          ///< 画面効果
+};
+
 /// 同時に生成可能な自機弾の最大数
 static const NSInteger kAKMaxPlayerShotCount = 16;
 /// 同時に生成可能な敵弾の最大数
@@ -22,12 +49,12 @@ static const NSInteger kAKEnemyShotCount = 64;
 static const NSInteger kAKMaxEffectCount = 16;
 
 /// 初期残機数
-static const NSInteger kAKStartLifeCount = 2;
+static const NSInteger kAKStartLifeCount = 10;
 /// 自機復活までの間隔
 static const float kAKRebirthInterval = 1.0f;
 
 /// 1ステージのウェイブの数
-static const NSInteger kAKWaveCount = 1;
+static const NSInteger kAKWaveCount = 10;
 /// ステージの数
 static const NSInteger kAKStageCount = 5;
 /// ウェイブが始まるまでの間隔
@@ -37,11 +64,15 @@ static const float kAKWaveInterval = 2.0f;
 static const CGPoint kAKScorePos = {10, 300};
 /// ハイスコアの表示位置
 static const CGPoint kAKHiScorePos = {280, 300};
+/// 命中率の表示位置
+static const CGPoint kAKHitPos = {10, 280};
 
 /// スコア表示のフォーマット
 static NSString *kAKScoreFormat = @"SCORE:%08d";
 /// ハイスコア表示のフォーマット
 static NSString *kAKHiScoreFormat = @"HI:%08d";
+/// 命中率表示のフォーマット
+static NSString *kAKHitFormat = @"HIT:%3d%%";
 /// ハイスコアファイル名
 static NSString *kAKDataFileName = @"hiscore.dat";
 /// ハイスコアファイルのエンコードキー名
@@ -65,6 +96,8 @@ static AKGameScene *g_scene = nil;
 @synthesize rader = m_radar;
 @synthesize effectPool = m_effectPool;
 @synthesize lifeMark = m_lifeMark;
+@synthesize shotCount = m_shotCount;
+@synthesize hitCount = m_hitCount;
 
 /*!
  @brief シングルトンオブジェクト取得
@@ -90,18 +123,6 @@ static AKGameScene *g_scene = nil;
  */
 - (id)init
 {
-    float anchor_x = 0.0f;  // 画面回転時の中心点x座標
-    float anchor_y = 0.0f;  // 画面回転時の中心点y座標
-    NSString *hiScoreString = nil;      // ハイスコア文字列
-    NSString *scoreString = nil;        // スコア文字列
-    CCLabelTTF *scoreLabel = nil;       // スコアのラベル
-    CCLabelTTF *hiScoreLabel = nil;     // ハイスコアのラベル
-    CCLayer *baseLayer = nil;           // ベースレイヤー
-    CCLayer *infoLayer = nil;           // 情報レイヤー
-    AKGameIFLayer *interface = nil;     // インターフェースレイヤー
-    CCSprite *shotButton = nil;         // ショットボタンのスプライト
-    CCSprite *pauseButton = nil;        // ポーズボタンのスプライト
-    
     // スーパークラスの生成処理
     self = [super init];
     if (!self) {
@@ -109,36 +130,36 @@ static AKGameScene *g_scene = nil;
     }
     
     // キャラクターを配置するレイヤーを生成する
-    baseLayer = [CCLayer node];
-    baseLayer.tag = LAYER_POS_Z_BASELAYER;
-    [self addChild:baseLayer z:LAYER_POS_Z_BASELAYER];
+    CCLayer *baseLayer = [CCLayer node];
+    baseLayer.tag = kAKLayerPosZBase;
+    [self addChild:baseLayer z:kAKLayerPosZBase];
     
     // 画面回転時の中心点を求める
     // CCLayerのサイズは320x480だが、画面サイズはLandscape時は480x320のため、
     // 画面右上の点が(480 / 320, 320 / 480)となる。
     // 中心点座標のCCLayer上での比率に上の値をかけて、画面上での比率を求める。
-    anchor_x = ((float)kAKPlayerPos.x / kAKScreenSize.width) * ((float)kAKScreenSize.width / kAKScreenSize.height);
-    anchor_y = ((float)kAKPlayerPos.y / kAKScreenSize.height) * ((float)kAKScreenSize.height / kAKScreenSize.width);
+    float anchor_x = ((float)kAKPlayerPos.x / kAKScreenSize.width) * ((float)kAKScreenSize.width / kAKScreenSize.height);
+    float anchor_y = ((float)kAKPlayerPos.y / kAKScreenSize.height) * ((float)kAKScreenSize.height / kAKScreenSize.width);
     
     // 画面回転時の中心点を設定する
     baseLayer.anchorPoint = ccp(anchor_x, anchor_y);
     
     // キャラクター以外の情報を配置するレイヤーを生成する
-    infoLayer = [CCLayer node];
-    infoLayer.tag = LAYER_POS_Z_INFOLAYER;
-    [self addChild:infoLayer z:LAYER_POS_Z_INFOLAYER];
+    CCLayer *infoLayer = [CCLayer node];
+    infoLayer.tag = kAKLayerPosZInfo;
+    [self addChild:infoLayer z:kAKLayerPosZInfo];
     
     // インターフェースレイヤーを貼り付ける
-    interface = [AKGameIFLayer node];
-    [self addChild:interface z:LAYER_POS_Z_INTERFACELAYER];
+    AKGameIFLayer *interface = [AKGameIFLayer node];
+    [self addChild:interface z:kAKLayerPosZInterface];
     
     // 背景の生成
     self.background = [[[AKBackground alloc] init] autorelease];
-    [baseLayer addChild:self.background.image z:CHARA_POS_Z_BACKGROUND];
+    [baseLayer addChild:self.background.image z:kAKCharaPosZBackground];
     
     // 自機の生成
     self.player = [[[AKPlayer alloc] init] autorelease];
-    [baseLayer addChild:self.player.image z:CHARA_POS_Z_PLAYER];
+    [baseLayer addChild:self.player.image z:kAKCharaPosZPlayer];
     
     // 自機弾プールの生成
     self.playerShotPool = [[[AKCharacterPool alloc] initWithClass:[AKPlayerShot class]
@@ -157,7 +178,7 @@ static AKGameScene *g_scene = nil;
                                                          Size:kAKMaxEffectCount] autorelease];
     
     // ショットボタンの画像を読み込む
-    shotButton = [CCSprite spriteWithFile:@"ShotButton.png"];
+    CCSprite *shotButton = [CCSprite spriteWithFile:@"ShotButton.png"];
     assert(shotButton != nil);
     
     // ショットボタンの位置を設定する
@@ -167,7 +188,7 @@ static AKGameScene *g_scene = nil;
     [infoLayer addChild:shotButton];
     
     // ポーズボタンの画像を読み込む
-    pauseButton = [CCSprite spriteWithFile:@"PauseButton.png"];
+    CCSprite *pauseButton = [CCSprite spriteWithFile:@"PauseButton.png"];
     assert(pauseButton != nil);
     
     // ポーズボタンの位置を設定する
@@ -189,9 +210,9 @@ static AKGameScene *g_scene = nil;
     [infoLayer addChild:self.lifeMark];
     
     // スコアラベルを生成する
-    scoreString = [NSString stringWithFormat:kAKScoreFormat, m_score];
-    scoreLabel = [CCLabelTTF labelWithString:scoreString fontName:@"Helvetica" fontSize:22];
-    scoreLabel.tag = INFOLAYER_TAG_SCORE;
+    NSString *scoreString = [NSString stringWithFormat:kAKScoreFormat, m_score];
+    CCLabelTTF *scoreLabel = [CCLabelTTF labelWithString:scoreString fontName:@"Helvetica" fontSize:22];
+    scoreLabel.tag = kAKInfoTagScore;
     [infoLayer addChild:scoreLabel];
     
     // スコアラベルの位置を設定する
@@ -203,13 +224,24 @@ static AKGameScene *g_scene = nil;
     [self readHiScore];
     
     // ハイスコアラベルを生成する
-    hiScoreString = [NSString stringWithFormat:kAKHiScoreFormat, m_hiScore];
-    hiScoreLabel = [CCLabelTTF labelWithString:hiScoreString fontName:@"Helvetica" fontSize:22];
-    hiScoreLabel.tag = INFOLAYER_TAG_HISCORE;
+    NSString *hiScoreString = [NSString stringWithFormat:kAKHiScoreFormat, m_hiScore];
+    CCLabelTTF *hiScoreLabel = [CCLabelTTF labelWithString:hiScoreString fontName:@"Helvetica" fontSize:22];
+    hiScoreLabel.tag = kAKInfoTagHiScore;
     [infoLayer addChild:hiScoreLabel];
 
     // ハイスコアラベルの位置を設定する。
     hiScoreLabel.position = ccp(kAKHiScorePos.x, kAKHiScorePos.y);
+    
+    // 命中率ラベルを生成する
+    NSString *hitString = [NSString stringWithFormat:kAKHitFormat, 100];
+    CCLabelTTF *hitLabel = [CCLabelTTF labelWithString:hitString fontName:@"Helvetica" fontSize:22];
+    hitLabel.tag = kAKInfoTagHit;
+    [infoLayer addChild:hitLabel];
+    
+    // 命中率ラベルの位置を設定する
+    // アンカーポイントは左端に設定する
+    hitLabel.anchorPoint = ccp(0.0f, 0.5f);
+    hitLabel.position = ccp(kAKHitPos.x, kAKHitPos.y);
 
     // 状態を初期化する
     [self resetAll];
@@ -251,23 +283,23 @@ static AKGameScene *g_scene = nil;
 {
     // ゲームの状態によって処理を分岐する
     switch (m_state) {
-        case GAME_STATE_START:      // ゲーム開始時
+        case kAKGameStateStart:      // ゲーム開始時
             [self updateStart:dt];
             break;
             
-        case GAME_STATE_PLAYING:    // プレイ中
+        case kAKGameStatePlaying:    // プレイ中
             [self updatePlaying:dt];
             break;
             
-        case GAME_STATE_CLEAR:      // クリア
+        case kAKGameClear:      // クリア
         {
             // ステージクリア画面を取得し、更新を行う
-            AKResultLayer *result = (AKResultLayer *)[self getChildByTag:LAYER_POS_Z_RESULTLAYER];
+            AKResultLayer *result = (AKResultLayer *)[self getChildByTag:kAKLayerPosZResult];
             [result updateCalc:dt];
         }
             break;
             
-        case GAME_STATE_GAMEOVER:   // ゲームオーバー
+        case kAKGameStateGameOver:   // ゲームオーバー
             // 画面に変化はないため無処理
             break;
             
@@ -288,7 +320,7 @@ static AKGameScene *g_scene = nil;
     [self readScriptOfStage:m_stageNo Wave:m_waveNo];
     
     // 状態をプレイ中へと進める
-    m_state = GAME_STATE_PLAYING;
+    m_state = kAKGameStatePlaying;
 }
 
 /*!
@@ -398,9 +430,12 @@ static AKGameScene *g_scene = nil;
     angle = -1 * AKCnvAngleRad2Scr(self.player.angle);
     
     // 画面の回転
-    baseLayer = [self getChildByTag:LAYER_POS_Z_BASELAYER];
+    baseLayer = [self getChildByTag:kAKLayerPosZBase];
     baseLayer.rotation = angle;
     DBGLOG(0, @"m_baseLayer angle=%f", baseLayer.rotation);
+    
+    // 命中率の表示を更新する
+    [self updateHit];
     
     // 敵と敵弾がひとつも存在しない場合は次のウェーブ開始までの時間をカウントする
     if (isClear) {
@@ -420,7 +455,7 @@ static AKGameScene *g_scene = nil;
     
     // ゲームオーバーになっていた場合はハイスコアをファイルに書き込む
     // (ゲームオーバーになった時点で書き込みを行わないのはupdateの途中でスコアが変動する可能性があるため)
-    if (m_state == GAME_STATE_GAMEOVER) {
+    if (m_state == kAKGameStateGameOver) {
         // ハイスコアをファイルに書き込む
         [self writeHiScore];
     }
@@ -443,7 +478,7 @@ static AKGameScene *g_scene = nil;
 
  自機弾を発射する。
  */
-- (void)filePlayerShot
+- (void)firePlayerShot
 {
     float angle = 0.0f;     // 発射の方向
     AKPlayerShot *shot = nil; // 自機弾
@@ -465,10 +500,13 @@ static AKGameScene *g_scene = nil;
     // 発射する方向は自機の角度に回転速度を加算する
     angle = self.player.angle;
     
+    // 初回の移動更新処理が終わるまでは非表示とする
+    shot.image.visible = NO;
+    
     // 自機弾を生成する
     // 位置と向きは自機と同じとする
-    [shot createWithX:self.player.absx Y:self.player.absy Z:CHARA_POS_Z_PLAYERSHOT
-                Angle:angle Parent:[self getChildByTag:LAYER_POS_Z_BASELAYER]];
+    [shot createWithX:self.player.absx Y:self.player.absy Z:kAKCharaPosZPlayerShot
+                Angle:angle Parent:[self getChildByTag:kAKLayerPosZBase]];
 }
 
 /*!
@@ -480,7 +518,7 @@ static AKGameScene *g_scene = nil;
  @param posy 生成位置y座標
  @param angle 敵の向き
  */
-- (void)entryEnemy:(enum ENEMY_TYPE)type PosX:(NSInteger)posx PosY:(NSInteger)posy Angle:(float)angle
+- (void)entryEnemy:(enum AKEnemyType)type PosX:(NSInteger)posx PosY:(NSInteger)posy Angle:(float)angle
 {
     AKEnemy *enemy = nil;     // 敵
     SEL createEnemy = nil;  // 敵生成のメソッド
@@ -498,7 +536,7 @@ static AKGameScene *g_scene = nil;
     
     // 敵の種類によって生成するメソッドを変える
     switch (type) {
-        case ENEMY_TYPE_NORMAL:    // 雑魚
+        case kAKEnemyTypeNormal:    // 雑魚
             createEnemy = @selector(createNoraml);
             break;
             
@@ -512,9 +550,12 @@ static AKGameScene *g_scene = nil;
             break;
     }
     
+    // 初回の移動更新処理が終わるまでは非表示とする
+    enemy.image.visible = NO;
+    
     // 敵を生成する
-    [enemy createWithX:posx Y:posy Z:CHARA_POS_Z_ENEMY Angle:angle
-                Parent:[self getChildByTag:LAYER_POS_Z_BASELAYER] CreateSel:createEnemy];
+    [enemy createWithX:posx Y:posy Z:kAKCharaPosZEnemy Angle:angle
+                Parent:[self getChildByTag:kAKLayerPosZBase] CreateSel:createEnemy];
 }
 
 /*!
@@ -538,9 +579,12 @@ static AKGameScene *g_scene = nil;
         return;
     }
     
+    // 初回の移動更新処理が行われるまでは非表示とする
+    enemyShot.image.visible = NO;
+    
     // 敵弾を生成する
-    [enemyShot createWithType:type X:posx Y:posy Z:CHARA_POS_Z_ENEMYSHOT
-                        Angle:angle Parent:[self getChildByTag:LAYER_POS_Z_BASELAYER]];
+    [enemyShot createWithType:type X:posx Y:posy Z:kAKCharaPosZEnemyShot
+                        Angle:angle Parent:[self getChildByTag:kAKLayerPosZBase]];
 }
 
 /*!
@@ -573,8 +617,8 @@ static AKGameScene *g_scene = nil;
     
     DBGLOG(0, @"player=(%f, %f) pos=(%f, %f)", self.player.absx, self.player.absy, posx, posy);
     // 画面効果を生成する
-    [effect startEffect:time PosX:posx PosY:posy PosZ:CHARA_POS_Z_EFFECT
-                 Parent:[self getChildByTag:LAYER_POS_Z_BASELAYER]];
+    [effect startEffect:time PosX:posx PosY:posy PosZ:kAKCharaPosZEffect
+                 Parent:[self getChildByTag:kAKLayerPosZBase]];
 }
 
 /*!
@@ -603,12 +647,12 @@ static AKGameScene *g_scene = nil;
     else {
         
         // ゲームの状態をゲームオーバーに変更する
-        m_state = GAME_STATE_GAMEOVER;
+        m_state = kAKGameStateGameOver;
         
         // ゲームオーバーの画像を読み込む
         gameOverSprite = [CCSprite spriteWithFile:@"GameOver.png"];
-        gameOverSprite.tag = INFOLAYER_TAG_GAMEOVER;
-        [[self getChildByTag:LAYER_POS_Z_INFOLAYER] addChild:gameOverSprite];
+        gameOverSprite.tag = kAKInfoTagGameOver;
+        [[self getChildByTag:kAKLayerPosZInfo] addChild:gameOverSprite];
         
         // 画面の中心に配置する
         gameOverSprite.position = ccp(kAKScreenSize.width / 2, kAKScreenSize.height / 2);
@@ -627,23 +671,25 @@ static AKGameScene *g_scene = nil;
     CCNode *infoLayer = nil;       // 情報レイヤー
 
     // 各種メンバを初期化する
-    m_state = GAME_STATE_START;
+    m_state = kAKGameStateStart;
     m_stageNo = 1;
     m_waveNo = 1;
     m_life = kAKStartLifeCount;
     m_rebirthInterval = 0.0f;
     m_waveInterval = kAKWaveInterval;
     m_score = 0;
+    m_shotCount = 0;
+    m_hitCount = 0;
     
     // 残機マークの初期個数を反映させる
     [self.lifeMark updateImage:m_life];
     
     // 情報レイヤーを取得する
-    infoLayer = [self getChildByTag:LAYER_POS_Z_INFOLAYER];
+    infoLayer = [self getChildByTag:kAKLayerPosZInfo];
     
     // ラベルの内容を更新する
     scoreString = [NSString stringWithFormat:kAKScoreFormat, m_score];
-    scoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:INFOLAYER_TAG_SCORE];
+    scoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:kAKInfoTagScore];
     [scoreLabel setString:scoreString];
 
     // 自機の状態を初期化する
@@ -655,7 +701,7 @@ static AKGameScene *g_scene = nil;
     [self.effectPool reset];
     
     // ゲームオーバーの表示を削除する
-    [infoLayer removeChildByTag:INFOLAYER_TAG_GAMEOVER cleanup:YES];
+    [infoLayer removeChildByTag:kAKInfoTagGameOver cleanup:YES];
 }
 
 /*!
@@ -675,11 +721,11 @@ static AKGameScene *g_scene = nil;
     m_score += score;
     
     // 情報レイヤーを取得する
-    infoLayer = [self getChildByTag:LAYER_POS_Z_INFOLAYER];
+    infoLayer = [self getChildByTag:kAKLayerPosZInfo];
     ;
     // ラベルの内容を更新する
     scoreString = [NSString stringWithFormat:kAKScoreFormat, m_score];
-    scoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:INFOLAYER_TAG_SCORE];
+    scoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:kAKInfoTagScore];
     [scoreLabel setString:scoreString];
     
     // ハイスコアを更新している場合はハイスコアを設定する
@@ -690,7 +736,7 @@ static AKGameScene *g_scene = nil;
         
         // ラベルの内容を更新する
         hiScoreString = [NSString stringWithFormat:kAKHiScoreFormat, m_hiScore];
-        hiScoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:INFOLAYER_TAG_HISCORE];
+        hiScoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:kAKInfoTagHiScore];
         [hiScoreLabel setString:hiScoreString];
     }
 }
@@ -707,10 +753,10 @@ static AKGameScene *g_scene = nil;
     CCSprite *pauseSprite = nil;    // 一時停止中の画像
     
     // プレイ中から以外の変更の場合はエラー
-    assert(m_state == GAME_STATE_PLAYING);
+    assert(m_state == kAKGameStatePlaying);
     
     // ゲーム状態を一時停止に変更する
-    m_state = GAME_STATE_PUASE;
+    m_state = kAKGameStatePause;
     
     // すべてのキャラクターのアニメーションを停止する
     // 自機
@@ -742,13 +788,13 @@ static AKGameScene *g_scene = nil;
     
     // 一時停止中の画像を読み込む
     pauseSprite = [CCSprite spriteWithFile:@"Pause.png"];
-    pauseSprite.tag = INFOLAYER_TAG_PAUSE;
+    pauseSprite.tag = kAKInfoTagPause;
 
     // 画面の中心に配置する
     pauseSprite.position = ccp(kAKScreenSize.width / 2, kAKScreenSize.height / 2);
     
     // 情報レイヤーに配置する
-    [[self getChildByTag:LAYER_POS_Z_INFOLAYER] addChild:pauseSprite];
+    [[self getChildByTag:kAKLayerPosZInfo] addChild:pauseSprite];
     
 }
 
@@ -763,10 +809,10 @@ static AKGameScene *g_scene = nil;
     NSEnumerator *enumerator = nil; // キャラクター操作用列挙子
     
     // 一時停止中から以外の変更の場合はエラー
-    assert(m_state == GAME_STATE_PUASE);
+    assert(m_state == kAKGameStatePause);
 
     // ゲーム状態をプレイ中に変更する
-    m_state = GAME_STATE_PLAYING;
+    m_state = kAKGameStatePlaying;
     
     // すべてのキャラクターのアニメーションを再開する
     // 自機
@@ -797,7 +843,7 @@ static AKGameScene *g_scene = nil;
     }
     
     // 一時停止中の画像を取り除く
-    [[self getChildByTag:LAYER_POS_Z_INFOLAYER] removeChildByTag:INFOLAYER_TAG_PAUSE cleanup:YES];
+    [[self getChildByTag:kAKLayerPosZInfo] removeChildByTag:kAKInfoTagPause cleanup:YES];
 }
 
 /*!
@@ -818,7 +864,7 @@ static AKGameScene *g_scene = nil;
     NSBundle *bundle = nil;         // バンドル
     NSArray *params = nil;          // ステージ定義ファイルの1行のパラメータ
     NSString *param = nil;          // ステージ定義ファイルの1個のパラメータ
-    enum ENEMY_TYPE enemyType = 0;  // 敵の種類
+    enum AKEnemyType enemyType = 0;  // 敵の種類
     NSInteger enemyPosX = 0;        // 敵の配置位置x座標
     NSInteger enemyPosY = 0;        // 敵の配置位置y座標
     float enemyAngle = 0.0f;        // 敵の向き
@@ -887,7 +933,7 @@ static AKGameScene *g_scene = nil;
             enemyPosY += m_player.absy;
             
             // 敵を生成する
-            [self entryEnemy:(enum ENEMY_TYPE)enemyType PosX:enemyPosX PosY:enemyPosY Angle:enemyAngle];
+            [self entryEnemy:(enum AKEnemyType)enemyType PosX:enemyPosX PosY:enemyPosY Angle:enemyAngle];
         }
         
         // 次の行へ処理を進める
@@ -904,8 +950,6 @@ static AKGameScene *g_scene = nil;
  */
 - (void)clearWave
 {
-    AKResultLayer *resultLayer = nil;   // ステージクリア結果画面
-    
     // ウェーブを進める
     m_waveNo++;
     
@@ -913,15 +957,24 @@ static AKGameScene *g_scene = nil;
     if (m_waveNo > kAKWaveCount) {
         
         // 状態をゲームクリアに移行する
-        m_state = GAME_STATE_CLEAR;
+        m_state = kAKGameClear;
         
         // 結果画面を生成する
-        resultLayer = [AKResultLayer node];
-        resultLayer.tag = LAYER_POS_Z_RESULTLAYER;
-        [self addChild:resultLayer z:LAYER_POS_Z_RESULTLAYER];
+        AKResultLayer *resultLayer = [AKResultLayer node];
+        resultLayer.tag = kAKLayerPosZResult;
+        [self addChild:resultLayer z:kAKLayerPosZResult];
+        
+        // 命中率を計算する。1発も発射していない場合は100%とする。
+        NSInteger hit = 0;
+        if (m_shotCount == 0) {
+            hit = 100;
+        }
+        else {
+            hit = (float)m_hitCount / m_shotCount * 100.0f;
+        }
         
         // 各種パラメータを設定する
-        [resultLayer setScore:m_score andTime:100 andHit:50 andRest:m_life];
+        [resultLayer setScore:m_score andTime:100 andHit:hit andRest:m_life];
     }
     // ステージクリアでない場合は次のウェーブのスクリプトを読み込む
     else {
@@ -940,7 +993,7 @@ static AKGameScene *g_scene = nil;
     AKResultLayer *resultLayer = nil;   // ステージクリア結果画面
     
     // ステージクリア結果画面を取得する
-    resultLayer = (AKResultLayer *)[self getChildByTag:LAYER_POS_Z_RESULTLAYER];
+    resultLayer = (AKResultLayer *)[self getChildByTag:kAKLayerPosZResult];
     
     // ステージクリア画面の表示が完了している場合は次のステージを開始する
     if (resultLayer.isFinish) {
@@ -971,34 +1024,38 @@ static AKGameScene *g_scene = nil;
     m_stageNo++;
     
     // ステージクリア結果画面を削除する
-    [self removeChildByTag:LAYER_POS_Z_RESULTLAYER cleanup:YES];
+    [self removeChildByTag:kAKLayerPosZResult cleanup:YES];
     
     // まだ全ステージをクリアしていない場合は次のステージを開始する
     if (m_stageNo < kAKStageCount) {
         
         // ゲームの状態をプレイ中に変更する
-        m_state = GAME_STATE_PLAYING;
+        m_state = kAKGameStatePlaying;
         
         // ウェーブ番号を初期化する
         m_waveNo = 1;
     
         // 自機復活までのインターバルを初期化する
         m_rebirthInterval = 0.0f;
+        
+        // 命中率を初期化する
+        m_shotCount = 0;
+        m_hitCount = 0;
 
         // 残機マークを更新する
         [self.lifeMark updateImage:m_life];
 
         // 情報レイヤーを取得する
-        infoLayer = [self getChildByTag:LAYER_POS_Z_INFOLAYER];
+        infoLayer = [self getChildByTag:kAKLayerPosZInfo];
 
         // スコアラベルの内容を更新する
         scoreString = [NSString stringWithFormat:kAKScoreFormat, m_score];
-        scoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:INFOLAYER_TAG_SCORE];
+        scoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:kAKInfoTagScore];
         [scoreLabel setString:scoreString];
         
         // ハイスコアラベルの内容を更新する
         hiScoreString = [NSString stringWithFormat:kAKHiScoreFormat, m_hiScore];
-        hiScoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:INFOLAYER_TAG_HISCORE];
+        hiScoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:kAKInfoTagHiScore];
         [hiScoreLabel setString:hiScoreString];
         
         // 自機の状態を初期化する
@@ -1089,5 +1146,35 @@ static AKGameScene *g_scene = nil;
     
     // ファイルを書き込む
     [data writeToFile:filePath atomically:YES];
+}
+
+/*!
+ @brief 命中率更新
+ 
+ 命中率のラベルを更新する。
+ */
+- (void)updateHit
+{
+    // 命中率を計算する。1発も発射していない場合は100%とする。
+    NSInteger hit = 0;
+    if (m_shotCount == 0) {
+        hit = 100;
+    }
+    else {
+        hit = (float)m_hitCount / m_shotCount * 100.0f;
+    }
+    DBGLOG(0, @"hitCount=%d shotCount=%d hit=%d", m_hitCount, m_shotCount, hit);
+    
+    // 情報レイヤーを取得する
+    CCNode *infoLayer = [self getChildByTag:kAKLayerPosZInfo];
+    
+    // 命中率ラベルを取得する
+    CCLabelTTF *hitLabel = (CCLabelTTF *)[infoLayer getChildByTag:kAKInfoTagHit];
+    
+    // 命中率ラベルを更新する
+    NSString *hitString = [NSString stringWithFormat:kAKHitFormat, hit];
+    [hitLabel setString:hitString];
+    
+    DBGLOG(0, @"str=%@", hitString);
 }
 @end

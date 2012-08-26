@@ -16,52 +16,24 @@
 #import "common.h"
 
 /// ゲームプレイの状態
-enum GAME_STATE {
-    GAME_STATE_START = 0,   ///< ゲーム開始時
-    GAME_STATE_PLAYING,     ///< プレイ中
-    GAME_STATE_CLEAR,       ///< ステージクリア後
-    GAME_STATE_GAMEOVER,    ///< ゲームオーバーの表示中
-    GAME_STATE_PUASE,       ///< 一時停止中
-    GAME_STATE_COUNT        ///< ゲームプレイ状態の数
+enum AKGameState {
+    kAKGameStateStart = 0,  ///< ゲーム開始時
+    kAKGameStatePlaying,    ///< プレイ中
+    kAKGameClear,           ///< ステージクリア後
+    kAKGameStateGameOver,   ///< ゲームオーバーの表示中
+    kAKGameStatePause       ///< 一時停止中
 };
 
 /// 敵の種類
-enum ENEMY_TYPE {
-    ENEMY_TYPE_NORMAL = 0,  ///< 雑魚
-    ENEMY_TYPE_COUNT        ///< 敵の種類の数
+enum AKEnemyType {
+    kAKEnemyTypeNormal = 0  ///< 雑魚
 };
 
-/// 情報レイヤーに配置するノードのタグ
-enum INFOLAYER_TAG {
-    INFOLAYER_TAG_PAUSE = 0,    ///< 一時停止
-    INFOLAYER_TAG_GAMEOVER,     ///< ゲームオーバー
-    INFOLAYER_TAG_SCORE,        ///< スコア
-    INFOLAYER_TAG_HISCORE,      ///< ハイスコア
-    INFOLAYER_TAG_COUNT         ///< タグの種類の数
-};
-
-/// レイヤーのz座標、タグの値にも使用する
-enum LAYER_POS_Z {
-    LAYER_POS_Z_BASELAYER = 0,  ///< ベースレイヤー
-    LAYER_POS_Z_INFOLAYER,      ///< 情報レイヤー
-    LAYER_POS_Z_RESULTLAYER,    ///< ステージクリアレイヤー
-    LAYER_POS_Z_INTERFACELAYER  ///< インターフェースレイヤー
-};
-
-/// キャラクターのz座標
-enum CHARA_POS_Z {
-    CHARA_POS_Z_BACKGROUND = 0, ///< 背景
-    CHARA_POS_Z_PLAYER,         ///< 自機
-    CHARA_POS_Z_ENEMY,          ///< 敵
-    CHARA_POS_Z_PLAYERSHOT,     ///< 自機弾
-    CHARA_POS_Z_ENEMYSHOT,      ///< 敵弾
-    CHARA_POS_Z_EFFECT          ///< 画面効果
-};
 
 // ゲームプレイシーン
 @interface AKGameScene : CCScene {
     /// 現在の状態
-    enum GAME_STATE m_state;
+    enum AKGameState m_state;
     /// 現在のステージ番号
     NSInteger m_stageNo;
     /// 現在のウェイブ番号
@@ -72,6 +44,10 @@ enum CHARA_POS_Z {
     NSInteger m_score;
     /// ハイスコア
     NSInteger m_hiScore;
+    /// ショット発射数
+    NSInteger m_shotCount;
+    /// ショット命中数
+    NSInteger m_hitCount;
     /// 自機復活までの間隔
     float m_rebirthInterval;
     /// 次のウェーブ開始までの間隔
@@ -95,7 +71,7 @@ enum CHARA_POS_Z {
 }
 
 /// 現在の状態
-@property (nonatomic, readonly)enum GAME_STATE state;
+@property (nonatomic, readonly)enum AKGameState state;
 /// 背景
 @property (nonatomic, retain)AKBackground *background;
 /// 自機
@@ -112,6 +88,10 @@ enum CHARA_POS_Z {
 @property (nonatomic, retain)AKRadar *rader;
 /// 残機表示
 @property (nonatomic, retain)AKLifeMark *lifeMark;
+/// ショット発射数
+@property (nonatomic)NSInteger shotCount;
+/// ショット命中数
+@property (nonatomic)NSInteger hitCount;
 
 // シングルトンオブジェクト取得
 + (AKGameScene *)sharedInstance;
@@ -122,9 +102,9 @@ enum CHARA_POS_Z {
 // 自機の移動
 - (void)movePlayerByVX:(float)vx VY:(float)vy;
 // 自機弾の発射
-- (void)filePlayerShot;
+- (void)firePlayerShot;
 // 敵の生成
-- (void)entryEnemy:(enum ENEMY_TYPE)type PosX:(NSInteger)posx PosY:(NSInteger)posy Angle:(float)angle;
+- (void)entryEnemy:(enum AKEnemyType)type PosX:(NSInteger)posx PosY:(NSInteger)posy Angle:(float)angle;
 // 敵弾の生成
 - (void)fireEnemyShot:(enum ENEMY_SHOT_TYPE)type PosX:(NSInteger)posx PosY:(NSInteger)posy Angle:(float)angle;
 // 画面効果の生成
@@ -151,4 +131,6 @@ enum CHARA_POS_Z {
 - (void)readHiScore;
 // ハイスコアファイルの書込
 - (void)writeHiScore;
+// 命中率更新
+- (void)updateHit;
 @end

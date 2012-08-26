@@ -131,7 +131,7 @@
 		[director_ stopAnimation];
         
         // ゲームプレイ中の場合は一時停止状態にする
-        if ([AKGameScene sharedInstance].state == GAME_STATE_PLAYING) {
+        if ([AKGameScene sharedInstance].state == kAKGameStatePlaying) {
             [[AKGameScene sharedInstance] pause];
         }
     }

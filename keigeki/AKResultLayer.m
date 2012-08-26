@@ -39,7 +39,7 @@ static const CGPoint kAKRestNumPos = {150, 100};
 /// 残機ボーナス位置
 static const CGPoint kAKRestBonusPos = {300, 100};
 /// スコア値位置
-static const CGPoint kAKScoreNumPos = {150, 50};
+static const CGPoint kAKScoreNumPos = {300, 50};
 /// ラベルのフォーマット
 static NSString *kAKLabelFormat = @"%6d";
 /// 少しずつ表示更新するときの増加分
@@ -253,7 +253,21 @@ static const NSInteger kAKHitBonus = 50;
     
     // スコアに加算する項目の場合は加算処理を行う
     if (isAddScore) {
+        
+        // ゲームシーンクラスのスコアを加算する
         [[AKGameScene sharedInstance] addScore:value - current];
+        
+        // ステージクリア結果画面のスコアを加算する
+        m_score += (value - current);
+        
+        // スコア文字列を生成する
+        NSString *scoreString = [NSString stringWithFormat:kAKLabelFormat, m_score];
+        
+        // スコアラベルを取得する
+        CCLabelTTF *scoreLabel = (CCLabelTTF *)[self getChildByTag:kAKScoreNumTag];
+        
+        // スコアラベルの表示を更新する
+        [scoreLabel setString:scoreString];
     }
     
     // 更新が完了したか判定する

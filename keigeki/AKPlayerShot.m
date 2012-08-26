@@ -6,6 +6,7 @@
  */
 
 #import "AKPlayerShot.h"
+#import "AKGameScene.h"
 #import "common.h"
 
 /// 自機弾のスピード
@@ -44,5 +45,26 @@ static const CGSize kAKPlayerShotSize = {2, 8};
     m_height = kAKPlayerShotSize.height;
     
     return self;
+}
+
+/*!
+ @brief 破壊処理
+ 
+ ショット発射数をカウントする。
+ 射程距離がまだ残っている場合は敵に命中したと判断して命中数をカウントする。
+ */
+- (void)destroy
+{
+    // ショット発射数をカウントする
+    [AKGameScene sharedInstance].shotCount++;
+    
+    // 射程距離が残っていれば命中数をカウントする
+    if (m_distance > 0.0f) {
+        [AKGameScene sharedInstance].hitCount++;
+    }
+    DBGLOG(0, @"hitCount=%d shotCount=%d", [AKGameScene sharedInstance].hitCount, [AKGameScene sharedInstance].shotCount);
+    
+    // スーパークラスの処理を行う
+    [super destroy];
 }
 @end

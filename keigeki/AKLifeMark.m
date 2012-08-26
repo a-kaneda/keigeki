@@ -8,7 +8,7 @@
 #import "AKLifeMark.h"
 
 /// 残機マーク表示位置
-static const CGPoint kAKLifeMarkPos = {10, 180};
+static const CGPoint kAKLifeMarkPos = {10, 260};
 /// 残機マーク表示位置のインターバル
 static const NSInteger kAKLifeMarkInterval = 20;
 

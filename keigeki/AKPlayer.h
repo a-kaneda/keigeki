@@ -10,15 +10,6 @@
 #import "AKCharacter.h"
 #import "common.h"
 
-/// 速度の最大値
-#define PLAYER_SPEED        240
-/// 自機の回転速度
-#define PLAYER_ROT_SPEED    1
-/// 自機のサイズ
-#define PLAYER_SIZE         16
-/// 復活後の無敵状態の時間
-#define INVINCIBLE_TIME     2
-
 // 自機クラス
 @interface AKPlayer : AKCharacter {
     /// 無敵状態かどうか

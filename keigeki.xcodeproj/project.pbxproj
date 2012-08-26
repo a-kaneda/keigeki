@@ -217,7 +217,7 @@
 /* Begin PBXFileReference section */
 		0C1928AE15D9361A00496717 /* Marker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Marker.png; sourceTree = "<group>"; };
 		0C1928B115D9362800496717 /* Radar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Radar.png; sourceTree = "<group>"; };
-		0C1928B315D99CCF00496717 /* AKRadar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKRadar.h; sourceTree = "<group>"; };
+		0C1928B315D99CCF00496717 /* AKRadar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKRadar.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0C1928B415D99CCF00496717 /* AKRadar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKRadar.m; sourceTree = "<group>"; };
 		0C1928B615D9A19D00496717 /* AKBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKBackground.h; sourceTree = "<group>"; };
 		0C1928B715D9A43200496717 /* AKPlayerShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayerShot.h; sourceTree = "<group>"; };
@@ -509,12 +509,12 @@
 		0C3707AC15C6C82B00295D96 /* AKGameIFLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKGameIFLayer.h; sourceTree = "<group>"; };
 		0C3707AD15C6C82B00295D96 /* AKGameIFLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKGameIFLayer.m; sourceTree = "<group>"; };
 		0C3707AE15C6C82C00295D96 /* AKGameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKGameScene.h; sourceTree = "<group>"; };
-		0C3707AF15C6C82C00295D96 /* AKGameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKGameScene.m; sourceTree = "<group>"; };
+		0C3707AF15C6C82C00295D96 /* AKGameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKGameScene.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0C3707B015C6C82C00295D96 /* AKPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayer.h; sourceTree = "<group>"; };
-		0C3707B115C6C82C00295D96 /* AKPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayer.m; sourceTree = "<group>"; };
+		0C3707B115C6C82C00295D96 /* AKPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKPlayer.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0C3707B315C6C82C00295D96 /* AKPlayerShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayerShot.m; sourceTree = "<group>"; };
 		0C56281615E908240048F056 /* AKResultLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKResultLayer.h; sourceTree = "<group>"; };
-		0C56281715E908250048F056 /* AKResultLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKResultLayer.m; sourceTree = "<group>"; };
+		0C56281715E908250048F056 /* AKResultLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKResultLayer.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0C56281A15E90A510048F056 /* Result.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Result.png; sourceTree = "<group>"; };
 		0C56281C15E911250048F056 /* stage2_1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage2_1.txt; path = StageScript/stage2_1.txt; sourceTree = "<group>"; };
 		0C56281D15E911250048F056 /* stage2_2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage2_2.txt; path = StageScript/stage2_2.txt; sourceTree = "<group>"; };

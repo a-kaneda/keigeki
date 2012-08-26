@@ -8,6 +8,9 @@
 #import "AKShot.h"
 #import "common.h"
 
+/// 弾の射程距離
+static const NSInteger kAKShotRange = 600;
+
 /*!
  @brief 弾クラス
  
@@ -28,7 +31,7 @@
     DBGLOG(0, @"m_distance=%f", m_distance);
     
     // 移動距離が射程距離を超えた場合は弾を削除する
-    if (m_distance > SHOT_RANGE) {
+    if (m_distance > kAKShotRange) {
         m_hitPoint = -1.0f;
         DBGLOG(0, @"shot delete.");
     }

@@ -8,6 +8,9 @@
 #import "AKEnemy.h"
 #import "AKGameScene.h"
 
+/// 敵を倒したときのスコア
+static const NSInteger kAKEnemyScore = 100;
+
 /*!
  @brief 敵クラス
  
@@ -51,8 +54,8 @@
     // 敵の向きによって加算するスコアを変える。
     // 後ろを向いている場合が最大とする。
     destAngle = AKCalcDestAngle(self.image.position.x, self.image.position.y,
-                                PLAYER_POS_X, PLAYER_POS_Y);
-    score = ENEMY_SCORE * (2 - cos(destAngle - self.angle));
+                                kAKPlayerPos.x, kAKPlayerPos.y);
+    score = kAKEnemyScore * (2 - cos(destAngle - self.angle));
     
     // スコアを加算する
     [[AKGameScene sharedInstance] addScore:score];

@@ -11,9 +11,10 @@
 
 /// 敵弾の種類
 enum ENEMY_SHOT_TYPE {
-    ENEMY_SHOT_TYPE_NORMAL = 0, // 通常弾
-    ENEMY_SHOT_TYPE_COUNT       // 敵弾の種類
-    };
+    ENEMY_SHOT_TYPE_NORMAL = 0, ///< 通常弾
+    ENEMY_SHOT_TYPE_COUNT       ///< 敵弾の種類
+};
+
 // 敵弾クラス
 @interface AKEnemyShot : AKShot {
     

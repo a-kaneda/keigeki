@@ -9,13 +9,6 @@
 #import "cocos2d.h"
 #import "common.h"
 
-/// レーダーのサイズ
-#define RADAR_SIZE 128
-/// レーダーの配置位置x座標
-#define RADAR_POS_X (SCREEN_WIDTH - 80)
-/// レーダーの配置位置y座標
-#define RADAR_POS_Y (SCREEN_HEIGHT - 130)
-
 // レーダークラス
 @interface AKRadar : CCNode {
     /// レーダーの画像

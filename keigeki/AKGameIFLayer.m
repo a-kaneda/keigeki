@@ -9,6 +9,11 @@
 #import "AKGameScene.h"
 #import "common.h"
 
+/// ショットボタンのサイズ
+static const NSInteger kAKIFshotbuttonSize = 64;
+/// ポーズボタンのサイズ
+static const NSInteger kAKPauseButtonSize = 32;
+
 // 加速度センサーの値を比率換算する
 static float Accel2Ratio(float accel);
 
@@ -202,20 +207,20 @@ static float Accel2Ratio(float accel);
     
     // タッチ位置判定
     // ショットボタンの内側の場合
-    if (location.x >= SHOT_BUTTON_POS_X - SHOT_BUTTON_SIZE / 2 &&
-        location.x <= SHOT_BUTTON_POS_X + SHOT_BUTTON_SIZE / 2 &&
-        location.y >= SHOT_BUTTON_POS_Y - SHOT_BUTTON_SIZE / 2 &&
-        location.y <= SHOT_BUTTON_POS_Y + SHOT_BUTTON_SIZE / 2) {
+    if (location.x >= kAKShotButtonPos.x - kAKIFshotbuttonSize / 2 &&
+        location.x <= kAKShotButtonPos.x + kAKIFshotbuttonSize / 2 &&
+        location.y >= kAKShotButtonPos.y - kAKIFshotbuttonSize / 2 &&
+        location.y <= kAKShotButtonPos.y + kAKIFshotbuttonSize / 2) {
         
         // 自機弾を発射する
         [[AKGameScene sharedInstance] filePlayerShot];
         DBGLOG(0, "自機弾発射:x=%f y=%f", location.x, location.y);
     }
     // ポーズボタンの内側の場合
-    else if (location.x >= PAUSE_BUTTON_POS_X - PAUSE_BUTTON_SIZE / 2 &&
-             location.x <= PAUSE_BUTTON_POS_X + PAUSE_BUTTON_SIZE / 2 &&
-             location.y >= PAUSE_BUTTON_POS_Y - PAUSE_BUTTON_SIZE / 2 &&
-             location.y <= PAUSE_BUTTON_POS_Y + PAUSE_BUTTON_SIZE / 2) {
+    else if (location.x >= kAKPauseButtonPos.x - kAKPauseButtonSize / 2 &&
+             location.x <= kAKPauseButtonPos.x + kAKPauseButtonSize / 2 &&
+             location.y >= kAKPauseButtonPos.y - kAKPauseButtonSize / 2 &&
+             location.y <= kAKPauseButtonPos.y + kAKPauseButtonSize / 2) {
         
         // ポーズ処理を実行する
         [[AKGameScene sharedInstance] pause];

@@ -14,6 +14,20 @@
 unsigned int g_debugflg = 0;
 #endif
 
+/// スクリーンサイズ
+const CGSize kAKScreenSize = {480, 320};
+// <注意> ループ時に背景が飛ばないようにステージサイズは背景のサイズの倍数とすること。
+/// ステージサイズ(スクリーンサイズ * 8)
+const CGSize kAKStageSize = {3840, 2560};
+/// 自機の表示位置(画面中央、画面下から1/4)
+const CGPoint kAKPlayerPos = {240, 80};
+/// 同時に生成可能な敵の最大数
+const NSInteger kAKMaxEnemyCount = 16;
+/// ショットボタンの配置位置(画面右下から50)
+const CGPoint kAKShotButtonPos = {430, 50};
+/// ポーズボタンの配置位置(画面右上から26)
+const CGPoint kAKPauseButtonPos = {454, 294};
+
 /*!
  @brief 範囲チェック(実数)
 

@@ -91,7 +91,7 @@
 - (void)setAbsx:(float)absx
 {
     // ステージの範囲内に収まるように値を設定する
-    m_absx = AKRangeCheckLF(absx, 0.0f, STAGE_WIDTH);
+    m_absx = AKRangeCheckLF(absx, 0.0f, kAKStageSize.width);
 }
 
 /*!
@@ -114,7 +114,7 @@
 - (void)setAbsy:(float)absy
 {
     // ステージの範囲内に収まるように値を設定する
-    m_absy = AKRangeCheckLF(absy, 0.0f, STAGE_HEIGHT);
+    m_absy = AKRangeCheckLF(absy, 0.0f, kAKStageSize.height);
 }
 /*!
  @brief 移動処理
@@ -159,8 +159,8 @@
     // スクリーン位置中心からの距離 + スクリーンサイズの半分
     // スクリーン位置中心からの距離はステージサイズの半分を超えているときは反対側にいるものとして判定する。
     // これはマーカーの表示のため。
-    posx = AKRangeCheckLF(self.absx - scrx + SCREEN_WIDTH / 2, -(STAGE_WIDTH / 2), STAGE_WIDTH / 2);
-    posy = AKRangeCheckLF(self.absy - scry + SCREEN_HEIGHT / 2, -(STAGE_HEIGHT / 2), STAGE_HEIGHT / 2);
+    posx = AKRangeCheckLF(self.absx - scrx + kAKScreenSize.width / 2, -(kAKStageSize.width / 2), kAKStageSize.width / 2);
+    posy = AKRangeCheckLF(self.absy - scry + kAKScreenSize.height / 2, -(kAKStageSize.height / 2), kAKStageSize.height / 2);
     
     DBGLOG(0, @"vx=%f vy=%f ax=%f ay=%f px=%f py=%f sx=%d sy=%d", velx, vely, self.absx, self.absy, posx, posy, scrx, scry);
         

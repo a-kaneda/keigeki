@@ -7,6 +7,9 @@
 
 #import "AKBackground.h"
 
+/// タイルのサイズ
+static const NSInteger kAKTileSize = 64;
+
 /*!
  @brief 背景クラス
  
@@ -49,6 +52,7 @@
 {
     // 背景画像の解放
     [self.image removeFromParentAndCleanup:YES];
+    self.image = nil;
     
     // スーパークラスの解放処理
     [super dealloc];
@@ -63,17 +67,17 @@
  */
 - (void)moveWithScreenX:(NSInteger)scrx ScreenY:(NSInteger)scry
 {
-    float pos = 0.0f; /* 背景画像のx座標 */
+    float posx = 0.0f; /* 背景画像のx座標 */
     float posy = 0.0f; /* 背景画像のy座標 */
 
     // 自機の配置位置を中心とする。
     // そこからタイルサイズ分の範囲でスクロールする。(-32 〜 +32)
-    pos = PLAYER_POS_X + TILE_SIZE / 2 + (-scrx % TILE_SIZE);
-    posy = PLAYER_POS_Y + TILE_SIZE / 2 + (-scry % TILE_SIZE);
-    DBGLOG(0, @"basex=%f basey=%f", pos, posy);
+    posx = kAKPlayerPos.x + kAKTileSize / 2 + (-scrx % kAKTileSize);
+    posy = kAKPlayerPos.y + kAKTileSize / 2 + (-scry % kAKTileSize);
+    DBGLOG(0, @"basex=%f basey=%f", posx, posy);
     
     // 背景画像の位置を移動する。
-    self.image.position = ccp(pos, posy);
+    self.image.position = ccp(posx, posy);
 }
 
 @end

@@ -8,6 +8,11 @@
 #import "AKRadar.h"
 #import "AKCharacter.h"
 
+/// レーダーのサイズ
+static const NSInteger kAKRadarSize = 128;
+/// レーダーの配置位置
+static const CGPoint kAKRadarPos = {400, 190};
+
 /*!
  @brief レーダークラス
 
@@ -43,13 +48,13 @@
     [self addChild:self.radarImage z:0];
     
     // レーダーの位置を設定する
-    self.radarImage.position = ccp(RADAR_POS_X, RADAR_POS_Y);
+    self.radarImage.position = ccp(kAKRadarPos.x, kAKRadarPos.y);
     
     // マーカーを保存する配列を生成する
-    self.markerImage = [NSMutableArray arrayWithCapacity:MAX_ENEMY_COUNT];
+    self.markerImage = [NSMutableArray arrayWithCapacity:kAKMaxEnemyCount];
     
     // マーカーを生成する
-    for (i = 0; i < MAX_ENEMY_COUNT; i++) {
+    for (i = 0; i < kAKMaxEnemyCount; i++) {
         
         // マーカーの画像を読み込む
         marker = [CCSprite spriteWithFile:@"Marker.png"];
@@ -102,7 +107,7 @@
     float posy = 0.0f;          // マーカーのy座標
     
     // 各敵の位置をマーカーに反映させる
-    for (i = 0; i < MAX_ENEMY_COUNT; i++) {
+    for (i = 0; i < kAKMaxEnemyCount; i++) {
         
         // 配列サイズのチェックを行う
         assert(i < enemys.count);
@@ -122,7 +127,7 @@
         // 自機から見て敵の方向を調べる。
         // 絶対座標ではステージループの問題が発生するため
         // スクリーン座標を使用する。
-        angle = AKCalcDestAngle(PLAYER_POS_X, PLAYER_POS_Y,
+        angle = AKCalcDestAngle(kAKPlayerPos.x, kAKPlayerPos.y,
                                 enemy.image.position.x, enemy.image.position.y);
         
         // 自機の向いている方向を上向きとする。
@@ -131,8 +136,8 @@
         
         // 座標を計算する
         // レーダーの中心を原点とするため、xyそれぞれレーダーの幅の半分を加算する。
-        posx = ((RADAR_SIZE / 2) * cos(angle)) + (RADAR_SIZE / 2);
-        posy = ((RADAR_SIZE / 2) * sin(angle)) + (RADAR_SIZE / 2);
+        posx = ((kAKRadarSize / 2) * cos(angle)) + (kAKRadarSize / 2);
+        posy = ((kAKRadarSize / 2) * sin(angle)) + (kAKRadarSize / 2);
         DBGLOG(0, @"enemy=(%f,%f) angle=%f marker=(%f,%f)",
                enemy.image.position.x, enemy.image.position.y,
                AKCnvAngleRad2Deg(angle), posx, posy);

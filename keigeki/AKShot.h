@@ -9,9 +9,6 @@
 #import "cocos2d.h"
 #import "AKCharacter.h"
 
-/// 弾の射程距離
-#define SHOT_RANGE   600
-
 // 弾クラス
 @interface AKShot : AKCharacter {
     /// 移動距離

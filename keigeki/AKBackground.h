@@ -9,9 +9,6 @@
 #import "cocos2d.h"
 #import "common.h"
 
-/// タイルのサイズ
-#define TILE_SIZE 64
-
 // 背景クラス
 @interface AKBackground : NSObject {
     /// 背景画像

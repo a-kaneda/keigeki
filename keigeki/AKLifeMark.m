@@ -7,6 +7,11 @@
 
 #import "AKLifeMark.h"
 
+/// 残機マーク表示位置
+static const CGPoint kAKLifeMarkPos = {10, 180};
+/// 残機マーク表示位置のインターバル
+static const NSInteger kAKLifeMarkInterval = 20;
+
 /*!
  @brief 残機マーク表示クラス
  
@@ -79,10 +84,10 @@
             assert(image != nil);
             
             // 画像のx座標は原点から右側に現在の個数分ずらした位置とする
-            x = LIFEMARK_POS_X + (imageCount + i) * LIFEMARK_INTERVAL;
+            x = kAKLifeMarkPos.x + (imageCount + i) * kAKLifeMarkInterval;
             
             // 画像のy座標はすべて共通とする
-            y = LIFEMARK_POS_Y;
+            y = kAKLifeMarkPos.y;
             
             // 画像の座標を設定する
             image.position = ccp(x, y);

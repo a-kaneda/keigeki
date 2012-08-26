@@ -15,39 +15,6 @@
 #import "AKEnemyShot.h"
 #import "common.h"
 
-/// 同時に生成可能な自機弾の最大数
-#define MAX_PLAYER_SHOT_COUNT 16
-/// 同時に生成可能な敵弾の最大数
-#define MAX_ENEMY_SHOT_COUNT 64
-/// 同時に生成可能な画面効果の最大数
-#define MAX_EFFECT_COUNT 16
-
-/// 初期残機数
-#define START_LIFE_COUNT 2
-/// 自機復活までの間隔
-#define REBIRTH_INTERVAL 1
-
-/// 1ステージのウェイブの数
-#define WAVE_COUNT 1
-/// ステージの数
-#define STAGE_COUNT 5
-/// ウェイブが始まるまでの間隔
-#define WAVE_INTERVAL 2
-
-/// スコアの表示位置x座標
-#define SCORE_POS_X 10
-/// スコアの表示位置y座標
-#define SCORE_POS_Y 300
-/// ハイスコアの表示位置x座標
-#define HISCORE_POS_X 280
-/// ハイスコアの表示位置y座標
-#define HISCORE_POS_Y 300
-
-/// スコア表示のフォーマット
-#define SCORE_FORMAT @"SCORE:%08d"
-/// ハイスコア表示のフォーマット
-#define HISCORE_FORMAT @"HI:%08d"
-
 /// ゲームプレイの状態
 enum GAME_STATE {
     GAME_STATE_START = 0,   ///< ゲーム開始時
@@ -180,4 +147,8 @@ enum CHARA_POS_Z {
 - (void)skipResult;
 // ステージクリア
 - (void)clearStage;
+// ハイスコアファイルの読込
+- (void)readHiScore;
+// ハイスコアファイルの書込
+- (void)writeHiScore;
 @end

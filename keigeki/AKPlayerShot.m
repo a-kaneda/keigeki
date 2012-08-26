@@ -8,6 +8,11 @@
 #import "AKPlayerShot.h"
 #import "common.h"
 
+/// 自機弾のスピード
+static const NSInteger kAKPlayerShotSpeed = 1200;
+/// 自機弾の幅
+static const CGSize kAKPlayerShotSize = {2, 8};
+
 /*!
  @brief 自機弾クラス
 
@@ -34,9 +39,9 @@
     assert(m_image != nil);
     
     // 各種パラメータを設定する
-    m_speed = PLAYER_SHOT_SPEED;
-    m_width = PLAYER_SHOT_WIDTH;
-    m_height = PLAYER_SHOT_HEIGHT;
+    m_speed = kAKPlayerShotSpeed;
+    m_width = kAKPlayerShotSize.width;
+    m_height = kAKPlayerShotSize.height;
     
     return self;
 }

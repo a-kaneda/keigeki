@@ -14,6 +14,39 @@
 #import "AKHiScoreFile.h"
 #import "AKResultLayer.h"
 
+/// 同時に生成可能な自機弾の最大数
+static const NSInteger kAKMaxPlayerShotCount = 16;
+/// 同時に生成可能な敵弾の最大数
+static const NSInteger kAKEnemyShotCount = 64;
+/// 同時に生成可能な画面効果の最大数
+static const NSInteger kAKMaxEffectCount = 16;
+
+/// 初期残機数
+static const NSInteger kAKStartLifeCount = 2;
+/// 自機復活までの間隔
+static const float kAKRebirthInterval = 1.0f;
+
+/// 1ステージのウェイブの数
+static const NSInteger kAKWaveCount = 1;
+/// ステージの数
+static const NSInteger kAKStageCount = 5;
+/// ウェイブが始まるまでの間隔
+static const float kAKWaveInterval = 2.0f;
+
+/// スコアの表示位置
+static const CGPoint kAKScorePos = {10, 300};
+/// ハイスコアの表示位置
+static const CGPoint kAKHiScorePos = {280, 300};
+
+/// スコア表示のフォーマット
+static NSString *kAKScoreFormat = @"SCORE:%08d";
+/// ハイスコア表示のフォーマット
+static NSString *kAKHiScoreFormat = @"HI:%08d";
+/// ハイスコアファイル名
+static NSString *kAKDataFileName = @"hiscore.dat";
+/// ハイスコアファイルのエンコードキー名
+static NSString *kAKDataFileKey = @"hiScoreData";
+
 /*!
  @brief ゲームプレイシーン
  
@@ -59,7 +92,6 @@ static AKGameScene *g_scene = nil;
 {
     float anchor_x = 0.0f;  // 画面回転時の中心点x座標
     float anchor_y = 0.0f;  // 画面回転時の中心点y座標
-    AKHiScoreFile *hiScoreFile = nil;   // ハイスコアファイル
     NSString *hiScoreString = nil;      // ハイスコア文字列
     NSString *scoreString = nil;        // スコア文字列
     CCLabelTTF *scoreLabel = nil;       // スコアのラベル
@@ -85,8 +117,8 @@ static AKGameScene *g_scene = nil;
     // CCLayerのサイズは320x480だが、画面サイズはLandscape時は480x320のため、
     // 画面右上の点が(480 / 320, 320 / 480)となる。
     // 中心点座標のCCLayer上での比率に上の値をかけて、画面上での比率を求める。
-    anchor_x = ((float)PLAYER_POS_X / SCREEN_WIDTH) * ((float)SCREEN_WIDTH / SCREEN_HEIGHT);
-    anchor_y = ((float)PLAYER_POS_Y / SCREEN_HEIGHT) * ((float)SCREEN_HEIGHT / SCREEN_WIDTH);
+    anchor_x = ((float)kAKPlayerPos.x / kAKScreenSize.width) * ((float)kAKScreenSize.width / kAKScreenSize.height);
+    anchor_y = ((float)kAKPlayerPos.y / kAKScreenSize.height) * ((float)kAKScreenSize.height / kAKScreenSize.width);
     
     // 画面回転時の中心点を設定する
     baseLayer.anchorPoint = ccp(anchor_x, anchor_y);
@@ -110,26 +142,26 @@ static AKGameScene *g_scene = nil;
     
     // 自機弾プールの生成
     self.playerShotPool = [[[AKCharacterPool alloc] initWithClass:[AKPlayerShot class]
-                                                             Size:MAX_PLAYER_SHOT_COUNT] autorelease];
+                                                             Size:kAKMaxPlayerShotCount] autorelease];
     
     // 敵プールの生成
     self.enemyPool = [[[AKCharacterPool alloc] initWithClass:[AKEnemy class]
-                                                        Size:MAX_ENEMY_COUNT] autorelease];
+                                                        Size:kAKMaxEnemyCount] autorelease];
     
     // 敵弾プールの生成
     self.enemyShotPool = [[[AKCharacterPool alloc] initWithClass:[AKEnemyShot class]
-                                                            Size:MAX_ENEMY_SHOT_COUNT] autorelease];
+                                                            Size:kAKEnemyShotCount] autorelease];
 
     // 画面効果プールの生成
     self.effectPool = [[[AKCharacterPool alloc] initWithClass:[AKEffect class]
-                                                         Size:MAX_EFFECT_COUNT] autorelease];
+                                                         Size:kAKMaxEffectCount] autorelease];
     
     // ショットボタンの画像を読み込む
     shotButton = [CCSprite spriteWithFile:@"ShotButton.png"];
     assert(shotButton != nil);
     
     // ショットボタンの位置を設定する
-    shotButton.position = ccp(SHOT_BUTTON_POS_X, SHOT_BUTTON_POS_Y);
+    shotButton.position = ccp(kAKShotButtonPos.x, kAKShotButtonPos.y);
     
     // ショットボタンをレイヤーに配置する
     [infoLayer addChild:shotButton];
@@ -139,7 +171,7 @@ static AKGameScene *g_scene = nil;
     assert(pauseButton != nil);
     
     // ポーズボタンの位置を設定する
-    pauseButton.position = ccp(PAUSE_BUTTON_POS_X, PAUSE_BUTTON_POS_Y);
+    pauseButton.position = ccp(kAKPauseButtonPos.x, kAKPauseButtonPos.y);
     
     // ポーズボタンをレイヤーに配置する
     [infoLayer addChild:pauseButton];
@@ -157,7 +189,7 @@ static AKGameScene *g_scene = nil;
     [infoLayer addChild:self.lifeMark];
     
     // スコアラベルを生成する
-    scoreString = [NSString stringWithFormat:SCORE_FORMAT, m_score];
+    scoreString = [NSString stringWithFormat:kAKScoreFormat, m_score];
     scoreLabel = [CCLabelTTF labelWithString:scoreString fontName:@"Helvetica" fontSize:22];
     scoreLabel.tag = INFOLAYER_TAG_SCORE;
     [infoLayer addChild:scoreLabel];
@@ -165,23 +197,19 @@ static AKGameScene *g_scene = nil;
     // スコアラベルの位置を設定する
     // アンカーポイントは左端に設定する
     scoreLabel.anchorPoint = ccp(0.0f, 0.5f);
-    scoreLabel.position = ccp(SCORE_POS_X, SCORE_POS_Y);
+    scoreLabel.position = ccp(kAKScorePos.x, kAKScorePos.y);
     
     // ハイスコアファイルの読み込みを行う
-    hiScoreFile = [[[AKHiScoreFile alloc] init] autorelease];
-    [hiScoreFile read];
-    
-    // ハイスコアをメンバに設定する
-    m_hiScore = hiScoreFile.hiscore;
+    [self readHiScore];
     
     // ハイスコアラベルを生成する
-    hiScoreString = [NSString stringWithFormat:HISCORE_FORMAT, m_hiScore];
+    hiScoreString = [NSString stringWithFormat:kAKHiScoreFormat, m_hiScore];
     hiScoreLabel = [CCLabelTTF labelWithString:hiScoreString fontName:@"Helvetica" fontSize:22];
     hiScoreLabel.tag = INFOLAYER_TAG_HISCORE;
     [infoLayer addChild:hiScoreLabel];
 
     // ハイスコアラベルの位置を設定する。
-    hiScoreLabel.position = ccp(HISCORE_POS_X, HISCORE_POS_Y);
+    hiScoreLabel.position = ccp(kAKHiScorePos.x, kAKHiScorePos.y);
 
     // 状態を初期化する
     [self resetAll];
@@ -276,7 +304,6 @@ static AKGameScene *g_scene = nil;
     float angle = 0.0f;     // スクリーンの向き
     NSEnumerator *enumerator = nil;   // キャラクター操作用列挙子
     AKCharacter *character = nil;       // キャラクター操作作業用バッファ
-    AKHiScoreFile *hiScoreFile = nil;   // ハイスコアファイル
     BOOL isClear = NO;      // 敵、敵弾がすべていなくなっているか
     CCNode *baseLayer = nil;   // ベースレイヤー
     
@@ -387,7 +414,7 @@ static AKGameScene *g_scene = nil;
             [self clearWave];
             
             // ウェーブ間隔をリセットする
-            m_waveInterval = WAVE_INTERVAL;
+            m_waveInterval = kAKWaveInterval;
         }
     }
     
@@ -395,9 +422,7 @@ static AKGameScene *g_scene = nil;
     // (ゲームオーバーになった時点で書き込みを行わないのはupdateの途中でスコアが変動する可能性があるため)
     if (m_state == GAME_STATE_GAMEOVER) {
         // ハイスコアをファイルに書き込む
-        hiScoreFile = [[[AKHiScoreFile alloc] init] autorelease];
-        hiScoreFile.hiscore = m_hiScore;
-        [hiScoreFile write];
+        [self writeHiScore];
     }
 }
 
@@ -572,7 +597,7 @@ static AKGameScene *g_scene = nil;
         [self.lifeMark updateImage:m_life];
         
         // 自機復活までの間隔を設定する
-        m_rebirthInterval = REBIRTH_INTERVAL;
+        m_rebirthInterval = kAKRebirthInterval;
     }
     // 残機がなければゲームオーバーとする
     else {
@@ -586,7 +611,7 @@ static AKGameScene *g_scene = nil;
         [[self getChildByTag:LAYER_POS_Z_INFOLAYER] addChild:gameOverSprite];
         
         // 画面の中心に配置する
-        gameOverSprite.position = ccp(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+        gameOverSprite.position = ccp(kAKScreenSize.width / 2, kAKScreenSize.height / 2);
     }
 }
 
@@ -605,9 +630,9 @@ static AKGameScene *g_scene = nil;
     m_state = GAME_STATE_START;
     m_stageNo = 1;
     m_waveNo = 1;
-    m_life = START_LIFE_COUNT;
+    m_life = kAKStartLifeCount;
     m_rebirthInterval = 0.0f;
-    m_waveInterval = WAVE_INTERVAL;
+    m_waveInterval = kAKWaveInterval;
     m_score = 0;
     
     // 残機マークの初期個数を反映させる
@@ -617,7 +642,7 @@ static AKGameScene *g_scene = nil;
     infoLayer = [self getChildByTag:LAYER_POS_Z_INFOLAYER];
     
     // ラベルの内容を更新する
-    scoreString = [NSString stringWithFormat:SCORE_FORMAT, m_score];
+    scoreString = [NSString stringWithFormat:kAKScoreFormat, m_score];
     scoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:INFOLAYER_TAG_SCORE];
     [scoreLabel setString:scoreString];
 
@@ -653,7 +678,7 @@ static AKGameScene *g_scene = nil;
     infoLayer = [self getChildByTag:LAYER_POS_Z_INFOLAYER];
     ;
     // ラベルの内容を更新する
-    scoreString = [NSString stringWithFormat:SCORE_FORMAT, m_score];
+    scoreString = [NSString stringWithFormat:kAKScoreFormat, m_score];
     scoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:INFOLAYER_TAG_SCORE];
     [scoreLabel setString:scoreString];
     
@@ -664,7 +689,7 @@ static AKGameScene *g_scene = nil;
         m_hiScore = m_score;
         
         // ラベルの内容を更新する
-        hiScoreString = [NSString stringWithFormat:HISCORE_FORMAT, m_hiScore];
+        hiScoreString = [NSString stringWithFormat:kAKHiScoreFormat, m_hiScore];
         hiScoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:INFOLAYER_TAG_HISCORE];
         [hiScoreLabel setString:hiScoreString];
     }
@@ -720,7 +745,7 @@ static AKGameScene *g_scene = nil;
     pauseSprite.tag = INFOLAYER_TAG_PAUSE;
 
     // 画面の中心に配置する
-    pauseSprite.position = ccp(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+    pauseSprite.position = ccp(kAKScreenSize.width / 2, kAKScreenSize.height / 2);
     
     // 情報レイヤーに配置する
     [[self getChildByTag:LAYER_POS_Z_INFOLAYER] addChild:pauseSprite];
@@ -885,7 +910,7 @@ static AKGameScene *g_scene = nil;
     m_waveNo++;
     
     // ステージのウェーブ個数を超えている場合はステージクリア
-    if (m_waveNo > WAVE_COUNT) {
+    if (m_waveNo > kAKWaveCount) {
         
         // 状態をゲームクリアに移行する
         m_state = GAME_STATE_CLEAR;
@@ -949,7 +974,7 @@ static AKGameScene *g_scene = nil;
     [self removeChildByTag:LAYER_POS_Z_RESULTLAYER cleanup:YES];
     
     // まだ全ステージをクリアしていない場合は次のステージを開始する
-    if (m_stageNo < STAGE_COUNT) {
+    if (m_stageNo < kAKStageCount) {
         
         // ゲームの状態をプレイ中に変更する
         m_state = GAME_STATE_PLAYING;
@@ -967,12 +992,12 @@ static AKGameScene *g_scene = nil;
         infoLayer = [self getChildByTag:LAYER_POS_Z_INFOLAYER];
 
         // スコアラベルの内容を更新する
-        scoreString = [NSString stringWithFormat:SCORE_FORMAT, m_score];
+        scoreString = [NSString stringWithFormat:kAKScoreFormat, m_score];
         scoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:INFOLAYER_TAG_SCORE];
         [scoreLabel setString:scoreString];
         
         // ハイスコアラベルの内容を更新する
-        hiScoreString = [NSString stringWithFormat:HISCORE_FORMAT, m_hiScore];
+        hiScoreString = [NSString stringWithFormat:kAKHiScoreFormat, m_hiScore];
         hiScoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:INFOLAYER_TAG_HISCORE];
         [hiScoreLabel setString:hiScoreString];
         
@@ -992,5 +1017,77 @@ static AKGameScene *g_scene = nil;
         // [TODO] 全ステージクリア処理を実装する
     }
     
+}
+
+/*!
+ @brief ハイスコアファイルの読込
+ 
+ ハイスコアファイルを読み込む。
+ */
+- (void)readHiScore
+{
+    // HOMEディレクトリのパスを取得する
+    NSString *homeDir = NSHomeDirectory();
+    
+    // Documentsディレクトリへのパスを作成する
+    NSString *docDir = [homeDir stringByAppendingPathComponent:@"Documents"];
+    
+    // ファイルパスを作成する
+    NSString *filePath = [docDir stringByAppendingPathComponent:kAKDataFileName];
+    
+    // ファイルを読み込む
+    NSData *data = [NSData dataWithContentsOfFile:filePath];
+    
+    // ファイルが読み込めた場合はデータを取得する
+    if (data != nil) {
+      
+        // ファイルからデコーダーを生成する
+        NSKeyedUnarchiver *decoder = [[[NSKeyedUnarchiver alloc] initForReadingWithData:data] autorelease];
+        
+        // ハイスコアをデコードする
+        AKHiScoreFile *hiScore = [decoder decodeObjectForKey:kAKDataFileKey];
+        
+        // デコードを完了する
+        [decoder finishDecoding];
+        
+        // メンバに読み込む
+        m_hiScore = hiScore.hiscore;
+    }
+}
+
+/*!
+ @brief ハイスコアファイルの書込
+ 
+ ハイスコアファイルを書き込む。
+ */
+- (void)writeHiScore
+{
+    // HOMEディレクトリのパスを取得する
+    NSString *homeDir = NSHomeDirectory();
+    
+    // Documentsディレクトリへのパスを作成する
+    NSString *docDir = [homeDir stringByAppendingPathComponent:@"Documents"];
+    
+    // ファイルパスを作成する
+    NSString *filePath = [docDir stringByAppendingPathComponent:kAKDataFileName];
+    
+    // ハイスコアファイルオブジェクトを生成する
+    AKHiScoreFile *hiScore = [[[AKHiScoreFile alloc] init] autorelease];
+    
+    // ハイスコアを設定する
+    hiScore.hiscore = m_hiScore;
+    
+    // エンコーダーを生成する
+    NSMutableData *data = [NSMutableData data];
+    NSKeyedArchiver *encoder = [[[NSKeyedArchiver alloc] initForWritingWithMutableData:data] autorelease];
+    
+    // ファイル内容をエンコードする
+    [encoder encodeObject:hiScore forKey:kAKDataFileKey];
+    
+    // エンコードを完了する
+    [encoder finishEncoding];
+    
+    // ファイルを書き込む
+    [data writeToFile:filePath atomically:YES];
 }
 @end

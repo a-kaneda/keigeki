@@ -10,37 +10,18 @@
 
 #import <Foundation/Foundation.h>
 
-/// スクリーン幅
-#define SCREEN_WIDTH 480
-/// スクリーン高さ
-#define SCREEN_HEIGHT 320
-// <注意> ループ時に背景が飛ばないようにステージサイズは背景のサイズの倍数とすること。
-/// ステージ幅
-#define STAGE_WIDTH SCREEN_WIDTH * 8
-/// ステージ高さ
-#define STAGE_HEIGHT SCREEN_HEIGHT * 8
-/// 自機の表示位置(x座標)
-#define PLAYER_POS_X    (SCREEN_WIDTH / 2)
-/// 自機の表示位置(y座標)
-#define PLAYER_POS_Y    (SCREEN_HEIGHT / 8)
-/// ステージの個数
-#define STAGE_COUNT 5
-/// 同時に生成可能な敵の最大数
-#define MAX_ENEMY_COUNT 16
-
-/// ショットボタンのサイズ
-#define SHOT_BUTTON_SIZE 64
-/// ショットボタンの配置位置y座標
-#define SHOT_BUTTON_POS_Y 50
-/// ショットボタンの配置位置x座標
-#define SHOT_BUTTON_POS_X (SCREEN_WIDTH - SHOT_BUTTON_POS_Y)
-
-/// ポーズボタンのサイズ
-#define PAUSE_BUTTON_SIZE 32
-/// ポーズボタンの配置位置x座標
-#define PAUSE_BUTTON_POS_X (SCREEN_WIDTH - PAUSE_BUTTON_SIZE / 2- 10)
-/// ポーズボタンの配置位置y座標
-#define PAUSE_BUTTON_POS_Y (SCREEN_HEIGHT - PAUSE_BUTTON_SIZE / 2- 10)
+// スクリーンサイズ
+extern const CGSize kAKScreenSize;
+// ステージサイズ
+extern const CGSize kAKStageSize;
+// 自機の表示位置
+extern const CGPoint kAKPlayerPos;
+// 同時に生成可能な敵の最大数
+extern const NSInteger kAKMaxEnemyCount;
+// ショットボタンの配置位置
+extern const CGPoint kAKShotButtonPos;
+// ポーズボタンの配置位置
+extern const CGPoint kAKPauseButtonPos;
 
 #ifdef DEBUG
 /// デバッグログON/OFF用フラグ

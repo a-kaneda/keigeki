@@ -11,47 +11,47 @@
 
 /// ラベルのタグ
 enum {
-    kAKRLTimeNumTag = 0,    ///< タイムラベルのタグ
-    kAKRLTimeBonusTag,      ///< タイムボーナスラベルのタグ
-    kAKRLHitNumTag,         ///< 命中率ラベルのタグ
-    kAKRLHitBonusTag,       ///< 命中率ボーナスラベルのタブ
-    kAKRLRestNumTag,        ///< 残機ラベルのタグ
-    kAKRLRestBonusTag,      ///< 残機ボーナスラベルのタグ
-    kAKRLScoreNumTag        ///< スコアラベルのタグ
+    kAKTimeNumTag = 0,    ///< タイムラベルのタグ
+    kAKTimeBonusTag,      ///< タイムボーナスラベルのタグ
+    kAKHitNumTag,         ///< 命中率ラベルのタグ
+    kAKHitBonusTag,       ///< 命中率ボーナスラベルのタブ
+    kAKRestNumTag,        ///< 残機ラベルのタグ
+    kAKRestBonusTag,      ///< 残機ボーナスラベルのタグ
+    kAKScoreNumTag        ///< スコアラベルのタグ
 };
 
 /// 待ち時間(タイムボーナス、命中率ボーナス計算時)
-static const float kAKRLDealyShort = 0.05f;
+static const float kAKDealyShort = 0.05f;
 /// 待ち時間(その他)
-static const float kAKRLDelayLong = 0.5f;
+static const float kAKDelayLong = 0.5f;
 /// バックグラウンド画像名称
-static NSString *kAKRLFileName = @"Result.png";
+static NSString *kAKResultImageFileName = @"Result.png";
 /// タイム値位置
-static const CGPoint kAKRLTimeNumPos = {150, 200};
+static const CGPoint kAKTimeNumPos = {150, 200};
 /// タイムボーナス位置
-static const CGPoint kAKRLTimeBonusPos = {300, 200};
+static const CGPoint kAKTimeBonusPos = {300, 200};
 /// 命中率値位置
-static const CGPoint kAKRLHitNumPos = {150, 150};
+static const CGPoint kAKHitNumPos = {150, 150};
 /// 命中率ボーナス位置
-static const CGPoint kAKRLHitBonusPos = {300, 150};
+static const CGPoint kAKHitBonusPos = {300, 150};
 /// 残機値位置
-static const CGPoint kAKRLRestNumPos = {150, 100};
+static const CGPoint kAKRestNumPos = {150, 100};
 /// 残機ボーナス位置
-static const CGPoint kAKRLRestBonusPos = {300, 100};
+static const CGPoint kAKRestBonusPos = {300, 100};
 /// スコア値位置
-static const CGPoint kAKRLScoreNumPos = {150, 50};
+static const CGPoint kAKScoreNumPos = {150, 50};
 /// ラベルのフォーマット
-static NSString *kAKRLLabelFormat = @"%6d";
+static NSString *kAKLabelFormat = @"%6d";
 /// 少しずつ表示更新するときの増加分
-static const NSInteger kAKRLIncrementValue = 100;
+static const NSInteger kAKIncrementValue = 100;
 /// 残機ボーナスの増加分
-static const NSInteger kAKRLRestIncrementValue = 1000;
+static const NSInteger kAKRestIncrementValue = 1000;
 /// タイムボーナスの基準となる時間
-static const NSInteger kAKRLBaseTime = 300;
+static const NSInteger kAKBaseTime = 300;
 /// 1秒あたりのタイムボーナス
-static const NSInteger kAKRLTimeBonus = 50;
+static const NSInteger kAKTimeBonus = 50;
 /// 1%あたりの命中率ボーナス
-static const NSInteger kAKRLHitBonus = 50;
+static const NSInteger kAKHitBonus = 50;
 
 /*!
  @brief ステージクリア結果レイヤー
@@ -75,17 +75,17 @@ static const NSInteger kAKRLHitBonus = 50;
     }
     
     // 背景画像を読み込む
-    CCSprite *background = [CCSprite spriteWithFile:kAKRLFileName];
+    CCSprite *background = [CCSprite spriteWithFile:kAKResultImageFileName];
     assert(background != nil);
     
     // 背景画像の配置位置を画面中央にする
-    background.position = ccp(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+    background.position = ccp(kAKScreenSize.width / 2, kAKScreenSize.height / 2);
     
     // レイヤーに配置する
     [self addChild:background z:0];
     
     // メンバの初期化
-    m_state = kAKRLstateScoreView;
+    m_state = kAKstateScoreView;
     m_score = 0;
     m_rest = 0;
     m_time = 0;
@@ -93,28 +93,28 @@ static const NSInteger kAKRLHitBonus = 50;
     m_restBonus = 0;
     m_timeBonus = 0;
     m_hitBonus = 0;
-    m_delay = kAKRLDelayLong;
+    m_delay = kAKDelayLong;
     
     // タイムラベルを生成する
-    [self createLabelWithTag:kAKRLTimeNumTag pos:&kAKRLTimeNumPos];
+    [self createLabelWithTag:kAKTimeNumTag pos:&kAKTimeNumPos];
     
     // タイムボーナスラベルを生成する
-    [self createLabelWithTag:kAKRLTimeBonusTag pos:&kAKRLTimeBonusPos];
+    [self createLabelWithTag:kAKTimeBonusTag pos:&kAKTimeBonusPos];
     
     // 命中率ラベルを生成する
-    [self createLabelWithTag:kAKRLHitNumTag pos:&kAKRLHitNumPos];
+    [self createLabelWithTag:kAKHitNumTag pos:&kAKHitNumPos];
 
     // 命中率ボーナスラベルを生成する
-    [self createLabelWithTag:kAKRLHitBonusTag pos:&kAKRLHitBonusPos];
+    [self createLabelWithTag:kAKHitBonusTag pos:&kAKHitBonusPos];
     
     // 残機ラベルを生成する
-    [self createLabelWithTag:kAKRLRestNumTag pos:&kAKRLRestNumPos];
+    [self createLabelWithTag:kAKRestNumTag pos:&kAKRestNumPos];
     
     // 残機ボーナスラベルを生成する
-    [self createLabelWithTag:kAKRLRestBonusTag pos:&kAKRLRestBonusPos];
+    [self createLabelWithTag:kAKRestBonusTag pos:&kAKRestBonusPos];
     
     // スコアラベルを生成する
-    [self createLabelWithTag:kAKRLScoreNumTag pos:&kAKRLScoreNumPos];
+    [self createLabelWithTag:kAKScoreNumTag pos:&kAKScoreNumPos];
     
     return self;
 }
@@ -127,7 +127,7 @@ static const NSInteger kAKRLHitBonus = 50;
  */
 - (BOOL)isFinish
 {
-    if (m_state == kAKRLstateFinish) {
+    if (m_state == kAKstateFinish) {
         return YES;
     }
     else {
@@ -168,16 +168,16 @@ static const NSInteger kAKRLHitBonus = 50;
     m_rest = rest;
     
     // タイムボーナスを計算する
-    m_timeBonusTarget = (kAKRLBaseTime - m_time) * kAKRLTimeBonus;
+    m_timeBonusTarget = (kAKBaseTime - m_time) * kAKTimeBonus;
     if (m_timeBonusTarget < 0) {
         m_timeBonusTarget = 0;
     }
     
     // 命中率ボーナスを計算する
-    m_hitBonusTarget = m_hit * kAKRLHitBonus;
+    m_hitBonusTarget = m_hit * kAKHitBonus;
     
     // 残機ボーナスを計算する
-    m_restBonusTarget = m_rest * kAKRLRestIncrementValue;
+    m_restBonusTarget = m_rest * kAKRestIncrementValue;
 }
 
 /*!
@@ -190,7 +190,7 @@ static const NSInteger kAKRLHitBonus = 50;
 - (void)createLabelWithTag:(NSInteger)tag pos:(const CGPoint *)pos
 {
     // 各ラベルの初期文字列を作成する
-    NSString *initString = [NSString stringWithFormat:kAKRLLabelFormat, 0];
+    NSString *initString = [NSString stringWithFormat:kAKLabelFormat, 0];
     
     // ラベルを生成する
     CCLabelTTF *label = [CCLabelTTF labelWithString:initString fontName:@"Helvetica"
@@ -243,7 +243,7 @@ static const NSInteger kAKRLHitBonus = 50;
     }
     
     // 文字列を生成する
-    NSString *string = [NSString stringWithFormat:kAKRLLabelFormat, value];
+    NSString *string = [NSString stringWithFormat:kAKLabelFormat, value];
     
     // ラベルを取得する
     CCLabelTTF *label = (CCLabelTTF *)[self getChildByTag:tag];
@@ -260,7 +260,7 @@ static const NSInteger kAKRLHitBonus = 50;
     if (value >= target) {
         
         // 更新が完了していれば待ち時間は長めに設定する
-        m_delay = kAKRLDelayLong;
+        m_delay = kAKDelayLong;
         
         // 状態をひとつ進める
         m_state++;
@@ -269,10 +269,10 @@ static const NSInteger kAKRLHitBonus = 50;
         // まだ増加中の時は待ち時間は短めの時間を設定する。
         // ただし、引数で長めの待ち時間を設定するようになっている場合は長めの時間とする
         if (isLongWait) {
-            m_delay = kAKRLDelayLong;
+            m_delay = kAKDelayLong;
         }
         else {
-            m_delay = kAKRLDealyShort;
+            m_delay = kAKDealyShort;
         }
     }
     
@@ -294,61 +294,61 @@ static const NSInteger kAKRLHitBonus = 50;
         
         // 現在の状態によって更新対象を変える
         switch (m_state) {
-            case kAKRLstateScoreView:   // 初期スコア表示中
+            case kAKstateScoreView:   // 初期スコア表示中
                 
                 // スコアを更新する
-                [self updateItemWithTag:kAKRLScoreNumTag currentValue:0 targetValue:m_score
+                [self updateItemWithTag:kAKScoreNumTag currentValue:0 targetValue:m_score
                          incrementValue:-1 isAddScore:NO isLongWait:NO];
                 break;
                 
-            case kAKRLstateTimeView:    // タイム表示中
+            case kAKstateTimeView:    // タイム表示中
                 
                 // タイムラベルを更新する
-                [self updateItemWithTag:kAKRLTimeNumTag currentValue:0 targetValue:m_time
+                [self updateItemWithTag:kAKTimeNumTag currentValue:0 targetValue:m_time
                          incrementValue:-1 isAddScore:NO isLongWait:NO];
                 break;
                 
-            case kAKRLstateHitView:     // 命中率表示中
+            case kAKstateHitView:     // 命中率表示中
                 
                 // 命中率ラベルを更新する
-                [self updateItemWithTag:kAKRLHitNumTag currentValue:0 targetValue:m_hit
+                [self updateItemWithTag:kAKHitNumTag currentValue:0 targetValue:m_hit
                          incrementValue:-1 isAddScore:NO isLongWait:NO];
                 break;
                 
-            case kAKRLstateRestView:    // 残機表示中
+            case kAKstateRestView:    // 残機表示中
                 
                 // 残機ラベルを更新する
-                [self updateItemWithTag:kAKRLRestNumTag currentValue:0 targetValue:m_rest
+                [self updateItemWithTag:kAKRestNumTag currentValue:0 targetValue:m_rest
                          incrementValue:-1 isAddScore:NO isLongWait:NO];
                 break;
                 
-            case kAKRLstateTimeBonus:   // タイムボーナス表示中
+            case kAKstateTimeBonus:   // タイムボーナス表示中
                 
                 // タイムボーナスを更新する
-                m_timeBonus = [self updateItemWithTag:kAKRLTimeBonusTag currentValue:m_timeBonus
+                m_timeBonus = [self updateItemWithTag:kAKTimeBonusTag currentValue:m_timeBonus
                                           targetValue:m_timeBonusTarget
-                                       incrementValue:kAKRLIncrementValue
+                                       incrementValue:kAKIncrementValue
                                            isAddScore:YES isLongWait:NO];
                 break;
                 
-            case kAKRLstateHitBonus:    // 命中率ボーナス表示中
+            case kAKstateHitBonus:    // 命中率ボーナス表示中
                 
                 // 命中率ボーナスを更新する
-                m_hitBonus = [self updateItemWithTag:kAKRLHitBonusTag currentValue:m_hitBonus
+                m_hitBonus = [self updateItemWithTag:kAKHitBonusTag currentValue:m_hitBonus
                                          targetValue:m_hitBonusTarget
-                                      incrementValue:kAKRLIncrementValue
+                                      incrementValue:kAKIncrementValue
                                           isAddScore:YES isLongWait:NO];
                 break;
                 
-            case kAKRLstateRestBonus:   // 残機ボーナス表示中
+            case kAKstateRestBonus:   // 残機ボーナス表示中
                 
                 // 残機ボーナスを更新する
-                m_restBonus = [self updateItemWithTag:kAKRLRestBonusTag currentValue:m_restBonus
+                m_restBonus = [self updateItemWithTag:kAKRestBonusTag currentValue:m_restBonus
                                           targetValue:m_restBonusTarget
-                                       incrementValue:kAKRLRestIncrementValue
+                                       incrementValue:kAKRestIncrementValue
                                            isAddScore:YES isLongWait:YES];
                 
-            case kAKRLstateFinish:      // 表示完了
+            case kAKstateFinish:      // 表示完了
                 
                 // [TODO] Touch Screenのメッセージを表示する
                 break;
@@ -367,20 +367,20 @@ static const NSInteger kAKRLHitBonus = 50;
 - (void)finish
 {
     // すべての項目を更新させる
-    [self updateItemWithTag:kAKRLScoreNumTag currentValue:0 targetValue:m_score
+    [self updateItemWithTag:kAKScoreNumTag currentValue:0 targetValue:m_score
              incrementValue:-1 isAddScore:NO isLongWait:NO];
-    [self updateItemWithTag:kAKRLTimeNumTag currentValue:0 targetValue:m_time
+    [self updateItemWithTag:kAKTimeNumTag currentValue:0 targetValue:m_time
              incrementValue:-1 isAddScore:NO isLongWait:NO];
-    [self updateItemWithTag:kAKRLHitNumTag currentValue:0 targetValue:m_hit
+    [self updateItemWithTag:kAKHitNumTag currentValue:0 targetValue:m_hit
              incrementValue:-1 isAddScore:NO isLongWait:NO];
-    [self updateItemWithTag:kAKRLTimeBonusTag currentValue:m_timeBonus
+    [self updateItemWithTag:kAKTimeBonusTag currentValue:m_timeBonus
                 targetValue:m_timeBonusTarget incrementValue:-1 isAddScore:YES isLongWait:NO];
-    [self updateItemWithTag:kAKRLHitBonusTag currentValue:m_hitBonus
+    [self updateItemWithTag:kAKHitBonusTag currentValue:m_hitBonus
                 targetValue:m_hitBonusTarget incrementValue:-1 isAddScore:YES isLongWait:NO];
-    [self updateItemWithTag:kAKRLRestBonusTag currentValue:m_restBonus
+    [self updateItemWithTag:kAKRestBonusTag currentValue:m_restBonus
                 targetValue:m_restBonusTarget incrementValue:-1 isAddScore:YES isLongWait:NO];
     
     // 状態を表示完了にする
-    m_state = kAKRLstateFinish;
+    m_state = kAKstateFinish;
 }
 @end

@@ -9,6 +9,15 @@
 #import "AKPlayer.h"
 #import "AKGameScene.h"
 
+/// 速度の最大値
+static const NSInteger kAKPlayerSpeed = 240;
+/// 自機の回転速度
+static const float kAKPlayerRotSpeed = 1.0f;
+/// 自機のサイズ
+static const NSInteger kAKPlayerSize = 16;
+/// 復活後の無敵状態の時間
+static const float kAKInvincibleTime = 2.0f;
+
 /*!
  @brief 自機クラス
 
@@ -33,11 +42,11 @@
     }
 
     // 速度の設定
-    m_speed = PLAYER_SPEED;
+    m_speed = kAKPlayerSpeed;
     
     // サイズを設定する
-    m_width = PLAYER_SIZE;
-    m_height = PLAYER_SIZE;
+    m_width = kAKPlayerSize;
+    m_height = kAKPlayerSize;
     
     // 状態を初期化する
     [self reset];
@@ -68,7 +77,7 @@
     }
     
     // 自機の表示座標は画面中央下部に固定
-    self.image.position = ccp(PLAYER_POS_X, PLAYER_POS_Y);
+    self.image.position = ccp(kAKPlayerPos.x, kAKPlayerPos.y);
     
     DBGLOG(0, @"player pos=(%f, %f)", self.image.position.x, self.image.position.y);
     DBGLOG(0, @"player angle=%f speed=%f", m_angle, m_speed);
@@ -111,7 +120,7 @@
  */
 - (float)getScreenPosX
 {
-    return AKRangeCheckLF(self.absx + SCREEN_WIDTH / 2 - PLAYER_POS_X, 0.0f, STAGE_WIDTH);
+    return AKRangeCheckLF(self.absx + kAKScreenSize.width / 2 - kAKPlayerPos.x, 0.0f, kAKStageSize.width);
 }
 
 /*!
@@ -122,7 +131,7 @@
  */
 - (float)getScreenPosY
 {
-    return AKRangeCheckLF(self.absy + SCREEN_HEIGHT / 2 - PLAYER_POS_Y, 0.0f, STAGE_HEIGHT);
+    return AKRangeCheckLF(self.absy + kAKScreenSize.height / 2 - kAKPlayerPos.y, 0.0f, kAKStageSize.height);
 }
 
 /*!
@@ -135,10 +144,10 @@
 - (void)setVelocityX:(float)vx Y:(float)vy
 {
     // スピードは縦方向の傾きから決定する
-    m_speed = (vy + 1.5) * PLAYER_SPEED;
+    m_speed = (vy + 1.5) * kAKPlayerSpeed;
     
     // 角速度は横方向の傾きから決定する
-    m_rotSpeed = -1 * vx * PLAYER_ROT_SPEED;
+    m_rotSpeed = -1 * vx * kAKPlayerRotSpeed;
 }
 
 /*!
@@ -161,10 +170,10 @@
     
     // 無敵状態にする
     m_isInvincible = YES;
-    m_invincivleTime = INVINCIBLE_TIME;
+    m_invincivleTime = kAKInvincibleTime;
     
     // 無敵中はブリンクする
-    blink = [CCBlink actionWithDuration:INVINCIBLE_TIME blinks:INVINCIBLE_TIME * 8];
+    blink = [CCBlink actionWithDuration:kAKInvincibleTime blinks:kAKInvincibleTime * 8];
     [self.image runAction:blink];
 }
 

@@ -10,14 +10,14 @@
 
 /// ステージクリア結果画面の状態
 enum AKResultState {
-    kAKRLstateScoreView = 0,    ///< 初期スコア表示中
-    kAKRLstateTimeView,         ///< タイム表示中
-    kAKRLstateHitView,          ///< 命中率表示中
-    kAKRLstateRestView,         ///< 残機表示中
-    kAKRLstateTimeBonus,        ///< タイムボーナス計算中
-    kAKRLstateHitBonus,         ///< 命中率ボーナス計算中
-    kAKRLstateRestBonus,        ///< 残機ボーナス計算中
-    kAKRLstateFinish            ///< 計算完了
+    kAKstateScoreView = 0,    ///< 初期スコア表示中
+    kAKstateTimeView,         ///< タイム表示中
+    kAKstateHitView,          ///< 命中率表示中
+    kAKstateRestView,         ///< 残機表示中
+    kAKstateTimeBonus,        ///< タイムボーナス計算中
+    kAKstateHitBonus,         ///< 命中率ボーナス計算中
+    kAKstateRestBonus,        ///< 残機ボーナス計算中
+    kAKstateFinish            ///< 計算完了
 };
 
 // ステージクリア結果レイヤー

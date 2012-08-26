@@ -9,6 +9,15 @@
 #import "AKGameScene.h"
 #import "AKEnemy+Normal.h"
 
+/// 雑魚の移動速度
+static const NSInteger kAKEnemySpeed = 240;
+/// 雑魚の回転速度
+static const float kAKEnemyRotSpeed = 0.5f;
+/// 雑魚の弾発射の時間
+static const NSInteger kAKEnemyActionTime = 5;
+/// 雑魚の敵のサイズ
+static const NSInteger kAKEnemySize = 16;
+
 /*!
  @brief 雑魚クラス
  
@@ -34,11 +43,11 @@
     assert(m_image != nil);
     
     // 当たり判定サイズを設定する
-    self.width = ENEMY_NORMAL_SIZE;
-    self.height = ENEMY_NORMAL_SIZE;
+    self.width = kAKEnemySize;
+    self.height = kAKEnemySize;
         
     // 速度を設定する
-    m_speed = ENEMY_NORMAL_SPEED;
+    m_speed = kAKEnemySpeed;
     
     // HPを設定する
     m_hitPoint = 1;
@@ -58,14 +67,14 @@
     
     // 回転方向を自機のある方に決定する
     rotdirect = AKCalcRotDirect(m_angle, self.image.position.x, self.image.position.y,
-                                PLAYER_POS_X, PLAYER_POS_Y);
+                                kAKPlayerPos.x, kAKPlayerPos.y);
     
     // 自機の方に向かって向きを回転する
-    self.rotSpeed = rotdirect * ENEMY_NORAML_ROTSPEED;
+    self.rotSpeed = rotdirect * kAKEnemyRotSpeed;
     DBGLOG(0, @"rotspeed=%f roddirect=%d", m_rotSpeed, rotdirect);
     
     // 一定時間経過しているときは自機を狙う1-way弾を発射する
-    if (m_time > ENEMY_NORMAL_ACTIONTIME) {
+    if (m_time > kAKEnemyActionTime) {
         
         // 弾を発射する
         [self fireNormal];

@@ -48,13 +48,11 @@ static const int ENEMY_SHOT_HEIGHT[ENEMY_SHOT_TYPE_COUNT] = {
 - (void)createWithType:(enum ENEMY_SHOT_TYPE)type X:(NSInteger)x Y:(NSInteger)y Z:(NSInteger)z
                  Angle:(float)angle Parent:(CCNode *)parent
 {
-    NSString *fileName = nil;   // 画像のファイル名
-    
     // 画像を開放する
     [self.image removeFromParentAndCleanup:YES];
     
     // 画像を読み込む
-    fileName = [NSString stringWithUTF8String:ENEMY_SHOT_IMAGE[type]];
+    NSString *fileName = [NSString stringWithUTF8String:ENEMY_SHOT_IMAGE[type]];
     self.image = [CCSprite spriteWithFile:fileName];
     assert(m_image != nil);
     
@@ -63,17 +61,7 @@ static const int ENEMY_SHOT_HEIGHT[ENEMY_SHOT_TYPE_COUNT] = {
     m_width = ENEMY_SHOT_WIDTH[type];
     m_height = ENEMY_SHOT_HEIGHT[type];
     
-    // パラメータの内容をメンバに設定する
-    self.absx = x;
-    self.absy = y;
-    self.angle = angle;
-    
-    // メンバの初期値を設定する
-    m_hitPoint = 1;
-    m_isStaged = YES;
-    m_distance = 0.0f;
-    
-    // レイヤーに配置する
-    [parent addChild:self.image z:z];
+    // 親クラスの生成処理を実行する
+    [super createWithX:x Y:y Z:z Angle:angle Parent:parent];    
 }
 @end

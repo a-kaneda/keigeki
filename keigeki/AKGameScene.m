@@ -17,6 +17,7 @@
 /// 情報レイヤーに配置するノードのタグ
 enum {
     kAKInfoTagPause = 0,    ///< 一時停止
+    kAKInfoTagGameClear,    ///< ゲームクリア
     kAKInfoTagGameOver,     ///< ゲームオーバー
     kAKInfoTagScore,        ///< スコア
     kAKInfoTagHiScore,      ///< ハイスコア
@@ -69,6 +70,9 @@ static const CGPoint kAKHiScorePos = {280, 300};
 static const CGPoint kAKHitPos = {10, 280};
 /// プレイ時間の表示位置
 static const CGPoint kAKTimePos = {200, 280};
+
+/// ゲームクリア画面の画像ファイル名
+static NSString *kAKGameClearImageFile = @"GameClear.png";
 
 /// スコア表示のフォーマット
 static NSString *kAKScoreFormat = @"SCORE:%08d";
@@ -721,6 +725,9 @@ static AKGameScene *g_scene = nil;
     
     // ゲームオーバーの表示を削除する
     [infoLayer removeChildByTag:kAKInfoTagGameOver cleanup:YES];
+    
+    // ゲームクリアの表示を削除する
+    [infoLayer removeChildByTag:kAKInfoTagGameClear cleanup:YES];
 }
 
 /*!
@@ -1093,7 +1100,16 @@ static AKGameScene *g_scene = nil;
     }
     // 全ステージクリアしている場合はエンディング画面の表示を行う
     else {
-        // [TODO] 全ステージクリア処理を実装する
+        // ゲームの状態をゲームオーバーに変更する
+        m_state = kAKGameStateGameOver;
+        
+        // ゲームクリアの画像を読み込む
+        CCSprite *gameClearSprite = [CCSprite spriteWithFile:kAKGameClearImageFile];
+        gameClearSprite.tag = kAKInfoTagGameClear;
+        [[self getChildByTag:kAKLayerPosZInfo] addChild:gameClearSprite];
+        
+        // 画面の中心に配置する
+        gameClearSprite.position = ccp(kAKScreenSize.width / 2, kAKScreenSize.height / 2);
     }
     
 }

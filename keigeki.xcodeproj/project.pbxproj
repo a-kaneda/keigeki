@@ -198,6 +198,7 @@
 		0C56286915E911260048F056 /* stage5_8.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56284115E911260048F056 /* stage5_8.txt */; };
 		0C56286A15E911260048F056 /* stage5_9.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56284215E911260048F056 /* stage5_9.txt */; };
 		0C56286B15E911260048F056 /* stage5_10.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56284315E911260048F056 /* stage5_10.txt */; };
+		0C56287A15EAB8900048F056 /* GameClear.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C56287915EAB8900048F056 /* GameClear.png */; };
 		0C69227115E1231C002656AD /* AKShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C69227015E1231C002656AD /* AKShot.m */; };
 		0C69227815E127A8002656AD /* AKEnemyShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C69227715E127A8002656AD /* AKEnemyShot.m */; };
 		0C69227A15E18F56002656AD /* EnemyShot.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C69227915E18F56002656AD /* EnemyShot.png */; };
@@ -556,6 +557,7 @@
 		0C56284115E911260048F056 /* stage5_8.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage5_8.txt; path = StageScript/stage5_8.txt; sourceTree = "<group>"; };
 		0C56284215E911260048F056 /* stage5_9.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage5_9.txt; path = StageScript/stage5_9.txt; sourceTree = "<group>"; };
 		0C56284315E911260048F056 /* stage5_10.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage5_10.txt; path = StageScript/stage5_10.txt; sourceTree = "<group>"; };
+		0C56287915EAB8900048F056 /* GameClear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GameClear.png; sourceTree = "<group>"; };
 		0C69226F15E1231C002656AD /* AKShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKShot.h; sourceTree = "<group>"; };
 		0C69227015E1231C002656AD /* AKShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKShot.m; sourceTree = "<group>"; };
 		0C69227615E127A8002656AD /* AKEnemyShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEnemyShot.h; sourceTree = "<group>"; };
@@ -735,6 +737,7 @@
 		0C37060615C6BEC900295D96 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0C56287915EAB8900048F056 /* GameClear.png */,
 				0C56281A15E90A510048F056 /* Result.png */,
 				0C69227D15E42E20002656AD /* Pause.png */,
 				0C69227B15E27D2C002656AD /* PauseButton.png */,
@@ -1237,6 +1240,7 @@
 				0C56286915E911260048F056 /* stage5_8.txt in Resources */,
 				0C56286A15E911260048F056 /* stage5_9.txt in Resources */,
 				0C56286B15E911260048F056 /* stage5_10.txt in Resources */,
+				0C56287A15EAB8900048F056 /* GameClear.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

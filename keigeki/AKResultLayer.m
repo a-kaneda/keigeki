@@ -52,6 +52,8 @@ static const NSInteger kAKBaseTime = 300;
 static const NSInteger kAKTimeBonus = 50;
 /// 1%あたりの命中率ボーナス
 static const NSInteger kAKHitBonus = 50;
+/// タイムの最大値
+static const NSInteger kAKTimeMax = 9999;
 
 /*!
  @brief ステージクリア結果レイヤー
@@ -166,6 +168,11 @@ static const NSInteger kAKHitBonus = 50;
     m_time = time;
     m_hit = hit;
     m_rest = rest;
+    
+    // タイムが最大値を超えている場合は最大値に補正する
+    if (m_time > kAKTimeMax) {
+        m_time = kAKTimeMax;
+    }
     
     // タイムボーナスを計算する
     m_timeBonusTarget = (kAKBaseTime - m_time) * kAKTimeBonus;

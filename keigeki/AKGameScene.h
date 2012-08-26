@@ -52,6 +52,8 @@ enum AKEnemyType {
     float m_rebirthInterval;
     /// 次のウェーブ開始までの間隔
     float m_waveInterval;
+    /// ステージのプレイ時間
+    float m_playTime;
     /// 背景
     AKBackground *m_background;
     /// 自機
@@ -133,4 +135,6 @@ enum AKEnemyType {
 - (void)writeHiScore;
 // 命中率更新
 - (void)updateHit;
+// プレイ時間更新
+- (void)updateTime;
 @end

@@ -20,7 +20,8 @@ enum {
     kAKInfoTagGameOver,     ///< ゲームオーバー
     kAKInfoTagScore,        ///< スコア
     kAKInfoTagHiScore,      ///< ハイスコア
-    kAKInfoTagHit           ///< 命中率
+    kAKInfoTagHit,          ///< 命中率
+    kAKInfoTagTime          ///< プレイ時間
 };
 
 /// レイヤーのz座標、タグの値にも使用する
@@ -66,6 +67,8 @@ static const CGPoint kAKScorePos = {10, 300};
 static const CGPoint kAKHiScorePos = {280, 300};
 /// 命中率の表示位置
 static const CGPoint kAKHitPos = {10, 280};
+/// プレイ時間の表示位置
+static const CGPoint kAKTimePos = {200, 280};
 
 /// スコア表示のフォーマット
 static NSString *kAKScoreFormat = @"SCORE:%08d";
@@ -73,6 +76,8 @@ static NSString *kAKScoreFormat = @"SCORE:%08d";
 static NSString *kAKHiScoreFormat = @"HI:%08d";
 /// 命中率表示のフォーマット
 static NSString *kAKHitFormat = @"HIT:%3d%%";
+/// プレイ時間のフォーマット
+static NSString *kAKTimeFormat = @"TIME:%02d:%02d:%02d";
 /// ハイスコアファイル名
 static NSString *kAKDataFileName = @"hiscore.dat";
 /// ハイスコアファイルのエンコードキー名
@@ -242,6 +247,15 @@ static AKGameScene *g_scene = nil;
     // アンカーポイントは左端に設定する
     hitLabel.anchorPoint = ccp(0.0f, 0.5f);
     hitLabel.position = ccp(kAKHitPos.x, kAKHitPos.y);
+    
+    // プレイ時間ラベルを生成する
+    NSString *timeString = [NSString stringWithFormat:kAKTimeFormat, 0, 0, 0];
+    CCLabelTTF *timeLabel = [CCLabelTTF labelWithString:timeString fontName:@"Helvetica" fontSize:22];
+    timeLabel.tag = kAKInfoTagTime;
+    [infoLayer addChild:timeLabel];
+    
+    // プレイ時間ラベルの位置を設定する
+    timeLabel.position = ccp(kAKTimePos.x, kAKTimePos.y);
 
     // 状態を初期化する
     [self resetAll];
@@ -436,6 +450,10 @@ static AKGameScene *g_scene = nil;
     
     // 命中率の表示を更新する
     [self updateHit];
+    
+    // プレイ時間を更新する
+    m_playTime += dt;
+    [self updateTime];
     
     // 敵と敵弾がひとつも存在しない場合は次のウェーブ開始までの時間をカウントする
     if (isClear) {
@@ -680,6 +698,7 @@ static AKGameScene *g_scene = nil;
     m_score = 0;
     m_shotCount = 0;
     m_hitCount = 0;
+    m_playTime = 0.0f;
     
     // 残機マークの初期個数を反映させる
     [self.lifeMark updateImage:m_life];
@@ -974,7 +993,7 @@ static AKGameScene *g_scene = nil;
         }
         
         // 各種パラメータを設定する
-        [resultLayer setScore:m_score andTime:100 andHit:hit andRest:m_life];
+        [resultLayer setScore:m_score andTime:(NSInteger)m_playTime andHit:hit andRest:m_life];
     }
     // ステージクリアでない場合は次のウェーブのスクリプトを読み込む
     else {
@@ -1041,6 +1060,9 @@ static AKGameScene *g_scene = nil;
         // 命中率を初期化する
         m_shotCount = 0;
         m_hitCount = 0;
+        
+        // ステージのプレイ時間を初期化する
+        m_playTime = 0.0f;
 
         // 残機マークを更新する
         [self.lifeMark updateImage:m_life];
@@ -1176,5 +1198,40 @@ static AKGameScene *g_scene = nil;
     [hitLabel setString:hitString];
     
     DBGLOG(0, @"str=%@", hitString);
+}
+
+/*!
+ @brief プレイ時間更新
+ 
+ プレイ時間のラベルを更新する。
+ */
+- (void)updateTime
+{
+    // プレイ時間を分、秒、ミリ秒に分割する
+    // 分を計算する
+    NSInteger min = ((NSInteger)m_playTime) / 60;
+    
+    // 秒を計算する
+    NSInteger sec = ((NSInteger)m_playTime) % 60;
+    
+    // ミリ秒を計算する
+    NSInteger millisec = ((NSInteger)(m_playTime * 100.0f)) % 100;
+    
+    // 99分を超えている場合はカンストとする
+    if (min > 99) {
+        min = 99;
+        sec = 59;
+        millisec = 99;
+    }
+
+    // 情報レイヤーを取得する
+    CCNode *infoLayer = [self getChildByTag:kAKLayerPosZInfo];
+    
+    // プレイ時間ラベルを取得する
+    CCLabelTTF *timeLabel = (CCLabelTTF *)[infoLayer getChildByTag:kAKInfoTagTime];
+    
+    // 命中率ラベルを更新する
+    NSString *timeString = [NSString stringWithFormat:kAKTimeFormat, min, sec, millisec];
+    [timeLabel setString:timeString];
 }
 @end

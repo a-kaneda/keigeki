@@ -232,7 +232,11 @@ static AKGameScene *g_scene = nil;
             break;
             
         case GAME_STATE_CLEAR:      // クリア
-            // [TODO] ステージクリア画面の処理を実装する
+        {
+            // ステージクリア画面を取得し、更新を行う
+            AKResultLayer *result = (AKResultLayer *)[self getChildByTag:LAYER_POS_Z_RESULTLAYER];
+            [result updateCalc:dt];
+        }
             break;
             
         case GAME_STATE_GAMEOVER:   // ゲームオーバー
@@ -890,6 +894,9 @@ static AKGameScene *g_scene = nil;
         resultLayer = [AKResultLayer node];
         resultLayer.tag = LAYER_POS_Z_RESULTLAYER;
         [self addChild:resultLayer z:LAYER_POS_Z_RESULTLAYER];
+        
+        // 各種パラメータを設定する
+        [resultLayer setScore:m_score andTime:100 andHit:50 andRest:m_life];
     }
     // ステージクリアでない場合は次のウェーブのスクリプトを読み込む
     else {
@@ -916,7 +923,7 @@ static AKGameScene *g_scene = nil;
     }
     // ステージクリア画面の表示が完了していない場合は強制的に進める
     else {
-        // [TODO] ステージクリア画面の処理を実装する
+        [resultLayer finish];
     }
 }
 

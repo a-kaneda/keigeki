@@ -13,6 +13,7 @@
 #import "AKEffect.h"
 #import "AKHiScoreFile.h"
 #import "AKResultLayer.h"
+#import "AKLabel.h"
 
 /// 情報レイヤーに配置するノードのタグ
 enum {
@@ -126,8 +127,9 @@ static AKGameScene *g_scene = nil;
 }
 
 /*!
- @method オブジェクト生成処理
- @abstruct オブジェクトの生成を行う。
+ @brief オブジェクト生成処理
+ 
+ オブジェクトの生成を行う。
  @return 生成したオブジェクト。失敗時はnilを返す。
  */
 - (id)init
@@ -137,7 +139,7 @@ static AKGameScene *g_scene = nil;
     if (!self) {
         return nil;
     }
-    
+        
     // キャラクターを配置するレイヤーを生成する
     CCLayer *baseLayer = [CCLayer node];
     baseLayer.tag = kAKLayerPosZBase;
@@ -186,25 +188,29 @@ static AKGameScene *g_scene = nil;
     self.effectPool = [[[AKCharacterPool alloc] initWithClass:[AKEffect class]
                                                          Size:kAKMaxEffectCount] autorelease];
     
-    // ショットボタンの画像を読み込む
-    CCSprite *shotButton = [CCSprite spriteWithFile:@"ShotButton.png"];
-    assert(shotButton != nil);
-    
-    // ショットボタンの位置を設定する
-    shotButton.position = ccp(kAKShotButtonPos.x, kAKShotButtonPos.y);
-    
-    // ショットボタンをレイヤーに配置する
-    [infoLayer addChild:shotButton];
-    
-    // ポーズボタンの画像を読み込む
-    CCSprite *pauseButton = [CCSprite spriteWithFile:@"PauseButton.png"];
-    assert(pauseButton != nil);
-    
-    // ポーズボタンの位置を設定する
-    pauseButton.position = ccp(kAKPauseButtonPos.x, kAKPauseButtonPos.y);
-    
-    // ポーズボタンをレイヤーに配置する
-    [infoLayer addChild:pauseButton];
+    {
+        // ショットボタンの画像を読み込む
+        CCSprite *shotButton = [CCSprite spriteWithFile:@"ShotButton.png"];
+        assert(shotButton != nil);
+        
+        // ショットボタンの位置を設定する
+        shotButton.position = ccp(kAKShotButtonPos.x, kAKShotButtonPos.y);
+        
+        // ショットボタンをレイヤーに配置する
+        [infoLayer addChild:shotButton];
+    }
+
+    {
+        // ポーズボタンの画像を読み込む
+        CCSprite *pauseButton = [CCSprite spriteWithFile:@"PauseButton.png"];
+        assert(pauseButton != nil);
+        
+        // ポーズボタンの位置を設定する
+        pauseButton.position = ccp(kAKPauseButtonPos.x, kAKPauseButtonPos.y);
+        
+        // ポーズボタンをレイヤーに配置する
+        [infoLayer addChild:pauseButton];
+    }
     
     // レーダーの生成
     self.rader = [AKRadar node];
@@ -218,48 +224,56 @@ static AKGameScene *g_scene = nil;
     // 残機マークをレイヤーに配置する
     [infoLayer addChild:self.lifeMark];
     
-    // スコアラベルを生成する
-    NSString *scoreString = [NSString stringWithFormat:kAKScoreFormat, m_score];
-    CCLabelTTF *scoreLabel = [CCLabelTTF labelWithString:scoreString fontName:@"Helvetica" fontSize:22];
-    scoreLabel.tag = kAKInfoTagScore;
-    [infoLayer addChild:scoreLabel];
-    
-    // スコアラベルの位置を設定する
-    // アンカーポイントは左端に設定する
-    scoreLabel.anchorPoint = ccp(0.0f, 0.5f);
-    scoreLabel.position = ccp(kAKScorePos.x, kAKScorePos.y);
+    {
+        // スコアラベルを生成する
+        NSString *scoreString = [NSString stringWithFormat:kAKScoreFormat, m_score];
+        AKLabel *scoreLabel = [AKLabel labelWithString:scoreString maxLength:scoreString.length maxLine:1];
+        scoreLabel.tag = kAKInfoTagScore;
+        [infoLayer addChild:scoreLabel];
+
+        // スコアラベルの位置を設定する
+        // アンカーポイントは左端に設定する
+        scoreLabel.anchorPoint = ccp(0.0f, 0.5f);
+        scoreLabel.position = ccp(kAKScorePos.x, kAKScorePos.y);
+    }
     
     // ハイスコアファイルの読み込みを行う
     [self readHiScore];
     
-    // ハイスコアラベルを生成する
-    NSString *hiScoreString = [NSString stringWithFormat:kAKHiScoreFormat, m_hiScore];
-    CCLabelTTF *hiScoreLabel = [CCLabelTTF labelWithString:hiScoreString fontName:@"Helvetica" fontSize:22];
-    hiScoreLabel.tag = kAKInfoTagHiScore;
-    [infoLayer addChild:hiScoreLabel];
+    {
+        // ハイスコアラベルを生成する
+        NSString *hiScoreString = [NSString stringWithFormat:kAKHiScoreFormat, m_hiScore];
+        AKLabel *hiScoreLabel = [AKLabel labelWithString:hiScoreString maxLength:hiScoreString.length maxLine:1];
+        hiScoreLabel.tag = kAKInfoTagHiScore;
+        [infoLayer addChild:hiScoreLabel];
+        
+        // ハイスコアラベルの位置を設定する。
+        hiScoreLabel.position = ccp(kAKHiScorePos.x, kAKHiScorePos.y);        
+    }
+    
+    {
+        // 命中率ラベルを生成する
+        NSString *hitString = [NSString stringWithFormat:kAKHitFormat, 100];
+        AKLabel *hitLabel = [AKLabel labelWithString:hitString maxLength:hitString.length maxLine:1];
+        hitLabel.tag = kAKInfoTagHit;
+        [infoLayer addChild:hitLabel];
+        
+        // 命中率ラベルの位置を設定する
+        // アンカーポイントは左端に設定する
+        hitLabel.anchorPoint = ccp(0.0f, 0.5f);
+        hitLabel.position = ccp(kAKHitPos.x, kAKHitPos.y);
+    }
 
-    // ハイスコアラベルの位置を設定する。
-    hiScoreLabel.position = ccp(kAKHiScorePos.x, kAKHiScorePos.y);
-    
-    // 命中率ラベルを生成する
-    NSString *hitString = [NSString stringWithFormat:kAKHitFormat, 100];
-    CCLabelTTF *hitLabel = [CCLabelTTF labelWithString:hitString fontName:@"Helvetica" fontSize:22];
-    hitLabel.tag = kAKInfoTagHit;
-    [infoLayer addChild:hitLabel];
-    
-    // 命中率ラベルの位置を設定する
-    // アンカーポイントは左端に設定する
-    hitLabel.anchorPoint = ccp(0.0f, 0.5f);
-    hitLabel.position = ccp(kAKHitPos.x, kAKHitPos.y);
-    
-    // プレイ時間ラベルを生成する
-    NSString *timeString = [NSString stringWithFormat:kAKTimeFormat, 0, 0, 0];
-    CCLabelTTF *timeLabel = [CCLabelTTF labelWithString:timeString fontName:@"Helvetica" fontSize:22];
-    timeLabel.tag = kAKInfoTagTime;
-    [infoLayer addChild:timeLabel];
-    
-    // プレイ時間ラベルの位置を設定する
-    timeLabel.position = ccp(kAKTimePos.x, kAKTimePos.y);
+    {
+        // プレイ時間ラベルを生成する
+        NSString *timeString = [NSString stringWithFormat:kAKTimeFormat, 0, 0, 0];
+        AKLabel *timeLabel = [AKLabel labelWithString:timeString maxLength:timeString.length maxLine:1];
+        timeLabel.tag = kAKInfoTagTime;
+        [infoLayer addChild:timeLabel];
+        
+        // プレイ時間ラベルの位置を設定する
+        timeLabel.position = ccp(kAKTimePos.x, kAKTimePos.y);
+    }
 
     // 状態を初期化する
     [self resetAll];
@@ -688,10 +702,6 @@ static AKGameScene *g_scene = nil;
  */
 - (void)resetAll
 {
-    NSString *scoreString = nil;    // スコアの文字列
-    CCLabelTTF *scoreLabel = nil;   // スコアのラベル
-    CCNode *infoLayer = nil;       // 情報レイヤー
-
     // 各種メンバを初期化する
     m_state = kAKGameStateStart;
     m_stageNo = 1;
@@ -708,11 +718,11 @@ static AKGameScene *g_scene = nil;
     [self.lifeMark updateImage:m_life];
     
     // 情報レイヤーを取得する
-    infoLayer = [self getChildByTag:kAKLayerPosZInfo];
+    CCNode *infoLayer = [self getChildByTag:kAKLayerPosZInfo];
     
     // ラベルの内容を更新する
-    scoreString = [NSString stringWithFormat:kAKScoreFormat, m_score];
-    scoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:kAKInfoTagScore];
+    NSString *scoreString = [NSString stringWithFormat:kAKScoreFormat, m_score];
+    AKLabel *scoreLabel = (AKLabel *)[infoLayer getChildByTag:kAKInfoTagScore];
     [scoreLabel setString:scoreString];
 
     // 自機の状態を初期化する
@@ -736,22 +746,16 @@ static AKGameScene *g_scene = nil;
  スコアを加算する。
  */
 - (void)addScore:(NSInteger)score
-{
-    NSString *scoreString = nil;    // スコアの文字列
-    NSString *hiScoreString = nil;  // ハイスコアの文字列
-    CCLabelTTF *scoreLabel = nil;   // スコアのラベル
-    CCLabelTTF *hiScoreLabel = nil; // ハイスコアのラベル
-    CCNode *infoLayer = nil;        // 情報レイヤー
-    
+{    
     // スコアを加算する
     m_score += score;
     
     // 情報レイヤーを取得する
-    infoLayer = [self getChildByTag:kAKLayerPosZInfo];
-    ;
+    CCNode *infoLayer = [self getChildByTag:kAKLayerPosZInfo];
+    
     // ラベルの内容を更新する
-    scoreString = [NSString stringWithFormat:kAKScoreFormat, m_score];
-    scoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:kAKInfoTagScore];
+    NSString *scoreString = [NSString stringWithFormat:kAKScoreFormat, m_score];
+    AKLabel *scoreLabel = (AKLabel *)[infoLayer getChildByTag:kAKInfoTagScore];
     [scoreLabel setString:scoreString];
     
     // ハイスコアを更新している場合はハイスコアを設定する
@@ -761,8 +765,8 @@ static AKGameScene *g_scene = nil;
         m_hiScore = m_score;
         
         // ラベルの内容を更新する
-        hiScoreString = [NSString stringWithFormat:kAKHiScoreFormat, m_hiScore];
-        hiScoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:kAKInfoTagHiScore];
+        NSString *hiScoreString = [NSString stringWithFormat:kAKHiScoreFormat, m_hiScore];
+        AKLabel *hiScoreLabel = (AKLabel *)[infoLayer getChildByTag:kAKInfoTagHiScore];
         [hiScoreLabel setString:hiScoreString];
     }
 }
@@ -1040,12 +1044,6 @@ static AKGameScene *g_scene = nil;
  */
 - (void)clearStage
 {
-    NSString *scoreString = nil;    // スコアの文字列
-    NSString *hiScoreString = nil;  // ハイスコアの文字列
-    CCLabelTTF *scoreLabel = nil;   // スコアのラベル
-    CCLabelTTF *hiScoreLabel = nil; // ハイスコアのラベル
-    CCNode *infoLayer = nil;        // 情報レイヤー
-    
     // ステージ番号を進める
     m_stageNo++;
     
@@ -1075,17 +1073,21 @@ static AKGameScene *g_scene = nil;
         [self.lifeMark updateImage:m_life];
 
         // 情報レイヤーを取得する
-        infoLayer = [self getChildByTag:kAKLayerPosZInfo];
+        CCNode *infoLayer = [self getChildByTag:kAKLayerPosZInfo];
 
         // スコアラベルの内容を更新する
-        scoreString = [NSString stringWithFormat:kAKScoreFormat, m_score];
-        scoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:kAKInfoTagScore];
-        [scoreLabel setString:scoreString];
+        {
+            NSString *scoreString = [NSString stringWithFormat:kAKScoreFormat, m_score];
+            AKLabel *scoreLabel = (AKLabel *)[infoLayer getChildByTag:kAKInfoTagScore];
+            [scoreLabel setString:scoreString];
+        }
         
         // ハイスコアラベルの内容を更新する
-        hiScoreString = [NSString stringWithFormat:kAKHiScoreFormat, m_hiScore];
-        hiScoreLabel = (CCLabelTTF *)[infoLayer getChildByTag:kAKInfoTagHiScore];
-        [hiScoreLabel setString:hiScoreString];
+        {
+            NSString *hiScoreString = [NSString stringWithFormat:kAKHiScoreFormat, m_hiScore];
+            AKLabel *hiScoreLabel = (AKLabel *)[infoLayer getChildByTag:kAKInfoTagHiScore];
+            [hiScoreLabel setString:hiScoreString];
+        }
         
         // 自機の状態を初期化する
         [self.player reset];
@@ -1207,7 +1209,7 @@ static AKGameScene *g_scene = nil;
     CCNode *infoLayer = [self getChildByTag:kAKLayerPosZInfo];
     
     // 命中率ラベルを取得する
-    CCLabelTTF *hitLabel = (CCLabelTTF *)[infoLayer getChildByTag:kAKInfoTagHit];
+    AKLabel *hitLabel = (AKLabel *)[infoLayer getChildByTag:kAKInfoTagHit];
     
     // 命中率ラベルを更新する
     NSString *hitString = [NSString stringWithFormat:kAKHitFormat, hit];
@@ -1244,7 +1246,7 @@ static AKGameScene *g_scene = nil;
     CCNode *infoLayer = [self getChildByTag:kAKLayerPosZInfo];
     
     // プレイ時間ラベルを取得する
-    CCLabelTTF *timeLabel = (CCLabelTTF *)[infoLayer getChildByTag:kAKInfoTagTime];
+    AKLabel *timeLabel = (AKLabel *)[infoLayer getChildByTag:kAKInfoTagTime];
     
     // 命中率ラベルを更新する
     NSString *timeString = [NSString stringWithFormat:kAKTimeFormat, min, sec, millisec];

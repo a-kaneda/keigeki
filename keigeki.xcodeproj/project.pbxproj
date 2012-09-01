@@ -199,6 +199,10 @@
 		0C56286A15E911260048F056 /* stage5_9.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56284215E911260048F056 /* stage5_9.txt */; };
 		0C56286B15E911260048F056 /* stage5_10.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56284315E911260048F056 /* stage5_10.txt */; };
 		0C56287A15EAB8900048F056 /* GameClear.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C56287915EAB8900048F056 /* GameClear.png */; };
+		0C56287D15F012780048F056 /* MosaMosaFont.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C56287C15F012780048F056 /* MosaMosaFont.plist */; };
+		0C56287F15F1A56E0048F056 /* MosaMosaFont.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C56287E15F1A56D0048F056 /* MosaMosaFont.png */; };
+		0C56288215F1B0980048F056 /* AKLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C56288115F1B0950048F056 /* AKLabel.m */; };
+		0C56288515F1B8620048F056 /* AKFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C56288415F1B85B0048F056 /* AKFont.m */; };
 		0C69227115E1231C002656AD /* AKShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C69227015E1231C002656AD /* AKShot.m */; };
 		0C69227815E127A8002656AD /* AKEnemyShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C69227715E127A8002656AD /* AKEnemyShot.m */; };
 		0C69227A15E18F56002656AD /* EnemyShot.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C69227915E18F56002656AD /* EnemyShot.png */; };
@@ -558,6 +562,12 @@
 		0C56284215E911260048F056 /* stage5_9.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage5_9.txt; path = StageScript/stage5_9.txt; sourceTree = "<group>"; };
 		0C56284315E911260048F056 /* stage5_10.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage5_10.txt; path = StageScript/stage5_10.txt; sourceTree = "<group>"; };
 		0C56287915EAB8900048F056 /* GameClear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GameClear.png; sourceTree = "<group>"; };
+		0C56287C15F012780048F056 /* MosaMosaFont.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MosaMosaFont.plist; sourceTree = "<group>"; };
+		0C56287E15F1A56D0048F056 /* MosaMosaFont.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MosaMosaFont.png; sourceTree = "<group>"; };
+		0C56288015F1B0900048F056 /* AKLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKLabel.h; sourceTree = "<group>"; };
+		0C56288115F1B0950048F056 /* AKLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKLabel.m; sourceTree = "<group>"; };
+		0C56288315F1B8590048F056 /* AKFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKFont.h; sourceTree = "<group>"; };
+		0C56288415F1B85B0048F056 /* AKFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKFont.m; sourceTree = "<group>"; };
 		0C69226F15E1231C002656AD /* AKShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKShot.h; sourceTree = "<group>"; };
 		0C69227015E1231C002656AD /* AKShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKShot.m; sourceTree = "<group>"; };
 		0C69227615E127A8002656AD /* AKEnemyShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEnemyShot.h; sourceTree = "<group>"; };
@@ -726,6 +736,10 @@
 				0C1928C515E0D10500496717 /* AKHiScoreFile.m */,
 				0C56281615E908240048F056 /* AKResultLayer.h */,
 				0C56281715E908250048F056 /* AKResultLayer.m */,
+				0C56288015F1B0900048F056 /* AKLabel.h */,
+				0C56288115F1B0950048F056 /* AKLabel.m */,
+				0C56288315F1B8590048F056 /* AKFont.h */,
+				0C56288415F1B85B0048F056 /* AKFont.m */,
 				0C2A3A2015D64B12005B9272 /* StageScript */,
 				0C37060615C6BEC900295D96 /* Resources */,
 				0C37062015C6BEC900295D96 /* libs */,
@@ -765,6 +779,8 @@
 				0C2A3A1D15D64A47005B9272 /* iTunesArtwork */,
 				0C2A3A1E15D64A47005B9272 /* Player.png */,
 				0C2A3A1F15D64A47005B9272 /* PlayerShot.png */,
+				0C56287E15F1A56D0048F056 /* MosaMosaFont.png */,
+				0C56287C15F012780048F056 /* MosaMosaFont.plist */,
 			);
 			name = Resources;
 			path = keigeki/Resources;
@@ -1241,6 +1257,8 @@
 				0C56286A15E911260048F056 /* stage5_9.txt in Resources */,
 				0C56286B15E911260048F056 /* stage5_10.txt in Resources */,
 				0C56287A15EAB8900048F056 /* GameClear.png in Resources */,
+				0C56287D15F012780048F056 /* MosaMosaFont.plist in Resources */,
+				0C56287F15F1A56E0048F056 /* MosaMosaFont.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1370,6 +1388,8 @@
 				0C69227115E1231C002656AD /* AKShot.m in Sources */,
 				0C69227815E127A8002656AD /* AKEnemyShot.m in Sources */,
 				0C56281815E908250048F056 /* AKResultLayer.m in Sources */,
+				0C56288215F1B0980048F056 /* AKLabel.m in Sources */,
+				0C56288515F1B8620048F056 /* AKFont.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

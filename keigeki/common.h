@@ -22,6 +22,8 @@ extern const NSInteger kAKMaxEnemyCount;
 extern const CGPoint kAKShotButtonPos;
 // ポーズボタンの配置位置
 extern const CGPoint kAKPauseButtonPos;
+// 背景塗りつぶし用の画像のファイル名
+extern NSString *kAKBaseColorImage;
 
 #ifdef DEBUG
 /// デバッグログON/OFF用フラグ

@@ -17,7 +17,8 @@
 
 /// 情報レイヤーに配置するノードのタグ
 enum {
-    kAKInfoTagPause = 0,    ///< 一時停止
+    kAKInfoTagPause1 = 0,   ///< 一時停止(1行目)
+    kAKInfoTagPause2,       ///< 一時停止(2行目)
     kAKInfoTagGameClear,    ///< ゲームクリア
     kAKInfoTagGameOver,     ///< ゲームオーバー
     kAKInfoTagScore,        ///< スコア
@@ -52,7 +53,7 @@ static const NSInteger kAKEnemyShotCount = 64;
 static const NSInteger kAKMaxEffectCount = 16;
 
 /// 初期残機数
-static const NSInteger kAKStartLifeCount = 10;
+static const NSInteger kAKStartLifeCount = 3;
 /// 自機復活までの間隔
 static const float kAKRebirthInterval = 1.0f;
 
@@ -66,11 +67,15 @@ static const float kAKWaveInterval = 2.0f;
 /// スコアの表示位置
 static const CGPoint kAKScorePos = {10, 300};
 /// ハイスコアの表示位置
-static const CGPoint kAKHiScorePos = {280, 300};
+static const CGPoint kAKHiScorePos = {240, 300};
 /// 命中率の表示位置
 static const CGPoint kAKHitPos = {10, 280};
 /// プレイ時間の表示位置
 static const CGPoint kAKTimePos = {200, 280};
+/// 一時停止メッセージの表示位置(1行目)
+static const CGPoint kAKPauseMessagePos1 = {240, 200};
+/// 一時停止メッセージの表示位置(2行目)
+static const CGPoint kAKPauseMessagePos2 = {240, 150};
 
 /// ゲームクリア画面の画像ファイル名
 static NSString *kAKGameClearImageFile = @"GameClear.png";
@@ -87,6 +92,16 @@ static NSString *kAKTimeFormat = @"TIME:%02d:%02d:%02d";
 static NSString *kAKDataFileName = @"hiscore.dat";
 /// ハイスコアファイルのエンコードキー名
 static NSString *kAKDataFileKey = @"hiScoreData";
+
+/// 一時停止中の表示文字列(1行目)
+static NSString *kAKPauseString1 = @"PAUSE";
+/// 一時停止中の表示文字列(2行目)
+static NSString *kAKPauseString2 = @"TOUCH SCREEN TO RESUME.";
+
+/// ゲームオーバー時の表示文字列
+static NSString *kAKGameOverString = @"GAME OVER";
+/// ゲームクリア時の表示文字列
+static NSString *kAKGameClearString = @"GAME CLEAR";
 
 /*!
  @brief ゲームプレイシーン
@@ -166,7 +181,7 @@ static AKGameScene *g_scene = nil;
     
     // 背景の生成
     self.background = [[[AKBackground alloc] init] autorelease];
-    [baseLayer addChild:self.background.image z:kAKCharaPosZBackground];
+    [baseLayer addChild:self.background.batch z:kAKCharaPosZBackground];
     
     // 自機の生成
     self.player = [[[AKPlayer alloc] init] autorelease];
@@ -224,56 +239,24 @@ static AKGameScene *g_scene = nil;
     // 残機マークをレイヤーに配置する
     [infoLayer addChild:self.lifeMark];
     
-    {
-        // スコアラベルを生成する
-        NSString *scoreString = [NSString stringWithFormat:kAKScoreFormat, m_score];
-        AKLabel *scoreLabel = [AKLabel labelWithString:scoreString maxLength:scoreString.length maxLine:1];
-        scoreLabel.tag = kAKInfoTagScore;
-        [infoLayer addChild:scoreLabel];
-
-        // スコアラベルの位置を設定する
-        // アンカーポイントは左端に設定する
-        scoreLabel.anchorPoint = ccp(0.0f, 0.5f);
-        scoreLabel.position = ccp(kAKScorePos.x, kAKScorePos.y);
-    }
+    // スコアラベルを生成する
+    [self setLabelToInfoLayer:[NSString stringWithFormat:kAKScoreFormat, m_score]
+                        atPos:kAKScorePos tag:kAKInfoTagScore isCenter:NO];
     
     // ハイスコアファイルの読み込みを行う
     [self readHiScore];
-    
-    {
-        // ハイスコアラベルを生成する
-        NSString *hiScoreString = [NSString stringWithFormat:kAKHiScoreFormat, m_hiScore];
-        AKLabel *hiScoreLabel = [AKLabel labelWithString:hiScoreString maxLength:hiScoreString.length maxLine:1];
-        hiScoreLabel.tag = kAKInfoTagHiScore;
-        [infoLayer addChild:hiScoreLabel];
-        
-        // ハイスコアラベルの位置を設定する。
-        hiScoreLabel.position = ccp(kAKHiScorePos.x, kAKHiScorePos.y);        
-    }
-    
-    {
-        // 命中率ラベルを生成する
-        NSString *hitString = [NSString stringWithFormat:kAKHitFormat, 100];
-        AKLabel *hitLabel = [AKLabel labelWithString:hitString maxLength:hitString.length maxLine:1];
-        hitLabel.tag = kAKInfoTagHit;
-        [infoLayer addChild:hitLabel];
-        
-        // 命中率ラベルの位置を設定する
-        // アンカーポイントは左端に設定する
-        hitLabel.anchorPoint = ccp(0.0f, 0.5f);
-        hitLabel.position = ccp(kAKHitPos.x, kAKHitPos.y);
-    }
 
-    {
-        // プレイ時間ラベルを生成する
-        NSString *timeString = [NSString stringWithFormat:kAKTimeFormat, 0, 0, 0];
-        AKLabel *timeLabel = [AKLabel labelWithString:timeString maxLength:timeString.length maxLine:1];
-        timeLabel.tag = kAKInfoTagTime;
-        [infoLayer addChild:timeLabel];
+    // ハイスコアラベルを生成する
+    [self setLabelToInfoLayer:[NSString stringWithFormat:kAKHiScoreFormat, m_hiScore]
+                        atPos:kAKHiScorePos tag:kAKInfoTagHiScore isCenter:NO];
         
-        // プレイ時間ラベルの位置を設定する
-        timeLabel.position = ccp(kAKTimePos.x, kAKTimePos.y);
-    }
+    // 命中率ラベルを生成する
+    [self setLabelToInfoLayer:[NSString stringWithFormat:kAKHitFormat, 100]
+                        atPos:kAKHitPos tag:kAKInfoTagHit isCenter:NO];
+
+    // プレイ時間ラベルを生成する
+    [self setLabelToInfoLayer:[NSString stringWithFormat:kAKTimeFormat, 0, 0, 0]
+                        atPos:kAKTimePos tag:kAKInfoTagTime isCenter:NO];
 
     // 状態を初期化する
     [self resetAll];
@@ -626,35 +609,31 @@ static AKGameScene *g_scene = nil;
 /*!
  @brief 画面効果の生成
  
- 画面効果を生成する。
- @param particle 画面効果のパーティクル
- @param time 画面効果の生存時間
- @param posx 画面効果の絶対座標x座標
- @param posy 画面効果の絶対座標y座標
+ 画面効果を生成する。指定された画像ファイルからアニメーションを作成する。
+ アニメーションは画像内で横方向に同じサイズで並んでいることを前提とする。
+ @param fileName 画像ファイル名
+ @param rect アニメーション開始時の画像範囲
+ @param count アニメーションフレームの個数
+ @param delay フレームの間隔
+ @param posx x座標
+ @param posy y座標
  */
-- (void)entryEffect:(CCParticleSystem *)particle Time:(float)time PosX:(float)posx PosY:(float)posy
+- (void)entryEffect:(NSString *)fileName startRect:(CGRect)rect frameCount:(NSInteger)count
+              delay:(float)delay posX:(float)posx posY:(float)posy
 {
-    AKEffect *effect = nil;     // 画面効果
-    
     // プールから未使用のメモリを取得する
-    effect = [self.effectPool getNext];
+    AKEffect *effect = [self.effectPool getNext];
     if (effect == nil) {
         // 空きがない場合は処理終了
-        DBGLOG(1, @"画面効果プールに空きなし");
-        assert(0);
+        NSAssert(0, @"画面効果プールに空きがない");
         return;
     }
     
-    // 画面効果にパーティクルを追加する
-    particle.autoRemoveOnFinish = YES;
-    particle.position = ccp(0, 0);
-    particle.positionType = kCCPositionTypeRelative;
-    [effect.image addChild:particle];
-    
-    DBGLOG(0, @"player=(%f, %f) pos=(%f, %f)", self.player.absx, self.player.absy, posx, posy);
     // 画面効果を生成する
-    [effect startEffect:time PosX:posx PosY:posy PosZ:kAKCharaPosZEffect
-                 Parent:[self getChildByTag:kAKLayerPosZBase]];
+    [effect startEffectWithFile:fileName startRect:rect frameCount:count delay:delay posX:posx posY:posy];
+    
+    // 画面効果をベースレイヤーに配置する
+    [[self getChildByTag:kAKLayerPosZBase] addChild:effect.image z:kAKCharaPosZEffect];
 }
 
 /*!
@@ -665,8 +644,6 @@ static AKGameScene *g_scene = nil;
  */
 - (void)miss
 {
-    CCSprite *gameOverSprite = nil;     // ゲームオーバーのスプライト
-    
     // 残機が残っている場合は残機を減らして復活する
     if (m_life > 0) {
 
@@ -685,13 +662,9 @@ static AKGameScene *g_scene = nil;
         // ゲームの状態をゲームオーバーに変更する
         m_state = kAKGameStateGameOver;
         
-        // ゲームオーバーの画像を読み込む
-        gameOverSprite = [CCSprite spriteWithFile:@"GameOver.png"];
-        gameOverSprite.tag = kAKInfoTagGameOver;
-        [[self getChildByTag:kAKLayerPosZInfo] addChild:gameOverSprite];
-        
-        // 画面の中心に配置する
-        gameOverSprite.position = ccp(kAKScreenSize.width / 2, kAKScreenSize.height / 2);
+        // ゲームオーバーのラベルを生成する
+        [self setLabelToInfoLayer:kAKGameOverString atPos:ccp(kAKScreenSize.width / 2, kAKScreenSize.height / 2)
+                              tag:kAKInfoTagGameOver isCenter:YES];
     }
 }
 
@@ -778,10 +751,6 @@ static AKGameScene *g_scene = nil;
  */
 - (void)pause
 {
-    AKCharacter *character = nil;   // キャラクター
-    NSEnumerator *enumerator = nil; // キャラクター操作用列挙子
-    CCSprite *pauseSprite = nil;    // 一時停止中の画像
-    
     // プレイ中から以外の変更の場合はエラー
     assert(m_state == kAKGameStatePlaying);
     
@@ -793,39 +762,30 @@ static AKGameScene *g_scene = nil;
     [self.player.image pauseSchedulerAndActions];
 
     // 自機弾
-    enumerator = [self.playerShotPool.pool objectEnumerator];
-    for (character in enumerator) {
+    for (AKCharacter *character in [self.playerShotPool.pool objectEnumerator]) {
         [character.image pauseSchedulerAndActions];
     }
     
     // 敵
-    enumerator = [self.enemyPool.pool objectEnumerator];
-    for (character in enumerator) {
+    for (AKCharacter *character in [self.enemyPool.pool objectEnumerator]) {
         [character.image pauseSchedulerAndActions];
     }
 
     // 敵弾
-    enumerator = [self.enemyShotPool.pool objectEnumerator];
-    for (character in enumerator) {
+    for (AKCharacter *character in [self.enemyShotPool.pool objectEnumerator]) {
         [character.image pauseSchedulerAndActions];
     }
 
     // 画面効果
-    enumerator = [self.effectPool.pool objectEnumerator];
-    for (character in enumerator) {
+    for (AKCharacter *character in [self.effectPool.pool objectEnumerator]) {
         [character.image pauseSchedulerAndActions];
     }
     
-    // 一時停止中の画像を読み込む
-    pauseSprite = [CCSprite spriteWithFile:@"Pause.png"];
-    pauseSprite.tag = kAKInfoTagPause;
-
-    // 画面の中心に配置する
-    pauseSprite.position = ccp(kAKScreenSize.width / 2, kAKScreenSize.height / 2);
+    // 一時停止中のラベルを作成する(1行目)
+    [self setLabelToInfoLayer:kAKPauseString1 atPos:kAKPauseMessagePos1 tag:kAKInfoTagPause1 isCenter:YES];
     
-    // 情報レイヤーに配置する
-    [[self getChildByTag:kAKLayerPosZInfo] addChild:pauseSprite];
-    
+    // 一時停止中のラベルを作成する(2行目)
+    [self setLabelToInfoLayer:kAKPauseString2 atPos:kAKPauseMessagePos2 tag:kAKInfoTagPause2 isCenter:YES];
 }
 
 /*!
@@ -834,10 +794,7 @@ static AKGameScene *g_scene = nil;
  一時停止中の状態からゲームを再会する。
  */
 - (void)resume
-{
-    AKCharacter *character = nil;   // キャラクター
-    NSEnumerator *enumerator = nil; // キャラクター操作用列挙子
-    
+{    
     // 一時停止中から以外の変更の場合はエラー
     assert(m_state == kAKGameStatePause);
 
@@ -849,31 +806,28 @@ static AKGameScene *g_scene = nil;
     [self.player.image resumeSchedulerAndActions];
 
     // 自機弾
-    enumerator = [self.playerShotPool.pool objectEnumerator];
-    for (character in enumerator) {
+    for (AKCharacter *character in self.playerShotPool.pool.objectEnumerator) {
         [character.image resumeSchedulerAndActions];
     }
 
     // 敵
-    enumerator = [self.enemyPool.pool objectEnumerator];
-    for (character in enumerator) {
+    for (AKCharacter *character in self.enemyPool.pool.objectEnumerator) {
         [character.image resumeSchedulerAndActions];
     }
 
     // 敵弾
-    enumerator = [self.enemyShotPool.pool objectEnumerator];
-    for (character in enumerator) {
+    for (AKCharacter *character in self.enemyShotPool.pool.objectEnumerator) {
         [character.image resumeSchedulerAndActions];
     }
 
     // 画面効果
-    enumerator = [self.effectPool.pool objectEnumerator];
-    for (character in enumerator) {
+    for (AKCharacter *character in self.effectPool.pool.objectEnumerator) {
         [character.image resumeSchedulerAndActions];
     }
     
-    // 一時停止中の画像を取り除く
-    [[self getChildByTag:kAKLayerPosZInfo] removeChildByTag:kAKInfoTagPause cleanup:YES];
+    // 一時停止中のラベルを取り除く
+    [[self getChildByTag:kAKLayerPosZInfo] removeChildByTag:kAKInfoTagPause1 cleanup:YES];
+    [[self getChildByTag:kAKLayerPosZInfo] removeChildByTag:kAKInfoTagPause2 cleanup:YES];
 }
 
 /*!
@@ -1102,18 +1056,31 @@ static AKGameScene *g_scene = nil;
     }
     // 全ステージクリアしている場合はエンディング画面の表示を行う
     else {
+        
         // ゲームの状態をゲームオーバーに変更する
         m_state = kAKGameStateGameOver;
         
-        // ゲームクリアの画像を読み込む
-        CCSprite *gameClearSprite = [CCSprite spriteWithFile:kAKGameClearImageFile];
-        gameClearSprite.tag = kAKInfoTagGameClear;
-        [[self getChildByTag:kAKLayerPosZInfo] addChild:gameClearSprite];
+        // 背景画像を読み込む
+        CCSprite *back = [CCSprite spriteWithFile:kAKBaseColorImage];
         
-        // 画面の中心に配置する
-        gameClearSprite.position = ccp(kAKScreenSize.width / 2, kAKScreenSize.height / 2);
+        // タグを設定する
+        back.tag = kAKInfoTagGameClear;
+        
+        // 表示位置を設定する
+        back.position = ccp(kAKScreenSize.width / 2, kAKScreenSize.height / 2);
+
+        // ゲームクリアのラベルを作成する
+        AKLabel *label = [AKLabel labelWithString:kAKGameClearString maxLength:kAKGameClearString.length maxLine:1];
+        
+        // 表示位置を設定する
+        label.position = ccp((kAKScreenSize.width - label.width) / 2, kAKScreenSize.height / 2);
+        
+        // ラベルを背景画像に貼り付ける
+        [back addChild:label];
+
+        // 情報レイヤーへ配置する
+        [[self getChildByTag:kAKLayerPosZInfo] addChild:back];
     }
-    
 }
 
 /*!
@@ -1251,5 +1218,34 @@ static AKGameScene *g_scene = nil;
     // 命中率ラベルを更新する
     NSString *timeString = [NSString stringWithFormat:kAKTimeFormat, min, sec, millisec];
     [timeLabel setString:timeString];
+}
+
+/*!
+ @brief 情報レイヤーへのラベル配置
+ 
+ ラベルを作成して情報レイヤーへ配置する。
+ @param str ラベルの文字列
+ @param pos 配置位置
+ @param tag ラベルのタグ
+ @param isCenter 中央揃えをするかどうか
+ */
+- (void)setLabelToInfoLayer:(NSString *)str atPos:(CGPoint)pos tag:(NSInteger)tag isCenter:(BOOL)isCenter
+{
+    // ラベルを生成する
+    AKLabel *label = [AKLabel labelWithString:str maxLength:str.length maxLine:1];
+    
+    // タグを設定する
+    label.tag = tag;
+    
+    // 中央揃えをする場合は位置を半分左にずらす
+    if (isCenter) {
+        pos.x -= label.width / 2;
+    }
+    
+    // 表示位置を設定する
+    label.position = pos;
+    
+    // 情報レイヤーに配置する
+    [[self getChildByTag:kAKLayerPosZInfo] addChild:label];
 }
 @end

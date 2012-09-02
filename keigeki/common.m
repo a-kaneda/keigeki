@@ -27,6 +27,8 @@ const NSInteger kAKMaxEnemyCount = 16;
 const CGPoint kAKShotButtonPos = {430, 50};
 /// ポーズボタンの配置位置(画面右上から26)
 const CGPoint kAKPauseButtonPos = {454, 294};
+// 背景塗りつぶし用の画像のファイル名
+NSString *kAKBaseColorImage = @"BaseColor.png";
 
 /*!
  @brief 範囲チェック(実数)

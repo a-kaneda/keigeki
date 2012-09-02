@@ -106,11 +106,15 @@ enum AKEnemyType {
 // 自機弾の発射
 - (void)firePlayerShot;
 // 敵の生成
-- (void)entryEnemy:(enum AKEnemyType)type PosX:(NSInteger)posx PosY:(NSInteger)posy Angle:(float)angle;
+- (void)entryEnemy:(enum AKEnemyType)type
+              PosX:(NSInteger)posx PosY:(NSInteger)posy Angle:(float)angle;
 // 敵弾の生成
-- (void)fireEnemyShot:(enum ENEMY_SHOT_TYPE)type PosX:(NSInteger)posx PosY:(NSInteger)posy Angle:(float)angle;
+- (void)fireEnemyShot:(enum ENEMY_SHOT_TYPE)type
+                 PosX:(NSInteger)posx PosY:(NSInteger)posy Angle:(float)angle;
 // 画面効果の生成
-- (void)entryEffect:(CCParticleSystem *)particle Time:(float)time PosX:(float)posx PosY:(float)posy;
+- (void)entryEffect:(NSString *)fileName startRect:(CGRect)rect
+         frameCount:(NSInteger)count delay:(float)delay
+               posX:(float)posx posY:(float)posy;
 // 自機破壊時の処理
 - (void)miss;
 // ゲーム状態リセット
@@ -137,4 +141,6 @@ enum AKEnemyType {
 - (void)updateHit;
 // プレイ時間更新
 - (void)updateTime;
+// 情報レイヤーへのラベル配置
+- (void)setLabelToInfoLayer:(NSString *)str atPos:(CGPoint)pos tag:(NSInteger)tag isCenter:(BOOL)isCenter;
 @end

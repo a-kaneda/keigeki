@@ -68,8 +68,10 @@
         // スプライトを生成する
         CCSprite *charSprite = [CCSprite spriteWithSpriteFrame:charSpriteFrame];
         
-        // 表示位置を設定する
-        float x = (i % m_length) * kAKFontSize;
+        // 表示位置を設定する。
+        // 左端が親ノードのアンカーポイント(中央)にくるようにするため、
+        // 右に0.5文字分ずらす。
+        float x = (i % m_length) * kAKFontSize + kAKFontSize / 2;
         float y = (i / m_length) * kAKFontSize;
         charSprite.position = ccp(x, y);
         
@@ -181,5 +183,16 @@
 - (void)setCString:(char *)label
 {
     [self setString:[NSString stringWithUTF8String:label]];
+}
+
+/*!
+ @brief ラベルの幅の取得
+ 
+ ラベルの幅を取得する。1行の表示文字数にフォントサイズをかけて返す。
+ @return ラベルの幅。
+ */
+- (NSInteger)width
+{
+    return m_length * kAKFontSize;
 }
 @end

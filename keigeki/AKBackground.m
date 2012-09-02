@@ -9,6 +9,10 @@
 
 /// タイルのサイズ
 static const NSInteger kAKTileSize = 64;
+/// タイルの横1行の数
+static const NSInteger kAKTileCount = 14;
+/// 背景画像のファイル名
+static NSString *kAKTileFile = @"Back.png";
 
 /*!
  @brief 背景クラス
@@ -17,7 +21,7 @@ static const NSInteger kAKTileSize = 64;
  */
 @implementation AKBackground
 
-@synthesize image = m_image;
+@synthesize batch = m_batch;
 
 /*!
  @brief オブジェクト生成処理
@@ -33,10 +37,28 @@ static const NSInteger kAKTileSize = 64;
         return nil;
     }
     
-    // タイルの生成
-    self.image = [CCSprite spriteWithFile:@"Back.png"];
-    assert(self.image != nil);
+    // 背景のバッチノードを作成する
+    self.batch = [CCSpriteBatchNode batchNodeWithFile:kAKTileFile capacity:kAKTileCount * kAKTileCount];
+    NSAssert(self.batch != nil, @"can not create self.batch");
+    
+    // タイルを作成する
+    for (int i = 0; i < kAKTileCount; i++) {
         
+        for (int j = 0; j < kAKTileCount; j++) {
+            
+            // タイルを生成する
+            CCSprite *tile = [CCSprite spriteWithFile:kAKTileFile];
+            NSAssert(tile != nil, @"can not create tile");
+            
+            // アンカーポイントを中心にして画像を配置する
+            tile.position = ccp(kAKTileSize * (i - kAKTileCount / 2),
+                                kAKTileSize * (j - kAKTileCount / 2));
+            
+            // バッチノードに登録する
+            [self.batch addChild:tile];
+        }
+    }
+            
     // 位置の設定
     [self moveWithScreenX:0 ScreenY:0];
     
@@ -51,8 +73,9 @@ static const NSInteger kAKTileSize = 64;
 - (void)dealloc
 {
     // 背景画像の解放
-    [self.image removeFromParentAndCleanup:YES];
-    self.image = nil;
+    [self.batch removeFromParentAndCleanup:YES];
+    [self.batch removeAllChildrenWithCleanup:YES];
+    self.batch = nil;
     
     // スーパークラスの解放処理
     [super dealloc];
@@ -77,7 +100,7 @@ static const NSInteger kAKTileSize = 64;
     DBGLOG(0, @"basex=%f basey=%f", posx, posy);
     
     // 背景画像の位置を移動する。
-    self.image.position = ccp(posx, posy);
+    self.batch.position = ccp(posx, posy);
 }
 
 @end

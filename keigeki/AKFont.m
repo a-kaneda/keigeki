@@ -9,7 +9,7 @@
 #import "common.h"
 
 /// フォントサイズ
-const NSInteger kAKFontSize = 8;
+const NSInteger kAKFontSize = 16;
 
 /// フォント画像のファイル名
 static NSString *kAKFontImageName = @"MosaMosaFont.png";

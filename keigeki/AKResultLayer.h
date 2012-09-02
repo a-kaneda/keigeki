@@ -54,8 +54,10 @@ enum AKResultState {
 // パラメータの設定
 - (void)setScore:(NSInteger)score andTime:(NSInteger)time andHit:(NSInteger)hit
          andRest:(NSInteger)rest;
-// ラベル生成
+// タグ指定ラベル生成
 - (void)createLabelWithTag:(NSInteger)tag pos:(const CGPoint *)pos;
+// 文字列指定ラベル生成
+- (void)createLabelWithString:(NSString *)str pos:(const CGPoint *)pos;
 // 表示アイテムの更新
 - (NSInteger)updateItemWithTag:(NSInteger)tag currentValue:(NSInteger)current
                    targetValue:(NSInteger)target incrementValue:(NSInteger)increment

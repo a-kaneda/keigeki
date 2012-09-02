@@ -29,5 +29,7 @@
 - (id)initWithString:(NSString *)str maxLength:(NSInteger)length maxLine:(NSInteger)line;
 // 初期文字列を指定したコンビニエンスコンストラクタ
 + (id)labelWithString:(NSString *)str maxLength:(NSInteger)length maxLine:(NSInteger)line;
+// ラベルの幅の取得
+- (NSInteger)width;
 
 @end

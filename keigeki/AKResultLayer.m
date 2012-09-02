@@ -7,6 +7,7 @@
 
 #import "AKResultLayer.h"
 #import "AKGameScene.h"
+#import "AKLabel.h"
 #import "common.h"
 
 /// ラベルのタグ
@@ -24,24 +25,60 @@ enum {
 static const float kAKDealyShort = 0.05f;
 /// 待ち時間(その他)
 static const float kAKDelayLong = 0.5f;
-/// バックグラウンド画像名称
-static NSString *kAKResultImageFileName = @"Result.png";
+
+/// キャプション位置x座標
+#define kAKCaptionPosX 60
+/// 値位置x座標
+#define kAKValuePosX (kAKCaptionPosX + 96)
+/// ボーナス位置x座標
+#define kAKBonusPosX (kAKValuePosX + 144)
+/// タイム位置y座標
+#define kAKTimePosY 180
+/// 命中率位置y座標
+#define kAKHitPosY (kAKTimePosY - 20)
+/// 残機位置y座標
+#define kAKRestPosY (kAKHitPosY - 20)
+/// スコア位置y座標
+#define kAKScorePosY (kAKRestPosY - 20)
+
+/// タイトルキャプション位置
+static const CGPoint kAKTitleCaptionPos = {152, 240};
+/// タイムキャプション位置
+static const CGPoint kAKTimeCaptionPos = {kAKCaptionPosX, kAKTimePosY};
 /// タイム値位置
-static const CGPoint kAKTimeNumPos = {150, 200};
+static const CGPoint kAKTimeNumPos = {kAKValuePosX, kAKTimePosY};
 /// タイムボーナス位置
-static const CGPoint kAKTimeBonusPos = {300, 200};
+static const CGPoint kAKTimeBonusPos = {kAKBonusPosX, kAKTimePosY};
+/// 命中率キャプション位置
+static const CGPoint kAKHitCaptionPos = {kAKCaptionPosX, kAKHitPosY};
 /// 命中率値位置
-static const CGPoint kAKHitNumPos = {150, 150};
+static const CGPoint kAKHitNumPos = {kAKValuePosX, kAKHitPosY};
 /// 命中率ボーナス位置
-static const CGPoint kAKHitBonusPos = {300, 150};
+static const CGPoint kAKHitBonusPos = {kAKBonusPosX, kAKHitPosY};
+/// 残機キャプション位置
+static const CGPoint kAKRestCaptionPos = {kAKCaptionPosX, kAKRestPosY};
 /// 残機値位置
-static const CGPoint kAKRestNumPos = {150, 100};
+static const CGPoint kAKRestNumPos = {kAKValuePosX, kAKRestPosY};
 /// 残機ボーナス位置
-static const CGPoint kAKRestBonusPos = {300, 100};
+static const CGPoint kAKRestBonusPos = {kAKBonusPosX, kAKRestPosY};
+/// スコアキャプション位置
+static const CGPoint kAKScoreCaptionPos = {kAKCaptionPosX, kAKScorePosY};
 /// スコア値位置
-static const CGPoint kAKScoreNumPos = {300, 50};
+static const CGPoint kAKScoreNumPos = {kAKBonusPosX, kAKScorePosY};
+
+/// ステージクリアのタイトルキャプション
+static NSString *kAKTitleCaption = @"STAGE CLEAR";
+/// タイムのキャプション
+static NSString *kAKTimeCaption = @" TIME:";
+/// 命中率のキャプション
+static NSString *kAKHitCaption = @"  HIT:";
+/// 残機のキャプション
+static NSString *kAKRestCaption = @" REST:";
+/// スコアのキャプション
+static NSString *kAKScoreCaption = @"SCORE:";
 /// ラベルのフォーマット
-static NSString *kAKLabelFormat = @"%6d";
+static NSString *kAKLabelFormat = @"%8d";
+
 /// 少しずつ表示更新するときの増加分
 static const NSInteger kAKIncrementValue = 100;
 /// 残機ボーナスの増加分
@@ -77,7 +114,7 @@ static const NSInteger kAKTimeMax = 9999;
     }
     
     // 背景画像を読み込む
-    CCSprite *background = [CCSprite spriteWithFile:kAKResultImageFileName];
+    CCSprite *background = [CCSprite spriteWithFile:kAKBaseColorImage];
     assert(background != nil);
     
     // 背景画像の配置位置を画面中央にする
@@ -96,6 +133,21 @@ static const NSInteger kAKTimeMax = 9999;
     m_timeBonus = 0;
     m_hitBonus = 0;
     m_delay = kAKDelayLong;
+    
+    // タイトルキャプションラベルを生成する
+    [self createLabelWithString:kAKTitleCaption pos:&kAKTitleCaptionPos];
+    
+    // タイムキャプションラベルを生成する
+    [self createLabelWithString:kAKTimeCaption pos:&kAKTimeCaptionPos];
+    
+    // 命中率キャプションラベルを生成する
+    [self createLabelWithString:kAKHitCaption pos:&kAKHitCaptionPos];
+    
+    // 残機キャプションラベルを生成する
+    [self createLabelWithString:kAKRestCaption pos:&kAKRestCaptionPos];
+    
+    // スコアキャプションラベルを生成する
+    [self createLabelWithString:kAKScoreCaption pos:&kAKScoreCaptionPos];
     
     // タイムラベルを生成する
     [self createLabelWithTag:kAKTimeNumTag pos:&kAKTimeNumPos];
@@ -188,9 +240,10 @@ static const NSInteger kAKTimeMax = 9999;
 }
 
 /*!
- @brief ラベル生成
+ @brief タグ指定ラベル生成
  
- ラベルを生成し、レイヤーに配置する。
+ ラベルを生成し、タグを設定し、レイヤーに配置する。
+ 数字ラベル表示用。
  @param tag ラベルに設定するタグ
  @param pos ラベルの座標
  */
@@ -200,14 +253,30 @@ static const NSInteger kAKTimeMax = 9999;
     NSString *initString = [NSString stringWithFormat:kAKLabelFormat, 0];
     
     // ラベルを生成する
-    CCLabelTTF *label = [CCLabelTTF labelWithString:initString fontName:@"Helvetica"
-                                                  fontSize:22];
+    AKLabel *label = [AKLabel labelWithString:initString maxLength:initString.length maxLine:1];
     
     // タグを設定する
     label.tag = tag;
     
-    // 右端をアンカーポイントに設定する
-    label.anchorPoint = ccp(1.0f, 0.5f);
+    // 位置を設定する
+    label.position = *pos;
+    
+    // レイヤーに配置する
+    [self addChild:label];
+}
+
+/*!
+ @brief 文字列指定ラベル生成
+ 
+ ラベルを生成し、文字列を設定し、レイヤーに配置する。
+ 固定文字列表示用。
+ @param str ラベルに設定する文字列
+ @param pos ラベルの座標
+ */
+- (void)createLabelWithString:(NSString *)str pos:(const CGPoint *)pos
+{
+    // ラベルを生成する
+    AKLabel *label = [AKLabel labelWithString:str maxLength:str.length maxLine:1];
     
     // 位置を設定する
     label.position = *pos;
@@ -253,7 +322,7 @@ static const NSInteger kAKTimeMax = 9999;
     NSString *string = [NSString stringWithFormat:kAKLabelFormat, value];
     
     // ラベルを取得する
-    CCLabelTTF *label = (CCLabelTTF *)[self getChildByTag:tag];
+    AKLabel *label = (AKLabel *)[self getChildByTag:tag];
     
     // ラベルの表示を更新する
     [label setString:string];
@@ -271,7 +340,7 @@ static const NSInteger kAKTimeMax = 9999;
         NSString *scoreString = [NSString stringWithFormat:kAKLabelFormat, m_score];
         
         // スコアラベルを取得する
-        CCLabelTTF *scoreLabel = (CCLabelTTF *)[self getChildByTag:kAKScoreNumTag];
+        AKLabel *scoreLabel = (AKLabel *)[self getChildByTag:kAKScoreNumTag];
         
         // スコアラベルの表示を更新する
         [scoreLabel setString:scoreString];
@@ -393,6 +462,8 @@ static const NSInteger kAKTimeMax = 9999;
     [self updateItemWithTag:kAKTimeNumTag currentValue:0 targetValue:m_time
              incrementValue:-1 isAddScore:NO isLongWait:NO];
     [self updateItemWithTag:kAKHitNumTag currentValue:0 targetValue:m_hit
+             incrementValue:-1 isAddScore:NO isLongWait:NO];
+    [self updateItemWithTag:kAKRestNumTag currentValue:0 targetValue:m_rest
              incrementValue:-1 isAddScore:NO isLongWait:NO];
     [self updateItemWithTag:kAKTimeBonusTag currentValue:m_timeBonus
                 targetValue:m_timeBonusTarget incrementValue:-1 isAddScore:YES isLongWait:NO];

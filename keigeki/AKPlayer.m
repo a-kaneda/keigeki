@@ -18,6 +18,15 @@ static const NSInteger kAKPlayerSize = 16;
 /// 復活後の無敵状態の時間
 static const float kAKInvincibleTime = 2.0f;
 
+/// 爆発エフェクト画像のファイル名
+static NSString *kAKExplosion = @"Explosion.png";
+/// 爆発エフェクトの位置とサイズ
+static const CGRect kAKExplosionRect = {0, 0, 32, 32};
+/// 爆発エフェクトのフレーム数
+static const NSInteger kAKExplosionFrameCount = 8;
+/// 爆発エフェクトのフレーム更新間隔
+static const float kAKExplosionFrameDelay = 0.2f;
+
 /*!
  @brief 自機クラス
 
@@ -90,17 +99,12 @@ static const float kAKInvincibleTime = 2.0f;
  */
 - (void)destroy
 {
-    CCParticleSystem *bomb = nil;   // 爆発エフェクト
-        
-    // 爆発エフェクトを生成する
-    bomb = [CCParticleSun node];
-    bomb.duration = 0.3f;
-    bomb.life = 0.5f;
-    bomb.speed = 40;
-    bomb.scale = 1.5f;
-    
     // 画面効果を生成する
-    [[AKGameScene sharedInstance] entryEffect:bomb Time:1.0f PosX:self.absx PosY:self.absy];
+    [[AKGameScene sharedInstance] entryEffect:kAKExplosion
+                                    startRect:kAKExplosionRect
+                                   frameCount:kAKExplosionFrameCount
+                                        delay:kAKExplosionFrameDelay
+                                         posX:self.absx posY:self.absy];
     
     // 配置フラグを落とす
     self.isStaged = NO;
@@ -156,9 +160,7 @@ static const float kAKInvincibleTime = 2.0f;
  破壊された自機を復活させる。
  */
 - (void)rebirth
-{
-    id blink = nil;     // ブリンクアクション
-    
+{    
     // HPの設定
     m_hitPoint = 1;
     
@@ -173,7 +175,7 @@ static const float kAKInvincibleTime = 2.0f;
     m_invincivleTime = kAKInvincibleTime;
     
     // 無敵中はブリンクする
-    blink = [CCBlink actionWithDuration:kAKInvincibleTime blinks:kAKInvincibleTime * 8];
+    CCBlink *blink = [CCBlink actionWithDuration:kAKInvincibleTime blinks:kAKInvincibleTime * 8];
     [self.image runAction:blink];
 }
 

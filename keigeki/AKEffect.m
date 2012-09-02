@@ -55,7 +55,75 @@
     if (m_lifetime < 0) {
         DBGLOG(0, @"effect end");
         m_hitPoint = -1.0f;
+        
+        // 画面効果を削除する
+        [self.image removeAllChildrenWithCleanup:YES];
     }
+}
+
+/*!
+ @brief 画面効果開始
+ 
+ 画面効果を開始する。指定された画像ファイルからアニメーションを作成する。
+ アニメーションは画像内で横方向に同じサイズで並んでいることを前提とする。
+ @param fileName 画像ファイル名
+ @param rect アニメーション開始時の画像範囲
+ @param count アニメーションフレームの個数
+ @param delay フレームの間隔
+ @param posx x座標
+ @param posy y座標
+ */
+- (void)startEffectWithFile:(NSString *)fileName startRect:(CGRect)rect
+                 frameCount:(NSInteger)count delay:(float)delay
+                       posX:(float)posx posY:(float)posy
+{
+    // バッチノードを作成する
+    CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithFile:fileName capacity:count];
+    NSAssert(batch != nil, @"can not create CCSpriteBatchNode from %@", fileName);
+    
+    // 最初の1フレーム目のスプライトを作成する
+    CCSprite *sprite = [CCSprite spriteWithTexture:batch.texture rect:rect];
+    
+    // バッチノードにスプライトを登録する
+    [batch addChild:sprite];
+
+    // ファイルからスプライトフレームをアニメーションのフレーム数分作成する
+    NSMutableArray *animationFrames = [NSMutableArray arrayWithCapacity:count];
+    for (int i = 1; i < count; i++) {
+        
+        // ファイルからスプライトフレームを作成する
+        CCSpriteFrame *spriteFrame = [CCSpriteFrame frameWithTextureFilename:fileName
+                                                                        rect:CGRectMake(rect.origin.x + rect.size.width * i,
+                                                                                        rect.origin.y,
+                                                                                        rect.size.width,
+                                                                                        rect.size.height)];
+        
+        // 配列に追加する
+        [animationFrames addObject:spriteFrame];
+    }
+
+    // アニメーションフレームからアニメーションを作成する
+    CCAnimation *animation = [CCAnimation animationWithSpriteFrames:animationFrames delay:delay];
+    
+    // アニメーションからアクションを作成する
+    CCAnimate *animate = [CCAnimate actionWithAnimation:animation];
+    
+    // アニメーションを開始する
+    [sprite runAction:animate];
+    
+    // バッチノードを自分のイメージに登録する
+    [self.image addChild:batch];
+    
+    // 表示座標を設定する
+    self.absx = posx;
+    self.absy = posy;
+    
+    // フレーム数 * ディレイ時間を生存時間とする
+    m_lifetime = count * delay;
+    
+    // 画面配置フラグとHPを設定する
+    self.isStaged = YES;
+    self.hitPoint = 1;
 }
 
 /*!

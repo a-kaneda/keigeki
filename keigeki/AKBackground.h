@@ -11,12 +11,12 @@
 
 // 背景クラス
 @interface AKBackground : NSObject {
-    /// 背景画像
-    CCSprite *m_image;
+    /// 背景画像のバッチノード
+    CCSpriteBatchNode *m_batch;
 }
 
-/// 背景画像
-@property (nonatomic, retain)CCSprite *image;
+/// 背景画像のばっちノード
+@property (nonatomic, retain)CCSpriteBatchNode *batch;
 
 // 移動処理
 - (void)moveWithScreenX:(NSInteger)scrx ScreenY:(NSInteger)scry;

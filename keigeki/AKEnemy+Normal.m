@@ -18,6 +18,15 @@ static const NSInteger kAKEnemyActionTime = 5;
 /// 雑魚の敵のサイズ
 static const NSInteger kAKEnemySize = 16;
 
+/// 爆発エフェクト画像のファイル名
+static NSString *kAKExplosion = @"Explosion.png";
+/// 爆発エフェクトの位置とサイズ
+static const CGRect kAKExplosionRect = {0, 0, 32, 32};
+/// 爆発エフェクトのフレーム数
+static const NSInteger kAKExplosionFrameCount = 8;
+/// 爆発エフェクトのフレーム更新間隔
+static const float kAKExplosionFrameDelay = 0.2f;
+
 /*!
  @brief 雑魚クラス
  
@@ -94,19 +103,12 @@ static const NSInteger kAKEnemySize = 16;
  */
 - (void)destroyNormal
 {
-    CCParticleSystem *bomb = nil;   // 爆発エフェクト
-    
-    DBGLOG(0, @"destroyNormal start.");
-    
-    // 爆発エフェクトを生成する
-    bomb = [CCParticleSun node];
-    bomb.duration = 0.3f;
-    bomb.life = 0.5f;
-    bomb.speed = 40;
-    bomb.scale = 1.5f;
-    
     // 画面効果を生成する
-    [[AKGameScene sharedInstance] entryEffect:bomb Time:1.0f PosX:self.absx PosY:self.absy];
+    [[AKGameScene sharedInstance] entryEffect:kAKExplosion
+                                    startRect:kAKExplosionRect
+                                   frameCount:kAKExplosionFrameCount
+                                        delay:kAKExplosionFrameDelay
+                                         posX:self.absx posY:self.absy];
 }
 
 /*!

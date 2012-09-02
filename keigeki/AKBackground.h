@@ -15,7 +15,7 @@
     CCSpriteBatchNode *m_batch;
 }
 
-/// 背景画像のばっちノード
+/// 背景画像のバッチノード
 @property (nonatomic, retain)CCSpriteBatchNode *batch;
 
 // 移動処理

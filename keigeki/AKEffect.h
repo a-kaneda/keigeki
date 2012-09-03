@@ -19,7 +19,4 @@
 - (void)startEffectWithFile:(NSString *)fileName startRect:(CGRect)rect
                  frameCount:(NSInteger)count delay:(float)delay
                        posX:(float)posx posY:(float)posy;
-// 画面効果開始
-- (void)startEffect:(float)time PosX:(float)posx PosY:(float)posy PosZ:(NSInteger)posz
-    Parent:(CCNode *)parent;
 @end

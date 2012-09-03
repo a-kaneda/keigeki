@@ -260,7 +260,7 @@ static AKGameScene *g_scene = nil;
 
     // 状態を初期化する
     [self resetAll];
-    
+        
     // 更新処理開始
     [self scheduleUpdate];
     
@@ -371,7 +371,7 @@ static AKGameScene *g_scene = nil;
     // 自機にスクリーン座標は無関係なため、0をダミーで格納する。
     [self.player move:dt ScreenX:0 ScreenY:0];
     DBGLOG(0, @"m_player.abspos=(%f, %f)", self.player.absx, self.player.absy);
-    
+        
     // 移動後のスクリーン座標の取得
     scrx = [self.player getScreenPosX];
     scry = [self.player getScreenPosY];
@@ -519,8 +519,8 @@ static AKGameScene *g_scene = nil;
     // 発射する方向は自機の角度に回転速度を加算する
     angle = self.player.angle;
     
-    // 初回の移動更新処理が終わるまでは非表示とする
-    shot.image.visible = NO;
+    // 初回の移動更新処理が終わるまでは表示されないように画面外に移動する
+    shot.image.position = ccp(kAKScreenSize.width * 2, kAKScreenSize.height * 2);
     
     // 自機弾を生成する
     // 位置と向きは自機と同じとする
@@ -569,8 +569,8 @@ static AKGameScene *g_scene = nil;
             break;
     }
     
-    // 初回の移動更新処理が終わるまでは非表示とする
-    enemy.image.visible = NO;
+    // 初回の移動更新処理が終わるまでは表示されないように画面外に移動する
+    enemy.image.position = ccp(kAKScreenSize.width * 2, kAKScreenSize.height * 2);
     
     // 敵を生成する
     [enemy createWithX:posx Y:posy Z:kAKCharaPosZEnemy Angle:angle
@@ -598,8 +598,8 @@ static AKGameScene *g_scene = nil;
         return;
     }
     
-    // 初回の移動更新処理が行われるまでは非表示とする
-    enemyShot.image.visible = NO;
+    // 初回の移動更新処理が行われるまでは表示されないように画面外に移動する
+    enemyShot.image.position = ccp(kAKScreenSize.width * 2, kAKScreenSize.height * 2);
     
     // 敵弾を生成する
     [enemyShot createWithType:type X:posx Y:posy Z:kAKCharaPosZEnemyShot

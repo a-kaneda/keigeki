@@ -125,32 +125,4 @@
     self.isStaged = YES;
     self.hitPoint = 1;
 }
-
-/*!
- @brief 画面効果開始
- 
- 画面効果を開始する。指定した時間経過後に消滅する。
- @param time 画面効果の生存時間
- @param posx 画面効果の絶対座標x座標
- @param posy 画面効果の絶対座標y座標
- @param posz 画面効果のz座標
- @param parent 追加先のノード
- */
-- (void)startEffect:(float)time PosX:(float)posx PosY:(float)posy PosZ:(NSInteger)posz
-             Parent:(CCNode *)parent
-{
-    DBGLOG(0, @"startEffect start : time=%f pos=(%f, %f)", time, posx, posy);
-
-    // メンバにパラメータの内容を設定する
-    m_lifetime = time;
-    self.absx = posx;
-    self.absy = posy;
-    
-    // 画面配置フラグとHPを設定する
-    self.isStaged = YES;
-    self.hitPoint = 1;
-    
-    // 親ノードに追加する
-    [parent addChild:self.image z:posz];
-}
 @end

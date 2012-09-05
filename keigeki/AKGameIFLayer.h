@@ -7,13 +7,12 @@
 
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
+#import "AKInterface.h"
 #import "common.h"
 
 // ゲームプレイ画面インターフェースクラス
-@interface AKGameIFLayer : CCLayer {
+@interface AKGameIFLayer : AKInterface {
 
 }
 
-// ゲームプレイ中のタッチ開始処理
-- (void)touchBeganInPlaying:(UITouch *)touch;
 @end

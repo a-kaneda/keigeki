@@ -73,7 +73,7 @@ enum AKEnemyType {
 }
 
 /// 現在の状態
-@property (nonatomic, readonly)enum AKGameState state;
+@property (nonatomic)enum AKGameState state;
 /// 背景
 @property (nonatomic, retain)AKBackground *background;
 /// 自機

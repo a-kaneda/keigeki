@@ -113,4 +113,7 @@ int AKCalcRotDirect(float angle, float srcx, float srcy, float dstx, float dsty)
 // n-way弾発射時の方向計算
 NSArray* AKCalcNWayAngle(int count, float centerAngle, float space);
 
+// 矩形内判定
+BOOL AKIsInside(CGPoint point, CGRect rect);
+
 #endif

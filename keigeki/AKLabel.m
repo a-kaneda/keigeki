@@ -101,7 +101,7 @@
  */
 + (id)labelWithString:(NSString *)str maxLength:(NSInteger)length maxLine:(NSInteger)line
 {
-    return [[[AKLabel alloc] initWithString:str maxLength:length maxLine:line] autorelease];
+    return [[[[self class] alloc] initWithString:str maxLength:length maxLine:line] autorelease];
 }
 
 /*!

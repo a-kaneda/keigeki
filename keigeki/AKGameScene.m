@@ -113,7 +113,6 @@ static NSString *kAKGameClearString = @"GAME CLEAR";
 // シングルトンオブジェクト
 static AKGameScene *g_scene = nil;
 
-@synthesize state = m_state;
 @synthesize player = m_player;
 @synthesize playerShotPool = m_playerShotPool;
 @synthesize enemyPool = m_enemyPool;
@@ -177,6 +176,7 @@ static AKGameScene *g_scene = nil;
     
     // インターフェースレイヤーを貼り付ける
     AKGameIFLayer *interface = [AKGameIFLayer node];
+    interface.tag = kAKLayerPosZInterface;
     [self addChild:interface z:kAKLayerPosZInterface];
     
     // 背景の生成
@@ -289,6 +289,36 @@ static AKGameScene *g_scene = nil;
 }
 
 /*!
+ @brief ゲーム状態の取得
+ 
+ ゲームシーンの状態を取得する。
+ @return ゲーム状態
+ */
+- (enum AKGameState)state
+{
+    return m_state;
+}
+
+/*!
+ @brief ゲーム状態の設定
+ 
+ ゲームシーンの状態を設定する。
+ 同時にインターフェースレイヤーの有効タグも変更する。
+ @param state ゲーム状態
+ */
+- (void)setState:(enum AKGameState)state
+{
+    // メンバ変数に設定する
+    m_state = state;
+    
+    // インターフェースレイヤーを取得する
+    AKGameIFLayer *interface = (AKGameIFLayer *)[self getChildByTag:kAKLayerPosZInterface];
+    
+    // 有効なメニューアイテムを変更する
+    interface.enableItemTag = state;
+}
+
+/*!
  @brief 更新処理
 
  ゲームの状態によって、更新処理を行う。
@@ -297,7 +327,7 @@ static AKGameScene *g_scene = nil;
 - (void)update:(ccTime)dt
 {
     // ゲームの状態によって処理を分岐する
-    switch (m_state) {
+    switch (self.state) {
         case kAKGameStateStart:      // ゲーム開始時
             [self updateStart:dt];
             break;
@@ -335,7 +365,7 @@ static AKGameScene *g_scene = nil;
     [self readScriptOfStage:m_stageNo Wave:m_waveNo];
     
     // 状態をプレイ中へと進める
-    m_state = kAKGameStatePlaying;
+    self.state = kAKGameStatePlaying;
 }
 
 /*!
@@ -474,7 +504,7 @@ static AKGameScene *g_scene = nil;
     
     // ゲームオーバーになっていた場合はハイスコアをファイルに書き込む
     // (ゲームオーバーになった時点で書き込みを行わないのはupdateの途中でスコアが変動する可能性があるため)
-    if (m_state == kAKGameStateGameOver) {
+    if (self.state == kAKGameStateGameOver) {
         // ハイスコアをファイルに書き込む
         [self writeHiScore];
     }
@@ -660,7 +690,7 @@ static AKGameScene *g_scene = nil;
     else {
         
         // ゲームの状態をゲームオーバーに変更する
-        m_state = kAKGameStateGameOver;
+        self.state = kAKGameStateGameOver;
         
         // ゲームオーバーのラベルを生成する
         [self setLabelToInfoLayer:kAKGameOverString atPos:ccp(kAKScreenSize.width / 2, kAKScreenSize.height / 2)
@@ -676,7 +706,7 @@ static AKGameScene *g_scene = nil;
 - (void)resetAll
 {
     // 各種メンバを初期化する
-    m_state = kAKGameStateStart;
+    self.state = kAKGameStateStart;
     m_stageNo = 1;
     m_waveNo = 1;
     m_life = kAKStartLifeCount;
@@ -752,10 +782,10 @@ static AKGameScene *g_scene = nil;
 - (void)pause
 {
     // プレイ中から以外の変更の場合はエラー
-    assert(m_state == kAKGameStatePlaying);
+    assert(self.state == kAKGameStatePlaying);
     
     // ゲーム状態を一時停止に変更する
-    m_state = kAKGameStatePause;
+    self.state = kAKGameStatePause;
     
     // すべてのキャラクターのアニメーションを停止する
     // 自機
@@ -796,10 +826,10 @@ static AKGameScene *g_scene = nil;
 - (void)resume
 {    
     // 一時停止中から以外の変更の場合はエラー
-    assert(m_state == kAKGameStatePause);
+    assert(self.state == kAKGameStatePause);
 
     // ゲーム状態をプレイ中に変更する
-    m_state = kAKGameStatePlaying;
+    self.state = kAKGameStatePlaying;
     
     // すべてのキャラクターのアニメーションを再開する
     // 自機
@@ -941,7 +971,7 @@ static AKGameScene *g_scene = nil;
     if (m_waveNo > kAKWaveCount) {
         
         // 状態をゲームクリアに移行する
-        m_state = kAKGameClear;
+        self.state = kAKGameClear;
         
         // 結果画面を生成する
         AKResultLayer *resultLayer = [AKResultLayer node];
@@ -1008,7 +1038,7 @@ static AKGameScene *g_scene = nil;
     if (m_stageNo < kAKStageCount) {
         
         // ゲームの状態をプレイ中に変更する
-        m_state = kAKGameStatePlaying;
+        self.state = kAKGameStatePlaying;
         
         // ウェーブ番号を初期化する
         m_waveNo = 1;
@@ -1058,7 +1088,7 @@ static AKGameScene *g_scene = nil;
     else {
         
         // ゲームの状態をゲームオーバーに変更する
-        m_state = kAKGameStateGameOver;
+        self.state = kAKGameStateGameOver;
         
         // 背景画像を読み込む
         CCSprite *back = [CCSprite spriteWithFile:kAKBaseColorImage];

@@ -10,12 +10,14 @@
 #import "common.h"
 
 /// ショットボタンのサイズ
-static const NSInteger kAKIFshotbuttonSize = 64;
+static const NSInteger kAKShotButtonSize = 64;
 /// ポーズボタンのサイズ
 static const NSInteger kAKPauseButtonSize = 32;
 
 // 加速度センサーの値を比率換算する
-static float Accel2Ratio(float accel);
+static float AKAccel2Ratio(float accel);
+// 中心座標とサイズから矩形を作成する
+static CGRect AKMakeRectFromCenter(CGPoint center, NSInteger size);
 
 /*!
  @brief ゲームプレイ画面インターフェースクラス
@@ -23,7 +25,6 @@ static float Accel2Ratio(float accel);
  ゲームプレイ画面のインターフェースを管理する。
  */
 @implementation AKGameIFLayer
-
 
 /*!
  @brief オブジェクト生成処理
@@ -33,32 +34,47 @@ static float Accel2Ratio(float accel);
  */
 - (id)init
 {
+    // メニュー項目の数
+    const NSInteger kAKItemCount = 5;
+
     // スーパークラスの生成処理
     self = [super init];
     if (!self) {
         return nil;
     }
     
-
-
     // 加速度センサーを有効にする
     self.isAccelerometerEnabled = YES;
     
-    return self;
-}
-
-/*!
- @brief インスタンス解放時処理
-
- インスタンス解放時にオブジェクトを解放する。
- */
-- (void)dealloc
-{
-    // 配置した画像を解放する
-    [self removeAllChildrenWithCleanup:YES];
+    // アイテム格納用配列を生成する
+    self.menuItems = [NSMutableArray arrayWithCapacity:kAKItemCount];
     
-    // スーパークラスの解放処理
-    [super dealloc];
+    // ショットボタンを生成する
+    [self.menuItems addObject:[AKMenuItem itemWithPos:AKMakeRectFromCenter(kAKShotButtonPos, kAKShotButtonSize)
+                                               action:@selector(firePlayerShot)
+                                                  tag:kAKGameStatePlaying]];
+    
+    // ポーズボタンを生成する
+    [self.menuItems addObject:[AKMenuItem itemWithPos:AKMakeRectFromCenter(kAKPauseButtonPos, kAKPauseButtonSize)
+                                               action:@selector(pause)
+                                                  tag:kAKGameStatePlaying]];
+    
+    // クリア画面スキップ入力を生成する
+    [self.menuItems addObject:[AKMenuItem itemWithPos:CGRectMake(0, 0, kAKScreenSize.width, kAKScreenSize.height)
+                                               action:@selector(skipResult)
+                                                  tag:kAKGameClear]];
+    
+    // ゲームオーバースキップ入力を生成する
+    [self.menuItems addObject:[AKMenuItem itemWithPos:CGRectMake(0, 0, kAKScreenSize.width, kAKScreenSize.height)
+                                               action:@selector(resetAll)
+                                                  tag:kAKGameStateGameOver]];
+    
+    // ポーズ解除入力を生成する
+    [self.menuItems addObject:[AKMenuItem itemWithPos:CGRectMake(0, 0, kAKScreenSize.width, kAKScreenSize.height)
+                                               action:@selector(resume)
+                                                  tag:kAKGameStatePause]];
+    
+    return self;
 }
 
 /*!
@@ -78,153 +94,13 @@ static float Accel2Ratio(float accel);
     // 加速度センサーの入力値を-1.0〜1.0の比率に変換
     // 画面を横向きに使用するのでx軸y軸を入れ替える
     // x軸は+-逆なので反転させる
-    ax = Accel2Ratio(-acceleration.y);
-    ay = Accel2Ratio(acceleration.x);
+    ax = AKAccel2Ratio(-acceleration.y);
+    ay = AKAccel2Ratio(acceleration.x);
     
     DBGLOG(0, @"ax=%f,ay=%f", ax, ay);
 
     // 速度の変更
     [[AKGameScene sharedInstance] movePlayerByVX:ax VY:ay];
-}
-
-/*!
- @brief レイヤー表示時処理
-
- レイヤーが表示された際の処理。タッチイベント処理を開始する。
- */
-- (void)onEnter
-{
-    DBGLOG(0, @"レイヤー表示");
-    [[[CCDirector sharedDirector] touchDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
-}
-
-/*!
- @brief レイヤー非表示時処理
-
- レイヤーが非表示になった際の処理。タッチイベント処理を終了する。
- */
-- (void)onExit
-{
-    [[[CCDirector sharedDirector] touchDispatcher] removeDelegate:self];
-}
-
-/*!
- @brief タッチ開始処理
-
- タッチが開始されたときの処理。
- @param touch タッチ情報
- @param event イベント情報
- @return タッチイベントをこのメソッドで終了するかどうか
- */
-- (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
-{
-        
-    DBGLOG(0, @"タッチ開始");
-    
-    // ゲームシーンの状態により処理を分岐する
-    switch ([AKGameScene sharedInstance].state) {
-
-        case kAKGameStatePlaying:    // プレイ中
-
-            // プレイ中のタッチ開始処理を実行する
-            [self touchBeganInPlaying:touch];
-            break;
-            
-        case kAKGameClear:      // クリア
-            
-            // クリア結果画面の表示をスキップする
-            [[AKGameScene sharedInstance] skipResult];
-            break;
-            
-        case kAKGameStateGameOver:   // ゲームオーバー
-            
-            // 状態をリセットする
-            [[AKGameScene sharedInstance] resetAll];
-            break;
-            
-        case kAKGameStatePause:      // ポーズ中
-            
-            // ポーズを解除する
-            [[AKGameScene sharedInstance] resume];
-            break;
-            
-        default:
-            break;
-    }
-    return YES;
-}
-
-/*!
- @brief タッチ移動処理
-
- タッチ場所が移動したときの処理。
- @param touch タッチ情報
- @param event イベント情報
- */
-- (void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
-{
-    DBGLOG(0, @"タッチ移動");
-}
-
-/*!
- @brief タッチ終了処理
-
- タッチが終了したときの処理。
- @param touch タッチ情報
- @param event イベント情報
- */
-- (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
-{
-    DBGLOG(0, @"タッチ終了");        
-}
-
-/*!
- @brief タッチキャンセル処理
-
- タッチがキャンセルされたときの処理。
- @param touch タッチ情報
- @param event イベント情報
- */
-- (void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
-{
-    DBGLOG(0, @"タッチキャンセル");
-}
-
-/*!
- @brief プレイ中タッチ開始処理
- 
- ゲームプレイ中の時にタッチが開始されたときの処理。
- @param touch タッチ情報
- */
-- (void)touchBeganInPlaying:(UITouch *)touch
-{
-    CGPoint locationInView; // タッチ位置。画面上の座標。
-    CGPoint location;       // タッチ位置。cocos2dの座標系。
-    
-    // タッチ位置を取得し、cocos2dの座標系に変換する。
-    locationInView = [touch locationInView:[touch view]];
-    location = [[CCDirector sharedDirector] convertToGL:locationInView];
-    
-    // タッチ位置判定
-    // ショットボタンの内側の場合
-    if (location.x >= kAKShotButtonPos.x - kAKIFshotbuttonSize / 2 &&
-        location.x <= kAKShotButtonPos.x + kAKIFshotbuttonSize / 2 &&
-        location.y >= kAKShotButtonPos.y - kAKIFshotbuttonSize / 2 &&
-        location.y <= kAKShotButtonPos.y + kAKIFshotbuttonSize / 2) {
-        
-        // 自機弾を発射する
-        [[AKGameScene sharedInstance] firePlayerShot];
-        DBGLOG(0, "自機弾発射:x=%f y=%f", location.x, location.y);
-    }
-    // ポーズボタンの内側の場合
-    else if (location.x >= kAKPauseButtonPos.x - kAKPauseButtonSize / 2 &&
-             location.x <= kAKPauseButtonPos.x + kAKPauseButtonSize / 2 &&
-             location.y >= kAKPauseButtonPos.y - kAKPauseButtonSize / 2 &&
-             location.y <= kAKPauseButtonPos.y + kAKPauseButtonSize / 2) {
-        
-        // ポーズ処理を実行する
-        [[AKGameScene sharedInstance] pause];
-    }
 }
 @end
 
@@ -235,7 +111,7 @@ static float Accel2Ratio(float accel);
  @param accel 加速度センサーの入力値
  @return 比率
  */
-static float Accel2Ratio(float accel)
+static float AKAccel2Ratio(float accel)
 {
     const float MIN_VAL = 0.05f;
     const float MAX_VAL = 0.3f;
@@ -262,3 +138,15 @@ static float Accel2Ratio(float accel)
     }    
 }
 
+/*!
+ @brief 中心座標とサイズから矩形を作成する
+ 
+ 中心座標とサイズから矩形を作成する。
+ @param center 中心座標
+ @param size サイズ
+ 
+ */
+static CGRect AKMakeRectFromCenter(CGPoint center, NSInteger size)
+{
+    return CGRectMake(center.x - size / 2, center.y - size / 2, size, size);
+}

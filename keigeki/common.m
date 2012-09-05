@@ -238,3 +238,23 @@ NSArray* AKCalcNWayAngle(int count, float centerAngle, float space)
     // 計算した角度の配列を返す
     return angleArray;
 }
+
+/*!
+ @brief 矩形内判定
+ 
+ 指定された座標が矩形内にあるかどうか判定する。
+ @param point 座標
+ @param rect 矩形
+ @return 矩形内にあればYES、外側にあればNO
+ */
+BOOL AKIsInside(CGPoint point, CGRect rect)
+{
+    if ((point.x >= rect.origin.x && point.x <= rect.origin.x + rect.size.width) &&
+        (point.y >= rect.origin.y && point.y <= rect.origin.y + rect.size.height)) {
+        
+        return YES;
+    }
+    else {
+        return NO;
+    }
+}

@@ -31,5 +31,7 @@
 + (id)labelWithString:(NSString *)str maxLength:(NSInteger)length maxLine:(NSInteger)line;
 // ラベルの幅の取得
 - (NSInteger)width;
+// ラベルの矩形領域の取得
+- (CGRect)rect;
 
 @end

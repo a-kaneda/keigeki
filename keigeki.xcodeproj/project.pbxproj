@@ -10,9 +10,9 @@
 		0C03CCA415F2C6AC003AA059 /* BaseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C03CCA315F2C6AC003AA059 /* BaseColor.png */; };
 		0C03CCA715F3434F003AA059 /* Explosion.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C03CCA615F3434E003AA059 /* Explosion.png */; };
 		0C03CCAD15F55027003AA059 /* Title.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C03CCAC15F55027003AA059 /* Title.png */; };
-		0C03CCB315F553B1003AA059 /* AKTitleLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C03CCB215F553B1003AA059 /* AKTitleLayer.m */; };
 		0C03CCB615F69CFD003AA059 /* AKInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C03CCB515F69CF9003AA059 /* AKInterface.m */; };
 		0C03CCB915F69E2E003AA059 /* AKMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C03CCB815F69E2D003AA059 /* AKMenuItem.m */; };
+		0C03CCBB15F93FBD003AA059 /* AKTitleScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C03CCBA15F93FB9003AA059 /* AKTitleScene.m */; };
 		0C1928AF15D9361A00496717 /* Marker.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C1928AE15D9361A00496717 /* Marker.png */; };
 		0C1928B215D9362800496717 /* Radar.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C1928B115D9362800496717 /* Radar.png */; };
 		0C1928B515D99CD000496717 /* AKRadar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C1928B415D99CCF00496717 /* AKRadar.m */; };
@@ -225,12 +225,12 @@
 		0C03CCA315F2C6AC003AA059 /* BaseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BaseColor.png; sourceTree = "<group>"; };
 		0C03CCA615F3434E003AA059 /* Explosion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Explosion.png; sourceTree = "<group>"; };
 		0C03CCAC15F55027003AA059 /* Title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Title.png; sourceTree = "<group>"; };
-		0C03CCAF15F551BD003AA059 /* AKTitleLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKTitleLayer.h; sourceTree = "<group>"; };
-		0C03CCB215F553B1003AA059 /* AKTitleLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKTitleLayer.m; sourceTree = "<group>"; };
+		0C03CCAF15F551BD003AA059 /* AKTitleScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKTitleScene.h; sourceTree = "<group>"; };
 		0C03CCB415F69CE5003AA059 /* AKInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKInterface.h; sourceTree = "<group>"; };
 		0C03CCB515F69CF9003AA059 /* AKInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKInterface.m; sourceTree = "<group>"; };
 		0C03CCB715F69E2B003AA059 /* AKMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKMenuItem.h; sourceTree = "<group>"; };
 		0C03CCB815F69E2D003AA059 /* AKMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKMenuItem.m; sourceTree = "<group>"; };
+		0C03CCBA15F93FB9003AA059 /* AKTitleScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKTitleScene.m; sourceTree = "<group>"; };
 		0C1928AE15D9361A00496717 /* Marker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Marker.png; sourceTree = "<group>"; };
 		0C1928B115D9362800496717 /* Radar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Radar.png; sourceTree = "<group>"; };
 		0C1928B315D99CCF00496717 /* AKRadar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKRadar.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -751,8 +751,8 @@
 				0C56288115F1B0950048F056 /* AKLabel.m */,
 				0C56288315F1B8590048F056 /* AKFont.h */,
 				0C56288415F1B85B0048F056 /* AKFont.m */,
-				0C03CCAF15F551BD003AA059 /* AKTitleLayer.h */,
-				0C03CCB215F553B1003AA059 /* AKTitleLayer.m */,
+				0C03CCAF15F551BD003AA059 /* AKTitleScene.h */,
+				0C03CCBA15F93FB9003AA059 /* AKTitleScene.m */,
 				0C2A3A2015D64B12005B9272 /* StageScript */,
 				0C37060615C6BEC900295D96 /* Resources */,
 				0C37062015C6BEC900295D96 /* libs */,
@@ -1401,9 +1401,9 @@
 				0C56281815E908250048F056 /* AKResultLayer.m in Sources */,
 				0C56288215F1B0980048F056 /* AKLabel.m in Sources */,
 				0C56288515F1B8620048F056 /* AKFont.m in Sources */,
-				0C03CCB315F553B1003AA059 /* AKTitleLayer.m in Sources */,
 				0C03CCB615F69CFD003AA059 /* AKInterface.m in Sources */,
 				0C03CCB915F69E2E003AA059 /* AKMenuItem.m in Sources */,
+				0C03CCBB15F93FBD003AA059 /* AKTitleScene.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

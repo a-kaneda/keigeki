@@ -258,3 +258,16 @@ BOOL AKIsInside(CGPoint point, CGRect rect)
         return NO;
     }
 }
+
+/*!
+ @brief 中心座標とサイズから矩形を作成する
+ 
+ 中心座標とサイズから矩形を作成する。
+ @param center 中心座標
+ @param size サイズ
+ @return 矩形
+ */
+CGRect AKMakeRectFromCenter(CGPoint center, NSInteger size)
+{
+    return CGRectMake(center.x - size / 2, center.y - size / 2, size, size);
+}

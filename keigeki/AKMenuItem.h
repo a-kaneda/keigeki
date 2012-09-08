@@ -22,11 +22,15 @@
 /// タグ
 @property (nonatomic)NSInteger tag;
 
-/// メニュー項目生成
-- (id)initWithPos:(CGRect)pos action:(SEL)action tag:(NSInteger)tag;
-/// メニュー項目生成のコンビニエンスコンストラクタ
-+ (id)itemWithPos:(CGRect)pos action:(SEL)action tag:(NSInteger)tag;
-/// 項目選択判定
+// 矩形指定のメニュー項目生成
+- (id)initWithRect:(CGRect)rect action:(SEL)action tag:(NSInteger)tag;
+// 座標指定のメニュー項目生成
+- (id)initWithPoint:(CGPoint)point size:(NSInteger)size action:(SEL)action tag:(NSInteger)tag;
+// 矩形指定のメニュー項目生成のコンビニエンスコンストラクタ
++ (id)itemWithRect:(CGRect)rect action:(SEL)action tag:(NSInteger)tag;
+// 座標指定のメニュー項目生成のコンビニエンスコンストラクタ
++ (id)itemWithPoint:(CGPoint)point size:(NSInteger)size action:(SEL)action tag:(NSInteger)tag;
+// 項目選択判定
 - (BOOL)isSelectPos:(CGPoint)pos;
 
 @end

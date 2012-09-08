@@ -20,15 +20,43 @@
 @synthesize tag = m_tag;
 
 /*!
- @brief メニュー項目生成
+ @brief 矩形指定のメニュー項目生成
  
- メニュー項目の生成を行う。
- @param pos 位置と大きさ
+ 矩形を指定してメニュー項目の生成を行う。
+ @param rect 位置と大きさ
  @param action 項目処理時の処理
  @param tag タグ情報(任意に使用)
  @return 生成したオブジェクト。失敗時はnilを返す。
  */
-- (id)initWithPos:(CGRect)pos action:(SEL)action tag:(NSInteger)tag
+- (id)initWithRect:(CGRect)rect action:(SEL)action tag:(NSInteger)tag
+{
+    // スーパークラスの生成処理
+    self = [super init];
+    if (!self) {
+        return nil;
+    }
+    
+    DBGLOG(0, "rect = (%f, %f, %f, %f)", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+    
+    // 引数をメンバに設定する
+    m_pos = rect;
+    m_action = action;
+    m_tag = tag;
+    
+    return self;
+}
+
+/*!
+ @brief 座標指定のメニュー項目生成
+ 
+ 中心座標と矩形の1辺のサイズを指定してメニュー項目の生成を行う。
+ @param point 中心座標
+ @param size 矩形の1辺のサイズ
+ @param action 項目処理時の処理
+ @param tag タグ情報(任意に使用)
+ @return 生成したオブジェクト。失敗時はnilを返す。
+ */
+- (id)initWithPoint:(CGPoint)point size:(NSInteger)size action:(SEL)action tag:(NSInteger)tag
 {
     // スーパークラスの生成処理
     self = [super init];
@@ -37,7 +65,7 @@
     }
     
     // 引数をメンバに設定する
-    m_pos = pos;
+    m_pos = AKMakeRectFromCenter(point, size);
     m_action = action;
     m_tag = tag;
     
@@ -45,17 +73,32 @@
 }
 
 /*!
- @brief メニュー項目生成のコンビニエンスコンストラクタ
+ @brief 矩形指定のメニュー項目生成のコンビニエンスコンストラクタ
  
- メニュー項目の生成を行う。
- @param pos 位置と大きさ
+ 矩形を指定してメニュー項目の生成を行う。
+ @param rect 位置と大きさ
  @param action 項目処理時の処理
  @param tag タグ情報(任意に使用)
  @return 生成したオブジェクト。失敗時はnilを返す。
  */
-+ (id)itemWithPos:(CGRect)pos action:(SEL)action tag:(NSInteger)tag
++ (id)itemWithRect:(CGRect)rect action:(SEL)action tag:(NSInteger)tag
 {
-    return [[[[self class] alloc] initWithPos:pos action:action tag:tag] autorelease];
+    return [[[[self class] alloc] initWithRect:rect action:action tag:tag] autorelease];
+}
+
+/*!
+ @brief 座標指定のメニュー項目生成のコンビニエンスコンストラクタ
+ 
+ 中心座標と矩形の1辺のサイズを指定してメニュー項目の生成を行う。
+ @param point 中心座標
+ @param size 矩形の1辺のサイズ
+ @param action 項目処理時の処理
+ @param tag タグ情報(任意に使用)
+ @return 生成したオブジェクト。失敗時はnilを返す。
+ */
++ (id)itemWithPoint:(CGPoint)point size:(NSInteger)size action:(SEL)action tag:(NSInteger)tag
+{
+    return [[[[self class] alloc] initWithPoint:point size:size action:action tag:tag] autorelease];
 }
 
 /*!

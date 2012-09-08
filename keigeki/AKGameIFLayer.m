@@ -16,8 +16,6 @@ static const NSInteger kAKPauseButtonSize = 32;
 
 // 加速度センサーの値を比率換算する
 static float AKAccel2Ratio(float accel);
-// 中心座標とサイズから矩形を作成する
-static CGRect AKMakeRectFromCenter(CGPoint center, NSInteger size);
 
 /*!
  @brief ゲームプレイ画面インターフェースクラス
@@ -27,52 +25,21 @@ static CGRect AKMakeRectFromCenter(CGPoint center, NSInteger size);
 @implementation AKGameIFLayer
 
 /*!
- @brief オブジェクト生成処理
-
- オブジェクトの生成を行う。
- @return 生成したオブジェクト。失敗時はnilを返す。
+ @brief 項目数を指定した初期化処理
+ 
+ メニュー項目数を指定した初期化処理。
+ @return 初期化したオブジェクト。失敗時はnilを返す。
  */
-- (id)init
+- (id)initWithCapacity:(NSInteger)capacity
 {
-    // メニュー項目の数
-    const NSInteger kAKItemCount = 5;
-
-    // スーパークラスの生成処理
-    self = [super init];
+    // スーパークラスの初期化処理を実行する
+    self = [super initWithCapacity:capacity];
     if (!self) {
         return nil;
     }
     
     // 加速度センサーを有効にする
     self.isAccelerometerEnabled = YES;
-    
-    // アイテム格納用配列を生成する
-    self.menuItems = [NSMutableArray arrayWithCapacity:kAKItemCount];
-    
-    // ショットボタンを生成する
-    [self.menuItems addObject:[AKMenuItem itemWithPos:AKMakeRectFromCenter(kAKShotButtonPos, kAKShotButtonSize)
-                                               action:@selector(firePlayerShot)
-                                                  tag:kAKGameStatePlaying]];
-    
-    // ポーズボタンを生成する
-    [self.menuItems addObject:[AKMenuItem itemWithPos:AKMakeRectFromCenter(kAKPauseButtonPos, kAKPauseButtonSize)
-                                               action:@selector(pause)
-                                                  tag:kAKGameStatePlaying]];
-    
-    // クリア画面スキップ入力を生成する
-    [self.menuItems addObject:[AKMenuItem itemWithPos:CGRectMake(0, 0, kAKScreenSize.width, kAKScreenSize.height)
-                                               action:@selector(skipResult)
-                                                  tag:kAKGameClear]];
-    
-    // ゲームオーバースキップ入力を生成する
-    [self.menuItems addObject:[AKMenuItem itemWithPos:CGRectMake(0, 0, kAKScreenSize.width, kAKScreenSize.height)
-                                               action:@selector(resetAll)
-                                                  tag:kAKGameStateGameOver]];
-    
-    // ポーズ解除入力を生成する
-    [self.menuItems addObject:[AKMenuItem itemWithPos:CGRectMake(0, 0, kAKScreenSize.width, kAKScreenSize.height)
-                                               action:@selector(resume)
-                                                  tag:kAKGameStatePause]];
     
     return self;
 }
@@ -136,17 +103,4 @@ static float AKAccel2Ratio(float accel)
     else {
         return (accel - MIN_VAL) / (MAX_VAL - MIN_VAL);
     }    
-}
-
-/*!
- @brief 中心座標とサイズから矩形を作成する
- 
- 中心座標とサイズから矩形を作成する。
- @param center 中心座標
- @param size サイズ
- 
- */
-static CGRect AKMakeRectFromCenter(CGPoint center, NSInteger size)
-{
-    return CGRectMake(center.x - size / 2, center.y - size / 2, size, size);
 }

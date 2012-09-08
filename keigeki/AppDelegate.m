@@ -8,6 +8,7 @@
 #import "cocos2d.h"
 
 #import "AppDelegate.h"
+#import "AKTitleScene.h"
 #import "AKGameScene.h"
 
 /*!
@@ -77,7 +78,8 @@
 	[CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
 
 	// and add the scene to the stack. The director will run it when it automatically when the view is displayed.
-	[director_ pushScene: [AKGameScene sharedInstance]];
+	[director_ runWithScene:[AKTitleScene node]];
+//	[director_ pushScene: [AKGameScene sharedInstance]];
 	
 	// Create a Navigation Controller with the Director
 	navController_ = [[UINavigationController alloc] initWithRootViewController:director_];

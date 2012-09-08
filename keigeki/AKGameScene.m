@@ -14,6 +14,7 @@
 #import "AKHiScoreFile.h"
 #import "AKResultLayer.h"
 #import "AKLabel.h"
+#import "AKTitleScene.h"
 
 /// 情報レイヤーに配置するノードのタグ
 enum {
@@ -77,6 +78,13 @@ static const CGPoint kAKPauseMessagePos1 = {240, 200};
 /// 一時停止メッセージの表示位置(2行目)
 static const CGPoint kAKPauseMessagePos2 = {240, 150};
 
+/// メニュー項目の数(ショットボタン、ポーズボタン、ポーズ解除、クリア画面スキップ、ゲームオーバースキップ)
+static const NSInteger kAKItemCount = 5;
+
+/// ショットボタンの画像ファイル名
+static NSString *kAKShotButtonImageFile = @"ShotButton.png";
+/// ポーズボタンの画像ファイル名
+static NSString *kAKPauseButtonImageFile = @"PauseButton.png";
 /// ゲームクリア画面の画像ファイル名
 static NSString *kAKGameClearImageFile = @"GameClear.png";
 
@@ -131,11 +139,14 @@ static AKGameScene *g_scene = nil;
  */
 + (AKGameScene *)sharedInstance
 {
+    DBGLOG(0, @"sharedInstance 開始");
+    
     // シングルトンオブジェクトが作成されていない場合は作成する。
     if (g_scene == nil) {
         g_scene = [AKGameScene node];
     }
     
+    DBGLOG(0, @"sharedInstance 終了");
     // シングルトンオブジェクトを返す。
     return g_scene;
 }
@@ -148,6 +159,8 @@ static AKGameScene *g_scene = nil;
  */
 - (id)init
 {
+    DBGLOG(0, @"init 開始");
+    
     // スーパークラスの生成処理
     self = [super init];
     if (!self) {
@@ -156,15 +169,17 @@ static AKGameScene *g_scene = nil;
         
     // キャラクターを配置するレイヤーを生成する
     CCLayer *baseLayer = [CCLayer node];
-    baseLayer.tag = kAKLayerPosZBase;
-    [self addChild:baseLayer z:kAKLayerPosZBase];
+
+    // ベースレイヤーを画面に配置する
+    [self addChild:baseLayer z:kAKLayerPosZBase tag:kAKLayerPosZBase];
     
     // 画面回転時の中心点を求める
     // CCLayerのサイズは320x480だが、画面サイズはLandscape時は480x320のため、
     // 画面右上の点が(480 / 320, 320 / 480)となる。
     // 中心点座標のCCLayer上での比率に上の値をかけて、画面上での比率を求める。
-    float anchor_x = ((float)kAKPlayerPos.x / kAKScreenSize.width) * ((float)kAKScreenSize.width / kAKScreenSize.height);
-    float anchor_y = ((float)kAKPlayerPos.y / kAKScreenSize.height) * ((float)kAKScreenSize.height / kAKScreenSize.width);
+    // なお、この現象は初期シーンに設定した時のみ発生する。(画面向きの方向の処理がまだ終わっていないためか？)
+    float anchor_x = ((float)kAKPlayerPos.x / kAKScreenSize.width) * ((float)kAKScreenSize.width / baseLayer.contentSize.width);
+    float anchor_y = ((float)kAKPlayerPos.y / kAKScreenSize.height) * ((float)kAKScreenSize.height / baseLayer.contentSize.height);
     
     // 画面回転時の中心点を設定する
     baseLayer.anchorPoint = ccp(anchor_x, anchor_y);
@@ -174,10 +189,10 @@ static AKGameScene *g_scene = nil;
     infoLayer.tag = kAKLayerPosZInfo;
     [self addChild:infoLayer z:kAKLayerPosZInfo];
     
-    // インターフェースレイヤーを貼り付ける
-    AKGameIFLayer *interface = [AKGameIFLayer node];
-    interface.tag = kAKLayerPosZInterface;
-    [self addChild:interface z:kAKLayerPosZInterface];
+    // インターフェースを作成する
+    [self addChild:[AKGameIFLayer interfaceWithCapacity:kAKItemCount]
+                 z:kAKLayerPosZInterface
+               tag:kAKLayerPosZInterface];
     
     // 背景の生成
     self.background = [[[AKBackground alloc] init] autorelease];
@@ -203,29 +218,35 @@ static AKGameScene *g_scene = nil;
     self.effectPool = [[[AKCharacterPool alloc] initWithClass:[AKEffect class]
                                                          Size:kAKMaxEffectCount] autorelease];
     
-    {
-        // ショットボタンの画像を読み込む
-        CCSprite *shotButton = [CCSprite spriteWithFile:@"ShotButton.png"];
-        assert(shotButton != nil);
-        
-        // ショットボタンの位置を設定する
-        shotButton.position = ccp(kAKShotButtonPos.x, kAKShotButtonPos.y);
-        
-        // ショットボタンをレイヤーに配置する
-        [infoLayer addChild:shotButton];
-    }
+    // ショットボタンを追加する
+    [self addButtonWithFile:kAKShotButtonImageFile
+                      atPos:kAKShotButtonPos
+                     action:@selector(firePlayerShot)
+                    ofState:kAKGameStatePlaying];
 
-    {
-        // ポーズボタンの画像を読み込む
-        CCSprite *pauseButton = [CCSprite spriteWithFile:@"PauseButton.png"];
-        assert(pauseButton != nil);
-        
-        // ポーズボタンの位置を設定する
-        pauseButton.position = ccp(kAKPauseButtonPos.x, kAKPauseButtonPos.y);
-        
-        // ポーズボタンをレイヤーに配置する
-        [infoLayer addChild:pauseButton];
-    }
+    // ポーズボタンを追加する
+    [self addButtonWithFile:kAKPauseButtonImageFile
+                      atPos:kAKPauseButtonPos
+                     action:@selector(pause)
+                    ofState:kAKGameStatePlaying];
+    
+    // クリア画面スキップ入力を生成する
+    [self addButtonWithFile:nil
+                      atPos:ccp(0, 0)
+                     action:@selector(skipResult)
+                    ofState:kAKGameClear];
+    
+    // ゲームオーバースキップ入力を生成する
+    [self addButtonWithFile:nil
+                      atPos:ccp(0, 0)
+                     action:@selector(backToTitle)
+                    ofState:kAKGameStateGameOver];
+    
+    // ポーズ解除入力を生成する
+    [self addButtonWithFile:nil
+                      atPos:ccp(0, 0)
+                     action:@selector(resume)
+                    ofState:kAKGameStatePause];
     
     // レーダーの生成
     self.rader = [AKRadar node];
@@ -274,6 +295,8 @@ static AKGameScene *g_scene = nil;
  */
 - (void)dealloc
 {
+    DBGLOG(0, @"dealloc 開始");
+    
     // 更新処理停止
     [self unscheduleUpdate];
     
@@ -283,8 +306,11 @@ static AKGameScene *g_scene = nil;
     self.enemyShotPool = nil;
     self.effectPool = nil;
     self.background = nil;
-    [self removeAllChildrenWithCleanup:YES];
     
+    // シングルトンオブジェクトを初期化する
+    g_scene = nil;
+    
+    DBGLOG(0, @"dealloc 終了");
     [super dealloc];
 }
 
@@ -1277,5 +1303,69 @@ static AKGameScene *g_scene = nil;
     
     // 情報レイヤーに配置する
     [[self getChildByTag:kAKLayerPosZInfo] addChild:label];
+}
+
+/*!
+ @brief ボタンの追加
+ 
+ ボタンの画像ファイルを読み込み、画面への登録とメニュー項目の追加を行う。
+ nilを指定した場合はメニュー項目の追加のみ行う.
+ @param filename 画像ファイル名
+ @param pos ボタンの位置
+ @param action ボタンタップ時の処理
+ @param state ボタンが有効になるゲームシーンの状態
+ */
+- (void)addButtonWithFile:(NSString *)filename atPos:(CGPoint)pos action:(SEL)action ofState:(enum AKGameState)state
+{
+    // メニュー項目の位置と大きさ
+    CGRect rect;
+    
+    // ファイル名が指定されている場合は画像ファイルを読み込む
+    if (filename != nil) {
+        
+        // ボタンの画像を読み込む
+        CCSprite *button = [CCSprite spriteWithFile:filename];
+        assert(button != nil);
+        
+        // ボタンの位置を設定する
+        button.position = pos;
+        
+        // ショットボタンをレイヤーに配置する
+        [[self getChildByTag:kAKLayerPosZInfo] addChild:button];
+        
+        // メニュー項目の大きさにスプライトのサイズを設定する
+        rect.size = button.contentSize;
+        
+        // メニュー項目の位置をスプライトの左上の端を設定する
+        rect.origin = ccp(button.position.x - button.contentSize.width / 2,
+                          button.position.y - button.contentSize.height / 2);
+    }
+    // ファイル名が指定されていない場合、メニュー項目の位置と大きさは画面全体とする
+    else {
+        rect = CGRectMake(0, 0, kAKScreenSize.width, kAKScreenSize.height);
+    }
+    
+    // インターフェースを取得する
+    AKGameIFLayer *intarfece = (AKGameIFLayer *)[self getChildByTag:kAKLayerPosZInterface];
+    
+    // メニュー項目を追加する
+    [intarfece.menuItems addObject:[AKMenuItem itemWithRect:rect
+                                                     action:action
+                                                        tag:state]];
+}
+
+/*!
+ @brief タイトル画面に戻る
+ 
+ タイトル画面に戻る。
+ */
+- (void)backToTitle
+{
+    DBGLOG(0, @"backToTitle開始");
+        
+    // タイトル画面に戻る
+    [[CCDirector sharedDirector] replaceScene:[AKTitleScene node]];
+
+    DBGLOG(0, @"backToTitle終了");
 }
 @end

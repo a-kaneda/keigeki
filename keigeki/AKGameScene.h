@@ -143,4 +143,8 @@ enum AKEnemyType {
 - (void)updateTime;
 // 情報レイヤーへのラベル配置
 - (void)setLabelToInfoLayer:(NSString *)str atPos:(CGPoint)pos tag:(NSInteger)tag isCenter:(BOOL)isCenter;
+// ボタンの追加
+- (void)addButtonWithFile:(NSString *)filename atPos:(CGPoint)pos action:(SEL)action ofState:(enum AKGameState)state;
+// タイトル画面に戻る
+- (void)backToTitle;
 @end

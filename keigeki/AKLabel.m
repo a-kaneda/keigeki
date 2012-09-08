@@ -195,4 +195,21 @@
 {
     return m_length * kAKFontSize;
 }
+
+/*!
+ @brief ラベルの矩形領域の取得
+ 
+ ラベルの矩形領域を取得する。
+ アンカーポイントがラベルの左端中央のため、
+ x座標はアンカーポイント、y座標はアンカーポイント - 0.5文字、
+ 高さは1文字、幅は文字数とする。
+ @return ラベルの矩形領域
+ */
+- (CGRect)rect
+{
+    return CGRectMake(self.position.x,
+                      self.position.y - kAKFontSize / 2,
+                      self.width,
+                      kAKFontSize);
+}
 @end

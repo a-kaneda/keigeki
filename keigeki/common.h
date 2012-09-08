@@ -116,4 +116,7 @@ NSArray* AKCalcNWayAngle(int count, float centerAngle, float space);
 // 矩形内判定
 BOOL AKIsInside(CGPoint point, CGRect rect);
 
+// 中心座標とサイズから矩形を作成する
+CGRect AKMakeRectFromCenter(CGPoint center, NSInteger size);
+
 #endif

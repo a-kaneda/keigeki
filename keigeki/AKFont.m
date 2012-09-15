@@ -12,9 +12,9 @@
 const NSInteger kAKFontSize = 16;
 
 /// フォント画像のファイル名
-static NSString *kAKFontImageName = @"MosaMosaFont.png";
+static NSString *kAKFontImageName = @"Font.png";
 /// フォント中の文字の位置情報のファイル名
-static NSString *kAKFontMapName = @"MosaMosaFont";
+static NSString *kAKFontMapName = @"Font";
 
 // シングルトンオブジェクト
 static AKFont *g_font;
@@ -96,13 +96,23 @@ static AKFont *g_font;
  @param c 文字
  @return テクスチャ内の位置
  */
-- (CGRect)getRectOfChar:(unichar)c
+- (CGRect)rectOfChar:(unichar)c
 {
     // NSDictionaryのキーに使用するため、unicharからNSStringを生成する
-    NSString *cstr = [NSString stringWithCharacters:&c length:1];
-    
+    return [self rectByKey:[NSString stringWithCharacters:&c length:1]];
+}
+
+/*!
+ @brief キーからテクスチャ内の位置を取得する
+ 
+ キーからテクスチャ内の位置を取得する。
+ @param key キー
+ @return テクスチャ内の位置
+ */
+- (CGRect)rectByKey:(NSString *)key
+{
     // 文字の位置情報を文字全体の情報から検索する
-    NSDictionary *charInfo = [self.fontMap objectForKey:cstr];
+    NSDictionary *charInfo = [self.fontMap objectForKey:key];
     
     // 見つからない場合は一番左上のダミー文字を返す
     if (charInfo == nil) {
@@ -117,9 +127,6 @@ static AKFont *g_font;
     CGRect rect = CGRectMake([x integerValue] * kAKFontSize,
                              [y integerValue] * kAKFontSize,
                              kAKFontSize, kAKFontSize);
-    
-    DBGLOG(0, @"%c: x=%d y=%d", c, [x integerValue], [y integerValue]);
-    
     return rect;
 }
 
@@ -130,9 +137,24 @@ static AKFont *g_font;
  @param c 文字
  @return 文字のスプライトフレーム
  */
-- (CCSpriteFrame *)getSpriteFrameOfChar:(unichar)c
+- (CCSpriteFrame *)spriteFrameOfChar:(unichar)c
 {
+    DBGLOG(0, @"c=%c rect=(%f,%f)", c, [self rectOfChar:c].origin.x, [self rectOfChar:c].origin.y);
     // フォントのテクスチャから文字の部分を切り出して返す
-    return [CCSpriteFrame frameWithTexture:self.fontTexture rect:[self getRectOfChar:c]];
+    return [CCSpriteFrame frameWithTexture:self.fontTexture rect:[self rectOfChar:c]];
+}
+
+/*!
+ @brief キーからスプライトフレームを取得する
+ 
+ キーからスプライトフレームを取得する。
+ @param key キー
+ @return キーのスプライトフレーム
+ */
+- (CCSpriteFrame *)spriteFrameWithKey:(NSString *)key
+{
+    DBGLOG(0, @"key=%@ rect=(%f,%f)", key, [self rectByKey:key].origin.x, [self rectByKey:key].origin.y);
+    // フォントのテクスチャからキーに対応する部分を切り出して返す
+    return [CCSpriteFrame frameWithTexture:self.fontTexture rect:[self rectByKey:key]];
 }
 @end

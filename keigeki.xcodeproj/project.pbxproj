@@ -13,6 +13,11 @@
 		0C03CCB615F69CFD003AA059 /* AKInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C03CCB515F69CF9003AA059 /* AKInterface.m */; };
 		0C03CCB915F69E2E003AA059 /* AKMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C03CCB815F69E2D003AA059 /* AKMenuItem.m */; };
 		0C03CCBB15F93FBD003AA059 /* AKTitleScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C03CCBA15F93FB9003AA059 /* AKTitleScene.m */; };
+		0C03CCC915FC6176003AA059 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0C03CCCB15FC6176003AA059 /* Localizable.strings */; };
+		0C03CCD115FCA927003AA059 /* AKHowToPlayScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C03CCD015FCA91F003AA059 /* AKHowToPlayScene.m */; };
+		0C03CCD315FCD515003AA059 /* BackButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C03CCD215FCD514003AA059 /* BackButton.png */; };
+		0C03CCD515FCD529003AA059 /* NextButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C03CCD415FCD527003AA059 /* NextButton.png */; };
+		0C03CCD715FCD539003AA059 /* PrevButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C03CCD615FCD539003AA059 /* PrevButton.png */; };
 		0C1928AF15D9361A00496717 /* Marker.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C1928AE15D9361A00496717 /* Marker.png */; };
 		0C1928B215D9362800496717 /* Radar.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C1928B115D9362800496717 /* Radar.png */; };
 		0C1928B515D99CD000496717 /* AKRadar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C1928B415D99CCF00496717 /* AKRadar.m */; };
@@ -202,8 +207,8 @@
 		0C56286915E911260048F056 /* stage5_8.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56284115E911260048F056 /* stage5_8.txt */; };
 		0C56286A15E911260048F056 /* stage5_9.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56284215E911260048F056 /* stage5_9.txt */; };
 		0C56286B15E911260048F056 /* stage5_10.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C56284315E911260048F056 /* stage5_10.txt */; };
-		0C56287D15F012780048F056 /* MosaMosaFont.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C56287C15F012780048F056 /* MosaMosaFont.plist */; };
-		0C56287F15F1A56E0048F056 /* MosaMosaFont.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C56287E15F1A56D0048F056 /* MosaMosaFont.png */; };
+		0C56287D15F012780048F056 /* Font.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C56287C15F012780048F056 /* Font.plist */; };
+		0C56287F15F1A56E0048F056 /* Font.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C56287E15F1A56D0048F056 /* Font.png */; };
 		0C56288215F1B0980048F056 /* AKLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C56288115F1B0950048F056 /* AKLabel.m */; };
 		0C56288515F1B8620048F056 /* AKFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C56288415F1B85B0048F056 /* AKFont.m */; };
 		0C69227115E1231C002656AD /* AKShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C69227015E1231C002656AD /* AKShot.m */; };
@@ -231,6 +236,12 @@
 		0C03CCB715F69E2B003AA059 /* AKMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKMenuItem.h; sourceTree = "<group>"; };
 		0C03CCB815F69E2D003AA059 /* AKMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKMenuItem.m; sourceTree = "<group>"; };
 		0C03CCBA15F93FB9003AA059 /* AKTitleScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKTitleScene.m; sourceTree = "<group>"; };
+		0C03CCCA15FC6176003AA059 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		0C03CCCF15FCA912003AA059 /* AKHowToPlayScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKHowToPlayScene.h; sourceTree = "<group>"; };
+		0C03CCD015FCA91F003AA059 /* AKHowToPlayScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKHowToPlayScene.m; sourceTree = "<group>"; };
+		0C03CCD215FCD514003AA059 /* BackButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BackButton.png; sourceTree = "<group>"; };
+		0C03CCD415FCD527003AA059 /* NextButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NextButton.png; sourceTree = "<group>"; };
+		0C03CCD615FCD539003AA059 /* PrevButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PrevButton.png; sourceTree = "<group>"; };
 		0C1928AE15D9361A00496717 /* Marker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Marker.png; sourceTree = "<group>"; };
 		0C1928B115D9362800496717 /* Radar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Radar.png; sourceTree = "<group>"; };
 		0C1928B315D99CCF00496717 /* AKRadar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKRadar.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -570,8 +581,8 @@
 		0C56284115E911260048F056 /* stage5_8.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage5_8.txt; path = StageScript/stage5_8.txt; sourceTree = "<group>"; };
 		0C56284215E911260048F056 /* stage5_9.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage5_9.txt; path = StageScript/stage5_9.txt; sourceTree = "<group>"; };
 		0C56284315E911260048F056 /* stage5_10.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage5_10.txt; path = StageScript/stage5_10.txt; sourceTree = "<group>"; };
-		0C56287C15F012780048F056 /* MosaMosaFont.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MosaMosaFont.plist; sourceTree = "<group>"; };
-		0C56287E15F1A56D0048F056 /* MosaMosaFont.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MosaMosaFont.png; sourceTree = "<group>"; };
+		0C56287C15F012780048F056 /* Font.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Font.plist; sourceTree = "<group>"; };
+		0C56287E15F1A56D0048F056 /* Font.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Font.png; sourceTree = "<group>"; };
 		0C56288015F1B0900048F056 /* AKLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKLabel.h; sourceTree = "<group>"; };
 		0C56288115F1B0950048F056 /* AKLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKLabel.m; sourceTree = "<group>"; };
 		0C56288315F1B8590048F056 /* AKFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKFont.h; sourceTree = "<group>"; };
@@ -613,6 +624,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0C03CCC315FC5D7E003AA059 /* Languages */ = {
+			isa = PBXGroup;
+			children = (
+				0C03CCCB15FC6176003AA059 /* Localizable.strings */,
+			);
+			name = Languages;
+			sourceTree = "<group>";
+		};
 		0C2A3A2015D64B12005B9272 /* StageScript */ = {
 			isa = PBXGroup;
 			children = (
@@ -711,6 +730,10 @@
 				0C3707AB15C6C82B00295D96 /* GameConfig.h */,
 				0C3707AA15C6C82B00295D96 /* common.h */,
 				0C3707A915C6C82B00295D96 /* common.m */,
+				0C56288015F1B0900048F056 /* AKLabel.h */,
+				0C56288115F1B0950048F056 /* AKLabel.m */,
+				0C56288315F1B8590048F056 /* AKFont.h */,
+				0C56288415F1B85B0048F056 /* AKFont.m */,
 				0C03CCB715F69E2B003AA059 /* AKMenuItem.h */,
 				0C03CCB815F69E2D003AA059 /* AKMenuItem.m */,
 				0C03CCB415F69CE5003AA059 /* AKInterface.h */,
@@ -747,12 +770,11 @@
 				0C1928C515E0D10500496717 /* AKHiScoreFile.m */,
 				0C56281615E908240048F056 /* AKResultLayer.h */,
 				0C56281715E908250048F056 /* AKResultLayer.m */,
-				0C56288015F1B0900048F056 /* AKLabel.h */,
-				0C56288115F1B0950048F056 /* AKLabel.m */,
-				0C56288315F1B8590048F056 /* AKFont.h */,
-				0C56288415F1B85B0048F056 /* AKFont.m */,
 				0C03CCAF15F551BD003AA059 /* AKTitleScene.h */,
 				0C03CCBA15F93FB9003AA059 /* AKTitleScene.m */,
+				0C03CCCF15FCA912003AA059 /* AKHowToPlayScene.h */,
+				0C03CCD015FCA91F003AA059 /* AKHowToPlayScene.m */,
+				0C03CCC315FC5D7E003AA059 /* Languages */,
 				0C2A3A2015D64B12005B9272 /* StageScript */,
 				0C37060615C6BEC900295D96 /* Resources */,
 				0C37062015C6BEC900295D96 /* libs */,
@@ -764,6 +786,9 @@
 		0C37060615C6BEC900295D96 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0C03CCD615FCD539003AA059 /* PrevButton.png */,
+				0C03CCD415FCD527003AA059 /* NextButton.png */,
+				0C03CCD215FCD514003AA059 /* BackButton.png */,
 				0C03CCAC15F55027003AA059 /* Title.png */,
 				0C03CCA615F3434E003AA059 /* Explosion.png */,
 				0C03CCA315F2C6AC003AA059 /* BaseColor.png */,
@@ -791,8 +816,8 @@
 				0C2A3A1D15D64A47005B9272 /* iTunesArtwork */,
 				0C2A3A1E15D64A47005B9272 /* Player.png */,
 				0C2A3A1F15D64A47005B9272 /* PlayerShot.png */,
-				0C56287E15F1A56D0048F056 /* MosaMosaFont.png */,
-				0C56287C15F012780048F056 /* MosaMosaFont.plist */,
+				0C56287E15F1A56D0048F056 /* Font.png */,
+				0C56287C15F012780048F056 /* Font.plist */,
 			);
 			name = Resources;
 			path = keigeki/Resources;
@@ -1175,6 +1200,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				ja,
 			);
 			mainGroup = 0C3705E415C6BEC900295D96;
 			productRefGroup = 0C3705F015C6BEC900295D96 /* Products */;
@@ -1265,11 +1291,15 @@
 				0C56286915E911260048F056 /* stage5_8.txt in Resources */,
 				0C56286A15E911260048F056 /* stage5_9.txt in Resources */,
 				0C56286B15E911260048F056 /* stage5_10.txt in Resources */,
-				0C56287D15F012780048F056 /* MosaMosaFont.plist in Resources */,
-				0C56287F15F1A56E0048F056 /* MosaMosaFont.png in Resources */,
+				0C56287D15F012780048F056 /* Font.plist in Resources */,
+				0C56287F15F1A56E0048F056 /* Font.png in Resources */,
 				0C03CCA415F2C6AC003AA059 /* BaseColor.png in Resources */,
 				0C03CCA715F3434F003AA059 /* Explosion.png in Resources */,
 				0C03CCAD15F55027003AA059 /* Title.png in Resources */,
+				0C03CCC915FC6176003AA059 /* Localizable.strings in Resources */,
+				0C03CCD315FCD515003AA059 /* BackButton.png in Resources */,
+				0C03CCD515FCD529003AA059 /* NextButton.png in Resources */,
+				0C03CCD715FCD539003AA059 /* PrevButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1404,10 +1434,23 @@
 				0C03CCB615F69CFD003AA059 /* AKInterface.m in Sources */,
 				0C03CCB915F69E2E003AA059 /* AKMenuItem.m in Sources */,
 				0C03CCBB15F93FBD003AA059 /* AKTitleScene.m in Sources */,
+				0C03CCD115FCA927003AA059 /* AKHowToPlayScene.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		0C03CCCB15FC6176003AA059 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0C03CCCA15FC6176003AA059 /* ja */,
+			);
+			name = Localizable.strings;
+			path = Languages;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		0C37078615C6BED200295D96 /* Debug */ = {

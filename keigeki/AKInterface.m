@@ -7,6 +7,7 @@
 
 #import "AKInterface.h"
 #import "common.h"
+#import "AKLabel.h"
 
 /*!
  @brief 画面入力管理クラス
@@ -167,4 +168,81 @@
     return NO;
 }
 
+/*!
+ @brief 画像ファイルからメニュー項目作成
+ 
+ 画像ファイルを読み込んでスプライトを作成し、同じ位置にメニュー項目を作成する。
+ @param filename 画像ファイル名
+ @param pos メニュー項目の位置
+ @param action ボタンタップ時の処理
+ @param z メニュー項目のz座標
+ @param tag メニュー項目のタグ
+ */
+- (void)addMenuWithFile:(NSString *)filename atPos:(CGPoint)pos action:(SEL)action z:(NSInteger)z tag:(NSInteger)tag
+{
+    // メニュー項目の位置と大きさ
+    CGRect rect;
+    
+    // ファイル名が指定されている場合は画像ファイルを読み込む
+    if (filename != nil) {
+        
+        // ボタンの画像を読み込む
+        CCSprite *item = [CCSprite spriteWithFile:filename];
+        assert(item != nil);
+        
+        // ボタンの位置を設定する
+        item.position = pos;
+        
+        // ボタンをレイヤーに配置する
+        [self addChild:item z:z tag:tag];
+        
+        // メニュー項目の大きさにスプライトのサイズを設定する
+        rect.size = item.contentSize;
+        
+        // メニュー項目の位置をスプライトの左上の端を設定する
+        rect.origin = ccp(item.position.x - item.contentSize.width / 2,
+                          item.position.y - item.contentSize.height / 2);
+    }
+    // ファイル名が指定されていない場合、メニュー項目の位置と大きさは画面全体とする
+    else {
+        rect = CGRectMake(0, 0, kAKScreenSize.width, kAKScreenSize.height);
+    }
+    
+    // メニュー項目を追加する
+    [self.menuItems addObject:[AKMenuItem itemWithRect:rect
+                                                action:action
+                                                   tag:tag]];
+}
+
+/*!
+ @brief メニュー項目の追加
+ 
+ メニュー項目のラベルを作成し、インターフェースに項目を追加する。
+ @param menuString メニューのキャプション
+ @param pos メニューの位置
+ @param isCenter 中央揃えにするかどうか
+ @param action メニュー選択時の処理
+ @param z メニュー項目のz座標
+ @param tag メニュー項目のタグ
+ */
+- (void)addMenuWithString:(NSString *)menuString atPos:(CGPoint)pos isCenter:(BOOL)isCenter
+                   action:(SEL)action z:(NSInteger)z tag:(NSInteger)tag
+{
+    // ラベルを作成する
+    AKLabel *label = [AKLabel labelWithString:menuString maxLength:menuString.length maxLine:1 hasFrame:NO];
+    
+    // ラベルの位置を設定する
+    label.position = pos;
+    
+    // 中央揃えの場合は左へ幅の半分移動する
+    if (isCenter) {
+        label.position = ccp(label.position.x - label.width / 2, label.position.y);
+    }
+    
+    // ラベルを画面に配置する
+    [self addChild:label z:z tag:tag];
+    
+    // メニュー項目をインターフェースに追加する
+    [self.menuItems addObject:[AKMenuItem itemWithRect:label.rect action:action tag:tag]];
+}
 @end

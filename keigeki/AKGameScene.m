@@ -1126,7 +1126,7 @@ static AKGameScene *g_scene = nil;
         back.position = ccp(kAKScreenSize.width / 2, kAKScreenSize.height / 2);
 
         // ゲームクリアのラベルを作成する
-        AKLabel *label = [AKLabel labelWithString:kAKGameClearString maxLength:kAKGameClearString.length maxLine:1];
+        AKLabel *label = [AKLabel labelWithString:kAKGameClearString maxLength:kAKGameClearString.length maxLine:1 hasFrame:NO];
         
         // 表示位置を設定する
         label.position = ccp((kAKScreenSize.width - label.width) / 2, kAKScreenSize.height / 2);
@@ -1288,7 +1288,7 @@ static AKGameScene *g_scene = nil;
 - (void)setLabelToInfoLayer:(NSString *)str atPos:(CGPoint)pos tag:(NSInteger)tag isCenter:(BOOL)isCenter
 {
     // ラベルを生成する
-    AKLabel *label = [AKLabel labelWithString:str maxLength:str.length maxLine:1];
+    AKLabel *label = [AKLabel labelWithString:str maxLength:str.length maxLine:1 hasFrame:NO];
     
     // タグを設定する
     label.tag = tag;
@@ -1330,7 +1330,7 @@ static AKGameScene *g_scene = nil;
         // ボタンの位置を設定する
         button.position = pos;
         
-        // ショットボタンをレイヤーに配置する
+        // ボタンをレイヤーに配置する
         [[self getChildByTag:kAKLayerPosZInfo] addChild:button];
         
         // メニュー項目の大きさにスプライトのサイズを設定する

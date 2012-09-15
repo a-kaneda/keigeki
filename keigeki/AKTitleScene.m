@@ -9,6 +9,7 @@
 #import "AKInterface.h"
 #import "AKLabel.h"
 #import "AKGameScene.h"
+#import "AKHowToPlayScene.h"
 #import "common.h"
 
 /// タイトル画像のファイル名
@@ -33,8 +34,7 @@ static const NSInteger kAKCreditMenuPos = 50;
 /// 各ノードのz座標
 enum {
     kAKTitleBackPosZ = 0,   ///< 背景のz座標
-    kAKTitleMenuPosZ,       ///< メニュー項目のz座標
-    kAKTitleIntarfeceZ,     ///< メニュー画面インターフェースのz座標
+    kAKTitleMenuPosZ        ///< メニュー項目のz座標
 };
 
 /*!
@@ -60,6 +60,12 @@ enum {
         return nil;
     }
     
+    // インターフェースを作成する
+    AKInterface *interface = [AKInterface interfaceWithCapacity:kAKMenuItemCount];
+    
+    // インターフェースをシーンに配置する
+    [self addChild:interface];
+    
     // タイトル画像を読み込む
     CCSprite *image = [CCSprite spriteWithFile:kAKTitleImage];
     NSAssert(image != nil, @"can not open title image : %@", kAKTitleImage);
@@ -67,23 +73,31 @@ enum {
     // 配置位置は画面中央とする
     image.position = ccp(kAKScreenSize.width / 2, kAKScreenSize.height / 2);
     
-    // タイトル画像を画面に配置する
-    [self addChild:image z:kAKTitleBackPosZ];
-    
-    // インターフェースを作成する
-    AKInterface *interface = [AKInterface interfaceWithCapacity:kAKMenuItemCount];
-    
-    // インターフェースを画面に配置する
-    [self addChild:interface z:kAKTitleIntarfeceZ tag:kAKTitleIntarfeceZ];
+    // タイトル画像をインターフェースに配置する
+    [interface addChild:image z:kAKTitleBackPosZ];
     
     // ゲームスタートのメニューを作成する
-    [self addMenuWithString:kAKGameStartCaption atPosition:kAKGameStartMenuPos action:@selector(startGame)];
+    [interface addMenuWithString:kAKGameStartCaption
+                           atPos:ccp(kAKScreenSize.width / 2, kAKGameStartMenuPos)
+                        isCenter:YES action:@selector(startGame)
+                               z:0
+                             tag:0];
     
     // 遊び方のメニューを作成する
-    [self addMenuWithString:kAKHowToPlayCaption atPosition:kAKHowToPlayMenuPos action:@selector(startHowTo)];
+    [interface addMenuWithString:kAKHowToPlayCaption
+                           atPos:ccp(kAKScreenSize.width / 2, kAKHowToPlayMenuPos)
+                        isCenter:YES
+                          action:@selector(startHowTo)
+                               z:0
+                             tag:0];
     
     // クレジットのメニューを作成する
-    [self addMenuWithString:kAKCreditCaption atPosition:kAKCreditMenuPos action:@selector(startCredit)];
+    [interface addMenuWithString:kAKCreditCaption
+                           atPos:ccp(kAKScreenSize.width / 2, kAKCreditMenuPos)
+                        isCenter:YES
+                          action:@selector(startCredit)
+                               z:0
+                             tag:0];
     
     DBGLOG(0, @"init 終了");
     return self;
@@ -107,7 +121,8 @@ enum {
  */
 - (void)startHowTo
 {
-    DBGLOG(1, @"startHowTo");
+    DBGLOG(0, @"startHowTo");
+    [[CCDirector sharedDirector] replaceScene:[AKHowToPlayScene node]];
 }
 
 /*!
@@ -118,31 +133,5 @@ enum {
 - (void)startCredit
 {
     DBGLOG(1, @"startCredit");
-}
-
-/*!
- @brief メニュー項目の追加
- 
- メニュー項目のラベルを作成し、インターフェースに項目を追加する。
- @param menuString メニューのキャプション
- @param pos メニューの位置
- @param action メニュー選択時の処理
- */
-- (void)addMenuWithString:(NSString *)menuString atPosition:(NSInteger)pos action:(SEL)action
-{
-    // ラベルを作成する
-    AKLabel *label = [AKLabel labelWithString:menuString maxLength:menuString.length maxLine:1];
-    
-    // ラベルの位置は画面中央とする
-    label.position = ccp((kAKScreenSize.width - label.width) / 2, pos);
-    
-    // ラベルを画面に配置する
-    [self addChild:label z:kAKTitleMenuPosZ];
-    
-    // インターフェースレイヤーを取得する
-    AKInterface *interface = (AKInterface *)[self getChildByTag:kAKTitleIntarfeceZ];
-    
-    // メニュー項目をインターフェースに追加する
-    [interface.menuItems addObject:[AKMenuItem itemWithRect:label.rect action:action tag:0]];
 }
 @end

@@ -27,7 +27,11 @@ extern const NSInteger kAKFontSize;
 // シングルトンオブジェクトの取得
 + (AKFont *)sharedInstance;
 // 文字のテクスチャ内の位置を取得する
-- (CGRect)getRectOfChar:(unichar)c;
+- (CGRect)rectOfChar:(unichar)c;
+// キーからテクスチャ内の位置を取得する
+- (CGRect)rectByKey:(NSString *)key;
 // 文字のスプライトフレームを取得する
-- (CCSpriteFrame *)getSpriteFrameOfChar:(unichar)c;
+- (CCSpriteFrame *)spriteFrameOfChar:(unichar)c;
+// キーからスプライトフレームを取得する
+- (CCSpriteFrame *)spriteFrameWithKey:(NSString *)key;
 @end

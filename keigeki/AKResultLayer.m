@@ -253,7 +253,7 @@ static const NSInteger kAKTimeMax = 9999;
     NSString *initString = [NSString stringWithFormat:kAKLabelFormat, 0];
     
     // ラベルを生成する
-    AKLabel *label = [AKLabel labelWithString:initString maxLength:initString.length maxLine:1];
+    AKLabel *label = [AKLabel labelWithString:initString maxLength:initString.length maxLine:1 hasFrame:NO];
     
     // タグを設定する
     label.tag = tag;
@@ -276,7 +276,7 @@ static const NSInteger kAKTimeMax = 9999;
 - (void)createLabelWithString:(NSString *)str pos:(const CGPoint *)pos
 {
     // ラベルを生成する
-    AKLabel *label = [AKLabel labelWithString:str maxLength:str.length maxLine:1];
+    AKLabel *label = [AKLabel labelWithString:str maxLength:str.length maxLine:1 hasFrame:NO];
     
     // 位置を設定する
     label.position = *pos;

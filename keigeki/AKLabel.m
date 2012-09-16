@@ -28,6 +28,9 @@ static NSString *kAKBottomBar = @"BottomBar";
 /// ブランクのキー
 static NSString *kAKBlank = @" ";
 
+/// 1行の高さ(単位：文字)
+static const float kAKLabelLineHeight = 1.5f;
+
 // バッチノードのz座標(タグ兼用)
 enum {
     kAKFrameBatchPosZ = 0,  ///< 枠表示用バッチノードのz座標
@@ -96,7 +99,7 @@ enum {
             // 左端が親ノードのアンカーポイント(中央)にくるようにするため、
             // 右に0.5文字分ずらす。
             // 行間に0.5文字分の隙間を入れるため、高さは1.5倍する。
-            charSprite.position = ccp(x * kAKFontSize + kAKFontSize / 2, -y * kAKFontSize * 1.5);
+            charSprite.position = ccp(x * kAKFontSize + kAKFontSize / 2, -y * kAKFontSize * kAKLabelLineHeight);
             
             // 先頭からの文字数をタグにする
             charSprite.tag = x + y * m_length;
@@ -253,7 +256,7 @@ enum {
  
  ラベルの幅を取得する。1行の表示文字数にフォントサイズをかけて返す。
  枠付きの場合は枠のサイズ2文字分をプラスして返す。
- @return ラベルの幅。
+ @return ラベルの幅
  */
 - (NSInteger)width
 {
@@ -264,6 +267,25 @@ enum {
     // 枠がない場合は文字領域のサイズを返す
     else {
         return m_length * kAKFontSize;
+    }
+}
+
+/*!
+ @brief ラベルの高さの取得
+ 
+ ラベルの高さを取得する。行数を文字数に換算してフォントサイズをかけて返す。
+ 枠付きの場合は枠のサイズ2文字分をプラスして返す。
+ @return ラベルの高さ
+ */
+- (NSInteger)height
+{
+    // 枠がある場合は枠の領域を2文字分プラスして返す
+    if (m_hasFrame) {
+        return ((int)(m_line * kAKLabelLineHeight) + 2) * kAKFontSize;
+    }
+    // 枠がない場合は文字領域のサイズを返す
+    else {
+        return (int)(m_line * kAKLabelLineHeight) * kAKFontSize;
     }
 }
 
@@ -282,14 +304,14 @@ enum {
     // 枠がある場合は枠の領域をプラスして返す
     if (m_hasFrame) {
         return CGRectMake(self.position.x - kAKFontSize,
-                          self.position.y - kAKFontSize / 2 ,
+                          self.position.y - kAKFontSize / 2 - kAKFontSize,
                           self.width,
-                          kAKFontSize);
+                          self.height);
     }
     return CGRectMake(self.position.x,
                       self.position.y - kAKFontSize / 2,
                       self.width,
-                      kAKFontSize);
+                      self.height);
 }
 
 /*!
@@ -307,7 +329,7 @@ enum {
     
     // 行間に0.5文字分の隙間を空けるため、行数の1.5倍の高さを用意する。
     // 枠を入れるため、上下+-1個分用意する。
-    for (int y = -1; y < (int)(m_line * 1.5) + 1; y++) {
+    for (int y = -1; y < (int)(m_line * kAKLabelLineHeight) + 1; y++) {
         
         // 枠を入れるため、左右+-1個分用意する。
         for (int x = -1; x < m_length + 1; x++) {

@@ -33,6 +33,8 @@
 - (CCSpriteBatchNode *)labelBatch;
 // ラベルの幅の取得
 - (NSInteger)width;
+// ラベルの高さの取得
+- (NSInteger)height;
 // ラベルの矩形領域の取得
 - (CGRect)rect;
 // 枠の生成

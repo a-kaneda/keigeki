@@ -27,6 +27,20 @@ static const NSInteger kAKExplosionFrameCount = 8;
 /// 爆発エフェクトのフレーム更新間隔
 static const float kAKExplosionFrameDelay = 0.2f;
 
+/// アニメーションのフレーム更新間隔
+static const float kAKAnimationFrameDelay = 0.1f;
+/// 1フレームの画像サイズ
+static const float kAKPlayerImageSize = 32;
+/// 左右の画像への切り替える角速度
+static const float kAKFrameChangeRotSpeed = 0.8f;
+
+/// 直進画像のフレーム位置
+static const NSInteger kAKPlayerImagePosStraight = 0;
+/// 左向き画像のフレーム位置
+static const NSInteger kAKPlayerImagePosLeft = 2;
+/// 右向き画像のフレーム位置
+static const NSInteger kAKPlayerImagePosRight = 4;
+
 /*!
  @brief 自機クラス
 
@@ -60,8 +74,11 @@ static const float kAKExplosionFrameDelay = 0.2f;
     // 状態を初期化する
     [self reset];
     
+    // アニメーションの間隔を初期化する
+    m_animationTime = 0.0f;
+    
     // 画像の読込
-    self.image = [CCSprite spriteWithFile:@"Player.png"];
+    self.image = [CCSprite spriteWithFile:@"Player.png" rect:CGRectMake(0, 0, kAKPlayerImageSize, kAKPlayerImageSize)];
     assert(m_image != nil);
     
     return self;
@@ -87,6 +104,37 @@ static const float kAKExplosionFrameDelay = 0.2f;
     
     // 自機の表示座標は画面中央下部に固定
     self.image.position = ccp(kAKPlayerPos.x, kAKPlayerPos.y);
+    
+    // 回転速度から表示画像を切り替える
+    NSInteger playerDirection = 0;
+    if (m_rotSpeed < -kAKFrameChangeRotSpeed) {
+        playerDirection = kAKPlayerImagePosRight;
+    }
+    else if (m_rotSpeed > kAKFrameChangeRotSpeed) {
+        playerDirection = kAKPlayerImagePosLeft;
+    }
+    else {
+        playerDirection = kAKPlayerImagePosStraight;
+    }
+    
+    // アニメーションの間隔をカウントする
+    m_animationTime += dt;
+    // アニメーション間隔の経過時間によって表示するフレームを切り替える
+    if (m_animationTime < kAKAnimationFrameDelay) {
+        [(CCSprite *)self.image setTextureRect:CGRectMake(playerDirection * kAKPlayerImageSize,
+                                                          0,
+                                                          kAKPlayerImageSize,
+                                                          kAKPlayerImageSize)];
+    }
+    else if (m_animationTime < kAKAnimationFrameDelay * 2) {
+        [(CCSprite *)self.image setTextureRect:CGRectMake((playerDirection + 1) * kAKPlayerImageSize,
+                                                          0,
+                                                          kAKPlayerImageSize,
+                                                          kAKPlayerImageSize)];
+    }
+    else {
+        m_animationTime = 0.0f;
+    }
     
     DBGLOG(0, @"player pos=(%f, %f)", self.image.position.x, self.image.position.y);
     DBGLOG(0, @"player angle=%f speed=%f", m_angle, m_speed);

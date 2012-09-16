@@ -16,6 +16,8 @@
     BOOL m_isInvincible;
     /// 無敵状態の残り時間
     float m_invincivleTime;
+    /// アニメーション間隔
+    float m_animationTime;
 }
 
 /// 無敵状態かどうか

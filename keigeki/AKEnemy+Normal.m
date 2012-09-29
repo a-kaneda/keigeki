@@ -48,7 +48,7 @@ static const float kAKExplosionFrameDelay = 0.2f;
     m_destroy = @selector(destroyNormal);
     
     // 画像を読み込む
-    self.image = [CCSprite spriteWithFile:@"Enemy_1.png"];
+    self.image = [CCSprite spriteWithFile:@"Enemy5.png"];
     assert(m_image != nil);
     
     // 当たり判定サイズを設定する

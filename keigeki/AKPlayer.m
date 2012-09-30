@@ -8,6 +8,7 @@
 #import <math.h>
 #import "AKPlayer.h"
 #import "AKGameScene.h"
+#import "AKScreenSize.h"
 
 /// 速度の最大値
 static const NSInteger kAKPlayerSpeed = 240;
@@ -103,7 +104,7 @@ static const NSInteger kAKPlayerImagePosRight = 4;
     }
     
     // 自機の表示座標は画面中央下部に固定
-    self.image.position = ccp(kAKPlayerPos.x, kAKPlayerPos.y);
+    self.image.position = ccp(AKPlayerPosX(), AKPlayerPosY());
     
     // 回転速度から表示画像を切り替える
     NSInteger playerDirection = 0;
@@ -172,7 +173,9 @@ static const NSInteger kAKPlayerImagePosRight = 4;
  */
 - (float)getScreenPosX
 {
-    return AKRangeCheckLF(self.absx + kAKScreenSize.width / 2 - kAKPlayerPos.x, 0.0f, kAKStageSize.width);
+    return AKRangeCheckLF(self.absx + [AKScreenSize screenSize].width / 2 - AKPlayerPosX(),
+                          0.0f,
+                          [AKScreenSize stageSize].width);
 }
 
 /*!
@@ -183,7 +186,9 @@ static const NSInteger kAKPlayerImagePosRight = 4;
  */
 - (float)getScreenPosY
 {
-    return AKRangeCheckLF(self.absy + kAKScreenSize.height / 2 - kAKPlayerPos.y, 0.0f, kAKStageSize.height);
+    return AKRangeCheckLF(self.absy + [AKScreenSize screenSize].height / 2 - AKPlayerPosY(),
+                          0.0f,
+                          [AKScreenSize stageSize].height);
 }
 
 /*!

@@ -8,6 +8,7 @@
 #import "AKHowToPlayScene.h"
 #import "common.h"
 #import "AKTitleScene.h"
+#import "AKScreenSize.h"
 
 // シーンに配置するノードのz座標
 enum {
@@ -34,14 +35,22 @@ static NSString *kAKHowToBackImage = @"BackButton.png";
 /// ページ数表示のフォーマット
 static NSString *kAKHowToPageFormat = @"%d / %d";
 
-/// 前ページボタンの位置
-static const CGPoint kAKHowToPrevPos = {40, 80};
-/// 次ページボタンの位置
-static const CGPoint kAKHowToNextPos = {440, 80};
-/// ページ番号の位置
-static const CGPoint kAKHowToPagePos = {200, 20};
-/// 戻るボタンの位置
-static const CGPoint kAKHowToBackPos = {454, 294};
+/// 前ページボタンの位置、左からの位置
+static const float kAKHowToPrevPosLeftPoint = 40.0f;
+/// 前ページボタンの位置、下からの位置
+static const float kAKHowToPrevPosBottomPoint = 80.0f;
+/// 次ページボタンの位置、右からの位置
+static const float kAKHowToNextPosRightPoint = 40.0f;
+/// 次ページボタンの位置、下からの位置
+static const float kAKHowToNextPosBottomPoint = 80.0f;
+/// ページ番号の位置、横方向中心からの位置
+static const float kAKHowToPagePosHorizontalCenterPoint = -40.0f;
+/// ページ番号の位置、下からの位置
+static const float kAKHowToPagePosBottomPoint = 20.0f;
+/// 戻るボタンの位置、右からの位置
+static const float kAKHowToBackPosRightPoint = 26.0f;
+/// 戻るボタンの位置、上からの位置
+static const float kAKHowToBackPosTopPoint = 26.0f;
 
 /// メッセージボックスの1行の文字数
 static const NSInteger kAKHowToMsgLength = 20;
@@ -49,6 +58,10 @@ static const NSInteger kAKHowToMsgLength = 20;
 static const NSInteger kAKHowToMsgLineCount = 5;
 /// メッセージボックスの位置
 static const CGPoint kAKHowToMsgPos = {80, 160};
+/// メッセージボックスの位置、右端を中心として右からの位置
+static const float kAKHowToMsgPosRightPointFromCenter = 160.0f;
+/// メッセージボックスの位置、下からの位置
+static const float kAKHowToMsgPosBottomPoint = 160.0f;
 
 /// ページ数
 static const NSInteger kAKHowToPageCount = 3;
@@ -83,41 +96,42 @@ static const NSInteger kAKHowToPageCount = 3;
     // シーンへ配置する
     [self addChild:interface z:0 tag:kAKHowToIntarfeceTag];
     
-    // 背景画像を読み込む
-    CCSprite *back = [CCSprite spriteWithFile:kAKBaseColorImage];
+    // 背景色レイヤーを作成する
+    CCLayerColor *backColor = AKCreateBackColorLayer();
   
-    // 配置位置は画面中央とする
-    back.position = ccp(kAKScreenSize.width / 2, kAKScreenSize.height / 2);
-    
     // インターフェースに配置する
-    [interface addChild:back z:kAKHowToBackPosZ];
+    [interface addChild:backColor z:kAKHowToBackPosZ];
     
     // メッセージボックスを作成する
     AKLabel *message = [AKLabel labelWithString:@"" maxLength:kAKHowToMsgLength maxLine:kAKHowToMsgLineCount hasFrame:YES];
     
     // 配置位置を設定する
-    message.position = kAKHowToMsgPos;
+    message.position = ccp([AKScreenSize positionFromRightPoint:kAKHowToMsgPosRightPointFromCenter] - [AKScreenSize center].x,
+                           [AKScreenSize positionFromBottomPoint:kAKHowToMsgPosBottomPoint]);
     
     // インターフェースに配置する
     [interface addChild:message z:kAKHowToItemPosZ tag:kAKHowToMessageTag];
     
     // 前ページボタンをインターフェースに配置する
     [interface addMenuWithFile:kAKHowToPrevImage
-                         atPos:kAKHowToPrevPos
+                         atPos:ccp([AKScreenSize positionFromLeftPoint:kAKHowToPrevPosLeftPoint],
+                                   [AKScreenSize positionFromBottomPoint:kAKHowToPrevPosBottomPoint])
                         action:@selector(goPrevPage)
                              z:kAKHowToItemPosZ
                            tag:kAKHowToPrevTag];
 
     // 次ページボタンをインターフェースに配置する
     [interface addMenuWithFile:kAKHowToNextImage
-                         atPos:kAKHowToNextPos
+                         atPos:ccp([AKScreenSize positionFromRightPoint:kAKHowToNextPosRightPoint],
+                                   [AKScreenSize positionFromBottomPoint:kAKHowToNextPosBottomPoint])
                         action:@selector(goNextPage)
                              z:kAKHowToItemPosZ
                            tag:kAKHowToNextTag];
     
     // 戻るボタンをインターフェースに配置する
     [interface addMenuWithFile:kAKHowToBackImage
-                         atPos:kAKHowToBackPos
+                         atPos:ccp([AKScreenSize positionFromRightPoint:kAKHowToBackPosRightPoint],
+                                   [AKScreenSize positionFromTopPoint:kAKHowToBackPosTopPoint])
                         action:@selector(backToTitle)
                              z:kAKHowToItemPosZ
                            tag:kAKHowToBackTag];
@@ -129,7 +143,8 @@ static const NSInteger kAKHowToPageCount = 3;
     AKLabel *pageLabel = [AKLabel labelWithString:pageString maxLength:pageString.length maxLine:1 hasFrame:NO];
     
     // ページ番号の位置を設定する
-    pageLabel.position = kAKHowToPagePos;
+    pageLabel.position = ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKHowToPagePosHorizontalCenterPoint],
+                             [AKScreenSize positionFromBottomPoint:kAKHowToPagePosBottomPoint]);
     
     // ページ番号のラベルをインターフェースに配置する
     [interface addChild:pageLabel z:kAKHowToItemPosZ tag:kAKHowToPageTag];

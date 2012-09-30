@@ -91,7 +91,7 @@
 	
 	// make main window visible
 	[window_ makeKeyAndVisible];
-    
+        
 	return YES;
 }
 

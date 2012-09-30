@@ -15,6 +15,7 @@
 #import "AKResultLayer.h"
 #import "AKLabel.h"
 #import "AKTitleScene.h"
+#import "AKScreenSize.h"
 
 /// 情報レイヤーに配置するノードのタグ
 enum {
@@ -65,18 +66,38 @@ static const NSInteger kAKStageCount = 5;
 /// ウェイブが始まるまでの間隔
 static const float kAKWaveInterval = 2.0f;
 
-/// スコアの表示位置
-static const CGPoint kAKScorePos = {10, 300};
-/// ハイスコアの表示位置
-static const CGPoint kAKHiScorePos = {240, 300};
-/// 命中率の表示位置
-static const CGPoint kAKHitPos = {10, 280};
-/// プレイ時間の表示位置
-static const CGPoint kAKTimePos = {200, 280};
-/// 一時停止メッセージの表示位置(1行目)
-static const CGPoint kAKPauseMessagePos1 = {240, 200};
-/// 一時停止メッセージの表示位置(2行目)
-static const CGPoint kAKPauseMessagePos2 = {240, 150};
+/// ショットボタンの配置位置、右からの位置
+static const float kAKShotButtonPosRightPoint = 50.0f;
+/// ショットボタンの配置位置、下からの位置
+static const float kAKShotButtonPosBottomPoint = 50.0f;
+/// ポーズボタンの配置位置、右からの位置
+static const float kAKPauseButtonPosRightPoint = 26.0f;
+/// ポーズボタンの配置位置、上からの位置
+static const float kAKPauseButtonPosTopPoint = 26.0f;
+/// スコアの表示位置、左からの位置
+static const float kAKScorePosLeftPoint = 10.0f;
+/// スコアの表示位置、上からの位置
+static const float kAKScorePosTopPoint = 20.0f;
+/// ハイスコアの表示位置、左からの位置
+static const float kAKHiScorePosLeftPoint = 240.0f;
+/// ハイスコアの表示位置、上からの位置
+static const float kAKHiScorePosTopPoint = 20.0f;
+/// 命中率の表示位置、左からの位置
+static const float kAKHitPosLeftPoint = 10.0f;
+/// 命中率の表示位置、上からの位置
+static const float kAKHitPosTopPoint = 40.0f;
+/// プレイ時間の表示位置、左からの位置
+static const float kAKTimePosLeftPoint = 200.0f;
+/// プレイ時間の表示位置、上からの位置
+static const float kAKTimePosTopPoint = 40.0f;
+/// 一時停止メッセージの表示位置(1行目)、左からの比率
+static const float kAKPauseMessage1PosLeftRatio = 0.5f;
+/// 一時停止メッセージの表示位置(1行目)、下からの比率
+static const float kAKPauseMessage1PosBottomRatio = 0.6f;
+/// 一時停止メッセージの表示位置(2行目)、右からの比率
+static const float kAKPauseMessage2PosLeftRatio = 0.5f;
+/// 一時停止メッセージの表示位置(2行目)、下からの比率
+static const float kAKPauseMessage2PosBottomRatio = 0.4f;
 
 /// メニュー項目の数(ショットボタン、ポーズボタン、ポーズ解除、クリア画面スキップ、ゲームオーバースキップ)
 static const NSInteger kAKItemCount = 5;
@@ -178,8 +199,10 @@ static AKGameScene *g_scene = nil;
     // 画面右上の点が(480 / 320, 320 / 480)となる。
     // 中心点座標のCCLayer上での比率に上の値をかけて、画面上での比率を求める。
     // なお、この現象は初期シーンに設定した時のみ発生する。(画面向きの方向の処理がまだ終わっていないためか？)
-    float anchor_x = ((float)kAKPlayerPos.x / kAKScreenSize.width) * ((float)kAKScreenSize.width / baseLayer.contentSize.width);
-    float anchor_y = ((float)kAKPlayerPos.y / kAKScreenSize.height) * ((float)kAKScreenSize.height / baseLayer.contentSize.height);
+    float anchor_x = ((float)AKPlayerPosX() / [AKScreenSize screenSize].width) *
+                        ((float)[AKScreenSize screenSize].width / baseLayer.contentSize.width);
+    float anchor_y = ((float)AKPlayerPosY() / [AKScreenSize screenSize].height) *
+                        ((float)[AKScreenSize screenSize].height / baseLayer.contentSize.height);
     
     // 画面回転時の中心点を設定する
     baseLayer.anchorPoint = ccp(anchor_x, anchor_y);
@@ -220,13 +243,15 @@ static AKGameScene *g_scene = nil;
     
     // ショットボタンを追加する
     [self addButtonWithFile:kAKShotButtonImageFile
-                      atPos:kAKShotButtonPos
+                      atPos:ccp([AKScreenSize positionFromRightPoint:kAKShotButtonPosRightPoint],
+                                [AKScreenSize positionFromBottomPoint:kAKShotButtonPosBottomPoint])
                      action:@selector(firePlayerShot)
                     ofState:kAKGameStatePlaying];
 
     // ポーズボタンを追加する
     [self addButtonWithFile:kAKPauseButtonImageFile
-                      atPos:kAKPauseButtonPos
+                      atPos:ccp([AKScreenSize positionFromRightPoint:kAKPauseButtonPosRightPoint],
+                                [AKScreenSize positionFromTopPoint:kAKPauseButtonPosTopPoint])
                      action:@selector(pause)
                     ofState:kAKGameStatePlaying];
     
@@ -262,22 +287,34 @@ static AKGameScene *g_scene = nil;
     
     // スコアラベルを生成する
     [self setLabelToInfoLayer:[NSString stringWithFormat:kAKScoreFormat, m_score]
-                        atPos:kAKScorePos tag:kAKInfoTagScore isCenter:NO];
+                        atPos:ccp([AKScreenSize positionFromLeftPoint:kAKScorePosLeftPoint],
+                                  [AKScreenSize positionFromTopPoint:kAKScorePosTopPoint])
+                          tag:kAKInfoTagScore
+                     isCenter:NO];
     
     // ハイスコアファイルの読み込みを行う
     [self readHiScore];
 
     // ハイスコアラベルを生成する
     [self setLabelToInfoLayer:[NSString stringWithFormat:kAKHiScoreFormat, m_hiScore]
-                        atPos:kAKHiScorePos tag:kAKInfoTagHiScore isCenter:NO];
+                        atPos:ccp([AKScreenSize positionFromLeftPoint:kAKHiScorePosLeftPoint],
+                                  [AKScreenSize positionFromTopPoint:kAKHiScorePosTopPoint])
+                          tag:kAKInfoTagHiScore
+                     isCenter:NO];
         
     // 命中率ラベルを生成する
     [self setLabelToInfoLayer:[NSString stringWithFormat:kAKHitFormat, 100]
-                        atPos:kAKHitPos tag:kAKInfoTagHit isCenter:NO];
+                        atPos:ccp([AKScreenSize positionFromLeftPoint:kAKHitPosLeftPoint],
+                                  [AKScreenSize positionFromTopPoint:kAKHitPosTopPoint])
+                          tag:kAKInfoTagHit
+                     isCenter:NO];
 
     // プレイ時間ラベルを生成する
     [self setLabelToInfoLayer:[NSString stringWithFormat:kAKTimeFormat, 0, 0, 0]
-                        atPos:kAKTimePos tag:kAKInfoTagTime isCenter:NO];
+                        atPos:ccp([AKScreenSize positionFromLeftPoint:kAKTimePosLeftPoint],
+                                  [AKScreenSize positionFromTopPoint:kAKTimePosTopPoint])
+                          tag:kAKInfoTagTime
+                     isCenter:NO];
 
     // 状態を初期化する
     [self resetAll];
@@ -576,7 +613,8 @@ static AKGameScene *g_scene = nil;
     angle = self.player.angle;
     
     // 初回の移動更新処理が終わるまでは表示されないように画面外に移動する
-    shot.image.position = ccp(kAKScreenSize.width * 2, kAKScreenSize.height * 2);
+    shot.image.position = ccp([AKScreenSize screenSize].width * 2,
+                              [AKScreenSize screenSize].height * 2);
     
     // 自機弾を生成する
     // 位置と向きは自機と同じとする
@@ -626,7 +664,8 @@ static AKGameScene *g_scene = nil;
     }
     
     // 初回の移動更新処理が終わるまでは表示されないように画面外に移動する
-    enemy.image.position = ccp(kAKScreenSize.width * 2, kAKScreenSize.height * 2);
+    enemy.image.position = ccp([AKScreenSize screenSize].width * 2,
+                               [AKScreenSize screenSize].height * 2);
     
     // 敵を生成する
     [enemy createWithX:posx Y:posy Z:kAKCharaPosZEnemy Angle:angle
@@ -655,7 +694,8 @@ static AKGameScene *g_scene = nil;
     }
     
     // 初回の移動更新処理が行われるまでは表示されないように画面外に移動する
-    enemyShot.image.position = ccp(kAKScreenSize.width * 2, kAKScreenSize.height * 2);
+    enemyShot.image.position = ccp([AKScreenSize screenSize].width * 2,
+                                   [AKScreenSize screenSize].height * 2);
     
     // 敵弾を生成する
     [enemyShot createWithType:type X:posx Y:posy Z:kAKCharaPosZEnemyShot
@@ -719,7 +759,7 @@ static AKGameScene *g_scene = nil;
         self.state = kAKGameStateGameOver;
         
         // ゲームオーバーのラベルを生成する
-        [self setLabelToInfoLayer:kAKGameOverString atPos:ccp(kAKScreenSize.width / 2, kAKScreenSize.height / 2)
+        [self setLabelToInfoLayer:kAKGameOverString atPos:ccp([AKScreenSize screenSize].width / 2, [AKScreenSize screenSize].height / 2)
                               tag:kAKInfoTagGameOver isCenter:YES];
     }
 }
@@ -838,10 +878,18 @@ static AKGameScene *g_scene = nil;
     }
     
     // 一時停止中のラベルを作成する(1行目)
-    [self setLabelToInfoLayer:kAKPauseString1 atPos:kAKPauseMessagePos1 tag:kAKInfoTagPause1 isCenter:YES];
+    [self setLabelToInfoLayer:kAKPauseString1
+                        atPos:ccp([AKScreenSize positionFromLeftRatio:kAKPauseMessage1PosLeftRatio],
+                                  [AKScreenSize positionFromBottomRatio:kAKPauseMessage1PosBottomRatio])
+                          tag:kAKInfoTagPause1
+                     isCenter:YES];
     
     // 一時停止中のラベルを作成する(2行目)
-    [self setLabelToInfoLayer:kAKPauseString2 atPos:kAKPauseMessagePos2 tag:kAKInfoTagPause2 isCenter:YES];
+    [self setLabelToInfoLayer:kAKPauseString2
+                        atPos:ccp([AKScreenSize positionFromLeftRatio:kAKPauseMessage2PosLeftRatio],
+                                  [AKScreenSize positionFromBottomRatio:kAKPauseMessage2PosBottomRatio])
+                          tag:kAKInfoTagPause2
+                     isCenter:YES];
 }
 
 /*!
@@ -1116,26 +1164,24 @@ static AKGameScene *g_scene = nil;
         // ゲームの状態をゲームオーバーに変更する
         self.state = kAKGameStateGameOver;
         
-        // 背景画像を読み込む
-        CCSprite *back = [CCSprite spriteWithFile:kAKBaseColorImage];
+        // 背景色レイヤーを作成する
+        CCLayerColor *backColor = AKCreateBackColorLayer();
         
         // タグを設定する
-        back.tag = kAKInfoTagGameClear;
+        backColor.tag = kAKInfoTagGameClear;
         
-        // 表示位置を設定する
-        back.position = ccp(kAKScreenSize.width / 2, kAKScreenSize.height / 2);
-
         // ゲームクリアのラベルを作成する
         AKLabel *label = [AKLabel labelWithString:kAKGameClearString maxLength:kAKGameClearString.length maxLine:1 hasFrame:NO];
         
         // 表示位置を設定する
-        label.position = ccp((kAKScreenSize.width - label.width) / 2, kAKScreenSize.height / 2);
+        label.position = ccp(([AKScreenSize screenSize].width - label.width) / 2,
+                             [AKScreenSize screenSize].height / 2);
         
         // ラベルを背景画像に貼り付ける
-        [back addChild:label];
+        [backColor addChild:label];
 
         // 情報レイヤーへ配置する
-        [[self getChildByTag:kAKLayerPosZInfo] addChild:back];
+        [[self getChildByTag:kAKLayerPosZInfo] addChild:backColor];
     }
 }
 
@@ -1342,7 +1388,7 @@ static AKGameScene *g_scene = nil;
     }
     // ファイル名が指定されていない場合、メニュー項目の位置と大きさは画面全体とする
     else {
-        rect = CGRectMake(0, 0, kAKScreenSize.width, kAKScreenSize.height);
+        rect = CGRectMake(0, 0, [AKScreenSize screenSize].width, [AKScreenSize screenSize].height);
     }
     
     // インターフェースを取得する

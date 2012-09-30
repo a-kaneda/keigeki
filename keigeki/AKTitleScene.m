@@ -10,6 +10,7 @@
 #import "AKLabel.h"
 #import "AKGameScene.h"
 #import "AKHowToPlayScene.h"
+#import "AKScreenSize.h"
 #import "common.h"
 
 /// タイトル画像のファイル名
@@ -22,6 +23,8 @@ static NSString *kAKHowToPlayCaption = @"HOW TO PLAY";
 /// クレジット画面メニューのキャプション
 static NSString *kAKCreditCaption = @"CREDIT";
 
+/// タイトルの位置、上からの位置
+static const float kAKTitlePosTopPoint = 100;
 /// メニュー項目の数
 static const NSInteger kAKMenuItemCount = 3;
 /// ゲーム開始メニューのキャプションの表示位置
@@ -60,32 +63,45 @@ enum {
         return nil;
     }
     
+    // 背景レイヤーを配置する
+    [self addChild:AKCreateBackColorLayer() z:0];
+    
+    // 広告枠を配置する
+    CCSprite *adSpace = [CCSprite spriteWithFile:kAKAdSpaceImage];
+    adSpace.anchorPoint = ccp(0.0f, 1.0f);
+    adSpace.position = ccp([AKScreenSize positionFromLeftPoint:0],
+                           [AKScreenSize positionFromTopPoint:0]);
+    [self addChild:adSpace z:999];
+    
     // インターフェースを作成する
     AKInterface *interface = [AKInterface interfaceWithCapacity:kAKMenuItemCount];
     
     // インターフェースをシーンに配置する
-    [self addChild:interface];
+    [self addChild:interface z:1];
     
     // タイトル画像を読み込む
     CCSprite *image = [CCSprite spriteWithFile:kAKTitleImage];
     NSAssert(image != nil, @"can not open title image : %@", kAKTitleImage);
     
-    // 配置位置は画面中央とする
-    image.position = ccp(kAKScreenSize.width / 2, kAKScreenSize.height / 2);
+    // 配置位置を設定する
+    image.position = ccp([AKScreenSize center].x,
+                         [AKScreenSize positionFromTopPoint:kAKTitlePosTopPoint]);
     
     // タイトル画像をインターフェースに配置する
     [interface addChild:image z:kAKTitleBackPosZ];
     
     // ゲームスタートのメニューを作成する
     [interface addMenuWithString:kAKGameStartCaption
-                           atPos:ccp(kAKScreenSize.width / 2, kAKGameStartMenuPos)
+                           atPos:ccp([AKScreenSize center].x,
+                                     [AKScreenSize positionFromBottomPoint:kAKGameStartMenuPos])
                         isCenter:YES action:@selector(startGame)
                                z:0
                              tag:0];
     
     // 遊び方のメニューを作成する
     [interface addMenuWithString:kAKHowToPlayCaption
-                           atPos:ccp(kAKScreenSize.width / 2, kAKHowToPlayMenuPos)
+                           atPos:ccp([AKScreenSize center].x,
+                                     [AKScreenSize positionFromBottomPoint:kAKHowToPlayMenuPos])
                         isCenter:YES
                           action:@selector(startHowTo)
                                z:0
@@ -93,7 +109,8 @@ enum {
     
     // クレジットのメニューを作成する
     [interface addMenuWithString:kAKCreditCaption
-                           atPos:ccp(kAKScreenSize.width / 2, kAKCreditMenuPos)
+                           atPos:ccp([AKScreenSize center].x,
+                                     [AKScreenSize positionFromBottomPoint:kAKCreditMenuPos])
                         isCenter:YES
                           action:@selector(startCredit)
                                z:0

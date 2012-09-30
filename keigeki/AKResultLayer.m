@@ -8,6 +8,7 @@
 #import "AKResultLayer.h"
 #import "AKGameScene.h"
 #import "AKLabel.h"
+#import "AKScreenSize.h"
 #import "common.h"
 
 /// ラベルのタグ
@@ -41,30 +42,20 @@ static const float kAKDelayLong = 0.5f;
 /// スコア位置y座標
 #define kAKScorePosY (kAKRestPosY - 20)
 
-/// タイトルキャプション位置
-static const CGPoint kAKTitleCaptionPos = {152, 240};
-/// タイムキャプション位置
-static const CGPoint kAKTimeCaptionPos = {kAKCaptionPosX, kAKTimePosY};
-/// タイム値位置
-static const CGPoint kAKTimeNumPos = {kAKValuePosX, kAKTimePosY};
-/// タイムボーナス位置
-static const CGPoint kAKTimeBonusPos = {kAKBonusPosX, kAKTimePosY};
-/// 命中率キャプション位置
-static const CGPoint kAKHitCaptionPos = {kAKCaptionPosX, kAKHitPosY};
-/// 命中率値位置
-static const CGPoint kAKHitNumPos = {kAKValuePosX, kAKHitPosY};
-/// 命中率ボーナス位置
-static const CGPoint kAKHitBonusPos = {kAKBonusPosX, kAKHitPosY};
-/// 残機キャプション位置
-static const CGPoint kAKRestCaptionPos = {kAKCaptionPosX, kAKRestPosY};
-/// 残機値位置
-static const CGPoint kAKRestNumPos = {kAKValuePosX, kAKRestPosY};
-/// 残機ボーナス位置
-static const CGPoint kAKRestBonusPos = {kAKBonusPosX, kAKRestPosY};
-/// スコアキャプション位置
-static const CGPoint kAKScoreCaptionPos = {kAKCaptionPosX, kAKScorePosY};
-/// スコア値位置
-static const CGPoint kAKScoreNumPos = {kAKBonusPosX, kAKScorePosY};
+/// タイトルキャプション位置、横方向中心からの位置
+static const float kAKTitleCaptionPosHorizontalCenterPoint = -88.0f;
+/// タイトルキャプション位置、上からの位置
+static const float kAKTitleCaptionPosTopPoint = 80.0f;
+/// キャプション位置、横方向中心からの位置
+static const float kAKCaptionPosHorizontalCenterPoint = -184.0f;
+/// 値位置、横方向中心からの位置
+static const float kAKValuePosHorizontalCenterPoint = -88.0f;
+/// ボーナス位置、横方向中心からの位置
+static const float kAKBonusPosHorizontalCenterPoint = 56.0f;
+/// キャプション位置、上からの位置
+static const float kAKCaptionPosTopPoint = 140.0f;
+/// キャプション縦方向位置のマージン
+static const float kAKCaptionPosMargin = 20.0f;
 
 /// ステージクリアのタイトルキャプション
 static NSString *kAKTitleCaption = @"STAGE CLEAR";
@@ -113,15 +104,15 @@ static const NSInteger kAKTimeMax = 9999;
         return nil;
     }
     
-    // 背景画像を読み込む
-    CCSprite *background = [CCSprite spriteWithFile:kAKBaseColorImage];
-    assert(background != nil);
+    // 広告枠を配置する
+    CCSprite *adSpace = [CCSprite spriteWithFile:kAKAdSpaceImage];
+    adSpace.anchorPoint = ccp(0.0f, 1.0f);
+    adSpace.position = ccp([AKScreenSize positionFromLeftPoint:0],
+                           [AKScreenSize positionFromTopPoint:0]);
+    [self addChild:adSpace z:999];
     
-    // 背景画像の配置位置を画面中央にする
-    background.position = ccp(kAKScreenSize.width / 2, kAKScreenSize.height / 2);
-    
-    // レイヤーに配置する
-    [self addChild:background z:0];
+    // 背景色レイヤーを配置する
+    [self addChild:AKCreateBackColorLayer() z:0];
     
     // メンバの初期化
     m_state = kAKstateScoreView;
@@ -135,40 +126,76 @@ static const NSInteger kAKTimeMax = 9999;
     m_delay = kAKDelayLong;
     
     // タイトルキャプションラベルを生成する
-    [self createLabelWithString:kAKTitleCaption pos:&kAKTitleCaptionPos];
+    [self createLabelWithString:kAKTitleCaption
+                            pos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKTitleCaptionPosHorizontalCenterPoint],
+                                    [AKScreenSize positionFromTopPoint:kAKTitleCaptionPosTopPoint])];
+    
+    // キャプション位置縦方向は一番上の項目からマージンを等間隔であけて配置する
+    float position = [AKScreenSize positionFromTopPoint:kAKCaptionPosTopPoint];
     
     // タイムキャプションラベルを生成する
-    [self createLabelWithString:kAKTimeCaption pos:&kAKTimeCaptionPos];
+    [self createLabelWithString:kAKTimeCaption
+                            pos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKCaptionPosHorizontalCenterPoint],
+                                    position)];
     
-    // 命中率キャプションラベルを生成する
-    [self createLabelWithString:kAKHitCaption pos:&kAKHitCaptionPos];
-    
-    // 残機キャプションラベルを生成する
-    [self createLabelWithString:kAKRestCaption pos:&kAKRestCaptionPos];
-    
-    // スコアキャプションラベルを生成する
-    [self createLabelWithString:kAKScoreCaption pos:&kAKScoreCaptionPos];
     
     // タイムラベルを生成する
-    [self createLabelWithTag:kAKTimeNumTag pos:&kAKTimeNumPos];
+    [self createLabelWithTag:kAKTimeNumTag
+                         pos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKValuePosHorizontalCenterPoint],
+                                 position)];
     
     // タイムボーナスラベルを生成する
-    [self createLabelWithTag:kAKTimeBonusTag pos:&kAKTimeBonusPos];
+    [self createLabelWithTag:kAKTimeBonusTag
+                         pos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKBonusPosHorizontalCenterPoint],
+                                 position)];
+    
+    // 縦方向の位置を下へずらす
+    position -= kAKCaptionPosMargin;
+    
+    // 命中率キャプションラベルを生成する
+    [self createLabelWithString:kAKHitCaption
+                            pos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKCaptionPosHorizontalCenterPoint],
+                                    position)];
     
     // 命中率ラベルを生成する
-    [self createLabelWithTag:kAKHitNumTag pos:&kAKHitNumPos];
-
+    [self createLabelWithTag:kAKHitNumTag
+                         pos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKValuePosHorizontalCenterPoint],
+                                 position)];
+    
     // 命中率ボーナスラベルを生成する
-    [self createLabelWithTag:kAKHitBonusTag pos:&kAKHitBonusPos];
+    [self createLabelWithTag:kAKHitBonusTag
+                         pos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKBonusPosHorizontalCenterPoint],
+                                 position)];
+    
+    // 縦方向の位置を下へずらす
+    position -= kAKCaptionPosMargin;
+
+    // 残機キャプションラベルを生成する
+    [self createLabelWithString:kAKRestCaption
+                            pos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKCaptionPosHorizontalCenterPoint],
+                                    position)];
     
     // 残機ラベルを生成する
-    [self createLabelWithTag:kAKRestNumTag pos:&kAKRestNumPos];
+    [self createLabelWithTag:kAKRestNumTag
+                         pos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKValuePosHorizontalCenterPoint],
+                                 position)];
     
     // 残機ボーナスラベルを生成する
-    [self createLabelWithTag:kAKRestBonusTag pos:&kAKRestBonusPos];
+    [self createLabelWithTag:kAKRestBonusTag
+                         pos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKBonusPosHorizontalCenterPoint],
+                                 position)];
     
+    // 縦方向の位置を下へずらす
+    position -= kAKCaptionPosMargin;
+
+    // スコアキャプションラベルを生成する
+    [self createLabelWithString:kAKScoreCaption
+                            pos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKCaptionPosHorizontalCenterPoint],
+                                    position)];
     // スコアラベルを生成する
-    [self createLabelWithTag:kAKScoreNumTag pos:&kAKScoreNumPos];
+    [self createLabelWithTag:kAKScoreNumTag
+                         pos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKBonusPosHorizontalCenterPoint],
+                                 position)];
     
     return self;
 }
@@ -247,7 +274,7 @@ static const NSInteger kAKTimeMax = 9999;
  @param tag ラベルに設定するタグ
  @param pos ラベルの座標
  */
-- (void)createLabelWithTag:(NSInteger)tag pos:(const CGPoint *)pos
+- (void)createLabelWithTag:(NSInteger)tag pos:(CGPoint)pos
 {
     // 各ラベルの初期文字列を作成する
     NSString *initString = [NSString stringWithFormat:kAKLabelFormat, 0];
@@ -259,7 +286,7 @@ static const NSInteger kAKTimeMax = 9999;
     label.tag = tag;
     
     // 位置を設定する
-    label.position = *pos;
+    label.position = pos;
     
     // レイヤーに配置する
     [self addChild:label];
@@ -273,13 +300,13 @@ static const NSInteger kAKTimeMax = 9999;
  @param str ラベルに設定する文字列
  @param pos ラベルの座標
  */
-- (void)createLabelWithString:(NSString *)str pos:(const CGPoint *)pos
+- (void)createLabelWithString:(NSString *)str pos:(CGPoint)pos
 {
     // ラベルを生成する
     AKLabel *label = [AKLabel labelWithString:str maxLength:str.length maxLine:1 hasFrame:NO];
     
     // 位置を設定する
-    label.position = *pos;
+    label.position = pos;
     
     // レイヤーに配置する
     [self addChild:label];

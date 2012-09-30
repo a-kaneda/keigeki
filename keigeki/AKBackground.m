@@ -95,8 +95,8 @@ static NSString *kAKTileFile = @"Back.png";
 
     // 自機の配置位置を中心とする。
     // そこからタイルサイズ分の範囲でスクロールする。(-32 〜 +32)
-    posx = kAKPlayerPos.x + kAKTileSize / 2 + (-scrx % kAKTileSize);
-    posy = kAKPlayerPos.y + kAKTileSize / 2 + (-scry % kAKTileSize);
+    posx = AKPlayerPosX() + kAKTileSize / 2 + (-scrx % kAKTileSize);
+    posy = AKPlayerPosY() + kAKTileSize / 2 + (-scry % kAKTileSize);
     DBGLOG(0, @"basex=%f basey=%f", posx, posy);
     
     // 背景画像の位置を移動する。

@@ -76,7 +76,7 @@ static const float kAKExplosionFrameDelay = 0.2f;
     
     // 回転方向を自機のある方に決定する
     rotdirect = AKCalcRotDirect(m_angle, self.image.position.x, self.image.position.y,
-                                kAKPlayerPos.x, kAKPlayerPos.y);
+                                AKPlayerPosX(), AKPlayerPosY());
     
     // 自機の方に向かって向きを回転する
     self.rotSpeed = rotdirect * kAKEnemyRotSpeed;

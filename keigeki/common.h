@@ -9,21 +9,12 @@
 #define keigeki_common_h
 
 #import <Foundation/Foundation.h>
+#import "cocos2d.h"
 
-// スクリーンサイズ
-extern const CGSize kAKScreenSize;
-// ステージサイズ
-extern const CGSize kAKStageSize;
-// 自機の表示位置
-extern const CGPoint kAKPlayerPos;
 // 同時に生成可能な敵の最大数
 extern const NSInteger kAKMaxEnemyCount;
-// ショットボタンの配置位置
-extern const CGPoint kAKShotButtonPos;
-// ポーズボタンの配置位置
-extern const CGPoint kAKPauseButtonPos;
-// 背景塗りつぶし用の画像のファイル名
-extern NSString *kAKBaseColorImage;
+// 広告枠のテスト用画像のファイル名
+extern NSString *kAKAdSpaceImage;
 
 #ifdef DEBUG
 /// デバッグログON/OFF用フラグ
@@ -118,5 +109,14 @@ BOOL AKIsInside(CGPoint point, CGRect rect);
 
 // 中心座標とサイズから矩形を作成する
 CGRect AKMakeRectFromCenter(CGPoint center, NSInteger size);
+
+// 背景色レイヤーを作成する
+CCLayerColor *AKCreateBackColorLayer(void);
+
+// 自機の表示位置のx座標を取得する
+float AKPlayerPosX(void);
+
+// 自機の表示位置のy座標を取得する
+float AKPlayerPosY(void);
 
 #endif

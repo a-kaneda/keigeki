@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0C03CCA415F2C6AC003AA059 /* BaseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C03CCA315F2C6AC003AA059 /* BaseColor.png */; };
 		0C03CCA715F3434F003AA059 /* Explosion.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C03CCA615F3434E003AA059 /* Explosion.png */; };
 		0C03CCAD15F55027003AA059 /* Title.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C03CCAC15F55027003AA059 /* Title.png */; };
 		0C03CCB615F69CFD003AA059 /* AKInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C03CCB515F69CF9003AA059 /* AKInterface.m */; };
@@ -229,10 +228,11 @@
 		0CC071A81607632000201D47 /* Enemy2.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CC071A71607632000201D47 /* Enemy2.png */; };
 		0CC071AA1607BD4500201D47 /* Enemy3.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CC071A91607BD4500201D47 /* Enemy3.png */; };
 		0CC071AC1607C68C00201D47 /* Enemy4.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CC071AB1607C68C00201D47 /* Enemy4.png */; };
+		0CE2AE6B1616EEDB00FD3AE3 /* AKScreenSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE2AE6A1616EEDB00FD3AE3 /* AKScreenSize.m */; };
+		0CE2AE6E1617E69700FD3AE3 /* AdSpace.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CE2AE6D1617E69700FD3AE3 /* AdSpace.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0C03CCA315F2C6AC003AA059 /* BaseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BaseColor.png; sourceTree = "<group>"; };
 		0C03CCA615F3434E003AA059 /* Explosion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Explosion.png; sourceTree = "<group>"; };
 		0C03CCAC15F55027003AA059 /* Title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Title.png; sourceTree = "<group>"; };
 		0C03CCAF15F551BD003AA059 /* AKTitleScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKTitleScene.h; sourceTree = "<group>"; };
@@ -612,6 +612,9 @@
 		0CC071A71607632000201D47 /* Enemy2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Enemy2.png; sourceTree = "<group>"; };
 		0CC071A91607BD4500201D47 /* Enemy3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Enemy3.png; sourceTree = "<group>"; };
 		0CC071AB1607C68C00201D47 /* Enemy4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Enemy4.png; sourceTree = "<group>"; };
+		0CE2AE691616EEDB00FD3AE3 /* AKScreenSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKScreenSize.h; sourceTree = "<group>"; };
+		0CE2AE6A1616EEDB00FD3AE3 /* AKScreenSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKScreenSize.m; sourceTree = "<group>"; };
+		0CE2AE6D1617E69700FD3AE3 /* AdSpace.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AdSpace.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -740,6 +743,8 @@
 				0C3707AB15C6C82B00295D96 /* GameConfig.h */,
 				0C3707AA15C6C82B00295D96 /* common.h */,
 				0C3707A915C6C82B00295D96 /* common.m */,
+				0CE2AE691616EEDB00FD3AE3 /* AKScreenSize.h */,
+				0CE2AE6A1616EEDB00FD3AE3 /* AKScreenSize.m */,
 				0C56288015F1B0900048F056 /* AKLabel.h */,
 				0C56288115F1B0950048F056 /* AKLabel.m */,
 				0C56288315F1B8590048F056 /* AKFont.h */,
@@ -800,12 +805,12 @@
 				0C4A4A961616B05300649A24 /* Default@2x.png */,
 				0C4A4A981616B09100649A24 /* Default-568h@2x.png */,
 				0C2A3A1115D64A47005B9272 /* Default-Landscape~ipad.png */,
+				0CE2AE6D1617E69700FD3AE3 /* AdSpace.png */,
 				0C03CCD615FCD539003AA059 /* PrevButton.png */,
 				0C03CCD415FCD527003AA059 /* NextButton.png */,
 				0C03CCD215FCD514003AA059 /* BackButton.png */,
 				0C03CCAC15F55027003AA059 /* Title.png */,
 				0C03CCA615F3434E003AA059 /* Explosion.png */,
-				0C03CCA315F2C6AC003AA059 /* BaseColor.png */,
 				0C69227B15E27D2C002656AD /* PauseButton.png */,
 				0C69227915E18F56002656AD /* EnemyShot.png */,
 				0C1928BD15DFC1AC00496717 /* Life.png */,
@@ -1307,7 +1312,6 @@
 				0C56286B15E911260048F056 /* stage5_10.txt in Resources */,
 				0C56287D15F012780048F056 /* Font.plist in Resources */,
 				0C56287F15F1A56E0048F056 /* Font.png in Resources */,
-				0C03CCA415F2C6AC003AA059 /* BaseColor.png in Resources */,
 				0C03CCA715F3434F003AA059 /* Explosion.png in Resources */,
 				0C03CCAD15F55027003AA059 /* Title.png in Resources */,
 				0C03CCC915FC6176003AA059 /* Localizable.strings in Resources */,
@@ -1320,6 +1324,7 @@
 				0C92DD3B160FB54C00C0B668 /* Enemy5.png in Resources */,
 				0C4A4A971616B05300649A24 /* Default@2x.png in Resources */,
 				0C4A4A991616B09100649A24 /* Default-568h@2x.png in Resources */,
+				0CE2AE6E1617E69700FD3AE3 /* AdSpace.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1455,6 +1460,7 @@
 				0C03CCB915F69E2E003AA059 /* AKMenuItem.m in Sources */,
 				0C03CCBB15F93FBD003AA059 /* AKTitleScene.m in Sources */,
 				0C03CCD115FCA927003AA059 /* AKHowToPlayScene.m in Sources */,
+				0CE2AE6B1616EEDB00FD3AE3 /* AKScreenSize.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

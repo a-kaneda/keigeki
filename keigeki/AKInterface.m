@@ -8,6 +8,7 @@
 #import "AKInterface.h"
 #import "common.h"
 #import "AKLabel.h"
+#import "AKScreenSize.h"
 
 /*!
  @brief 画面入力管理クラス
@@ -205,7 +206,7 @@
     }
     // ファイル名が指定されていない場合、メニュー項目の位置と大きさは画面全体とする
     else {
-        rect = CGRectMake(0, 0, kAKScreenSize.width, kAKScreenSize.height);
+        rect = CGRectMake(0, 0, [AKScreenSize screenSize].width, [AKScreenSize screenSize].height);
     }
     
     // メニュー項目を追加する

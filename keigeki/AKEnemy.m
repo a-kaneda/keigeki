@@ -54,7 +54,7 @@ static const NSInteger kAKEnemyScore = 100;
     // 敵の向きによって加算するスコアを変える。
     // 後ろを向いている場合が最大とする。
     destAngle = AKCalcDestAngle(self.image.position.x, self.image.position.y,
-                                kAKPlayerPos.x, kAKPlayerPos.y);
+                                AKPlayerPosX(), AKPlayerPosY());
     score = kAKEnemyScore * (2 - cos(destAngle - self.angle));
     
     // スコアを加算する

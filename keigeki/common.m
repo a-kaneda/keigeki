@@ -7,6 +7,7 @@
 
 #import <stdio.h>
 #import <math.h>
+#import "AKScreenSize.h"
 #import "common.h"
 
 #ifdef DEBUG
@@ -14,21 +15,10 @@
 unsigned int g_debugflg = 0;
 #endif
 
-/// スクリーンサイズ
-const CGSize kAKScreenSize = {480, 320};
-// <注意> ループ時に背景が飛ばないようにステージサイズは背景のサイズの倍数とすること。
-/// ステージサイズ(スクリーンサイズ * 8)
-const CGSize kAKStageSize = {3840, 2560};
-/// 自機の表示位置(画面中央、画面下から1/4)
-const CGPoint kAKPlayerPos = {240, 80};
 /// 同時に生成可能な敵の最大数
 const NSInteger kAKMaxEnemyCount = 16;
-/// ショットボタンの配置位置(画面右下から50)
-const CGPoint kAKShotButtonPos = {430, 50};
-/// ポーズボタンの配置位置(画面右上から26)
-const CGPoint kAKPauseButtonPos = {454, 294};
-// 背景塗りつぶし用の画像のファイル名
-NSString *kAKBaseColorImage = @"BaseColor.png";
+/// 広告枠のテスト用画像のファイル名
+NSString *kAKAdSpaceImage = @"AdSpace.png";
 
 /*!
  @brief 範囲チェック(実数)
@@ -270,4 +260,67 @@ BOOL AKIsInside(CGPoint point, CGRect rect)
 CGRect AKMakeRectFromCenter(CGPoint center, NSInteger size)
 {
     return CGRectMake(center.x - size / 2, center.y - size / 2, size, size);
+}
+
+/*!
+ @brief 背景色レイヤーを作成する
+ 
+ 背景色で塗りつぶされ、画面サイズを埋めるサイズ・位置のレイヤーを作成する。
+ @return 背景レイヤー
+ */
+CCLayerColor *AKCreateBackColorLayer(void)
+{
+    // 背景色Red
+    const NSInteger kAKBGColorR = 156;
+    // 背景色Green
+    const NSInteger kAKBGColorG = 179;
+    // 背景色Blue
+    const NSInteger kAKBGColorB = 137;
+    // 背景色Alpha
+    const NSInteger kAKBGColorA = 255;
+    
+    // 背景レイヤーを生成する
+    CCLayerColor *back = [CCLayerColor layerWithColor:ccc4(kAKBGColorR,
+                                                           kAKBGColorG,
+                                                           kAKBGColorB,
+                                                           kAKBGColorA)];
+    
+    // サイズを画面サイズに設定する
+    // Landscapeのため、幅と高さを入れ替える
+    back.contentSize = CGSizeMake([[UIScreen mainScreen] bounds].size.height,
+                                  [[UIScreen mainScreen] bounds].size.width);
+    
+    DBGLOG(0, @"width=%f height=%f", back.contentSize.width, back.contentSize.height);
+    DBGLOG(0, @"x=%f y=%f", back.position.x, back.position.y);
+    
+    // 作成した背景レイヤーを返す
+    return back;
+}
+
+/*!
+ @brief 自機の表示位置のx座標を取得する
+ 
+ 自機の表示位置のx座標を取得する。
+ @return 自機の表示位置のx座標
+ */
+float AKPlayerPosX(void)
+{
+    // 自機の表示位置、左からの比率
+    const float kAKPlayerPosLeftRatio = 0.5f;
+    
+    return [AKScreenSize positionFromLeftRatio:kAKPlayerPosLeftRatio];
+}
+
+/*!
+ @brief 自機の表示位置のy座標を取得する
+ 
+ 自機の表示位置のy座標を取得する。
+ @return 自機の表示位置のy座標
+ */
+float AKPlayerPosY(void)
+{
+    // 自機の表示位置、下からの比率
+    const float kAKPlayerPosBottomRatio = 0.25f;
+    
+    return [AKScreenSize positionFromBottomRatio:kAKPlayerPosBottomRatio];
 }

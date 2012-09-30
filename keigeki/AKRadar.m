@@ -7,11 +7,16 @@
 
 #import "AKRadar.h"
 #import "AKCharacter.h"
+#import "AKScreenSize.h"
 
 /// レーダーのサイズ
 static const NSInteger kAKRadarSize = 128;
 /// レーダーの配置位置
 static const CGPoint kAKRadarPos = {400, 190};
+/// レーダーの配置位置、右からの位置
+static const float kAKRadarPosRightPoint = 80.0f;
+/// レーダーの配置位置、上からの位置
+static const float kAKRadarPosTopPoint = 130.0f;
 
 /*!
  @brief レーダークラス
@@ -48,7 +53,8 @@ static const CGPoint kAKRadarPos = {400, 190};
     [self addChild:self.radarImage z:0];
     
     // レーダーの位置を設定する
-    self.radarImage.position = ccp(kAKRadarPos.x, kAKRadarPos.y);
+    self.radarImage.position = ccp([AKScreenSize positionFromRightPoint:kAKRadarPosRightPoint],
+                                   [AKScreenSize positionFromTopPoint:kAKRadarPosTopPoint]);
     
     // マーカーを保存する配列を生成する
     self.markerImage = [NSMutableArray arrayWithCapacity:kAKMaxEnemyCount];
@@ -127,7 +133,7 @@ static const CGPoint kAKRadarPos = {400, 190};
         // 自機から見て敵の方向を調べる。
         // 絶対座標ではステージループの問題が発生するため
         // スクリーン座標を使用する。
-        angle = AKCalcDestAngle(kAKPlayerPos.x, kAKPlayerPos.y,
+        angle = AKCalcDestAngle(AKPlayerPosX(), AKPlayerPosY(),
                                 enemy.image.position.x, enemy.image.position.y);
         
         // 自機の向いている方向を上向きとする。

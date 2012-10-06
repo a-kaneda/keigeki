@@ -9,6 +9,7 @@
 #import "AKPlayer.h"
 #import "AKGameScene.h"
 #import "AKScreenSize.h"
+#import "SimpleAudioEngine.h"
 
 /// 速度の最大値
 static const NSInteger kAKPlayerSpeed = 240;
@@ -41,6 +42,9 @@ static const NSInteger kAKPlayerImagePosStraight = 0;
 static const NSInteger kAKPlayerImagePosLeft = 2;
 /// 右向き画像のフレーム位置
 static const NSInteger kAKPlayerImagePosRight = 4;
+
+/// 破壊時の効果音
+static NSString *kAKHitSE = @"Hit.caf";
 
 /*!
  @brief 自機クラス
@@ -148,6 +152,9 @@ static const NSInteger kAKPlayerImagePosRight = 4;
  */
 - (void)destroy
 {
+    // 破壊時の効果音を鳴らす
+    [[SimpleAudioEngine sharedEngine] playEffect:kAKHitSE];
+
     // 画面効果を生成する
     [[AKGameScene sharedInstance] entryEffect:kAKExplosion
                                     startRect:kAKExplosionRect

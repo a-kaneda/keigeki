@@ -13,13 +13,15 @@
 #import "AKRadar.h"
 #import "AKLifeMark.h"
 #import "AKEnemyShot.h"
+#import "AKResultLayer.h"
 #import "common.h"
 
 /// ゲームプレイの状態
 enum AKGameState {
     kAKGameStateStart = 0,  ///< ゲーム開始時
     kAKGameStatePlaying,    ///< プレイ中
-    kAKGameClear,           ///< ステージクリア後
+    kAKGameStateClear,      ///< ステージクリア後
+    kAKGameStateResult,     ///< リザルト画面表示中
     kAKGameStateGameOver,   ///< ゲームオーバーの表示中
     kAKGameStatePause       ///< 一時停止中
 };
@@ -52,6 +54,8 @@ enum AKEnemyType {
     float m_rebirthInterval;
     /// 次のウェーブ開始までの間隔
     float m_waveInterval;
+    /// 状態変更時の間隔
+    float m_stateInterval;
     /// ステージのプレイ時間
     float m_playTime;
     /// 背景
@@ -97,10 +101,14 @@ enum AKEnemyType {
 
 // シングルトンオブジェクト取得
 + (AKGameScene *)sharedInstance;
+// リザルト画面取得
+- (AKResultLayer *)resultLayer;
 // ゲーム開始時の更新処理
 - (void)updateStart:(ccTime)dt;
 // プレイ中の更新処理
 - (void)updatePlaying:(ccTime)dt;
+// クリア表示中の更新処理
+- (void)updateClear:(ccTime)dt;
 // 自機の移動
 - (void)movePlayerByVX:(float)vx VY:(float)vy;
 // 自機弾の発射
@@ -121,6 +129,8 @@ enum AKEnemyType {
 - (void)resetAll;
 // スコア加算
 - (void)addScore:(NSInteger)score;
+// ポーズ(効果音有無指定)
+- (void)pause:(BOOL)isUseSE;
 // ポーズ
 - (void)pause;
 // ゲーム再開
@@ -147,4 +157,6 @@ enum AKEnemyType {
 - (void)addButtonWithFile:(NSString *)filename atPos:(CGPoint)pos action:(SEL)action ofState:(enum AKGameState)state;
 // タイトル画面に戻る
 - (void)backToTitle;
+// リザルト画面表示
+- (void)viewResult;
 @end

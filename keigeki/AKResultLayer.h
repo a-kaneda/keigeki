@@ -59,9 +59,13 @@ enum AKResultState {
 // 文字列指定ラベル生成
 - (void)createLabelWithString:(NSString *)str pos:(CGPoint)pos;
 // 表示アイテムの更新
-- (NSInteger)updateItemWithTag:(NSInteger)tag currentValue:(NSInteger)current
-                   targetValue:(NSInteger)target incrementValue:(NSInteger)increment
-                    isAddScore:(BOOL)isAddScore isLongWait:(BOOL)isLongWait;
+- (NSInteger)updateItemWithTag:(NSInteger)tag
+                  currentValue:(NSInteger)current
+                   targetValue:(NSInteger)target
+                incrementValue:(NSInteger)increment
+                    isAddScore:(BOOL)isAddScore
+                    isLongWait:(BOOL)isLongWait
+                        withSE:(BOOL)withSE;
 // 計算更新処理
 - (void)updateCalc:(ccTime)dt;
 // 計算の強制終了

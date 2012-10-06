@@ -6,6 +6,7 @@
  */
 
 #import "AKResultLayer.h"
+#import "SimpleAudioEngine.h"
 #import "AKGameScene.h"
 #import "AKLabel.h"
 #import "AKScreenSize.h"
@@ -83,6 +84,9 @@ static const NSInteger kAKHitBonus = 50;
 /// タイムの最大値
 static const NSInteger kAKTimeMax = 9999;
 
+/// スコアカウントのSE
+static NSString *kAKScoreCountSE = @"ScoreCount.caf";
+
 /*!
  @brief ステージクリア結果レイヤー
  
@@ -105,11 +109,11 @@ static const NSInteger kAKTimeMax = 9999;
     }
     
     // 広告枠を配置する
-    CCSprite *adSpace = [CCSprite spriteWithFile:kAKAdSpaceImage];
-    adSpace.anchorPoint = ccp(0.0f, 1.0f);
-    adSpace.position = ccp([AKScreenSize positionFromLeftPoint:0],
-                           [AKScreenSize positionFromTopPoint:0]);
-    [self addChild:adSpace z:999];
+//    CCSprite *adSpace = [CCSprite spriteWithFile:kAKAdSpaceImage];
+//    adSpace.anchorPoint = ccp(0.0f, 1.0f);
+//    adSpace.position = ccp([AKScreenSize positionFromLeftPoint:0],
+//                           [AKScreenSize positionFromTopPoint:0]);
+//    [self addChild:adSpace z:999];
     
     // 背景色レイヤーを配置する
     [self addChild:AKCreateBackColorLayer() z:0];
@@ -322,11 +326,16 @@ static const NSInteger kAKTimeMax = 9999;
  @param increment 値の増加量
  @param isAddScore スコアに加算するかどうか
  @param isLongWait 待ち時間を長めにするかどうか
+ @param withSE 効果音を鳴らすかどうか
  @return 更新後の値
  */
-- (NSInteger)updateItemWithTag:(NSInteger)tag currentValue:(NSInteger)current
-                   targetValue:(NSInteger)target incrementValue:(NSInteger)increment
-                    isAddScore:(BOOL)isAddScore isLongWait:(BOOL)isLongWait
+- (NSInteger)updateItemWithTag:(NSInteger)tag
+                  currentValue:(NSInteger)current
+                   targetValue:(NSInteger)target
+                incrementValue:(NSInteger)increment
+                    isAddScore:(BOOL)isAddScore
+                    isLongWait:(BOOL)isLongWait
+                        withSE:(BOOL)withSE
 {
 
     // 設定する値を決める
@@ -353,6 +362,11 @@ static const NSInteger kAKTimeMax = 9999;
     
     // ラベルの表示を更新する
     [label setString:string];
+    
+    // スコアカウントの効果音を鳴らす
+    if (withSE) {
+        [[SimpleAudioEngine sharedEngine] playEffect:kAKScoreCountSE];
+    }
     
     // スコアに加算する項目の場合は加算処理を行う
     if (isAddScore) {
@@ -415,28 +429,28 @@ static const NSInteger kAKTimeMax = 9999;
                 
                 // スコアを更新する
                 [self updateItemWithTag:kAKScoreNumTag currentValue:0 targetValue:m_score
-                         incrementValue:-1 isAddScore:NO isLongWait:NO];
+                         incrementValue:-1 isAddScore:NO isLongWait:NO withSE:YES];
                 break;
                 
             case kAKstateTimeView:    // タイム表示中
                 
                 // タイムラベルを更新する
                 [self updateItemWithTag:kAKTimeNumTag currentValue:0 targetValue:m_time
-                         incrementValue:-1 isAddScore:NO isLongWait:NO];
+                         incrementValue:-1 isAddScore:NO isLongWait:NO withSE:YES];
                 break;
                 
             case kAKstateHitView:     // 命中率表示中
                 
                 // 命中率ラベルを更新する
                 [self updateItemWithTag:kAKHitNumTag currentValue:0 targetValue:m_hit
-                         incrementValue:-1 isAddScore:NO isLongWait:NO];
+                         incrementValue:-1 isAddScore:NO isLongWait:NO withSE:YES];
                 break;
                 
             case kAKstateRestView:    // 残機表示中
                 
                 // 残機ラベルを更新する
                 [self updateItemWithTag:kAKRestNumTag currentValue:0 targetValue:m_rest
-                         incrementValue:-1 isAddScore:NO isLongWait:NO];
+                         incrementValue:-1 isAddScore:NO isLongWait:NO withSE:YES];
                 break;
                 
             case kAKstateTimeBonus:   // タイムボーナス表示中
@@ -445,7 +459,7 @@ static const NSInteger kAKTimeMax = 9999;
                 m_timeBonus = [self updateItemWithTag:kAKTimeBonusTag currentValue:m_timeBonus
                                           targetValue:m_timeBonusTarget
                                        incrementValue:kAKIncrementValue
-                                           isAddScore:YES isLongWait:NO];
+                                           isAddScore:YES isLongWait:NO withSE:YES];
                 break;
                 
             case kAKstateHitBonus:    // 命中率ボーナス表示中
@@ -454,7 +468,7 @@ static const NSInteger kAKTimeMax = 9999;
                 m_hitBonus = [self updateItemWithTag:kAKHitBonusTag currentValue:m_hitBonus
                                          targetValue:m_hitBonusTarget
                                       incrementValue:kAKIncrementValue
-                                          isAddScore:YES isLongWait:NO];
+                                          isAddScore:YES isLongWait:NO withSE:YES];
                 break;
                 
             case kAKstateRestBonus:   // 残機ボーナス表示中
@@ -463,7 +477,7 @@ static const NSInteger kAKTimeMax = 9999;
                 m_restBonus = [self updateItemWithTag:kAKRestBonusTag currentValue:m_restBonus
                                           targetValue:m_restBonusTarget
                                        incrementValue:kAKRestIncrementValue
-                                           isAddScore:YES isLongWait:YES];
+                                           isAddScore:YES isLongWait:YES withSE:YES];
                 
             case kAKstateFinish:      // 表示完了
                 
@@ -485,19 +499,22 @@ static const NSInteger kAKTimeMax = 9999;
 {
     // すべての項目を更新させる
     [self updateItemWithTag:kAKScoreNumTag currentValue:0 targetValue:m_score
-             incrementValue:-1 isAddScore:NO isLongWait:NO];
+             incrementValue:-1 isAddScore:NO isLongWait:NO withSE:NO];
     [self updateItemWithTag:kAKTimeNumTag currentValue:0 targetValue:m_time
-             incrementValue:-1 isAddScore:NO isLongWait:NO];
+             incrementValue:-1 isAddScore:NO isLongWait:NO withSE:NO];
     [self updateItemWithTag:kAKHitNumTag currentValue:0 targetValue:m_hit
-             incrementValue:-1 isAddScore:NO isLongWait:NO];
+             incrementValue:-1 isAddScore:NO isLongWait:NO withSE:NO];
     [self updateItemWithTag:kAKRestNumTag currentValue:0 targetValue:m_rest
-             incrementValue:-1 isAddScore:NO isLongWait:NO];
+             incrementValue:-1 isAddScore:NO isLongWait:NO withSE:NO];
     [self updateItemWithTag:kAKTimeBonusTag currentValue:m_timeBonus
-                targetValue:m_timeBonusTarget incrementValue:-1 isAddScore:YES isLongWait:NO];
+                targetValue:m_timeBonusTarget incrementValue:-1 isAddScore:YES isLongWait:NO withSE:NO];
     [self updateItemWithTag:kAKHitBonusTag currentValue:m_hitBonus
-                targetValue:m_hitBonusTarget incrementValue:-1 isAddScore:YES isLongWait:NO];
+                targetValue:m_hitBonusTarget incrementValue:-1 isAddScore:YES isLongWait:NO withSE:NO];
     [self updateItemWithTag:kAKRestBonusTag currentValue:m_restBonus
-                targetValue:m_restBonusTarget incrementValue:-1 isAddScore:YES isLongWait:NO];
+                targetValue:m_restBonusTarget incrementValue:-1 isAddScore:YES isLongWait:NO withSE:NO];
+    
+    // スコアカウントの効果音を鳴らす
+    [[SimpleAudioEngine sharedEngine] playEffect:kAKScoreCountSE];
     
     // 状態を表示完了にする
     m_state = kAKstateFinish;

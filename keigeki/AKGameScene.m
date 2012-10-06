@@ -16,11 +16,13 @@
 #import "AKLabel.h"
 #import "AKTitleScene.h"
 #import "AKScreenSize.h"
+#import "SimpleAudioEngine.h"
 
 /// 情報レイヤーに配置するノードのタグ
 enum {
     kAKInfoTagPause1 = 0,   ///< 一時停止(1行目)
     kAKInfoTagPause2,       ///< 一時停止(2行目)
+    kAKInfoTagStageClear,   ///< ステージクリア
     kAKInfoTagGameClear,    ///< ゲームクリア
     kAKInfoTagGameOver,     ///< ゲームオーバー
     kAKInfoTagScore,        ///< スコア
@@ -65,6 +67,9 @@ static const NSInteger kAKWaveCount = 10;
 static const NSInteger kAKStageCount = 5;
 /// ウェイブが始まるまでの間隔
 static const float kAKWaveInterval = 2.0f;
+
+/// ステージクリアのキャプション表示中の間隔
+static const float kAKStageClearInterval = 3.0f;
 
 /// ショットボタンの配置位置、右からの位置
 static const float kAKShotButtonPosRightPoint = 50.0f;
@@ -127,10 +132,23 @@ static NSString *kAKPauseString1 = @"PAUSE";
 /// 一時停止中の表示文字列(2行目)
 static NSString *kAKPauseString2 = @"TOUCH SCREEN TO RESUME.";
 
+/// ステージクリア時の表示文字列
+static NSString *kAKStageClearString = @"STAGE CLEAR";
 /// ゲームオーバー時の表示文字列
 static NSString *kAKGameOverString = @"GAME OVER";
 /// ゲームクリア時の表示文字列
 static NSString *kAKGameClearString = @"GAME CLEAR";
+
+/// プレイ中BGMファイル名
+static NSString *kAKPlayBGM = @"Play.mp3";
+/// ステージクリア画面のBGMファイル名
+static NSString *kAKClearBGM = @"Clear.mp3";
+/// ショット発射効果音ファイル名
+static NSString *kAKShotSE = @"Shot.caf";
+/// 一時停止効果音ファイル名
+static NSString *kAKPauseSE = @"Pause.caf";
+/// 破壊時の効果音
+static NSString *kAKHitSE = @"Hit.caf";
 
 /*!
  @brief ゲームプレイシーン
@@ -188,6 +206,18 @@ static AKGameScene *g_scene = nil;
         return nil;
     }
         
+    // 広告枠を配置する
+//    CCSprite *adSpace = [CCSprite spriteWithFile:kAKAdSpaceImage];
+//    adSpace.anchorPoint = ccp(0.5f, 0.0f);
+//    adSpace.position = ccp([AKScreenSize positionFromLeftRatio:0.5f],
+//                           [AKScreenSize positionFromBottomPoint:0]);
+//    [self addChild:adSpace z:999];
+    
+    // 効果音の読み込みを行う
+    [[SimpleAudioEngine sharedEngine] preloadEffect:kAKShotSE];
+    [[SimpleAudioEngine sharedEngine] preloadEffect:kAKPauseSE];
+    [[SimpleAudioEngine sharedEngine] preloadEffect:kAKHitSE];
+
     // キャラクターを配置するレイヤーを生成する
     CCLayer *baseLayer = [CCLayer node];
 
@@ -259,7 +289,7 @@ static AKGameScene *g_scene = nil;
     [self addButtonWithFile:nil
                       atPos:ccp(0, 0)
                      action:@selector(skipResult)
-                    ofState:kAKGameClear];
+                    ofState:kAKGameStateResult];
     
     // ゲームオーバースキップ入力を生成する
     [self addButtonWithFile:nil
@@ -382,6 +412,18 @@ static AKGameScene *g_scene = nil;
 }
 
 /*!
+ @brief リザルト画面取得
+ 
+ リザルト画面のインスタンスを取得する。
+ @return リザルト画面
+ */
+- (AKResultLayer *)resultLayer
+{
+    NSAssert([self getChildByTag:kAKLayerPosZResult] != nil, @"リザルト画面が表示されていない");
+    return (AKResultLayer *)[self getChildByTag:kAKLayerPosZResult];
+}
+
+/*!
  @brief 更新処理
 
  ゲームの状態によって、更新処理を行う。
@@ -391,20 +433,22 @@ static AKGameScene *g_scene = nil;
 {
     // ゲームの状態によって処理を分岐する
     switch (self.state) {
-        case kAKGameStateStart:      // ゲーム開始時
+        case kAKGameStateStart:     // ゲーム開始時
             [self updateStart:dt];
             break;
             
-        case kAKGameStatePlaying:    // プレイ中
+        case kAKGameStatePlaying:   // プレイ中
             [self updatePlaying:dt];
             break;
             
-        case kAKGameClear:      // クリア
-        {
-            // ステージクリア画面を取得し、更新を行う
-            AKResultLayer *result = (AKResultLayer *)[self getChildByTag:kAKLayerPosZResult];
-            [result updateCalc:dt];
-        }
+        case kAKGameStateClear:     // クリア表示中
+            [self updatePlaying:dt];
+            [self updateClear:dt];
+            
+            break;
+            
+        case kAKGameStateResult:    // リザルト画面表示
+            [self.resultLayer updateCalc:dt];
             break;
             
         case kAKGameStateGameOver:   // ゲームオーバー
@@ -424,6 +468,9 @@ static AKGameScene *g_scene = nil;
  */
 - (void)updateStart:(ccTime)dt
 {
+    // BGMを再生する
+    [[SimpleAudioEngine sharedEngine] playBackgroundMusic:kAKPlayBGM loop:YES];
+
     // ステージ構成スクリプトを読み込む
     [self readScriptOfStage:m_stageNo Wave:m_waveNo];
     
@@ -545,23 +592,27 @@ static AKGameScene *g_scene = nil;
     // 命中率の表示を更新する
     [self updateHit];
     
-    // プレイ時間を更新する
-    m_playTime += dt;
-    [self updateTime];
+    // プレイ時間のカウントとクリア判定はプレイ中のみ行う
+    if (m_state == kAKGameStatePlaying) {
     
-    // 敵と敵弾がひとつも存在しない場合は次のウェーブ開始までの時間をカウントする
-    if (isClear) {
-        // 次のウェーブ開始までの時間をカウントする
-        m_waveInterval -= dt;
+        // プレイ時間を更新する
+        m_playTime += dt;
+        [self updateTime];
         
-        // ウェーブ開始の間隔が経過した場合はウェーブクリア処理を行う
-        if (m_waveInterval < 0.0f) {
+        // 敵と敵弾がひとつも存在しない場合は次のウェーブ開始までの時間をカウントする
+        if (isClear) {
+            // 次のウェーブ開始までの時間をカウントする
+            m_waveInterval -= dt;
             
-            // ウェーブクリア処理を行う
-            [self clearWave];
-            
-            // ウェーブ間隔をリセットする
-            m_waveInterval = kAKWaveInterval;
+            // ウェーブ開始の間隔が経過した場合はウェーブクリア処理を行う
+            if (m_waveInterval < 0.0f) {
+                
+                // ウェーブクリア処理を行う
+                [self clearWave];
+                
+                // ウェーブ間隔をリセットする
+                m_waveInterval = kAKWaveInterval;
+            }
         }
     }
     
@@ -570,6 +621,32 @@ static AKGameScene *g_scene = nil;
     if (self.state == kAKGameStateGameOver) {
         // ハイスコアをファイルに書き込む
         [self writeHiScore];
+    }
+}
+
+/*
+ @brief クリア表示中の更新処理
+ 
+ クリア表示の間隔をカウントする。
+ 一定時間経過後にクリア表示を削除し、リザルト画面を表示して、ゲーム状態をリザルト画面表示に遷移する。
+ @param dt フレーム更新間隔
+ */
+- (void)updateClear:(ccTime)dt
+{
+    // クリア表示中の間隔をカウントする
+    m_stateInterval -= dt;
+    
+    // クリア表示中の間隔を経過している場合はリザルト画面を表示する
+    if (m_stateInterval < 0.0f) {
+        
+        // 状態をリザルト画面表示に遷移する
+        self.state = kAKGameStateResult;
+        
+        // ステージクリアのラベルを取り除く
+        [[self getChildByTag:kAKLayerPosZInfo] removeChildByTag:kAKInfoTagStageClear cleanup:YES];
+        
+        // リザルト画面を表示する
+        [self viewResult];
     }
 }
 
@@ -620,6 +697,9 @@ static AKGameScene *g_scene = nil;
     // 位置と向きは自機と同じとする
     [shot createWithX:self.player.absx Y:self.player.absy Z:kAKCharaPosZPlayerShot
                 Angle:angle Parent:[self getChildByTag:kAKLayerPosZBase]];
+    
+    // ショット効果音を鳴らす
+    [[SimpleAudioEngine sharedEngine] playEffect:kAKShotSE];
 }
 
 /*!
@@ -755,6 +835,9 @@ static AKGameScene *g_scene = nil;
     // 残機がなければゲームオーバーとする
     else {
         
+        // BGMを停止する
+        [[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
+        
         // ゲームの状態をゲームオーバーに変更する
         self.state = kAKGameStateGameOver;
         
@@ -844,11 +927,21 @@ static AKGameScene *g_scene = nil;
  @brief ポーズ
  
  プレイ中の状態からゲームを一時停止する。
+ @param isUseSE 効果音を鳴らすかどうか
  */
-- (void)pause
+- (void)pause:(BOOL)isUseSE
 {
     // プレイ中から以外の変更の場合はエラー
     assert(self.state == kAKGameStatePlaying);
+    
+    // BGMを一時停止する
+    [[SimpleAudioEngine sharedEngine] pauseBackgroundMusic];
+    
+    if (isUseSE) {
+        
+        // 一時停止効果音を鳴らす
+        [[SimpleAudioEngine sharedEngine] playEffect:kAKPauseSE];
+    }
     
     // ゲーム状態を一時停止に変更する
     self.state = kAKGameStatePause;
@@ -893,6 +986,18 @@ static AKGameScene *g_scene = nil;
 }
 
 /*!
+ @brief ポーズ
+ 
+ プレイ中の状態からゲームを一時停止する。
+ 効果音ありとする。
+ */
+- (void)pause
+{
+    // 効果音ありで一時停止を行う。
+    [self pause:YES];
+}
+
+/*!
  @brief ゲーム再開
  
  一時停止中の状態からゲームを再会する。
@@ -901,6 +1006,12 @@ static AKGameScene *g_scene = nil;
 {    
     // 一時停止中から以外の変更の場合はエラー
     assert(self.state == kAKGameStatePause);
+    
+    // 一時停止効果音を鳴らす
+    [[SimpleAudioEngine sharedEngine] playEffect:kAKPauseSE];
+
+    // 一時停止したBGMを再開する
+    [[SimpleAudioEngine sharedEngine] resumeBackgroundMusic];
 
     // ゲーム状態をプレイ中に変更する
     self.state = kAKGameStatePlaying;
@@ -1045,24 +1156,19 @@ static AKGameScene *g_scene = nil;
     if (m_waveNo > kAKWaveCount) {
         
         // 状態をゲームクリアに移行する
-        self.state = kAKGameClear;
+        self.state = kAKGameStateClear;
         
-        // 結果画面を生成する
-        AKResultLayer *resultLayer = [AKResultLayer node];
-        resultLayer.tag = kAKLayerPosZResult;
-        [self addChild:resultLayer z:kAKLayerPosZResult];
+        // クリアキャプション表示中の間隔を設定する
+        m_stateInterval = kAKStageClearInterval;
         
-        // 命中率を計算する。1発も発射していない場合は100%とする。
-        NSInteger hit = 0;
-        if (m_shotCount == 0) {
-            hit = 100;
-        }
-        else {
-            hit = (float)m_hitCount / m_shotCount * 100.0f;
-        }
+        // クリアBGMを再生する
+        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:kAKClearBGM loop:NO];
         
-        // 各種パラメータを設定する
-        [resultLayer setScore:m_score andTime:(NSInteger)m_playTime andHit:hit andRest:m_life];
+        // ステージクリアのラベルを生成する
+        [self setLabelToInfoLayer:kAKStageClearString
+                            atPos:ccp([AKScreenSize screenSize].width / 2, [AKScreenSize screenSize].height / 2)
+                              tag:kAKInfoTagStageClear
+                         isCenter:YES];
     }
     // ステージクリアでない場合は次のウェーブのスクリプトを読み込む
     else {
@@ -1078,18 +1184,15 @@ static AKGameScene *g_scene = nil;
  */
 - (void)skipResult
 {
-    AKResultLayer *resultLayer = nil;   // ステージクリア結果画面
-    
-    // ステージクリア結果画面を取得する
-    resultLayer = (AKResultLayer *)[self getChildByTag:kAKLayerPosZResult];
+    DBGLOG(1, @"start");
     
     // ステージクリア画面の表示が完了している場合は次のステージを開始する
-    if (resultLayer.isFinish) {
+    if (self.resultLayer.isFinish) {
         [self clearStage];
     }
     // ステージクリア画面の表示が完了していない場合は強制的に進める
     else {
-        [resultLayer finish];
+        [self.resultLayer finish];
     }
 }
 
@@ -1110,6 +1213,9 @@ static AKGameScene *g_scene = nil;
     
     // まだ全ステージをクリアしていない場合は次のステージを開始する
     if (m_stageNo < kAKStageCount) {
+        
+        // プレイ中BGMを開始する
+        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:kAKPlayBGM loop:YES];
         
         // ゲームの状態をプレイ中に変更する
         self.state = kAKGameStatePlaying;
@@ -1408,10 +1514,38 @@ static AKGameScene *g_scene = nil;
 - (void)backToTitle
 {
     DBGLOG(0, @"backToTitle開始");
+    
+    // BGMを停止する
+    [[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
         
     // タイトル画面に戻る
     [[CCDirector sharedDirector] replaceScene:[AKTitleScene node]];
 
     DBGLOG(0, @"backToTitle終了");
+}
+
+/*!
+ @brief リザルト画面表示
+ 
+ リザルト画面を表示する。
+ */
+- (void)viewResult
+{
+    // 結果画面を生成する
+    AKResultLayer *resultLayer = [AKResultLayer node];
+    resultLayer.tag = kAKLayerPosZResult;
+    [self addChild:resultLayer z:kAKLayerPosZResult];
+    
+    // 命中率を計算する。1発も発射していない場合は100%とする。
+    NSInteger hit = 0;
+    if (m_shotCount == 0) {
+        hit = 100;
+    }
+    else {
+        hit = (float)m_hitCount / m_shotCount * 100.0f;
+    }
+    
+    // 各種パラメータを設定する
+    [resultLayer setScore:m_score andTime:(NSInteger)m_playTime andHit:hit andRest:m_life];
 }
 @end

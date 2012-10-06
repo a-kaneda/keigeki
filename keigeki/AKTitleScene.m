@@ -67,11 +67,11 @@ enum {
     [self addChild:AKCreateBackColorLayer() z:0];
     
     // 広告枠を配置する
-    CCSprite *adSpace = [CCSprite spriteWithFile:kAKAdSpaceImage];
-    adSpace.anchorPoint = ccp(0.0f, 1.0f);
-    adSpace.position = ccp([AKScreenSize positionFromLeftPoint:0],
-                           [AKScreenSize positionFromTopPoint:0]);
-    [self addChild:adSpace z:999];
+//    CCSprite *adSpace = [CCSprite spriteWithFile:kAKAdSpaceImage];
+//    adSpace.anchorPoint = ccp(0.0f, 1.0f);
+//    adSpace.position = ccp([AKScreenSize positionFromLeftPoint:0],
+//                           [AKScreenSize positionFromTopPoint:0]);
+//    [self addChild:adSpace z:999];
     
     // インターフェースを作成する
     AKInterface *interface = [AKInterface interfaceWithCapacity:kAKMenuItemCount];

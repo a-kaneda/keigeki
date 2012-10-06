@@ -5,11 +5,14 @@
  敵キャラクターのクラスの定義をする。
  */
 
+#import "SimpleAudioEngine.h"
 #import "AKEnemy.h"
 #import "AKGameScene.h"
 
 /// 敵を倒したときのスコア
 static const NSInteger kAKEnemyScore = 100;
+/// 破壊時の効果音
+static NSString *kAKHitSE = @"Hit.caf";
 
 /*!
  @brief 敵クラス
@@ -47,6 +50,9 @@ static const NSInteger kAKEnemyScore = 100;
 {
     NSInteger score = 0;    // 加算スコア
     float destAngle = 0.0f; // 敵から自機への角度
+    
+    // 破壊時の効果音を鳴らす
+    [[SimpleAudioEngine sharedEngine] playEffect:kAKHitSE];
     
     // 敵種別ごとの処理を実行
     [self performSelector:m_destroy];

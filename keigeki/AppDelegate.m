@@ -6,6 +6,7 @@
  */
 
 #import "cocos2d.h"
+#import "SimpleAudioEngine.h"
 
 #import "AppDelegate.h"
 #import "AKTitleScene.h"
@@ -76,10 +77,17 @@
 
 	// Assume that PVR images have premultiplied alpha
 	[CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
+    
+    // サウンド再生環境の初期化を行う
+    // 他のアプリによるバックグラウンド再生を禁止する
+    [CDAudioManager configure:kAMM_FxPlusMusic];
+    
+    // BGMとSEの音量を下げる
+    [SimpleAudioEngine sharedEngine].backgroundMusicVolume = 0.5f;
+    [SimpleAudioEngine sharedEngine].effectsVolume = 0.2f;
 
 	// and add the scene to the stack. The director will run it when it automatically when the view is displayed.
 	[director_ runWithScene:[AKTitleScene node]];
-//	[director_ pushScene: [AKGameScene sharedInstance]];
 	
 	// Create a Navigation Controller with the Director
 	navController_ = [[UINavigationController alloc] initWithRootViewController:director_];
@@ -109,8 +117,17 @@
 // getting a call, pause the game
 -(void) applicationWillResignActive:(UIApplication *)application
 {
-	if( [navController_ visibleViewController] == director_ )
+	if( [navController_ visibleViewController] == director_ ) {
 		[director_ pause];
+
+        // ゲームプレイ中の場合は一時停止状態にする
+        if ([AKGameScene sharedInstance].state == kAKGameStatePlaying) {
+            [[AKGameScene sharedInstance] pause:NO];
+            
+            // BGMは停止させる
+            [[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
+        }
+    }
 }
 
 // call got rejected
@@ -132,10 +149,6 @@
 	if( [navController_ visibleViewController] == director_ ) {
 		[director_ stopAnimation];
         
-        // ゲームプレイ中の場合は一時停止状態にする
-        if ([AKGameScene sharedInstance].state == kAKGameStatePlaying) {
-            [[AKGameScene sharedInstance] pause];
-        }
     }
 }
 

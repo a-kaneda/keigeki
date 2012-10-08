@@ -28,7 +28,8 @@ enum AKGameState {
     kAKGameStateGameOver,       ///< ゲームオーバーの表示中
     kAKGameStatePause,          ///< 一時停止中
     kAKGameStateQuitMenu,       ///< 終了メニュー表示中
-    kAKGameStateWait            ///< アクション終了待機中
+    kAKGameStateWait,           ///< アクション終了待機中
+    kAKGameStateSleep           ///< スリープ処理中
 };
 
 /// 敵の種類
@@ -41,6 +42,8 @@ enum AKEnemyType {
 @interface AKGameScene : CCScene {
     /// 現在の状態
     enum AKGameState m_state;
+    /// スリープ終了後の状態
+    enum AKGameState m_nextState;
     /// 現在のステージ番号
     NSInteger m_stageNo;
     /// 現在のウェイブ番号
@@ -63,6 +66,8 @@ enum AKEnemyType {
     float m_stateInterval;
     /// ステージのプレイ時間
     float m_playTime;
+    /// スリープ時間
+    float m_sleepTime;
     /// 背景
     AKBackground *m_background;
     /// 自機
@@ -116,6 +121,8 @@ enum AKEnemyType {
 - (void)updatePlaying:(ccTime)dt;
 // クリア表示中の更新処理
 - (void)updateClear:(ccTime)dt;
+// スリープ中の更新処理
+- (void)updateSleep:(ccTime)dt;
 // 自機の移動
 - (void)movePlayerByVX:(float)vx VY:(float)vy;
 // 自機弾の発射

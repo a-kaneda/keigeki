@@ -61,7 +61,7 @@ static const NSInteger kAKEnemyShotCount = 64;
 static const NSInteger kAKMaxEffectCount = 16;
 
 /// 初期残機数
-static const NSInteger kAKStartLifeCount = 3;
+static const NSInteger kAKStartLifeCount = 0;
 /// 自機復活までの間隔
 static const float kAKRebirthInterval = 1.0f;
 
@@ -74,6 +74,9 @@ static const float kAKWaveInterval = 2.0f;
 
 /// ステージクリアのキャプション表示中の間隔
 static const float kAKStageClearInterval = 3.0f;
+
+/// ゲームオーバーのキャプション表示中の間隔
+static const float kAKGameOverInterval = 2.0f;
 
 /// ショットボタンの配置位置、右からの位置
 static const float kAKShotButtonPosRightPoint = 50.0f;
@@ -543,10 +546,6 @@ static AKGameScene *g_scene = nil;
 {
     // ゲームの状態によって処理を分岐する
     switch (self.state) {
-        case kAKGameStatePreLoad:   // ゲームシーン読み込み前
-            // 無処理
-            break;
-            
         case kAKGameStateStart:     // ゲーム開始時
             [self updateStart:dt];
             break;
@@ -565,11 +564,12 @@ static AKGameScene *g_scene = nil;
             [self.resultLayer updateCalc:dt];
             break;
             
-        case kAKGameStateGameOver:   // ゲームオーバー
-            // 画面に変化はないため無処理
+        case kAKGameStateSleep:     // スリープ中
+            [self updateSleep:dt];
             break;
             
         default:
+            // その他の状態のときは変化はないため、無処理とする
             break;
     }
 }
@@ -765,6 +765,24 @@ static AKGameScene *g_scene = nil;
 }
 
 /*!
+ @brief スリープ中の更新処理
+ 
+ スリープ中の更新処理を行う。
+ スリープ時間経過したら次の状態に遷移する。
+ @param dt フレーム更新間隔
+ */
+- (void)updateSleep:(ccTime)dt
+{
+    // スリープ時間をカウントする
+    m_sleepTime -= dt;
+    
+    // スリープ時間が経過している場合は次の状態に遷移する
+    if (m_sleepTime < 0.0f) {
+        self.state = m_nextState;
+    }
+}
+
+/*!
  @brief 自機の移動
 
  自機の速度を-1.0〜1.0の範囲で設定する。
@@ -952,8 +970,10 @@ static AKGameScene *g_scene = nil;
         // BGMを停止する
         [[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
         
-        // ゲームの状態をゲームオーバーに変更する
-        self.state = kAKGameStateGameOver;
+        // ゲームの状態を少し間を空けて、ゲームオーバーに変更する
+        m_sleepTime = kAKGameOverInterval;
+        m_nextState = kAKGameStateGameOver;
+        self.state = kAKGameStateSleep;
         
         // ゲームオーバーのラベルを生成する
         [self setLabelToInfoLayer:kAKGameOverString

@@ -1983,5 +1983,61 @@
 		<key>y</key>
 		<integer>13</integer>
 	</dict>
+	<key>ButtonTopLeft</key>
+	<dict>
+		<key>x</key>
+		<integer>8</integer>
+		<key>y</key>
+		<integer>13</integer>
+	</dict>
+	<key>ButtonTopRight</key>
+	<dict>
+		<key>x</key>
+		<integer>9</integer>
+		<key>y</key>
+		<integer>13</integer>
+	</dict>
+	<key>ButtonBottomLeft</key>
+	<dict>
+		<key>x</key>
+		<integer>10</integer>
+		<key>y</key>
+		<integer>13</integer>
+	</dict>
+	<key>ButtonBottomRight</key>
+	<dict>
+		<key>x</key>
+		<integer>11</integer>
+		<key>y</key>
+		<integer>13</integer>
+	</dict>
+	<key>ButtonTopBar</key>
+	<dict>
+		<key>x</key>
+		<integer>12</integer>
+		<key>y</key>
+		<integer>13</integer>
+	</dict>
+	<key>ButtonBottomBar</key>
+	<dict>
+		<key>x</key>
+		<integer>13</integer>
+		<key>y</key>
+		<integer>13</integer>
+	</dict>
+	<key>ButtonLeftBar</key>
+	<dict>
+		<key>x</key>
+		<integer>14</integer>
+		<key>y</key>
+		<integer>13</integer>
+	</dict>
+	<key>ButtonRightBar</key>
+	<dict>
+		<key>x</key>
+		<integer>15</integer>
+		<key>y</key>
+		<integer>13</integer>
+	</dict>
 </dict>
 </plist>

@@ -33,9 +33,17 @@
 // 項目数を指定したコンビニエンスコンストラクタ
 + (id)interfaceWithCapacity:(NSInteger)capacity;
 // 画像ファイルからメニュー項目作成
-- (void)addMenuWithFile:(NSString *)filename atPos:(CGPoint)pos action:(SEL)action z:(NSInteger)z tag:(NSInteger)tag;
+- (void)addMenuWithFile:(NSString *)filename
+                  atPos:(CGPoint)pos
+                 action:(SEL)action
+                      z:(NSInteger)z
+                    tag:(NSInteger)tag;
 // 文字列からメニュー項目作成
-- (void)addMenuWithString:(NSString*)menuString atPos:(CGPoint)pos isCenter:(BOOL)isCenter
-                   action:(SEL)action z:(NSInteger)z tag:(NSInteger)tag;
+- (void)addMenuWithString:(NSString*)menuString
+                    atPos:(CGPoint)pos
+                   action:(SEL)action
+                        z:(NSInteger)z
+                      tag:(NSInteger)tag
+                withFrame:(BOOL)withFrame;
 
 @end

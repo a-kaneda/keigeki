@@ -9,6 +9,7 @@
 #import "common.h"
 #import "AKTitleScene.h"
 #import "AKScreenSize.h"
+#import "SimpleAudioEngine.h"
 
 // シーンに配置するノードのz座標
 enum {
@@ -18,7 +19,7 @@ enum {
 
 // シーンに配置するノードのタグ
 enum {
-    kAKHowToIntarfeceTag = 0,   /// <インターフェースのタグ
+    kAKHowToIntarfeceTag = 0,   ///< インターフェースのタグ
     kAKHowToMessageTag,         ///< メッセージのタグ
     kAKHowToPageTag,            ///< ページ番号のタグ
     kAKHowToPrevTag,            ///< 前ページボタンのタグ
@@ -43,8 +44,6 @@ static const float kAKHowToPrevPosBottomPoint = 80.0f;
 static const float kAKHowToNextPosRightPoint = 40.0f;
 /// 次ページボタンの位置、下からの位置
 static const float kAKHowToNextPosBottomPoint = 80.0f;
-/// ページ番号の位置、横方向中心からの位置
-static const float kAKHowToPagePosHorizontalCenterPoint = -40.0f;
 /// ページ番号の位置、下からの位置
 static const float kAKHowToPagePosBottomPoint = 20.0f;
 /// 戻るボタンの位置、右からの位置
@@ -56,12 +55,8 @@ static const float kAKHowToBackPosTopPoint = 26.0f;
 static const NSInteger kAKHowToMsgLength = 20;
 /// メッセージボックスの行数
 static const NSInteger kAKHowToMsgLineCount = 5;
-/// メッセージボックスの位置
-static const CGPoint kAKHowToMsgPos = {80, 160};
-/// メッセージボックスの位置、右端を中心として右からの位置
-static const float kAKHowToMsgPosRightPointFromCenter = 160.0f;
 /// メッセージボックスの位置、下からの位置
-static const float kAKHowToMsgPosBottomPoint = 160.0f;
+static const float kAKHowToMsgPosBottomPoint = 110.0f;
 
 /// ページ数
 static const NSInteger kAKHowToPageCount = 3;
@@ -103,10 +98,10 @@ static const NSInteger kAKHowToPageCount = 3;
     [interface addChild:backColor z:kAKHowToBackPosZ];
     
     // メッセージボックスを作成する
-    AKLabel *message = [AKLabel labelWithString:@"" maxLength:kAKHowToMsgLength maxLine:kAKHowToMsgLineCount hasFrame:YES];
+    AKLabel *message = [AKLabel labelWithString:@"" maxLength:kAKHowToMsgLength maxLine:kAKHowToMsgLineCount frame:kAKLabelFrameMessage];
     
     // 配置位置を設定する
-    message.position = ccp([AKScreenSize positionFromRightPoint:kAKHowToMsgPosRightPointFromCenter] - [AKScreenSize center].x,
+    message.position = ccp([AKScreenSize center].x,
                            [AKScreenSize positionFromBottomPoint:kAKHowToMsgPosBottomPoint]);
     
     // インターフェースに配置する
@@ -140,10 +135,10 @@ static const NSInteger kAKHowToPageCount = 3;
     NSString *pageString = [NSString stringWithFormat:kAKHowToPageFormat, 1, kAKHowToPageCount];
     
     // ページ番号のラベルを作成する
-    AKLabel *pageLabel = [AKLabel labelWithString:pageString maxLength:pageString.length maxLine:1 hasFrame:NO];
+    AKLabel *pageLabel = [AKLabel labelWithString:pageString maxLength:pageString.length maxLine:1 frame:kAKLabelFrameNone];
     
     // ページ番号の位置を設定する
-    pageLabel.position = ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKHowToPagePosHorizontalCenterPoint],
+    pageLabel.position = ccp([AKScreenSize center].x,
                              [AKScreenSize positionFromBottomPoint:kAKHowToPagePosBottomPoint]);
     
     // ページ番号のラベルをインターフェースに配置する
@@ -325,6 +320,10 @@ static const NSInteger kAKHowToPageCount = 3;
 - (void)goPrevPage
 {
     DBGLOG(0, @"goPrevPage開始");
+    
+    // メニュー選択時の効果音を鳴らす
+    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
+
     self.pageNo = self.pageNo - 1;
 }
 
@@ -336,6 +335,10 @@ static const NSInteger kAKHowToPageCount = 3;
 - (void)goNextPage
 {
     DBGLOG(0, @"goNextPage開始");
+    
+    // メニュー選択時の効果音を鳴らす
+    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
+
     self.pageNo = self.pageNo + 1;
 }
 
@@ -347,6 +350,14 @@ static const NSInteger kAKHowToPageCount = 3;
 - (void)backToTitle
 {
     DBGLOG(0, @"backToTitle開始");
-    [[CCDirector sharedDirector] replaceScene:[AKTitleScene node]];
+
+    // メニュー選択時の効果音を鳴らす
+    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
+
+    // タイトルシーンへの遷移を作成する
+    CCTransitionFade *transition = [CCTransitionFade transitionWithDuration:0.5f scene:[AKTitleScene node]];
+    
+    // タイトルシーンへ遷移する
+    [[CCDirector sharedDirector] replaceScene:transition];
 }
 @end

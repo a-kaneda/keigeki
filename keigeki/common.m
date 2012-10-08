@@ -17,8 +17,8 @@ unsigned int g_debugflg = 0;
 
 /// 同時に生成可能な敵の最大数
 const NSInteger kAKMaxEnemyCount = 16;
-/// 広告枠のテスト用画像のファイル名
-NSString *kAKAdSpaceImage = @"AdSpace.png";
+/// メニュー選択時の効果音
+NSString *kAKMenuSelectSE = @"ScoreCount.caf";
 
 /*!
  @brief 範囲チェック(実数)

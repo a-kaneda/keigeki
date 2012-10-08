@@ -229,7 +229,6 @@
 		0CC071AA1607BD4500201D47 /* Enemy3.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CC071A91607BD4500201D47 /* Enemy3.png */; };
 		0CC071AC1607C68C00201D47 /* Enemy4.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CC071AB1607C68C00201D47 /* Enemy4.png */; };
 		0CE2AE6B1616EEDB00FD3AE3 /* AKScreenSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE2AE6A1616EEDB00FD3AE3 /* AKScreenSize.m */; };
-		0CE2AE6E1617E69700FD3AE3 /* AdSpace.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CE2AE6D1617E69700FD3AE3 /* AdSpace.png */; };
 		0CE2AE83161CE78300FD3AE3 /* 1Up.caf in Resources */ = {isa = PBXBuildFile; fileRef = 0CE2AE7B161CE07F00FD3AE3 /* 1Up.caf */; };
 		0CE2AE84161CE78900FD3AE3 /* Hit.caf in Resources */ = {isa = PBXBuildFile; fileRef = 0CE2AE7C161CE07F00FD3AE3 /* Hit.caf */; };
 		0CE2AE85161CE78D00FD3AE3 /* Pause.caf in Resources */ = {isa = PBXBuildFile; fileRef = 0CE2AE7D161CE07F00FD3AE3 /* Pause.caf */; };
@@ -622,7 +621,6 @@
 		0CC071AB1607C68C00201D47 /* Enemy4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Enemy4.png; sourceTree = "<group>"; };
 		0CE2AE691616EEDB00FD3AE3 /* AKScreenSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKScreenSize.h; sourceTree = "<group>"; };
 		0CE2AE6A1616EEDB00FD3AE3 /* AKScreenSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKScreenSize.m; sourceTree = "<group>"; };
-		0CE2AE6D1617E69700FD3AE3 /* AdSpace.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AdSpace.png; sourceTree = "<group>"; };
 		0CE2AE7B161CE07F00FD3AE3 /* 1Up.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = 1Up.caf; sourceTree = "<group>"; };
 		0CE2AE7C161CE07F00FD3AE3 /* Hit.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Hit.caf; sourceTree = "<group>"; };
 		0CE2AE7D161CE07F00FD3AE3 /* Pause.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Pause.caf; sourceTree = "<group>"; };
@@ -829,7 +827,6 @@
 				0C4A4A961616B05300649A24 /* Default@2x.png */,
 				0C4A4A981616B09100649A24 /* Default-568h@2x.png */,
 				0C2A3A1115D64A47005B9272 /* Default-Landscape~ipad.png */,
-				0CE2AE6D1617E69700FD3AE3 /* AdSpace.png */,
 				0C03CCD615FCD539003AA059 /* PrevButton.png */,
 				0C03CCD415FCD527003AA059 /* NextButton.png */,
 				0C03CCD215FCD514003AA059 /* BackButton.png */,
@@ -1348,7 +1345,6 @@
 				0C92DD3B160FB54C00C0B668 /* Enemy5.png in Resources */,
 				0C4A4A971616B05300649A24 /* Default@2x.png in Resources */,
 				0C4A4A991616B09100649A24 /* Default-568h@2x.png in Resources */,
-				0CE2AE6E1617E69700FD3AE3 /* AdSpace.png in Resources */,
 				0CE2AE83161CE78300FD3AE3 /* 1Up.caf in Resources */,
 				0CE2AE84161CE78900FD3AE3 /* Hit.caf in Resources */,
 				0CE2AE85161CE78D00FD3AE3 /* Pause.caf in Resources */,

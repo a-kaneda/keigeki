@@ -12,27 +12,44 @@
 #import "AKHowToPlayScene.h"
 #import "AKScreenSize.h"
 #import "common.h"
+#import "SimpleAudioEngine.h"
+
+/// メニュー項目のタグ
+enum {
+    kAKTitleMenuGame = 0,   ///< ゲーム開始ボタン
+    kAKTitleMenuHowTo,      ///< 遊び方ボタン
+    kAKTitleMenuCredit,     ///< クレジットボタン
+    kAKTitleMenuCount       ///< メニュー項目数
+};
+
+/// レイヤーのタグ
+enum {
+    kAKTitleLayerBackground = 0,    ///< 背景レイヤー
+    kAKTitleLayerInterface          ///< インターフェースレイヤー
+};
 
 /// タイトル画像のファイル名
 static NSString *kAKTitleImage = @"Title.png";
 
 /// ゲーム開始メニューのキャプション
-static NSString *kAKGameStartCaption = @"GAME START";
+static NSString *kAKGameStartCaption = @"GAME START ";
 /// 遊び方画面メニューのキャプション
 static NSString *kAKHowToPlayCaption = @"HOW TO PLAY";
 /// クレジット画面メニューのキャプション
-static NSString *kAKCreditCaption = @"CREDIT";
+static NSString *kAKCreditCaption = @"CREDIT     ";
 
-/// タイトルの位置、上からの位置
-static const float kAKTitlePosTopPoint = 100;
+/// タイトルの位置、横方向の中心からの位置
+static const float kAKTitlePosFromHorizontalCenterPoint = -100.0f;
 /// メニュー項目の数
 static const NSInteger kAKMenuItemCount = 3;
-/// ゲーム開始メニューのキャプションの表示位置
-static const NSInteger kAKGameStartMenuPos = 150;
-/// 遊び方画面メニューのキャプションの表示位置
-static const NSInteger kAKHowToPlayMenuPos = 100;
-/// クレジット画面メニューのキャプションの表示位置
-static const NSInteger kAKCreditMenuPos = 50;
+/// メニュー項目の位置、右からの位置
+static const float kAKMenuPosRightPoint = 120.0f;
+/// ゲーム開始メニューのキャプションの表示位置、上からの比率
+static const float kAKGameStartMenuPosTopRatio = 0.3f;
+/// 遊び方画面メニューのキャプションの表示位置、上からの比率
+static const float kAKHowToPlayMenuPosTopRatio = 0.5f;
+/// クレジット画面メニューのキャプションの表示位置、上からの比率
+static const float kAKCreditMenuPosTopRatio = 0.7f;
 
 /// 各ノードのz座標
 enum {
@@ -64,60 +81,69 @@ enum {
     }
     
     // 背景レイヤーを配置する
-    [self addChild:AKCreateBackColorLayer() z:0];
-    
-    // 広告枠を配置する
-//    CCSprite *adSpace = [CCSprite spriteWithFile:kAKAdSpaceImage];
-//    adSpace.anchorPoint = ccp(0.0f, 1.0f);
-//    adSpace.position = ccp([AKScreenSize positionFromLeftPoint:0],
-//                           [AKScreenSize positionFromTopPoint:0]);
-//    [self addChild:adSpace z:999];
+    [self addChild:AKCreateBackColorLayer() z:kAKTitleLayerBackground tag:kAKTitleLayerBackground];
     
     // インターフェースを作成する
     AKInterface *interface = [AKInterface interfaceWithCapacity:kAKMenuItemCount];
     
     // インターフェースをシーンに配置する
-    [self addChild:interface z:1];
+    [self addChild:interface z:kAKTitleLayerInterface tag:kAKTitleLayerInterface];
     
     // タイトル画像を読み込む
     CCSprite *image = [CCSprite spriteWithFile:kAKTitleImage];
     NSAssert(image != nil, @"can not open title image : %@", kAKTitleImage);
     
     // 配置位置を設定する
-    image.position = ccp([AKScreenSize center].x,
-                         [AKScreenSize positionFromTopPoint:kAKTitlePosTopPoint]);
+    image.position = ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKTitlePosFromHorizontalCenterPoint],
+                         [AKScreenSize center].y);
     
     // タイトル画像をインターフェースに配置する
     [interface addChild:image z:kAKTitleBackPosZ];
     
     // ゲームスタートのメニューを作成する
     [interface addMenuWithString:kAKGameStartCaption
-                           atPos:ccp([AKScreenSize center].x,
-                                     [AKScreenSize positionFromBottomPoint:kAKGameStartMenuPos])
-                        isCenter:YES action:@selector(startGame)
+                           atPos:ccp([AKScreenSize positionFromRightPoint:kAKMenuPosRightPoint],
+                                     [AKScreenSize positionFromTopRatio:kAKGameStartMenuPosTopRatio])
+                          action:@selector(startGame)
                                z:0
-                             tag:0];
+                             tag:kAKTitleMenuGame
+                       withFrame:YES];
     
     // 遊び方のメニューを作成する
     [interface addMenuWithString:kAKHowToPlayCaption
-                           atPos:ccp([AKScreenSize center].x,
-                                     [AKScreenSize positionFromBottomPoint:kAKHowToPlayMenuPos])
-                        isCenter:YES
+                           atPos:ccp([AKScreenSize positionFromRightPoint:kAKMenuPosRightPoint],
+                                     [AKScreenSize positionFromTopRatio:kAKHowToPlayMenuPosTopRatio])
                           action:@selector(startHowTo)
                                z:0
-                             tag:0];
+                             tag:kAKTitleMenuHowTo
+                       withFrame:YES];
     
     // クレジットのメニューを作成する
     [interface addMenuWithString:kAKCreditCaption
-                           atPos:ccp([AKScreenSize center].x,
-                                     [AKScreenSize positionFromBottomPoint:kAKCreditMenuPos])
-                        isCenter:YES
+                           atPos:ccp([AKScreenSize positionFromRightPoint:kAKMenuPosRightPoint],
+                                     [AKScreenSize positionFromTopRatio:kAKCreditMenuPosTopRatio])
                           action:@selector(startCredit)
                                z:0
-                             tag:0];
+                             tag:kAKTitleMenuCredit
+                       withFrame:YES];
+    
+    // すべてのメニュー項目を有効とする
+    interface.enableItemTagStart = 0;
+    interface.enableItemTagEnd = kAKTitleMenuCount - 1;
     
     DBGLOG(0, @"init 終了");
     return self;
+}
+
+/*!
+ @brief インターフェースレイヤーの取得
+ 
+ インターフェースレイヤーを取得する。
+ @return インターフェースレイヤー
+ */
+- (AKInterface *)interface
+{
+    return (AKInterface *)[self getChildByTag:kAKTitleLayerInterface];
 }
 
 /*!
@@ -128,7 +154,24 @@ enum {
 - (void)startGame
 {
     DBGLOG(0, @"startGame");
-    [[CCDirector sharedDirector] replaceScene:[AKGameScene sharedInstance]];
+    
+    // メニュー選択時の効果音を鳴らす
+    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
+
+    // ボタンのブリンクアクションを作成する
+    CCBlink *action = [CCBlink actionWithDuration:0.2f blinks:2];
+    
+    // ボタンを取得する
+    CCNode *button = [self.interface getChildByTag:kAKTitleMenuGame];
+    
+    // ブリンクアクションを開始する
+    [button runAction:action];
+    
+    // ゲームシーンへの遷移を作成する
+    CCTransitionFade *transition = [CCTransitionFade transitionWithDuration:0.5f scene:[AKGameScene sharedInstance]];
+    
+    // ゲームシーンへ遷移する
+    [[CCDirector sharedDirector] replaceScene:transition];
 }
 
 /*!
@@ -139,7 +182,24 @@ enum {
 - (void)startHowTo
 {
     DBGLOG(0, @"startHowTo");
-    [[CCDirector sharedDirector] replaceScene:[AKHowToPlayScene node]];
+    
+    // メニュー選択時の効果音を鳴らす
+    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
+
+    // ボタンのブリンクアクションを作成する
+    CCBlink *action = [CCBlink actionWithDuration:0.2f blinks:2];
+    
+    // ボタンを取得する
+    CCNode *button = [self.interface getChildByTag:kAKTitleMenuHowTo];
+    
+    // ブリンクアクションを開始する
+    [button runAction:action];
+    
+    // 遊び方シーンへの遷移を作成する
+    CCTransitionFade *transition = [CCTransitionFade transitionWithDuration:0.5f scene:[AKHowToPlayScene node]];
+    
+    // 遊び方シーンへ遷移する
+    [[CCDirector sharedDirector] replaceScene:transition];
 }
 
 /*!
@@ -150,5 +210,8 @@ enum {
 - (void)startCredit
 {
     DBGLOG(1, @"startCredit");
+    // メニュー選択時の効果音を鳴らす
+    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
+    
 }
 @end

@@ -6,6 +6,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "cocos2d.h"
 
 // メニュー項目クラス
 @interface AKMenuItem : NSObject {

@@ -13,8 +13,8 @@
 
 // 同時に生成可能な敵の最大数
 extern const NSInteger kAKMaxEnemyCount;
-// 広告枠のテスト用画像のファイル名
-extern NSString *kAKAdSpaceImage;
+/// メニュー選択時の効果音
+extern NSString *kAKMenuSelectSE;
 
 #ifdef DEBUG
 /// デバッグログON/OFF用フラグ

@@ -6,6 +6,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "AKInterface.h"
 #import "cocos2d.h"
 
 // タイトルシーンクラス
@@ -13,6 +14,8 @@
     
 }
 
+// インターフェースレイヤーの取得
+- (AKInterface *)interface;
 // ゲームの開始
 - (void)startGame;
 // 遊び方画面の開始

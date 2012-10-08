@@ -123,7 +123,33 @@
  */
 - (void)onEnter
 {
+    DBGLOG(0, @"onEnter start");
+    
+    // 親クラスの処理を呼び出す
+    [super onEnter];
+
+    // タッチイベント処理を開始する
     [[[CCDirector sharedDirector] touchDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
+
+    DBGLOG(0, @"onEnter end");
+}
+
+/*!
+ @brief レイヤー非表示時処理
+ 
+ レイヤーが表示されなくなる際の処理。タッチイベント処理を終了する。
+ */
+- (void)onExit
+{
+    DBGLOG(0, @"onExit start");
+    
+    // タッチイベント処理を終了する
+    [[[CCDirector sharedDirector] touchDispatcher] removeDelegate:self];
+
+    // 親クラスの処理を呼び出す
+    [super onExit];
+    
+    DBGLOG(0, @"onExit end");
 }
 
 /*!
@@ -158,7 +184,7 @@
             [item isSelectPos:location]) {
             
             DBGLOG(0, @"tag = %d action = %@", item.tag, NSStringFromSelector(item.action));
-            
+                        
             // 選択されていれば親ノードにイベントを送信する
             [self.parent performSelector:item.action];
             
@@ -183,6 +209,8 @@
 {
     // メニュー項目の位置と大きさ
     CGRect rect;
+    // メニュー表示オブジェクト
+    CCNode *object = nil;
     
     // ファイル名が指定されている場合は画像ファイルを読み込む
     if (filename != nil) {
@@ -203,6 +231,9 @@
         // メニュー項目の位置をスプライトの左上の端を設定する
         rect.origin = ccp(item.position.x - item.contentSize.width / 2,
                           item.position.y - item.contentSize.height / 2);
+        
+        // ボタン画像を表示オブジェクトに設定する
+        object = item;
     }
     // ファイル名が指定されていない場合、メニュー項目の位置と大きさは画面全体とする
     else {
@@ -221,27 +252,31 @@
  メニュー項目のラベルを作成し、インターフェースに項目を追加する。
  @param menuString メニューのキャプション
  @param pos メニューの位置
- @param isCenter 中央揃えにするかどうか
  @param action メニュー選択時の処理
  @param z メニュー項目のz座標
  @param tag メニュー項目のタグ
+ @param withFrame 枠を付けるかどうか
  */
-- (void)addMenuWithString:(NSString *)menuString atPos:(CGPoint)pos isCenter:(BOOL)isCenter
-                   action:(SEL)action z:(NSInteger)z tag:(NSInteger)tag
+- (void)addMenuWithString:(NSString *)menuString
+                    atPos:(CGPoint)pos
+                   action:(SEL)action
+                        z:(NSInteger)z
+                      tag:(NSInteger)tag
+                withFrame:(BOOL)withFrame
 {
     // ラベルを作成する
-    AKLabel *label = [AKLabel labelWithString:menuString maxLength:menuString.length maxLine:1 hasFrame:NO];
+    AKLabel *label = [AKLabel labelWithString:menuString
+                                    maxLength:menuString.length
+                                      maxLine:1
+                                        frame:(withFrame ? kAKLabelFrameButton : kAKLabelFrameNone)];
     
     // ラベルの位置を設定する
     label.position = pos;
-    
-    // 中央揃えの場合は左へ幅の半分移動する
-    if (isCenter) {
-        label.position = ccp(label.position.x - label.width / 2, label.position.y);
-    }
-    
+        
     // ラベルを画面に配置する
     [self addChild:label z:z tag:tag];
+    
+    DBGLOG(0, @"rect=(%f, %f, %f, %f)", label.rect.origin.x, label.rect.origin.y, label.rect.size.width, label.rect.size.height);
     
     // メニュー項目をインターフェースに追加する
     [self.menuItems addObject:[AKMenuItem itemWithRect:label.rect action:action tag:tag]];

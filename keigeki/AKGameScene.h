@@ -14,16 +14,20 @@
 #import "AKLifeMark.h"
 #import "AKEnemyShot.h"
 #import "AKResultLayer.h"
+#import "AKInterface.h"
+#import "AKLabel.h"
 #import "common.h"
 
 /// ゲームプレイの状態
 enum AKGameState {
-    kAKGameStateStart = 0,  ///< ゲーム開始時
-    kAKGameStatePlaying,    ///< プレイ中
-    kAKGameStateClear,      ///< ステージクリア後
-    kAKGameStateResult,     ///< リザルト画面表示中
-    kAKGameStateGameOver,   ///< ゲームオーバーの表示中
-    kAKGameStatePause       ///< 一時停止中
+    kAKGameStatePreLoad = 0,    ///< ゲームシーン読み込み前
+    kAKGameStateStart,          ///< ゲーム開始時
+    kAKGameStatePlaying,        ///< プレイ中
+    kAKGameStateClear,          ///< ステージクリア後
+    kAKGameStateResult,         ///< リザルト画面表示中
+    kAKGameStateGameOver,       ///< ゲームオーバーの表示中
+    kAKGameStatePause,          ///< 一時停止中
+    kAKGameStateQuitMenu        ///< 終了メニュー表示中
 };
 
 /// 敵の種類
@@ -103,6 +107,8 @@ enum AKEnemyType {
 + (AKGameScene *)sharedInstance;
 // リザルト画面取得
 - (AKResultLayer *)resultLayer;
+// 入力レイヤー取得
+- (AKInterface *)interfaceLayer;
 // ゲーム開始時の更新処理
 - (void)updateStart:(ccTime)dt;
 // プレイ中の更新処理
@@ -152,11 +158,23 @@ enum AKEnemyType {
 // プレイ時間更新
 - (void)updateTime;
 // 情報レイヤーへのラベル配置
-- (void)setLabelToInfoLayer:(NSString *)str atPos:(CGPoint)pos tag:(NSInteger)tag isCenter:(BOOL)isCenter;
+- (void)setLabelToInfoLayer:(NSString *)str atPos:(CGPoint)pos tag:(NSInteger)tag frame:(enum AKLabelFrame)frame;
 // ボタンの追加
 - (void)addButtonWithFile:(NSString *)filename atPos:(CGPoint)pos action:(SEL)action ofState:(enum AKGameState)state;
 // タイトル画面に戻る
 - (void)backToTitle;
 // リザルト画面表示
 - (void)viewResult;
+// 終了メニュー表示
+- (void)viewQuitMenu;
+// 終了メニュー実行
+- (void)execQuitMenu;
+// 終了メニューキャンセル
+- (void)cancelQuitMenu;
+// 再開ボタン選択
+- (void)selectResumeButton;
+// 終了ボタン選択
+- (void)selectQuitButton;
+// 終了メニューNOボタン選択
+- (void)selectQuitNoButton;
 @end

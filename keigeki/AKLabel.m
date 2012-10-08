@@ -25,7 +25,23 @@ static NSString *kAKLeftBar = @"LeftBar";
 static NSString *kAKRightBar = @"RightBar";
 /// 下の枠のキー
 static NSString *kAKBottomBar = @"BottomBar";
-/// ブランクのキー
+/// ボタン左上の枠のキー
+static NSString *kAKButtonTopLeft = @"ButtonTopLeft";
+/// ボタン右上の枠のキー
+static NSString *kAKButtonTopRight = @"ButtonTopRight";
+/// ボタン左下の枠のキー
+static NSString *kAKButtonBottomLeft = @"ButtonBottomLeft";
+/// ボタン右下の枠のキー
+static NSString *kAKButtonBottomRight = @"ButtonBottomRight";
+/// ボタン上の枠のキー
+static NSString *kAKButtonTopBar = @"ButtonTopBar";
+/// ボタン左の枠のキー
+static NSString *kAKButtonLeftBar = @"ButtonLeftBar";
+/// ボタン右の枠のキー
+static NSString *kAKButtonRightBar = @"ButtonRightBar";
+/// ボタン下の枠のキー
+static NSString *kAKButtonBottomBar = @"ButtonBottomBar";
+/// ボタンブランクのキー
 static NSString *kAKBlank = @" ";
 
 /// 1行の高さ(単位：文字)
@@ -45,16 +61,79 @@ enum {
 @implementation AKLabel
 
 /*!
+ @brief 指定文字数の幅取得
+ 
+ 指定された文字数のラベルの幅を取得する。
+ 文字数にフォントサイズをかけて返す。
+ 枠付きが指定された場合は枠のサイズ2文字分をプラスする。
+ @param length 文字数
+ @param hasFrame 枠付きかどうか
+ @return ラベルの幅
+ */
++ (NSInteger)widthWithLength:(NSInteger)length hasFrame:(BOOL)hasFrame
+{
+    // 枠がある場合は枠の領域を2文字分プラスして返す
+    if (hasFrame) {
+        return (length + 2) * kAKFontSize;
+    }
+    // 枠がない場合は文字領域のサイズを返す
+    else {
+        return length * kAKFontSize;
+    }
+}
+
+/*!
+ @brief 指定行数の高さ取得
+ 
+ 指定された行数のラベルの高さを取得する。
+ 行数にフォントサイズをかけた値と行間の高さを足した値を返す。
+ 枠付きが指定された場合は枠のサイズ2文字分をプラスする。
+ @param line 行数
+ @param hasFrame 枠付きかどうか
+ @return ラベルの高さ
+ */
++ (NSInteger)heightWithLine:(NSInteger)line hasFrame:(BOOL)hasFrame
+{
+    // 枠がある場合は枠の領域を2文字分プラスして返す
+    if (hasFrame) {
+        return ((int)(line * kAKLabelLineHeight) + 2) * kAKFontSize;
+    }
+    // 枠がない場合は文字領域のサイズを返す
+    else {
+        return (int)(line * kAKLabelLineHeight) * kAKFontSize;
+    }
+}
+
+/*!
+ @brief 指定文字数、指定行数の指定位置の矩形範囲取得
+ 
+ 指定された文字数、行数、指定位置のラベルの矩形範囲を取得する。
+ @param x ラベルの中心座標x座標
+ @param y ラベルの中心座標y座標
+ @param length 1行の文字数
+ @param line 行数
+ @param hasFrame 枠付きかどうか
+ @return ラベルの矩形範囲
+ */
++ (CGRect)rectWithCenterX:(float)x centerY:(float)y length:(NSInteger)length line:(NSInteger)line hasFrame:(BOOL)hasFrame
+{
+    return CGRectMake(x - [AKLabel widthWithLength:length hasFrame:hasFrame] / 2,
+                      y - [AKLabel heightWithLine:line hasFrame:hasFrame] / 2,
+                      [AKLabel widthWithLength:length hasFrame:hasFrame],
+                      [AKLabel heightWithLine:line hasFrame:hasFrame]);
+}
+
+/*!
  @brief 初期文字列を指定した初期化
  
  初期文字列を指定して初期化を行う。
  @param str 表示文字列
  @param length 1行の文字数
  @param line 表示行数
- @param hasFrame 枠を持つかどうか
+ @param frame 枠の種類
  @return 生成したオブジェクト。失敗時はnilを返す。
  */
-- (id)initWithString:(NSString *)str maxLength:(NSInteger)length maxLine:(NSInteger)line hasFrame:(BOOL)hasFrame
+- (id)initWithString:(NSString *)str maxLength:(NSInteger)length maxLine:(NSInteger)line frame:(enum AKLabelFrame)frame
 {
     // スーパークラスの生成処理を実行する
     self = [super init];
@@ -72,7 +151,7 @@ enum {
     // パラメータをメンバに設定する
     m_length = length;
     m_line = line;
-    m_hasFrame = hasFrame;
+    m_frame = frame;
     
     // 文字表示用バッチノードを生成する
     [self addChild:[CCSpriteBatchNode batchNodeWithTexture:[AKFont sharedInstance].fontTexture capacity:length * line]
@@ -80,7 +159,7 @@ enum {
                tag:kAKLabelBatchPosZ];
     
     // 枠付きの場合は枠の生成を行う
-    if (m_hasFrame) {
+    if (m_frame != kAKLabelFrameNone) {
         [self createFrame];
     }
     
@@ -96,10 +175,11 @@ enum {
             CCSprite *charSprite = [CCSprite spriteWithSpriteFrame:charSpriteFrame];
             
             // 表示位置を設定する。
-            // 左端が親ノードのアンカーポイント(中央)にくるようにするため、
-            // 右に0.5文字分ずらす。
+            // テキスト領域の中央とバッチノードの中央を一致させるため、
+            // 左に1行の長さの半分、上方向に行数の半分移動する。
             // 行間に0.5文字分の隙間を入れるため、高さは1.5倍する。
-            charSprite.position = ccp(x * kAKFontSize + kAKFontSize / 2, -y * kAKFontSize * kAKLabelLineHeight);
+            charSprite.position = ccp((x - (m_length - 1) / 2.0f) * kAKFontSize,
+                                      (-y + (m_line - 1) / 2.0f) * kAKFontSize * kAKLabelLineHeight);
             
             // 先頭からの文字数をタグにする
             charSprite.tag = x + y * m_length;
@@ -122,12 +202,12 @@ enum {
  @param str 表示文字列
  @param length 1行の文字数
  @param line 表示行数
- @param hasFrame 枠を持つかどうか
+ @param frame 枠の種類
  @return 生成したオブジェクト。失敗時はnilを返す。
  */
-+ (id)labelWithString:(NSString *)str maxLength:(NSInteger)length maxLine:(NSInteger)line hasFrame:(BOOL)hasFrame
++ (id)labelWithString:(NSString *)str maxLength:(NSInteger)length maxLine:(NSInteger)line frame:(enum AKLabelFrame)frame
 {
-    return [[[[self class] alloc] initWithString:str maxLength:length maxLine:line hasFrame:hasFrame] autorelease];
+    return [[[[self class] alloc] initWithString:str maxLength:length maxLine:line frame:frame] autorelease];
 }
 
 /*!
@@ -254,62 +334,37 @@ enum {
 /*!
  @brief ラベルの幅の取得
  
- ラベルの幅を取得する。1行の表示文字数にフォントサイズをかけて返す。
- 枠付きの場合は枠のサイズ2文字分をプラスして返す。
+ ラベルの幅を取得する。
+ クラスメソッドの幅取得処理にメンバの値を渡して計算を行う。
  @return ラベルの幅
  */
 - (NSInteger)width
 {
-    // 枠がある場合は枠の領域を2文字分プラスして返す
-    if (m_hasFrame) {
-        return (m_length + 2) * kAKFontSize;
-    }
-    // 枠がない場合は文字領域のサイズを返す
-    else {
-        return m_length * kAKFontSize;
-    }
+    return [[self class] widthWithLength:m_length hasFrame:(m_frame != kAKLabelFrameNone)];
 }
 
 /*!
  @brief ラベルの高さの取得
  
- ラベルの高さを取得する。行数を文字数に換算してフォントサイズをかけて返す。
- 枠付きの場合は枠のサイズ2文字分をプラスして返す。
+ ラベルの高さを取得する。
+ クラスメソッドの高さ取得処理にメンバの値を渡して計算を行う。
  @return ラベルの高さ
  */
 - (NSInteger)height
 {
-    // 枠がある場合は枠の領域を2文字分プラスして返す
-    if (m_hasFrame) {
-        return ((int)(m_line * kAKLabelLineHeight) + 2) * kAKFontSize;
-    }
-    // 枠がない場合は文字領域のサイズを返す
-    else {
-        return (int)(m_line * kAKLabelLineHeight) * kAKFontSize;
-    }
+    return [[self class] heightWithLine:m_line hasFrame:(m_frame != kAKLabelFrameNone)];
 }
 
 /*!
  @brief ラベルの矩形領域の取得
  
  ラベルの矩形領域を取得する。
- アンカーポイントがラベルの左端中央のため、
- x座標はアンカーポイント、y座標はアンカーポイント - 0.5文字、
- 高さは行数、幅は文字数とする。
- 枠付きの場合は1文字分一回り大きくして返す。
  @return ラベルの矩形領域
  */
 - (CGRect)rect
 {
-    // 枠がある場合は枠の領域をプラスして返す
-    if (m_hasFrame) {
-        return CGRectMake(self.position.x - kAKFontSize,
-                          self.position.y - kAKFontSize / 2 - kAKFontSize,
-                          self.width,
-                          self.height);
-    }
-    return CGRectMake(self.position.x,
-                      self.position.y - kAKFontSize / 2,
+    return CGRectMake(self.position.x - self.width / 2,
+                      self.position.y - self.height / 2,
                       self.width,
                       self.height);
 }
@@ -321,6 +376,49 @@ enum {
  */
 - (void)createFrame
 {
+    NSString *keyTopLeft = nil;
+    NSString *keyTopRight = nil;
+    NSString *keyBottomLeft = nil;
+    NSString *keyBottomRight = nil;
+    NSString *keyTopBar = nil;
+    NSString *keyBottomBar = nil;
+    NSString *keyLeftBar = nil;
+    NSString *keyRightBar = nil;
+    
+    // 枠の種類に応じてキー文字列を切り替える
+    switch (m_frame) {
+            
+        case kAKLabelFrameMessage:  // メッセージボックス
+            
+            keyTopLeft = kAKTopLeft;
+            keyTopRight = kAKTopRight;
+            keyBottomLeft = kAKBottomLeft;
+            keyBottomRight = kAKBottomRight;
+            keyTopBar = kAKTopBar;
+            keyBottomBar = kAKBottomBar;
+            keyLeftBar = kAKLeftBar;
+            keyRightBar = kAKRightBar;
+            
+            break;
+            
+        case kAKLabelFrameButton:   // ボタン
+        
+            keyTopLeft = kAKButtonTopLeft;
+            keyTopRight = kAKButtonTopRight;
+            keyBottomLeft = kAKButtonBottomLeft;
+            keyBottomRight = kAKButtonBottomRight;
+            keyTopBar = kAKButtonTopBar;
+            keyBottomBar = kAKButtonBottomBar;
+            keyLeftBar = kAKButtonLeftBar;
+            keyRightBar = kAKButtonRightBar;
+
+            break;
+            
+        default:
+            NSAssert(0, @"枠の種類が異常:m_frame=%d", m_frame);
+            return;
+    }
+    
     // 枠示用バッチノードを生成する
     [self addChild:[CCSpriteBatchNode batchNodeWithTexture:[AKFont sharedInstance].fontTexture
                                                   capacity:(m_length + 2) * (m_line * 1.5 + 2)]
@@ -331,8 +429,12 @@ enum {
     // 枠を入れるため、上下+-1個分用意する。
     for (int y = -1; y < (int)(m_line * kAKLabelLineHeight) + 1; y++) {
         
+        DBGLOG(0, @"y=%d pos=%f", y, (-y + m_line * kAKLabelLineHeight / 2.0f) * kAKFontSize);
+        
         // 枠を入れるため、左右+-1個分用意する。
         for (int x = -1; x < m_length + 1; x++) {
+            
+            DBGLOG(0 && y == -1, @"x=%d pos=%f", x, (x - m_length / 2.0f) * kAKFontSize);
             
             // キー文字列
             NSString *key = nil;
@@ -340,42 +442,42 @@ enum {
             // 左上の場合
             if (y == -1 && x == -1) {
                 DBGLOG(0, @"x=%d y=%d topleft", x, y);
-                key = kAKTopLeft;
+                key = keyTopLeft;
             }
             // 右上の場合
             else if (y == -1 && x == m_length) {
                 DBGLOG(0, @"x=%d y=%d topright", x, y);
-                key =kAKTopRight;
+                key = keyTopRight;
             }
             // 左下の場合
             else if (y == (int)(m_line * 1.5) && x == -1) {
                 DBGLOG(0, @"x=%d y=%d bottomleft", x, y);
-                key = kAKBottomLeft;
+                key = keyBottomLeft;
             }
             // 右下の場合
             else if (y == (int)(m_line * 1.5) && x == m_length) {
                 DBGLOG(0, @"x=%d y=%d bottomright", x, y);
-                key = kAKBottomRight;
+                key = keyBottomRight;
             }
             // 上の場合
             else if (y == -1) {
                 DBGLOG(0, @"x=%d y=%d topbar", x, y);
-                key = kAKTopBar;
+                key = keyTopBar;
             }
             // 左の場合
             else if (x == -1) {
                 DBGLOG(0, @"x=%d y=%d leftbar", x, y);
-                key = kAKLeftBar;
+                key = keyLeftBar;
             }
             // 右の場合
             else if (x == m_length) {
                 DBGLOG(0, @"x=%d y=%d rightbar", x, y);
-                key = kAKRightBar;
+                key = keyRightBar;
             }
             // 下の場合
             else if (y == (int)(m_line * 1.5)) {
                 DBGLOG(0, @"x=%d y=%d bottombar", x, y);
-                key = kAKBottomBar;
+                key = keyBottomBar;
             }
             // 文字の部分の場合
             else {
@@ -389,9 +491,10 @@ enum {
             CCSprite *charSprite = [CCSprite spriteWithSpriteFrame:charSpriteFrame];
             
             // 表示位置を設定する。
-            // 左端が親ノードのアンカーポイント(中央)にくるようにするため、
-            // 右に0.5文字分ずらす。
-            charSprite.position = ccp(x * kAKFontSize + kAKFontSize / 2, -y * kAKFontSize);
+            // テキスト領域の中央とバッチノードの中央を一致させるため、
+            // 左に1行の長さの半分、上方向に行数の半分移動する。
+            charSprite.position = ccp((x - (m_length - 1) / 2.0f) * kAKFontSize,
+                                      (-y + (m_line - 1) * kAKLabelLineHeight / 2.0f) * kAKFontSize);
             
             // バッチノードに登録する
             [self.frameBatch addChild:charSprite];

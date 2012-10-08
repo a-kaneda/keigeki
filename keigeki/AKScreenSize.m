@@ -60,7 +60,7 @@
  左からの画面サイズの比率で距離を指定したときのデバイススクリーン座標を返す。
  @return デバイススクリーン座標
  */
-+ (float)positionFromLeftRatio:(float)ratio
++ (NSInteger)positionFromLeftRatio:(float)ratio
 {
     return [AKScreenSize screenSize].width * ratio;
 }
@@ -71,7 +71,7 @@
  右からの画面サイズの比率で距離を指定したときのデバイススクリーン座標を返す。
  @return デバイススクリーン座標
  */
-+ (float)positionFromRightRatio:(float)ratio
++ (NSInteger)positionFromRightRatio:(float)ratio
 {
     return [AKScreenSize screenSize].width * (1 - ratio);
 }
@@ -82,7 +82,7 @@
  上からの画面サイズの比率で距離を指定したときのデバイススクリーン座標を返す。
  @return デバイススクリーン座標
  */
-+ (float)positionFromTopRatio:(float)ratio
++ (NSInteger)positionFromTopRatio:(float)ratio
 {
     return [AKScreenSize screenSize].height * (1 - ratio);
 }
@@ -93,7 +93,7 @@
  下からの画面サイズの比率で距離を指定したときのデバイススクリーン座標を返す。
  @return デバイススクリーン座標
  */
-+ (float)positionFromBottomRatio:(float)ratio
++ (NSInteger)positionFromBottomRatio:(float)ratio
 {
     return [AKScreenSize screenSize].height * ratio;
 }
@@ -104,7 +104,7 @@
  左からの座標で距離を指定したときのデバイススクリーン座標を返す。
  @return デバイススクリーン座標
  */
-+ (float)positionFromLeftPoint:(float)point
++ (NSInteger)positionFromLeftPoint:(float)point
 {
     return point;
 }
@@ -115,7 +115,7 @@
  右からの座標で距離を指定したときのデバイススクリーン座標を返す。
  @return デバイススクリーン座標
  */
-+ (float)positionFromRightPoint:(float)point
++ (NSInteger)positionFromRightPoint:(float)point
 {
     return [AKScreenSize screenSize].width - point;
 }
@@ -126,7 +126,7 @@
  上からの座標で距離を指定したときのデバイススクリーン座標を返す。
  @return デバイススクリーン座標
  */
-+ (float)positionFromTopPoint:(float)point
++ (NSInteger)positionFromTopPoint:(float)point
 {
     return [AKScreenSize screenSize].height - point;
 }
@@ -137,7 +137,7 @@
  下からの座標で距離を指定したときのデバイススクリーン座標を返す。
  @return デバイススクリーン座標
  */
-+ (float)positionFromBottomPoint:(float)point
++ (NSInteger)positionFromBottomPoint:(float)point
 {
     return point;
 }
@@ -148,7 +148,7 @@
  中心からの横方向の座標で距離を指定したときのデバイススクリーン座標を返す。
  @return デバイススクリーン座標
  */
-+ (float)positionFromHorizontalCenterPoint:(float)point
++ (NSInteger)positionFromHorizontalCenterPoint:(float)point
 {
     return [AKScreenSize center].x + point;
 }
@@ -159,7 +159,7 @@
  中心からの縦方向の座標で距離を指定したときのデバイススクリーン座標を返す。
  @return デバイススクリーン座標
  */
-+ (float)positionFromVerticalCenterPoint:(float)point
++ (NSInteger)positionFromVerticalCenterPoint:(float)point
 {
     return [AKScreenSize center].y + point;
 }

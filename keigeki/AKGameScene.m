@@ -1130,7 +1130,7 @@ static AKGameScene *g_scene = nil;
 - (void)resume
 {    
     // 一時停止中から以外の変更の場合はエラー
-    assert(self.state == kAKGameStatePause);
+    NSAssert(self.state == kAKGameStateWait, @"状態遷移異常");
     
     // 一時停止したBGMを再開する
     [[SimpleAudioEngine sharedEngine] resumeBackgroundMusic];
@@ -1773,6 +1773,9 @@ static AKGameScene *g_scene = nil;
  */
 - (void)selectResumeButton
 {
+    // 他の処理が動作しないように待機状態にする
+    self.state = kAKGameStateWait;
+
     // ボタンのブリンクアクションを作成する
     CCBlink *blink = [CCBlink actionWithDuration:0.2f blinks:2];
     CCCallFunc *callFunc = [CCCallFunc actionWithTarget:self selector:@selector(resume)];
@@ -1797,6 +1800,9 @@ static AKGameScene *g_scene = nil;
  */
 - (void)selectQuitButton
 {
+    // 他の処理が動作しないように待機状態にする
+    self.state = kAKGameStateWait;
+
     // ボタンのブリンクアクションを作成する
     CCBlink *blink = [CCBlink actionWithDuration:0.2f blinks:2];
     CCCallFunc *callFunc = [CCCallFunc actionWithTarget:self selector:@selector(viewQuitMenu)];
@@ -1820,6 +1826,9 @@ static AKGameScene *g_scene = nil;
  */
 - (void)selectQuitNoButton
 {
+    // 他の処理が動作しないように待機状態にする
+    self.state = kAKGameStateWait;
+    
     // ボタンのブリンクアクションを作成する
     CCBlink *blink = [CCBlink actionWithDuration:0.2f blinks:2];
     CCCallFunc *callFunc = [CCCallFunc actionWithTarget:self selector:@selector(cancelQuitMenu)];

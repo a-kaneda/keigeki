@@ -27,7 +27,8 @@ enum AKGameState {
     kAKGameStateResult,         ///< リザルト画面表示中
     kAKGameStateGameOver,       ///< ゲームオーバーの表示中
     kAKGameStatePause,          ///< 一時停止中
-    kAKGameStateQuitMenu        ///< 終了メニュー表示中
+    kAKGameStateQuitMenu,       ///< 終了メニュー表示中
+    kAKGameStateWait            ///< アクション終了待機中
 };
 
 /// 敵の種類

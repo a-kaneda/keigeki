@@ -135,24 +135,6 @@
 }
 
 /*!
- @brief レイヤー非表示時処理
- 
- レイヤーが表示されなくなる際の処理。タッチイベント処理を終了する。
- */
-- (void)onExit
-{
-    DBGLOG(0, @"onExit start");
-    
-    // タッチイベント処理を終了する
-    [[[CCDirector sharedDirector] touchDispatcher] removeDelegate:self];
-
-    // 親クラスの処理を呼び出す
-    [super onExit];
-    
-    DBGLOG(0, @"onExit end");
-}
-
-/*!
  @brief タッチ開始処理
  
  タッチが開始されたときの処理。

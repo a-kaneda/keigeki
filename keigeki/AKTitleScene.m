@@ -13,11 +13,14 @@
 #import "AKScreenSize.h"
 #import "common.h"
 #import "SimpleAudioEngine.h"
+#import "AKGameCenterHelper.h"
+#import "AKOptionScene.h"
 
 /// メニュー項目のタグ
 enum {
     kAKTitleMenuGame = 0,   ///< ゲーム開始ボタン
     kAKTitleMenuHowTo,      ///< 遊び方ボタン
+    kAKTitleMenuOption,     ///< オプションボタン
     kAKTitleMenuCredit,     ///< クレジットボタン
     kAKTitleMenuCount       ///< メニュー項目数
 };
@@ -35,6 +38,8 @@ static NSString *kAKTitleImage = @"Title.png";
 static NSString *kAKGameStartCaption = @"GAME START ";
 /// 遊び方画面メニューのキャプション
 static NSString *kAKHowToPlayCaption = @"HOW TO PLAY";
+/// オプション画面メニューのキャプション
+static NSString *kAKOptionCaption = @"OPTION     ";
 /// クレジット画面メニューのキャプション
 static NSString *kAKCreditCaption = @"CREDIT     ";
 
@@ -45,11 +50,13 @@ static const NSInteger kAKMenuItemCount = 3;
 /// メニュー項目の位置、右からの位置
 static const float kAKMenuPosRightPoint = 120.0f;
 /// ゲーム開始メニューのキャプションの表示位置、上からの比率
-static const float kAKGameStartMenuPosTopRatio = 0.3f;
+static const float kAKGameStartMenuPosTopRatio = 0.2f;
 /// 遊び方画面メニューのキャプションの表示位置、上からの比率
-static const float kAKHowToPlayMenuPosTopRatio = 0.5f;
+static const float kAKHowToPlayMenuPosTopRatio = 0.4f;
+/// オプション画面メニューのキャプションの表示位置、上からの位置
+static const float kAKOptionMenuPosTopRatio = 0.6f;
 /// クレジット画面メニューのキャプションの表示位置、上からの比率
-static const float kAKCreditMenuPosTopRatio = 0.7f;
+static const float kAKCreditMenuPosTopRatio = 0.8f;
 
 /// 各ノードのz座標
 enum {
@@ -118,6 +125,15 @@ enum {
                              tag:kAKTitleMenuHowTo
                        withFrame:YES];
     
+    // オプションのメニューを作成する
+    [interface addMenuWithString:kAKOptionCaption
+                           atPos:ccp([AKScreenSize positionFromRightPoint:kAKMenuPosRightPoint],
+                                     [AKScreenSize positionFromTopRatio:kAKOptionMenuPosTopRatio])
+                          action:@selector(startOption)
+                               z:0
+                             tag:kAKTitleMenuOption
+                       withFrame:YES];
+    
     // クレジットのメニューを作成する
     [interface addMenuWithString:kAKCreditCaption
                            atPos:ccp([AKScreenSize positionFromRightPoint:kAKMenuPosRightPoint],
@@ -155,17 +171,8 @@ enum {
 {
     DBGLOG(0, @"startGame");
     
-    // メニュー選択時の効果音を鳴らす
-    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
-
-    // ボタンのブリンクアクションを作成する
-    CCBlink *action = [CCBlink actionWithDuration:0.2f blinks:2];
-    
-    // ボタンを取得する
-    CCNode *button = [self.interface getChildByTag:kAKTitleMenuGame];
-    
-    // ブリンクアクションを開始する
-    [button runAction:action];
+    // ボタン選択エフェクトを発生させる
+    [self selectButton:kAKTitleMenuGame];
     
     // ゲームシーンへの遷移を作成する
     CCTransitionFade *transition = [CCTransitionFade transitionWithDuration:0.5f scene:[AKGameScene sharedInstance]];
@@ -183,22 +190,32 @@ enum {
 {
     DBGLOG(0, @"startHowTo");
     
-    // メニュー選択時の効果音を鳴らす
-    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
-
-    // ボタンのブリンクアクションを作成する
-    CCBlink *action = [CCBlink actionWithDuration:0.2f blinks:2];
-    
-    // ボタンを取得する
-    CCNode *button = [self.interface getChildByTag:kAKTitleMenuHowTo];
-    
-    // ブリンクアクションを開始する
-    [button runAction:action];
+    // ボタン選択エフェクトを発生させる
+    [self selectButton:kAKTitleMenuHowTo];
     
     // 遊び方シーンへの遷移を作成する
     CCTransitionFade *transition = [CCTransitionFade transitionWithDuration:0.5f scene:[AKHowToPlayScene node]];
     
     // 遊び方シーンへ遷移する
+    [[CCDirector sharedDirector] replaceScene:transition];
+}
+
+/*!
+ @brief オプション画面の開始
+ 
+ オプション画面を開始する。オプションシーンを開始する
+ */
+- (void)startOption
+{
+    DBGLOG(1, @"startOption");
+
+    // ボタン選択エフェクトを発生させる
+    [self selectButton:kAKTitleMenuOption];
+    
+    // オプションシーンへの遷移を作成する
+    CCTransitionFade *transition = [CCTransitionFade transitionWithDuration:0.5f scene:[AKOptionScene node]];
+    
+    // オプションシーンへ遷移する
     [[CCDirector sharedDirector] replaceScene:transition];
 }
 
@@ -210,8 +227,32 @@ enum {
 - (void)startCredit
 {
     DBGLOG(1, @"startCredit");
+
+    // ボタン選択エフェクトを発生させる
+    [self selectButton:kAKTitleMenuCredit];
+    
+}
+
+/*!
+ @brief ボタン選択エフェクト
+ 
+ ボタン選択時のエフェクトを表示する。
+ 効果音を鳴らし、ボタンをブリンクする。
+ @param tag ボタンのタグ
+ */
+- (void)selectButton:(NSInteger)tag
+{
     // メニュー選択時の効果音を鳴らす
     [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
     
+    // ボタンのブリンクアクションを作成する
+    CCBlink *action = [CCBlink actionWithDuration:0.2f blinks:2];
+    
+    // ボタンを取得する
+    CCNode *button = [self.interface getChildByTag:tag];
+    
+    // ブリンクアクションを開始する
+    [button runAction:action];
 }
+
 @end

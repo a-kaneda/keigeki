@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "cocos2d.h"
+#import "AKNavigationController.h"
 
 // Application controller
 @interface AppController : NSObject <UIApplicationDelegate, CCDirectorDelegate>
@@ -15,7 +16,7 @@
     /// Main window
 	UIWindow *window_;
     /// Navigation controller
-	UINavigationController *navController_;
+	AKNavigationController *navController_;
     /// Director
 	CCDirectorIOS	*director_;							// weak ref
 }

@@ -17,6 +17,9 @@
 		0C03CCD315FCD515003AA059 /* BackButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C03CCD215FCD514003AA059 /* BackButton.png */; };
 		0C03CCD515FCD529003AA059 /* NextButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C03CCD415FCD527003AA059 /* NextButton.png */; };
 		0C03CCD715FCD539003AA059 /* PrevButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C03CCD615FCD539003AA059 /* PrevButton.png */; };
+		0C183EC716293D4200B40B7B /* AKGameCenterHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C183EC616293D4200B40B7B /* AKGameCenterHelper.m */; };
+		0C183ECB162984E800B40B7B /* AKNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C183ECA162984E800B40B7B /* AKNavigationController.m */; };
+		0C183ECE162A838100B40B7B /* AKOptionScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C183ECD162A838000B40B7B /* AKOptionScene.m */; };
 		0C1928AF15D9361A00496717 /* Marker.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C1928AE15D9361A00496717 /* Marker.png */; };
 		0C1928B215D9362800496717 /* Radar.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C1928B115D9362800496717 /* Radar.png */; };
 		0C1928B515D99CD000496717 /* AKRadar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C1928B415D99CCF00496717 /* AKRadar.m */; };
@@ -251,6 +254,12 @@
 		0C03CCD215FCD514003AA059 /* BackButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BackButton.png; sourceTree = "<group>"; };
 		0C03CCD415FCD527003AA059 /* NextButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NextButton.png; sourceTree = "<group>"; };
 		0C03CCD615FCD539003AA059 /* PrevButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PrevButton.png; sourceTree = "<group>"; };
+		0C183EC516293D4200B40B7B /* AKGameCenterHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKGameCenterHelper.h; sourceTree = "<group>"; };
+		0C183EC616293D4200B40B7B /* AKGameCenterHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKGameCenterHelper.m; sourceTree = "<group>"; };
+		0C183EC9162984E800B40B7B /* AKNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKNavigationController.h; sourceTree = "<group>"; };
+		0C183ECA162984E800B40B7B /* AKNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKNavigationController.m; sourceTree = "<group>"; };
+		0C183ECC162A838000B40B7B /* AKOptionScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKOptionScene.h; sourceTree = "<group>"; };
+		0C183ECD162A838000B40B7B /* AKOptionScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKOptionScene.m; sourceTree = "<group>"; };
 		0C1928AE15D9361A00496717 /* Marker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Marker.png; sourceTree = "<group>"; };
 		0C1928B115D9362800496717 /* Radar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Radar.png; sourceTree = "<group>"; };
 		0C1928B315D99CCF00496717 /* AKRadar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKRadar.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -797,6 +806,12 @@
 				0C03CCBA15F93FB9003AA059 /* AKTitleScene.m */,
 				0C03CCCF15FCA912003AA059 /* AKHowToPlayScene.h */,
 				0C03CCD015FCA91F003AA059 /* AKHowToPlayScene.m */,
+				0C183ECC162A838000B40B7B /* AKOptionScene.h */,
+				0C183ECD162A838000B40B7B /* AKOptionScene.m */,
+				0C183EC516293D4200B40B7B /* AKGameCenterHelper.h */,
+				0C183EC616293D4200B40B7B /* AKGameCenterHelper.m */,
+				0C183EC9162984E800B40B7B /* AKNavigationController.h */,
+				0C183ECA162984E800B40B7B /* AKNavigationController.m */,
 				0C2A3A2015D64B12005B9272 /* StageScript */,
 				0C03CCC315FC5D7E003AA059 /* Languages */,
 				0C37060615C6BEC900295D96 /* Resources */,
@@ -1477,6 +1492,9 @@
 				0C03CCBB15F93FBD003AA059 /* AKTitleScene.m in Sources */,
 				0C03CCD115FCA927003AA059 /* AKHowToPlayScene.m in Sources */,
 				0CE2AE6B1616EEDB00FD3AE3 /* AKScreenSize.m in Sources */,
+				0C183EC716293D4200B40B7B /* AKGameCenterHelper.m in Sources */,
+				0C183ECB162984E800B40B7B /* AKNavigationController.m in Sources */,
+				0C183ECE162A838100B40B7B /* AKOptionScene.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

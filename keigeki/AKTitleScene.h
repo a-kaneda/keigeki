@@ -20,7 +20,11 @@
 - (void)startGame;
 // 遊び方画面の開始
 - (void)startHowTo;
+// オプション画面の開始
+- (void)startOption;
 // クレジット画面の開始
 - (void)startCredit;
+// ボタン選択エフェクト
+- (void)selectButton:(NSInteger)tag;
 
 @end

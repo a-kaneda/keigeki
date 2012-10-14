@@ -11,6 +11,7 @@
 #import "AppDelegate.h"
 #import "AKTitleScene.h"
 #import "AKGameScene.h"
+#import "AKGameCenterHelper.h"
 
 /*!
  @brief Application controller
@@ -90,7 +91,7 @@
 	[director_ runWithScene:[AKTitleScene node]];
 	
 	// Create a Navigation Controller with the Director
-	navController_ = [[UINavigationController alloc] initWithRootViewController:director_];
+	navController_ = [[AKNavigationController alloc] initWithRootViewController:director_];
 	navController_.navigationBarHidden = YES;
 	
 	// set the Navigation Controller as the root view controller
@@ -99,6 +100,9 @@
 	
 	// make main window visible
 	[window_ makeKeyAndVisible];
+    
+    // Game Centerの認証を行う
+    [[AKGameCenterHelper sharedHelper] authenticateLocalPlayer];
         
 	return YES;
 }
@@ -107,12 +111,13 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     if (UIInterfaceOrientationLandscapeRight == interfaceOrientation) {
+        DBGLOG(1, @"return YES");
         return YES;
     } else {
+        DBGLOG(1, @"return NO");
         return NO;
     }
 }
-
 
 // getting a call, pause the game
 -(void) applicationWillResignActive:(UIApplication *)application

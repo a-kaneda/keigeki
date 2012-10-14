@@ -8,6 +8,7 @@
 #import <GameKit/GameKit.h>
 #import "AKGameCenterHelper.h"
 #import "AKNavigationController.h"
+#import "common.h"
 
 /// 傾撃ハイスコアのカテゴリ
 static NSString *kAKGameCenterScoreCategory = @"keigeki_score";
@@ -132,7 +133,9 @@ static AKGameCenterHelper *g_instance = nil;
         
         // エラー発生時は送信内容をアーカイブして、後で送信できるようにする
         if (error != nil) {
-            
+            DBGLOG(1, @"ハイスコア送信に失敗:score=%d", score);
+        } else {
+            DBGLOG(1, @"ハイスコア送信完了:score=%d", score);
         }
     }];
 }

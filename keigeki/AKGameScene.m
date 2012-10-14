@@ -17,6 +17,7 @@
 #import "AKTitleScene.h"
 #import "AKScreenSize.h"
 #import "SimpleAudioEngine.h"
+#import "AKGameCenterHelper.h"
 
 /// 情報レイヤーに配置するノードのタグ
 enum {
@@ -732,7 +733,7 @@ static AKGameScene *g_scene = nil;
     
     // ゲームオーバーになっていた場合はハイスコアをファイルに書き込む
     // (ゲームオーバーになった時点で書き込みを行わないのはupdateの途中でスコアが変動する可能性があるため)
-    if (self.state == kAKGameStateGameOver) {
+    if (self.state == kAKGameStateSleep && m_nextState == kAKGameStateGameOver) {
         // ハイスコアをファイルに書き込む
         [self writeHiScore];
     }
@@ -1441,6 +1442,8 @@ static AKGameScene *g_scene = nil;
  */
 - (void)readHiScore
 {
+    DBGLOG(1, @"start readHiScore");
+    
     // HOMEディレクトリのパスを取得する
     NSString *homeDir = NSHomeDirectory();
     
@@ -1467,6 +1470,8 @@ static AKGameScene *g_scene = nil;
         
         // メンバに読み込む
         m_hiScore = hiScore.hiscore;
+        
+        DBGLOG(1, @"m_hiScore=%d", m_hiScore);
     }
 }
 
@@ -1477,6 +1482,8 @@ static AKGameScene *g_scene = nil;
  */
 - (void)writeHiScore
 {
+    DBGLOG(1, @"start writeHiScore:m_hiScore=%d", m_hiScore);
+    
     // HOMEディレクトリのパスを取得する
     NSString *homeDir = NSHomeDirectory();
     
@@ -1504,6 +1511,9 @@ static AKGameScene *g_scene = nil;
     
     // ファイルを書き込む
     [data writeToFile:filePath atomically:YES];
+    
+    // Game Centerにハイスコアを送信する
+    [[AKGameCenterHelper sharedHelper] reportHiScore:m_hiScore];
 }
 
 /*!

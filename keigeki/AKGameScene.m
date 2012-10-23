@@ -62,12 +62,16 @@ static const NSInteger kAKEnemyShotCount = 64;
 static const NSInteger kAKMaxEffectCount = 16;
 
 /// 初期残機数
-static const NSInteger kAKStartLifeCount = 0;
+static const NSInteger kAKStartLifeCount = 3;
 /// 自機復活までの間隔
 static const float kAKRebirthInterval = 1.0f;
+/// 短時間クリアの実績解除の時間
+static const float kAKClearShortTime = 300.0f;
+/// 1UPするスコア
+static const NSInteger kAKExtendScore = 50000;
 
 /// 1ステージのウェイブの数
-static const NSInteger kAKWaveCount = 10;
+static const NSInteger kAKWaveCount = 1;
 /// ステージの数
 static const NSInteger kAKStageCount = 5;
 /// ウェイブが始まるまでの間隔
@@ -174,6 +178,8 @@ static NSString *kAKShotSE = @"Shot.caf";
 static NSString *kAKPauseSE = @"Pause.caf";
 /// 破壊時の効果音
 static NSString *kAKHitSE = @"Hit.caf";
+/// エクステンド時の効果音
+static NSString *kAK1UpSE = @"1Up.caf";
 
 /*!
  @brief ゲームプレイシーン
@@ -235,6 +241,7 @@ static AKGameScene *g_scene = nil;
     [[SimpleAudioEngine sharedEngine] preloadEffect:kAKShotSE];
     [[SimpleAudioEngine sharedEngine] preloadEffect:kAKPauseSE];
     [[SimpleAudioEngine sharedEngine] preloadEffect:kAKHitSE];
+    [[SimpleAudioEngine sharedEngine] preloadEffect:kAK1UpSE];
 
     // キャラクターを配置するレイヤーを生成する
     CCLayer *baseLayer = [CCLayer node];
@@ -959,6 +966,9 @@ static AKGameScene *g_scene = nil;
         // ライフを一つ減らす
         m_life--;
         
+        // 撃墜された数をカウントする
+        m_missCount++;
+        
         // 残機の表示を更新する
         [self.lifeMark updateImage:m_life];
         
@@ -1003,6 +1013,7 @@ static AKGameScene *g_scene = nil;
     m_score = 0;
     m_shotCount = 0;
     m_hitCount = 0;
+    m_missCount = 0;
     m_playTime = 0.0f;
     
     // 残機マークの初期個数を反映させる
@@ -1037,7 +1048,22 @@ static AKGameScene *g_scene = nil;
  スコアを加算する。
  */
 - (void)addScore:(NSInteger)score
-{    
+{
+    // エクステンドの判定を行う
+    if ((int)(m_score / kAKExtendScore) < (int)((m_score + score) / kAKExtendScore)) {
+        
+        DBGLOG(1, @"エクステンド:m_score=%d score=%d しきい値=%d", m_score, score, kAKExtendScore);
+        
+        // エクステンドの効果音を鳴らす
+        [[SimpleAudioEngine sharedEngine] playEffect:kAK1UpSE];
+        
+        // 残機の数を増やす
+        m_life++;
+        
+        // 実績を解除する
+        [[AKGameCenterHelper sharedHelper] reportAchievements:kAKGC1UpID];
+    }
+    
     // スコアを加算する
     m_score += score;
     
@@ -1313,6 +1339,25 @@ static AKGameScene *g_scene = nil;
                             atPos:ccp([AKScreenSize center].x, [AKScreenSize center].y)
                               tag:kAKInfoTagStageClear
                             frame:kAKLabelFrameNone];
+        
+        // ステージクリアの実績を解除する
+        [[AKGameCenterHelper sharedHelper] reportStageClear:m_stageNo];
+        
+        // ステージクリア数の実績を増加させる
+        [[AKGameCenterHelper sharedHelper] reportAchievements:kAKGCPlayCountID percentIncrement:1.0f];
+        
+        // 撃墜された数が0の場合は実績を解除する
+        if (m_missCount <= 0) {
+            [[AKGameCenterHelper sharedHelper] reportAchievements:kAKGCNoMissID];
+        }
+        
+        // 撃墜された数を初期化する
+        m_missCount = 0;
+        
+        // プレイ時間がしきい値以下の場合は実績を解除する
+        if (m_playTime < kAKClearShortTime) {
+            [[AKGameCenterHelper sharedHelper] reportAchievements:kAKGCShortTimeID];
+        }
     }
     // ステージクリアでない場合は次のウェーブのスクリプトを読み込む
     else {
@@ -1356,7 +1401,7 @@ static AKGameScene *g_scene = nil;
     [self removeChildByTag:kAKLayerPosZResult cleanup:YES];
     
     // まだ全ステージをクリアしていない場合は次のステージを開始する
-    if (m_stageNo < kAKStageCount) {
+    if (m_stageNo <= kAKStageCount) {
         
         // プレイ中BGMを開始する
         [[SimpleAudioEngine sharedEngine] playBackgroundMusic:kAKPlayBGM loop:YES];
@@ -1482,7 +1527,7 @@ static AKGameScene *g_scene = nil;
  */
 - (void)writeHiScore
 {
-    DBGLOG(1, @"start writeHiScore:m_hiScore=%d", m_hiScore);
+    DBGLOG(1, @"start writeHiScore:m_hiScore=%d m_score=%d", m_hiScore, m_score);
     
     // HOMEディレクトリのパスを取得する
     NSString *homeDir = NSHomeDirectory();
@@ -1512,8 +1557,8 @@ static AKGameScene *g_scene = nil;
     // ファイルを書き込む
     [data writeToFile:filePath atomically:YES];
     
-    // Game Centerにハイスコアを送信する
-    [[AKGameCenterHelper sharedHelper] reportHiScore:m_hiScore];
+    // Game Centerにスコアを送信する
+    [[AKGameCenterHelper sharedHelper] reportHiScore:m_score];
 }
 
 /*!
@@ -1747,6 +1792,9 @@ static AKGameScene *g_scene = nil;
 {
     // メニュー選択時の効果音を鳴らす
     [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
+    
+    // ハイスコアをファイルに書き込む
+    [self writeHiScore];
 
     // 終了メニューを削除する
     [[self getChildByTag:kAKLayerPosZInfo] removeChildByTag:kAKInfoTagQuitMessage cleanup:YES];

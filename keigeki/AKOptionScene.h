@@ -17,6 +17,8 @@
 
 // Leaderboardボタン取得
 - (CCNode *)leaderboard;
+// Achievementsボタン取得
+- (CCNode *)achievements;
 // Leaderboardボタン選択時の処理
 - (void)selectLeaerboard;
 // Achievementsボタン選択時の処理
@@ -27,5 +29,9 @@
 - (void)selectTwitterOn;
 // 戻るボタン選択時の処理
 - (void)selectBack;
+// Leaderboard表示
+- (void)showLeaderboard;
+// Achievements表示
+- (void)showAchievements;
 
 @end

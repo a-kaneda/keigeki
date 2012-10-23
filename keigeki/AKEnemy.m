@@ -8,11 +8,14 @@
 #import "SimpleAudioEngine.h"
 #import "AKEnemy.h"
 #import "AKGameScene.h"
+#import "AKGameCenterHelper.h"
 
 /// 敵を倒したときのスコア
 static const NSInteger kAKEnemyScore = 100;
 /// 破壊時の効果音
 static NSString *kAKHitSE = @"Hit.caf";
+/// 背面攻撃の実績解除のcosしきい値
+static float kAKBackShortCos = -0.95f;
 
 /*!
  @brief 敵クラス
@@ -62,6 +65,12 @@ static NSString *kAKHitSE = @"Hit.caf";
     destAngle = AKCalcDestAngle(self.image.position.x, self.image.position.y,
                                 AKPlayerPosX(), AKPlayerPosY());
     score = kAKEnemyScore * (2 - cos(destAngle - self.angle));
+    
+    DBGLOG(1, @"destAngle=%f self.angle=%f cos()=%f", destAngle, self.angle, cos(destAngle - self.angle));
+    // cos値が背面攻撃のしきい値よりも小さい場合は実績を解除する
+    if (cos(destAngle - self.angle) < kAKBackShortCos) {
+        [[AKGameCenterHelper sharedHelper] reportAchievements:kAKGCBackShootID];
+    }
     
     // スコアを加算する
     [[AKGameScene sharedInstance] addScore:score];

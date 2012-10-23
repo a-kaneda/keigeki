@@ -9,6 +9,6 @@
 #import <GameKit/GameKit.h>
 
 // UINavigationControllerのカスタマイズ
-@interface AKNavigationController : UINavigationController<GKLeaderboardViewControllerDelegate>
+@interface AKNavigationController : UINavigationController<GKLeaderboardViewControllerDelegate, GKAchievementViewControllerDelegate>
 
 @end

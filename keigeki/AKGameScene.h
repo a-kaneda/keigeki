@@ -58,6 +58,8 @@ enum AKEnemyType {
     NSInteger m_shotCount;
     /// ショット命中数
     NSInteger m_hitCount;
+    /// 撃墜された数
+    NSInteger m_missCount;
     /// 自機復活までの間隔
     float m_rebirthInterval;
     /// 次のウェーブ開始までの間隔

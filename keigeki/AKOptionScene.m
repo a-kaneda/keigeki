@@ -167,6 +167,24 @@ static const float kAKBackPosTopPoint = 26.0f;
 }
 
 /*!
+ @brief Achievementsボタン取得
+ 
+ Achievementsボタンのインスタンスを取得する。
+ @return Achievementsボタン
+ */
+- (CCNode *)achievements
+{
+    NSAssert([self getChildByTag:kAKOptionSceneInterface] != nil, @"インターフェースレイヤーが作成されていない");
+    NSAssert([[self getChildByTag:kAKOptionSceneInterface] getChildByTag:kAKMenuAchievements] != nil, @"Achievementsボタンが作成されていない");
+    return [[self getChildByTag:kAKOptionSceneInterface] getChildByTag:kAKMenuAchievements];
+}
+
+- (void)onEnter
+{
+    DBGLOG(1, @"onEnter");
+    [super onEnter];
+}
+/*!
  @brief Leaderboardボタン選択時の処理
  
  Leaderboardボタン選択時の処理。
@@ -177,17 +195,18 @@ static const float kAKBackPosTopPoint = 26.0f;
     // メニュー選択時の効果音を鳴らす
     [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
     
-    // ボタンのブリンクアクションを作成する
-    CCBlink *action = [CCBlink actionWithDuration:0.2f blinks:2];
+    // ボタンのブリンクアクションを作成する。
+    // ブリンクアクション終了後にLeaderboardを表示する。
+    // ブリンクアクションの途中でViewを表示させると、消えた状態でアニメーションが止まることがあるため。
+    CCBlink *blink = [CCBlink actionWithDuration:0.2f blinks:2];
+    CCCallFunc *callFunc = [CCCallFunc actionWithTarget:self selector:@selector(showLeaderboard)];
+    CCSequence *action = [CCSequence actions:blink, callFunc, nil];
     
     // ボタンを取得する
     CCNode *button = self.leaderboard;
     
     // ブリンクアクションを開始する
     [button runAction:action];
-    
-    // Leaderboardを表示する
-    [[AKGameCenterHelper sharedHelper] showLeaderboard];
 }
 
 /*!
@@ -198,7 +217,21 @@ static const float kAKBackPosTopPoint = 26.0f;
  */
 - (void)selectAchievements
 {
+    // メニュー選択時の効果音を鳴らす
+    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
     
+    // ボタンのブリンクアクションを作成する
+    // ブリンクアクション終了後にAchievementsを表示する。
+    // ブリンクアクションの途中でViewを表示させると、消えた状態でアニメーションが止まることがあるため。
+    CCBlink *blink = [CCBlink actionWithDuration:0.2f blinks:2];
+    CCCallFunc *callFunc = [CCCallFunc actionWithTarget:self selector:@selector(showAchievements)];
+    CCSequence *action = [CCSequence actions:blink, callFunc, nil];
+    
+    // ボタンを取得する
+    CCNode *button = self.achievements;
+    
+    // ブリンクアクションを開始する
+    [button runAction:action];
 }
 
 // Twitter連携Offボタン選択時の処理
@@ -225,4 +258,35 @@ static const float kAKBackPosTopPoint = 26.0f;
     // タイトルシーンへ遷移する
     [[CCDirector sharedDirector] replaceScene:transition];
 }
+
+/*!
+ @brief Leaderboard表示
+ 
+ Leaderboardを表示する。
+ ボタンのブリンクアクション終了時に呼ばれるので、Leaderboard表示前にボタンのvisibleを表示に変更する。
+ */
+- (void)showLeaderboard
+{
+    // ブリンク終了直後はボタン非表示になっているため、表示を元に戻す
+    self.leaderboard.visible = YES;
+    
+    // Achievementsを表示する
+    [[AKGameCenterHelper sharedHelper] showLeaderboard];
+}
+
+/*! 
+ @brief Achievements表示
+
+ Achievementsを表示する。
+ ボタンのブリンクアクション終了時に呼ばれるので、Achievements表示前にボタンのvisibleを表示に変更する。
+ */
+- (void)showAchievements
+{
+    // ブリンク終了直後はボタン非表示になっているため、表示を元に戻す
+    self.achievements.visible = YES;
+    
+    // Achievementsを表示する
+    [[AKGameCenterHelper sharedHelper] showAchievements];
+}
+
 @end

@@ -191,8 +191,6 @@
 {
     // メニュー項目の位置と大きさ
     CGRect rect;
-    // メニュー表示オブジェクト
-    CCNode *object = nil;
     
     // ファイル名が指定されている場合は画像ファイルを読み込む
     if (filename != nil) {
@@ -214,8 +212,6 @@
         rect.origin = ccp(item.position.x - item.contentSize.width / 2,
                           item.position.y - item.contentSize.height / 2);
         
-        // ボタン画像を表示オブジェクトに設定する
-        object = item;
     }
     // ファイル名が指定されていない場合、メニュー項目の位置と大きさは画面全体とする
     else {

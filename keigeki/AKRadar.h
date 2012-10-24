@@ -7,14 +7,14 @@
 
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
-#import "common.h"
+#import "AKCommon.h"
 
 // レーダークラス
 @interface AKRadar : CCNode {
     /// レーダーの画像
-    CCSprite *m_radarImage;
+    CCSprite *radarImage_;
     /// マーカーの画像
-    NSMutableArray *m_markerImage;
+    NSMutableArray *markerImage_;
 }
 
 /// レーダーの画像

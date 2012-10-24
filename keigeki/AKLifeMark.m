@@ -19,7 +19,7 @@ static const NSInteger kAKLifeMarkInterval = 20;
  */
 @implementation AKLifeMark
 
-@synthesize imageArray = m_imageArray;
+@synthesize imageArray = imageArray_;
 
 /*!
  @brief オブジェクト生成処理

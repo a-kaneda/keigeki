@@ -6,7 +6,7 @@
  */
 
 #import "AKHowToPlayScene.h"
-#import "common.h"
+#import "AKCommon.h"
 #import "AKTitleScene.h"
 #import "AKScreenSize.h"
 #import "SimpleAudioEngine.h"
@@ -218,7 +218,7 @@ static const NSInteger kAKHowToPageCount = 3;
  */
 - (NSInteger)pageNo
 {
-    return m_pageNo;
+    return pageNo_;
 }
 
 /*! 
@@ -232,7 +232,7 @@ static const NSInteger kAKHowToPageCount = 3;
     NSAssert(pageNo > 0 || pageNo <= kAKHowToPageCount, @"ページ番号が範囲外");
     
     // ページ番号を変更する
-    m_pageNo = pageNo;
+    pageNo_ = pageNo;
     
     // 前ページ次ページボタンの表示を更新する
     [self updatePageButton];
@@ -241,7 +241,7 @@ static const NSInteger kAKHowToPageCount = 3;
     [self updatePageLabel];
     
     // 表示文字列のキーを生成する
-    NSString *key = [NSString stringWithFormat:@"HowToPlay_%d", m_pageNo];
+    NSString *key = [NSString stringWithFormat:@"HowToPlay_%d", pageNo_];
     
     // 表示文字列を取得する
     NSString *string = NSLocalizedString(key, @"プレイ方法の説明");
@@ -260,7 +260,7 @@ static const NSInteger kAKHowToPageCount = 3;
 - (void)updatePageButton
 {
     // 最初のページの場合は前ページボタンを無効にする
-    if (m_pageNo == 1) {
+    if (pageNo_ == 1) {
         
         // インターフェースの有効タグを前ページの次の項目からとする
         [self.interface setEnableItemTagStart:kAKHowToPrevTag + 1];
@@ -279,7 +279,7 @@ static const NSInteger kAKHowToPageCount = 3;
     }
     
     // 最後のページの場合は次ページボタンを無効にする
-    if (m_pageNo == kAKHowToPageCount) {
+    if (pageNo_ == kAKHowToPageCount) {
         
         // インターフェースの有効タグを次ページの前の項目までとする
         [self.interface setEnableItemTagEnd:kAKHowToNextTag - 1];
@@ -306,7 +306,7 @@ static const NSInteger kAKHowToPageCount = 3;
 - (void)updatePageLabel
 {
     // ページ番号の文字列を作成する
-    NSString *pageString = [NSString stringWithFormat:kAKHowToPageFormat, m_pageNo, kAKHowToPageCount];
+    NSString *pageString = [NSString stringWithFormat:kAKHowToPageFormat, pageNo_, kAKHowToPageCount];
     
     // ページ番号のラベルを更新する
     [self.pageLabel setString:pageString];
@@ -319,7 +319,7 @@ static const NSInteger kAKHowToPageCount = 3;
  */
 - (void)goPrevPage
 {
-    DBGLOG(0, @"goPrevPage開始");
+    AKLog(0, @"goPrevPage開始");
     
     // メニュー選択時の効果音を鳴らす
     [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
@@ -334,7 +334,7 @@ static const NSInteger kAKHowToPageCount = 3;
  */
 - (void)goNextPage
 {
-    DBGLOG(0, @"goNextPage開始");
+    AKLog(0, @"goNextPage開始");
     
     // メニュー選択時の効果音を鳴らす
     [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
@@ -349,7 +349,7 @@ static const NSInteger kAKHowToPageCount = 3;
  */
 - (void)backToTitle
 {
-    DBGLOG(0, @"backToTitle開始");
+    AKLog(0, @"backToTitle開始");
 
     // メニュー選択時の効果音を鳴らす
     [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];

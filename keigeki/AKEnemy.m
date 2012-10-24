@@ -35,13 +35,13 @@ static float kAKBackShortCos = -0.95f;
     NSNumber *objdt = NULL;     // フレーム更新間隔(オブジェクト版)
     
     // 動作開始からの経過時間をカウントする
-    m_time += dt;
+    time_ += dt;
     
     // id型として渡すためにNSNumberを作成する
     objdt = [NSNumber numberWithFloat:dt];
     
     // 敵種別ごとの処理を実行
-    [self performSelector:m_action withObject:objdt];
+    [self performSelector:action_ withObject:objdt];
 }
 
 /*!
@@ -58,7 +58,7 @@ static float kAKBackShortCos = -0.95f;
     [[SimpleAudioEngine sharedEngine] playEffect:kAKHitSE];
     
     // 敵種別ごとの処理を実行
-    [self performSelector:m_destroy];
+    [self performSelector:destroy_];
     
     // 敵の向きによって加算するスコアを変える。
     // 後ろを向いている場合が最大とする。
@@ -66,7 +66,7 @@ static float kAKBackShortCos = -0.95f;
                                 AKPlayerPosX(), AKPlayerPosY());
     score = kAKEnemyScore * (2 - cos(destAngle - self.angle));
     
-    DBGLOG(1, @"destAngle=%f self.angle=%f cos()=%f", destAngle, self.angle, cos(destAngle - self.angle));
+    AKLog(1, @"destAngle=%f self.angle=%f cos()=%f", destAngle, self.angle, cos(destAngle - self.angle));
     // cos値が背面攻撃のしきい値よりも小さい場合は実績を解除する
     if (cos(destAngle - self.angle) < kAKBackShortCos) {
         [[AKGameCenterHelper sharedHelper] reportAchievements:kAKGCBackShootID];
@@ -102,10 +102,10 @@ static float kAKBackShortCos = -0.95f;
     self.angle = angle;
     
     // 配置フラグを立てる
-    m_isStaged = YES;
+    isStaged_ = YES;
     
     // 動作時間をクリアする
-    m_time = 0;
+    time_ = 0;
     
     // 種別ごとの固有生成処理を実行する
     [self performSelector:create];

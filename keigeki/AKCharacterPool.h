@@ -12,13 +12,13 @@
 // キャラクタープールクラス
 @interface AKCharacterPool : NSObject {
     /// キャラクターを管理する配列
-    NSMutableArray *m_pool;
+    NSMutableArray *pool_;
     /// キャラクターのクラス
-    Class m_class;
+    Class class_;
     /// 配列サイズ
-    NSInteger m_size;
+    NSInteger size_;
     /// 次にキャラクターを追加するインデックス
-    NSInteger m_next;
+    NSInteger next_;
 }
 
 /// キャラクターを管理する配列

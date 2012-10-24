@@ -7,7 +7,7 @@
 
 #import "AKLabel.h"
 #import "AKFont.h"
-#import "common.h"
+#import "AKCommon.h"
 
 /// 左上の枠のキー
 static NSString *kAKTopLeft = @"TopLeft";
@@ -149,9 +149,9 @@ enum {
     assert(line > 0);
     
     // パラメータをメンバに設定する
-    m_length = length;
-    m_line = line;
-    m_frame = frame;
+    length_ = length;
+    line_ = line;
+    frame_ = frame;
     
     // 文字表示用バッチノードを生成する
     [self addChild:[CCSpriteBatchNode batchNodeWithTexture:[AKFont sharedInstance].fontTexture capacity:length * line]
@@ -159,14 +159,14 @@ enum {
                tag:kAKLabelBatchPosZ];
     
     // 枠付きの場合は枠の生成を行う
-    if (m_frame != kAKLabelFrameNone) {
+    if (frame_ != kAKLabelFrameNone) {
         [self createFrame];
     }
     
     // 各文字のスプライトを生成し、バッチノードへ登録する
-    for (int y = 0; y < m_line; y++) {
+    for (int y = 0; y < line_; y++) {
         
-        for (int x = 0; x < m_length; x++) {
+        for (int x = 0; x < length_; x++) {
                 
             // フォントクラスからスプライトフレームを生成する
             CCSpriteFrame *charSpriteFrame = [[AKFont sharedInstance] spriteFrameOfChar:' '];
@@ -178,11 +178,11 @@ enum {
             // テキスト領域の中央とバッチノードの中央を一致させるため、
             // 左に1行の長さの半分、上方向に行数の半分移動する。
             // 行間に0.5文字分の隙間を入れるため、高さは1.5倍する。
-            charSprite.position = ccp((x - (m_length - 1) / 2.0f) * kAKFontSize,
-                                      (-y + (m_line - 1) / 2.0f) * kAKFontSize * kAKLabelLineHeight);
+            charSprite.position = ccp((x - (length_ - 1) / 2.0f) * kAKFontSize,
+                                      (-y + (line_ - 1) / 2.0f) * kAKFontSize * kAKLabelLineHeight);
             
             // 先頭からの文字数をタグにする
-            charSprite.tag = x + y * m_length;
+            charSprite.tag = x + y * length_;
             
             // バッチノードに登録する
             [self.labelBatch addChild:charSprite];
@@ -254,7 +254,7 @@ enum {
  */
 - (NSString *)string
 {
-    return m_labelString;
+    return labelString_;
 }
 
 /*!
@@ -265,10 +265,10 @@ enum {
  */
 - (void)setString:(NSString *)label
 {
-    DBGLOG(0, @"start setString:");
+    AKLog(0, @"start setString:");
     
     // 文字列が表示可能文字数を超えている場合はエラー
-    assert(label.length <= m_length * m_line);
+    assert(label.length <= length_ * line_);
     
     // パラメータをメンバに設定する
     self.labelString = [[label copy] autorelease];
@@ -276,15 +276,15 @@ enum {
     // 各文字のスプライトを変更する
     int charpos = 0;
     BOOL isNewLine = NO;
-    for (int y = 0; y < m_line; y++) {
+    for (int y = 0; y < line_; y++) {
         
         // 改行フラグを落とす
         isNewLine = NO;
         
-        for (int x = 0; x < m_length; x++) {
+        for (int x = 0; x < length_; x++) {
             
             // バッチノードからスプライトを取り出す
-            CCSprite *charSprite = (CCSprite *)[self.labelBatch getChildByTag:x + y * m_length];
+            CCSprite *charSprite = (CCSprite *)[self.labelBatch getChildByTag:x + y * length_];
 
             unichar c = ' ';
             
@@ -304,7 +304,7 @@ enum {
                 c = ' ';
             }
             
-            DBGLOG(0, @"x=%d y=%d c=%C", x, y, c);
+            AKLog(0, @"x=%d y=%d c=%C", x, y, c);
             
             // フォントクラスからスプライトフレームを生成する
             CCSpriteFrame *charSpriteFrame = [[AKFont sharedInstance] spriteFrameOfChar:c];
@@ -340,7 +340,7 @@ enum {
  */
 - (NSInteger)width
 {
-    return [[self class] widthWithLength:m_length hasFrame:(m_frame != kAKLabelFrameNone)];
+    return [[self class] widthWithLength:length_ hasFrame:(frame_ != kAKLabelFrameNone)];
 }
 
 /*!
@@ -352,7 +352,7 @@ enum {
  */
 - (NSInteger)height
 {
-    return [[self class] heightWithLine:m_line hasFrame:(m_frame != kAKLabelFrameNone)];
+    return [[self class] heightWithLine:line_ hasFrame:(frame_ != kAKLabelFrameNone)];
 }
 
 /*!
@@ -386,7 +386,7 @@ enum {
     NSString *keyRightBar = nil;
     
     // 枠の種類に応じてキー文字列を切り替える
-    switch (m_frame) {
+    switch (frame_) {
             
         case kAKLabelFrameMessage:  // メッセージボックス
             
@@ -415,68 +415,68 @@ enum {
             break;
             
         default:
-            NSAssert(0, @"枠の種類が異常:m_frame=%d", m_frame);
+            NSAssert(0, @"枠の種類が異常:m_frame=%d", frame_);
             return;
     }
     
     // 枠示用バッチノードを生成する
     [self addChild:[CCSpriteBatchNode batchNodeWithTexture:[AKFont sharedInstance].fontTexture
-                                                  capacity:(m_length + 2) * (m_line * 1.5 + 2)]
+                                                  capacity:(length_ + 2) * (line_ * 1.5 + 2)]
                  z:kAKFrameBatchPosZ
                tag:kAKFrameBatchPosZ];
     
     // 行間に0.5文字分の隙間を空けるため、行数の1.5倍の高さを用意する。
     // 枠を入れるため、上下+-1個分用意する。
-    for (int y = -1; y < (int)(m_line * kAKLabelLineHeight) + 1; y++) {
+    for (int y = -1; y < (int)(line_ * kAKLabelLineHeight) + 1; y++) {
         
-        DBGLOG(0, @"y=%d pos=%f", y, (-y + m_line * kAKLabelLineHeight / 2.0f) * kAKFontSize);
+        AKLog(0, @"y=%d pos=%f", y, (-y + line_ * kAKLabelLineHeight / 2.0f) * kAKFontSize);
         
         // 枠を入れるため、左右+-1個分用意する。
-        for (int x = -1; x < m_length + 1; x++) {
+        for (int x = -1; x < length_ + 1; x++) {
             
-            DBGLOG(0 && y == -1, @"x=%d pos=%f", x, (x - m_length / 2.0f) * kAKFontSize);
+            AKLog(0 && y == -1, @"x=%d pos=%f", x, (x - length_ / 2.0f) * kAKFontSize);
             
             // キー文字列
             NSString *key = nil;
             
             // 左上の場合
             if (y == -1 && x == -1) {
-                DBGLOG(0, @"x=%d y=%d topleft", x, y);
+                AKLog(0, @"x=%d y=%d topleft", x, y);
                 key = keyTopLeft;
             }
             // 右上の場合
-            else if (y == -1 && x == m_length) {
-                DBGLOG(0, @"x=%d y=%d topright", x, y);
+            else if (y == -1 && x == length_) {
+                AKLog(0, @"x=%d y=%d topright", x, y);
                 key = keyTopRight;
             }
             // 左下の場合
-            else if (y == (int)(m_line * 1.5) && x == -1) {
-                DBGLOG(0, @"x=%d y=%d bottomleft", x, y);
+            else if (y == (int)(line_ * 1.5) && x == -1) {
+                AKLog(0, @"x=%d y=%d bottomleft", x, y);
                 key = keyBottomLeft;
             }
             // 右下の場合
-            else if (y == (int)(m_line * 1.5) && x == m_length) {
-                DBGLOG(0, @"x=%d y=%d bottomright", x, y);
+            else if (y == (int)(line_ * 1.5) && x == length_) {
+                AKLog(0, @"x=%d y=%d bottomright", x, y);
                 key = keyBottomRight;
             }
             // 上の場合
             else if (y == -1) {
-                DBGLOG(0, @"x=%d y=%d topbar", x, y);
+                AKLog(0, @"x=%d y=%d topbar", x, y);
                 key = keyTopBar;
             }
             // 左の場合
             else if (x == -1) {
-                DBGLOG(0, @"x=%d y=%d leftbar", x, y);
+                AKLog(0, @"x=%d y=%d leftbar", x, y);
                 key = keyLeftBar;
             }
             // 右の場合
-            else if (x == m_length) {
-                DBGLOG(0, @"x=%d y=%d rightbar", x, y);
+            else if (x == length_) {
+                AKLog(0, @"x=%d y=%d rightbar", x, y);
                 key = keyRightBar;
             }
             // 下の場合
-            else if (y == (int)(m_line * 1.5)) {
-                DBGLOG(0, @"x=%d y=%d bottombar", x, y);
+            else if (y == (int)(line_ * 1.5)) {
+                AKLog(0, @"x=%d y=%d bottombar", x, y);
                 key = keyBottomBar;
             }
             // 文字の部分の場合
@@ -493,8 +493,8 @@ enum {
             // 表示位置を設定する。
             // テキスト領域の中央とバッチノードの中央を一致させるため、
             // 左に1行の長さの半分、上方向に行数の半分移動する。
-            charSprite.position = ccp((x - (m_length - 1) / 2.0f) * kAKFontSize,
-                                      (-y + (m_line - 1) * kAKLabelLineHeight / 2.0f) * kAKFontSize);
+            charSprite.position = ccp((x - (length_ - 1) / 2.0f) * kAKFontSize,
+                                      (-y + (line_ - 1) * kAKLabelLineHeight / 2.0f) * kAKFontSize);
             
             // バッチノードに登録する
             [self.frameBatch addChild:charSprite];

@@ -42,26 +42,26 @@ static const float kAKExplosionFrameDelay = 0.2f;
 - (void)createNoraml
 {
     // 動作処理を設定する
-    m_action = @selector(actionNoraml:);
+    action_ = @selector(actionNoraml:);
     
     // 破壊処理を設定する
-    m_destroy = @selector(destroyNormal);
+    destroy_ = @selector(destroyNormal);
     
     // 画像を読み込む
     self.image = [CCSprite spriteWithFile:@"Enemy1.png"];
-    assert(m_image != nil);
+    assert(image_ != nil);
     
     // 当たり判定サイズを設定する
     self.width = kAKEnemySize;
     self.height = kAKEnemySize;
         
     // 速度を設定する
-    m_speed = kAKEnemySpeed;
+    speed_ = kAKEnemySpeed;
     
     // HPを設定する
-    m_hitPoint = 1;
+    hitPoint_ = 1;
     
-    DBGLOG(0, @"angle=%f", AKCnvAngleRad2Deg(m_angle));
+    AKLog(0, @"angle=%f", AKCnvAngleRad2Deg(angle_));
 }
 
 /*!
@@ -75,25 +75,25 @@ static const float kAKExplosionFrameDelay = 0.2f;
     int rotdirect = 0;      // 回転方向
     
     // 回転方向を自機のある方に決定する
-    rotdirect = AKCalcRotDirect(m_angle, self.image.position.x, self.image.position.y,
+    rotdirect = AKCalcRotDirect(angle_, self.image.position.x, self.image.position.y,
                                 AKPlayerPosX(), AKPlayerPosY());
     
     // 自機の方に向かって向きを回転する
     self.rotSpeed = rotdirect * kAKEnemyRotSpeed;
-    DBGLOG(0, @"rotspeed=%f roddirect=%d", m_rotSpeed, rotdirect);
+    AKLog(0, @"rotspeed=%f roddirect=%d", rotSpeed_, rotdirect);
     
     // 一定時間経過しているときは自機を狙う1-way弾を発射する
-    if (m_time > kAKEnemyActionTime) {
+    if (time_ > kAKEnemyActionTime) {
         
         // 弾を発射する
         [self fireNormal];
         
         // 動作時間の初期化を行う
-        m_time = 0.0f;
+        time_ = 0.0f;
     }
     
-    DBGLOG(0, @"pos=(%f, %f) angle=%f", self.image.position.x, self.image.position.y,
-           AKCnvAngleRad2Deg(m_angle));
+    AKLog(0, @"pos=(%f, %f) angle=%f", self.image.position.x, self.image.position.y,
+           AKCnvAngleRad2Deg(angle_));
 }
 
 /*!

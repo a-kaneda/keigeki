@@ -6,7 +6,7 @@
  */
 
 #import "AKHiScoreFile.h"
-#import "common.h"
+#import "AKCommon.h"
 
 /// ファイルバージョン番号
 static const NSInteger kAKDataFileVersion = 0x0100;
@@ -22,7 +22,7 @@ static NSString *kAKHiScoreKey = @"hiScore";
  */
 @implementation AKHiScoreFile
 
-@synthesize hiscore = m_hiScore;
+@synthesize hiscore = hiScore_;
 
 /*!
  @brief オブジェクト生成処理
@@ -39,7 +39,7 @@ static NSString *kAKHiScoreKey = @"hiScore";
     }
     
     // データを初期化する
-    m_hiScore = 0;
+    hiScore_ = 0;
 
     return self;
 }
@@ -59,7 +59,7 @@ static NSString *kAKHiScoreKey = @"hiScore";
     }
 
     // ハイスコア
-    m_hiScore = [aDecoder decodeIntegerForKey:kAKHiScoreKey];
+    hiScore_ = [aDecoder decodeIntegerForKey:kAKHiScoreKey];
     
     return self;
 }
@@ -76,6 +76,6 @@ static NSString *kAKHiScoreKey = @"hiScore";
     [aCoder encodeInteger:kAKDataFileVersion forKey:kAKVersionKey];
     
     // ハイスコア
-    [aCoder encodeInteger:m_hiScore forKey:kAKHiScoreKey];
+    [aCoder encodeInteger:hiScore_ forKey:kAKHiScoreKey];
 }
 @end

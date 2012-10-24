@@ -158,7 +158,6 @@
 		0C37077F15C6BED200295D96 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C37077E15C6BED200295D96 /* AppDelegate.m */; };
 		0C3707B415C6C82C00295D96 /* AKBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707A615C6C82B00295D96 /* AKBackground.m */; };
 		0C3707B515C6C82C00295D96 /* AKCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707A815C6C82B00295D96 /* AKCharacter.m */; };
-		0C3707B615C6C82C00295D96 /* common.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707A915C6C82B00295D96 /* common.m */; };
 		0C3707B715C6C82C00295D96 /* AKGameIFLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707AD15C6C82B00295D96 /* AKGameIFLayer.m */; };
 		0C3707B815C6C82C00295D96 /* AKGameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707AF15C6C82C00295D96 /* AKGameScene.m */; };
 		0C3707B915C6C82C00295D96 /* AKPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3707B115C6C82C00295D96 /* AKPlayer.m */; };
@@ -237,6 +236,7 @@
 		0CE2AE88161CE79B00FD3AE3 /* Clear.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0CE2AE80161CE08000FD3AE3 /* Clear.mp3 */; };
 		0CE2AE89161CE7A000FD3AE3 /* Ending.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0CE2AE81161CE08000FD3AE3 /* Ending.mp3 */; };
 		0CE2AE8A161CE7A400FD3AE3 /* Play.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0CE2AE82161CE08000FD3AE3 /* Play.mp3 */; };
+		0CEA5B5C16374276005747F4 /* AKCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA5B5B16374275005747F4 /* AKCommon.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -264,18 +264,18 @@
 		0C1928B115D9362800496717 /* Radar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Radar.png; sourceTree = "<group>"; };
 		0C1928B315D99CCF00496717 /* AKRadar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKRadar.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0C1928B415D99CCF00496717 /* AKRadar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKRadar.m; sourceTree = "<group>"; };
-		0C1928B615D9A19D00496717 /* AKBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKBackground.h; sourceTree = "<group>"; };
+		0C1928B615D9A19D00496717 /* AKBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKBackground.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0C1928B715D9A43200496717 /* AKPlayerShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayerShot.h; sourceTree = "<group>"; };
 		0C1928BA15DF4D3D00496717 /* AKEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEffect.h; sourceTree = "<group>"; };
-		0C1928BB15DF4D3F00496717 /* AKEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKEffect.m; sourceTree = "<group>"; };
+		0C1928BB15DF4D3F00496717 /* AKEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKEffect.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0C1928BD15DFC1AC00496717 /* Life.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Life.png; sourceTree = "<group>"; };
 		0C1928BF15DFC29300496717 /* AKLifeMark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKLifeMark.h; sourceTree = "<group>"; };
 		0C1928C015DFC29500496717 /* AKLifeMark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKLifeMark.m; sourceTree = "<group>"; };
 		0C1928C415E0D10400496717 /* AKHiScoreFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKHiScoreFile.h; sourceTree = "<group>"; };
 		0C1928C515E0D10500496717 /* AKHiScoreFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKHiScoreFile.m; sourceTree = "<group>"; };
 		0C21F1AD15CE6472004C64E9 /* AKCharacterPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKCharacterPool.h; sourceTree = "<group>"; };
-		0C21F1AE15CE6474004C64E9 /* AKCharacterPool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKCharacterPool.m; sourceTree = "<group>"; };
-		0C21F1B715D3F4C9004C64E9 /* AKEnemy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEnemy.h; sourceTree = "<group>"; };
+		0C21F1AE15CE6474004C64E9 /* AKCharacterPool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKCharacterPool.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		0C21F1B715D3F4C9004C64E9 /* AKEnemy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKEnemy.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0C21F1B815D3F4C9004C64E9 /* AKEnemy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKEnemy.m; sourceTree = "<group>"; };
 		0C2A39EF15D460B2005B9272 /* AKEnemy+Normal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AKEnemy+Normal.h"; sourceTree = "<group>"; };
 		0C2A39F015D460B2005B9272 /* AKEnemy+Normal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AKEnemy+Normal.m"; sourceTree = "<group>"; };
@@ -541,9 +541,8 @@
 		0C37077E15C6BED200295D96 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		0C3707A615C6C82B00295D96 /* AKBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKBackground.m; sourceTree = "<group>"; };
 		0C3707A715C6C82B00295D96 /* AKCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKCharacter.h; sourceTree = "<group>"; };
-		0C3707A815C6C82B00295D96 /* AKCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKCharacter.m; sourceTree = "<group>"; };
-		0C3707A915C6C82B00295D96 /* common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = common.m; sourceTree = "<group>"; };
-		0C3707AA15C6C82B00295D96 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		0C3707A815C6C82B00295D96 /* AKCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKCharacter.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		0C3707AA15C6C82B00295D96 /* AKCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKCommon.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0C3707AB15C6C82B00295D96 /* GameConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
 		0C3707AC15C6C82B00295D96 /* AKGameIFLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKGameIFLayer.h; sourceTree = "<group>"; };
 		0C3707AD15C6C82B00295D96 /* AKGameIFLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKGameIFLayer.m; sourceTree = "<group>"; };
@@ -632,6 +631,7 @@
 		0CE2AE80161CE08000FD3AE3 /* Clear.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Clear.mp3; sourceTree = "<group>"; };
 		0CE2AE81161CE08000FD3AE3 /* Ending.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Ending.mp3; sourceTree = "<group>"; };
 		0CE2AE82161CE08000FD3AE3 /* Play.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Play.mp3; sourceTree = "<group>"; };
+		0CEA5B5B16374275005747F4 /* AKCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKCommon.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -758,8 +758,8 @@
 				0C37077D15C6BED200295D96 /* AppDelegate.h */,
 				0C37077E15C6BED200295D96 /* AppDelegate.m */,
 				0C3707AB15C6C82B00295D96 /* GameConfig.h */,
-				0C3707AA15C6C82B00295D96 /* common.h */,
-				0C3707A915C6C82B00295D96 /* common.m */,
+				0C3707AA15C6C82B00295D96 /* AKCommon.h */,
+				0CEA5B5B16374275005747F4 /* AKCommon.m */,
 				0CE2AE691616EEDB00FD3AE3 /* AKScreenSize.h */,
 				0CE2AE6A1616EEDB00FD3AE3 /* AKScreenSize.m */,
 				0C56288015F1B0900048F056 /* AKLabel.h */,
@@ -1470,7 +1470,6 @@
 				0C37077F15C6BED200295D96 /* AppDelegate.m in Sources */,
 				0C3707B415C6C82C00295D96 /* AKBackground.m in Sources */,
 				0C3707B515C6C82C00295D96 /* AKCharacter.m in Sources */,
-				0C3707B615C6C82C00295D96 /* common.m in Sources */,
 				0C3707B715C6C82C00295D96 /* AKGameIFLayer.m in Sources */,
 				0C3707B815C6C82C00295D96 /* AKGameScene.m in Sources */,
 				0C3707B915C6C82C00295D96 /* AKPlayer.m in Sources */,
@@ -1495,6 +1494,7 @@
 				0C183EC716293D4200B40B7B /* AKGameCenterHelper.m in Sources */,
 				0C183ECB162984E800B40B7B /* AKNavigationController.m in Sources */,
 				0C183ECE162A838100B40B7B /* AKOptionScene.m in Sources */,
+				0CEA5B5C16374276005747F4 /* AKCommon.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

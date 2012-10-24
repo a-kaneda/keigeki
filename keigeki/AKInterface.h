@@ -12,11 +12,11 @@
 // 画面入力管理クラス
 @interface AKInterface : CCLayer {
     /// メニュー項目
-    NSMutableArray *m_menuItems;
+    NSMutableArray *menuItems_;
     /// 有効化するタグ開始番号
-    NSInteger m_enableItemTagStart;
+    NSInteger enableItemTagStart_;
     /// 有効化するタグ終了番号
-    NSInteger m_enableItemTagEnd;
+    NSInteger enableItemTagEnd_;
 }
 
 /// メニュー項目

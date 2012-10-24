@@ -181,7 +181,7 @@ static const float kAKBackPosTopPoint = 26.0f;
 
 - (void)onEnter
 {
-    DBGLOG(1, @"onEnter");
+    AKLog(1, @"onEnter");
     [super onEnter];
 }
 /*!

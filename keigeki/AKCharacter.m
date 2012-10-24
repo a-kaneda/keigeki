@@ -8,7 +8,7 @@
 #import <math.h>
 #import "AKCharacter.h"
 #import "AKScreenSize.h"
-#import "common.h"
+#import "AKCommon.h"
 
 /*!
  @brief キャラクタークラス
@@ -17,16 +17,16 @@
  */
 @implementation AKCharacter
 
-@synthesize image = m_image;
-@synthesize width = m_width;
-@synthesize height = m_height;
-@synthesize speed = m_speed;
-@synthesize absx = m_absx;
-@synthesize absy = m_absy;
-@synthesize angle = m_angle;
-@synthesize rotSpeed = m_rotSpeed;
-@synthesize hitPoint = m_hitPoint;
-@synthesize isStaged = m_isStaged;
+@synthesize image = image_;
+@synthesize width = width_;
+@synthesize height = height_;
+@synthesize speed = speed_;
+@synthesize absx = absx_;
+@synthesize absy = absy_;
+@synthesize angle = angle_;
+@synthesize rotSpeed = rotSpeed_;
+@synthesize hitPoint = hitPoint_;
+@synthesize isStaged = isStaged_;
 
 /*!
  @brief オブジェクト生成処理
@@ -80,7 +80,7 @@
  */
 - (float)absx
 {
-    return m_absx;
+    return absx_;
 }
 
 /*!
@@ -92,7 +92,7 @@
 - (void)setAbsx:(float)absx
 {
     // ステージの範囲内に収まるように値を設定する
-    m_absx = AKRangeCheckLF(absx, 0.0f, [AKScreenSize stageSize].width);
+    absx_ = AKRangeCheckLF(absx, 0.0f, [AKScreenSize stageSize].width);
 }
 
 /*!
@@ -103,7 +103,7 @@
  */
 - (float)absy
 {
-    return m_absy;
+    return absy_;
 }
 
 /*!
@@ -115,7 +115,7 @@
 - (void)setAbsy:(float)absy
 {
     // ステージの範囲内に収まるように値を設定する
-    m_absy = AKRangeCheckLF(absy, 0.0f, [AKScreenSize stageSize].height);
+    absy_ = AKRangeCheckLF(absy, 0.0f, [AKScreenSize stageSize].height);
 }
 /*!
  @brief 移動処理
@@ -150,7 +150,7 @@
     velx = self.speed * cosf(self.angle);
     vely = self.speed * sinf(self.angle);
     
-    DBGLOG(0, @"angle=%f vx=%f vy=%f", self.angle / M_PI * 180, velx / self.speed, vely / self.speed);
+    AKLog(0, @"angle=%f vx=%f vy=%f", self.angle / M_PI * 180, velx / self.speed, vely / self.speed);
     
     // 座標の移動
     self.absx += (velx * dt);
@@ -167,7 +167,7 @@
                           -([AKScreenSize stageSize].height / 2),
                           [AKScreenSize stageSize].height / 2);
     
-    DBGLOG(0, @"vx=%f vy=%f ax=%f ay=%f px=%f py=%f sx=%d sy=%d", velx, vely, self.absx, self.absy, posx, posy, scrx, scry);
+    AKLog(0, @"vx=%f vy=%f ax=%f ay=%f px=%f py=%f sx=%d sy=%d", velx, vely, self.absx, self.absy, posx, posy, scrx, scry);
         
     // 表示座標の設定
     self.image.position = ccp(posx, posy);
@@ -201,7 +201,7 @@
     self.isStaged = NO;
     
     // 画面から取り除く
-    DBGLOG(0, @"removeFromParentAndCleanup実行");
+    AKLog(0, @"removeFromParentAndCleanup実行");
     [self.image removeFromParentAndCleanup:YES];
 }
 
@@ -234,7 +234,7 @@
     mytop = self.image.position.y + self.height / 2.0f;
     mybottom = self.image.position.y - self.height / 2.0f;
     
-    DBGLOG(0, @"    my=(%f, %f, %f, %f)", myleft, myright, mytop, mybottom);
+    AKLog(0, @"    my=(%f, %f, %f, %f)", myleft, myright, mytop, mybottom);
     
     // 判定対象のキャラクターごとに判定を行う
     for (target in characters) {
@@ -250,7 +250,7 @@
         targettop = target.image.position.y + target.height / 2.0f;
         targetbottom = target.image.position.y - target.height / 2.0f;
         
-        DBGLOG(0, @"target=(%f, %f, %f, %f)", targetleft, targetright, targettop, targetbottom);
+        AKLog(0, @"target=(%f, %f, %f, %f)", targetleft, targetright, targettop, targetbottom);
         
         // 以下のすべての条件を満たしている時、衝突していると判断する。
         //   ・相手の右端が自キャラの左端よりも右側にある
@@ -266,7 +266,7 @@
             self.hitPoint--;
             target.hitPoint--;
             
-            DBGLOG(0, @"self.hitPoint=%d, target.hitPoint=%d", self.hitPoint, target.hitPoint);
+            AKLog(0, @"self.hitPoint=%d, target.hitPoint=%d", self.hitPoint, target.hitPoint);
         }
     }
 }

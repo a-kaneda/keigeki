@@ -54,12 +54,12 @@ static const int ENEMY_SHOT_HEIGHT[ENEMY_SHOT_TYPE_COUNT] = {
     // 画像を読み込む
     NSString *fileName = [NSString stringWithUTF8String:ENEMY_SHOT_IMAGE[type]];
     self.image = [CCSprite spriteWithFile:fileName];
-    assert(m_image != nil);
+    assert(image_ != nil);
     
     // 各種パラメータを設定する
-    m_speed = ENEMY_SHOT_SPEED[type];
-    m_width = ENEMY_SHOT_WIDTH[type];
-    m_height = ENEMY_SHOT_HEIGHT[type];
+    speed_ = ENEMY_SHOT_SPEED[type];
+    width_ = ENEMY_SHOT_WIDTH[type];
+    height_ = ENEMY_SHOT_HEIGHT[type];
     
     // 親クラスの生成処理を実行する
     [super createWithX:x Y:y Z:z Angle:angle Parent:parent];    

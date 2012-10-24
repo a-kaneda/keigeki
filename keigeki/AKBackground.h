@@ -7,12 +7,12 @@
 
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
-#import "common.h"
+#import "AKCommon.h"
 
 // 背景クラス
 @interface AKBackground : NSObject {
     /// 背景画像のバッチノード
-    CCSpriteBatchNode *m_batch;
+    CCSpriteBatchNode *batch_;
 }
 
 /// 背景画像のバッチノード

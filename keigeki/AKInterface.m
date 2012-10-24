@@ -6,7 +6,7 @@
  */
 
 #import "AKInterface.h"
-#import "common.h"
+#import "AKCommon.h"
 #import "AKLabel.h"
 #import "AKScreenSize.h"
 
@@ -17,9 +17,9 @@
  */
 @implementation AKInterface
 
-@synthesize menuItems = m_menuItems;
-@synthesize enableItemTagStart = m_enableItemTagStart;
-@synthesize enableItemTagEnd = m_enableItemTagEnd;
+@synthesize menuItems = menuItems_;
+@synthesize enableItemTagStart = enableItemTagStart_;
+@synthesize enableItemTagEnd = enableItemTagEnd_;
 
 /*!
  @brief オブジェクト生成処理
@@ -123,7 +123,7 @@
  */
 - (void)onEnter
 {
-    DBGLOG(0, @"onEnter start");
+    AKLog(0, @"onEnter start");
     
     // 親クラスの処理を呼び出す
     [super onEnter];
@@ -131,7 +131,7 @@
     // タッチイベント処理を開始する
     [[[CCDirector sharedDirector] touchDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
 
-    DBGLOG(0, @"onEnter end");
+    AKLog(0, @"onEnter end");
 }
 
 /*!
@@ -155,7 +155,7 @@
     // cocos2dの座標系に変換する
     CGPoint location = [[CCDirector sharedDirector] convertToGL:locationInView];
     
-    DBGLOG(0, @"location = (%f, %f)", location.x, location.y);
+    AKLog(0, @"location = (%f, %f)", location.x, location.y);
     
     // 各項目の選択処理を行う
     for (AKMenuItem *item in [self.menuItems objectEnumerator]) {
@@ -165,7 +165,7 @@
             item.tag <= self.enableItemTagEnd &&
             [item isSelectPos:location]) {
             
-            DBGLOG(0, @"tag = %d action = %@", item.tag, NSStringFromSelector(item.action));
+            AKLog(0, @"tag = %d action = %@", item.tag, NSStringFromSelector(item.action));
                         
             // 選択されていれば親ノードにイベントを送信する
             [self.parent performSelector:item.action];
@@ -254,7 +254,7 @@
     // ラベルを画面に配置する
     [self addChild:label z:z tag:tag];
     
-    DBGLOG(0, @"rect=(%f, %f, %f, %f)", label.rect.origin.x, label.rect.origin.y, label.rect.size.width, label.rect.size.height);
+    AKLog(0, @"rect=(%f, %f, %f, %f)", label.rect.origin.x, label.rect.origin.y, label.rect.size.width, label.rect.size.height);
     
     // メニュー項目をインターフェースに追加する
     [self.menuItems addObject:[AKMenuItem itemWithRect:label.rect action:action tag:tag]];

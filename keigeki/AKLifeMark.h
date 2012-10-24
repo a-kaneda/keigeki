@@ -11,7 +11,7 @@
 // 残機マーク表示クラス
 @interface AKLifeMark : CCNode {
     /// 残機マークの画像配列
-    NSMutableArray *m_imageArray;
+    NSMutableArray *imageArray_;
 }
 
 /// 残機マークの画像配列

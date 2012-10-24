@@ -6,7 +6,7 @@
  */
 
 #import "AKShot.h"
-#import "common.h"
+#import "AKCommon.h"
 
 /// 弾の射程距離
 static const NSInteger kAKShotRange = 600;
@@ -27,13 +27,13 @@ static const NSInteger kAKShotRange = 600;
 - (void)action:(ccTime)dt
 {
     // 移動距離をカウントする
-    m_distance -= m_speed * dt;
-    DBGLOG(0, @"m_distance=%f", m_distance);
+    distance_ -= speed_ * dt;
+    AKLog(0, @"m_distance=%f", distance_);
     
     // 移動距離が射程距離を超えた場合は弾を削除する
-    if (m_distance < 0.0f) {
-        m_hitPoint = -1.0f;
-        DBGLOG(0, @"shot delete.");
+    if (distance_ < 0.0f) {
+        hitPoint_ = -1.0f;
+        AKLog(0, @"shot delete.");
     }
 }
 
@@ -56,9 +56,9 @@ static const NSInteger kAKShotRange = 600;
     self.angle = angle;
     
     // メンバの初期値を設定する
-    m_hitPoint = 1;
-    m_isStaged = YES;
-    m_distance = kAKShotRange;
+    hitPoint_ = 1;
+    isStaged_ = YES;
+    distance_ = kAKShotRange;
     
     assert(self.image != nil);
     

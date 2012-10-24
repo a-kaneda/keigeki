@@ -6,7 +6,7 @@
  */
 
 #import "AKFont.h"
-#import "common.h"
+#import "AKCommon.h"
 
 /// フォントサイズ
 const NSInteger kAKFontSize = 16;
@@ -17,7 +17,7 @@ static NSString *kAKFontImageName = @"Font.png";
 static NSString *kAKFontMapName = @"Font";
 
 // シングルトンオブジェクト
-static AKFont *g_font;
+static AKFont *sharedInstance_;
 
 /*!
  @brief フォント管理クラス
@@ -26,8 +26,8 @@ static AKFont *g_font;
  */
 @implementation AKFont
 
-@synthesize fontMap = m_fontMap;
-@synthesize fontTexture = m_fontTexture;
+@synthesize fontMap = fontMap_;
+@synthesize fontTexture = fontTexture_;
 
 /*!
  @brief シングルトンオブジェクト取得
@@ -38,12 +38,12 @@ static AKFont *g_font;
 + (AKFont *)sharedInstance
 {
     // シングルトンオブジェクトが作成されていない場合は作成する。
-    if (g_font == nil) {
-        g_font = [[AKFont alloc] init];
+    if (sharedInstance_ == nil) {
+        sharedInstance_ = [[AKFont alloc] init];
     }
     
     // シングルトンオブジェクトを返す。
-    return g_font;
+    return sharedInstance_;
 }
 
 /*!
@@ -139,7 +139,7 @@ static AKFont *g_font;
  */
 - (CCSpriteFrame *)spriteFrameOfChar:(unichar)c
 {
-    DBGLOG(0, @"c=%c rect=(%f,%f)", c, [self rectOfChar:c].origin.x, [self rectOfChar:c].origin.y);
+    AKLog(0, @"c=%c rect=(%f,%f)", c, [self rectOfChar:c].origin.x, [self rectOfChar:c].origin.y);
     // フォントのテクスチャから文字の部分を切り出して返す
     return [CCSpriteFrame frameWithTexture:self.fontTexture rect:[self rectOfChar:c]];
 }
@@ -153,7 +153,7 @@ static AKFont *g_font;
  */
 - (CCSpriteFrame *)spriteFrameWithKey:(NSString *)key
 {
-    DBGLOG(0, @"key=%@ rect=(%f,%f)", key, [self rectByKey:key].origin.x, [self rectByKey:key].origin.y);
+    AKLog(0, @"key=%@ rect=(%f,%f)", key, [self rectByKey:key].origin.x, [self rectByKey:key].origin.y);
     // フォントのテクスチャからキーに対応する部分を切り出して返す
     return [CCSpriteFrame frameWithTexture:self.fontTexture rect:[self rectByKey:key]];
 }

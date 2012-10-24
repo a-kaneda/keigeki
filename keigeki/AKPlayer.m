@@ -53,7 +53,7 @@ static NSString *kAKHitSE = @"Hit.caf";
  */
 @implementation AKPlayer
 
-@synthesize isInvincible = m_isInvincible;
+@synthesize isInvincible = isInvincible_;
 
 /*!
  @brief オブジェクト生成処理
@@ -70,21 +70,21 @@ static NSString *kAKHitSE = @"Hit.caf";
     }
 
     // 速度の設定
-    m_speed = kAKPlayerSpeed;
+    speed_ = kAKPlayerSpeed;
     
     // サイズを設定する
-    m_width = kAKPlayerSize;
-    m_height = kAKPlayerSize;
+    width_ = kAKPlayerSize;
+    height_ = kAKPlayerSize;
     
     // 状態を初期化する
     [self reset];
     
     // アニメーションの間隔を初期化する
-    m_animationTime = 0.0f;
+    animationTime_ = 0.0f;
     
     // 画像の読込
     self.image = [CCSprite spriteWithFile:@"Player.png" rect:CGRectMake(0, 0, kAKPlayerImageSize, kAKPlayerImageSize)];
-    assert(m_image != nil);
+    assert(image_ != nil);
     
     return self;
 }
@@ -98,12 +98,12 @@ static NSString *kAKHitSE = @"Hit.caf";
 - (void)action:(ccTime)dt
 {
     // 無敵状態の時は無敵時間をカウントする
-    if (m_isInvincible) {
-        m_invincivleTime -= dt;
+    if (isInvincible_) {
+        invincivleTime_ -= dt;
         
         // 無敵時間が切れている場合は通常状態に戻す
-        if (m_invincivleTime < 0) {
-            m_isInvincible = NO;
+        if (invincivleTime_ < 0) {
+            isInvincible_ = NO;
         }
     }
     
@@ -112,10 +112,10 @@ static NSString *kAKHitSE = @"Hit.caf";
     
     // 回転速度から表示画像を切り替える
     NSInteger playerDirection = 0;
-    if (m_rotSpeed < -kAKFrameChangeRotSpeed) {
+    if (rotSpeed_ < -kAKFrameChangeRotSpeed) {
         playerDirection = kAKPlayerImagePosRight;
     }
-    else if (m_rotSpeed > kAKFrameChangeRotSpeed) {
+    else if (rotSpeed_ > kAKFrameChangeRotSpeed) {
         playerDirection = kAKPlayerImagePosLeft;
     }
     else {
@@ -123,26 +123,26 @@ static NSString *kAKHitSE = @"Hit.caf";
     }
     
     // アニメーションの間隔をカウントする
-    m_animationTime += dt;
+    animationTime_ += dt;
     // アニメーション間隔の経過時間によって表示するフレームを切り替える
-    if (m_animationTime < kAKAnimationFrameDelay) {
+    if (animationTime_ < kAKAnimationFrameDelay) {
         [(CCSprite *)self.image setTextureRect:CGRectMake(playerDirection * kAKPlayerImageSize,
                                                           0,
                                                           kAKPlayerImageSize,
                                                           kAKPlayerImageSize)];
     }
-    else if (m_animationTime < kAKAnimationFrameDelay * 2) {
+    else if (animationTime_ < kAKAnimationFrameDelay * 2) {
         [(CCSprite *)self.image setTextureRect:CGRectMake((playerDirection + 1) * kAKPlayerImageSize,
                                                           0,
                                                           kAKPlayerImageSize,
                                                           kAKPlayerImageSize)];
     }
     else {
-        m_animationTime = 0.0f;
+        animationTime_ = 0.0f;
     }
     
-    DBGLOG(0, @"player pos=(%f, %f)", self.image.position.x, self.image.position.y);
-    DBGLOG(0, @"player angle=%f speed=%f", m_angle, m_speed);
+    AKLog(0, @"player pos=(%f, %f)", self.image.position.x, self.image.position.y);
+    AKLog(0, @"player angle=%f speed=%f", angle_, speed_);
 }
 
 /*!
@@ -208,10 +208,10 @@ static NSString *kAKHitSE = @"Hit.caf";
 - (void)setVelocityX:(float)vx Y:(float)vy
 {
     // スピードは縦方向の傾きから決定する
-    m_speed = (vy + 1.5) * kAKPlayerSpeed;
+    speed_ = (vy + 1.5) * kAKPlayerSpeed;
     
     // 角速度は横方向の傾きから決定する
-    m_rotSpeed = -1 * vx * kAKPlayerRotSpeed;
+    rotSpeed_ = -1 * vx * kAKPlayerRotSpeed;
 }
 
 /*!
@@ -222,17 +222,17 @@ static NSString *kAKHitSE = @"Hit.caf";
 - (void)rebirth
 {    
     // HPの設定
-    m_hitPoint = 1;
+    hitPoint_ = 1;
     
     // ステージ配置フラグを立てる
-    m_isStaged = YES;
+    isStaged_ = YES;
     
     // 表示させる
     self.image.visible = YES;
     
     // 無敵状態にする
-    m_isInvincible = YES;
-    m_invincivleTime = kAKInvincibleTime;
+    isInvincible_ = YES;
+    invincivleTime_ = kAKInvincibleTime;
     
     // 無敵中はブリンクする
     CCBlink *blink = [CCBlink actionWithDuration:kAKInvincibleTime blinks:kAKInvincibleTime * 8];
@@ -250,20 +250,20 @@ static NSString *kAKHitSE = @"Hit.caf";
     self.image.position = ccp(0, 0);
     
     // 初期角度は垂直上向き
-    m_angle = M_PI / 2;
+    angle_ = M_PI / 2;
     
     // HPの設定
-    m_hitPoint = 1;
+    hitPoint_ = 1;
     
     // ステージ配置フラグを立てる
-    m_isStaged = YES;
+    isStaged_ = YES;
     
     // 表示させる
     self.image.visible = YES;
     
     // 無敵状態はOFFにする
-    m_isInvincible = NO;
-    m_invincivleTime = 0.0f;
+    isInvincible_ = NO;
+    invincivleTime_ = 0.0f;
     
     // アクションはすべて停止する
     [self.image stopAllActions];

@@ -18,13 +18,13 @@ enum AKLabelFrame {
 // ラベル表示クラス
 @interface AKLabel : CCNode <CCLabelProtocol> {
     /// 表示文字列
-    NSString *m_labelString;
+    NSString *labelString_;
     /// １行の表示文字数
-    NSInteger m_length;
+    NSInteger length_;
     /// 表示行数
-    NSInteger m_line;
+    NSInteger line_;
     /// 枠のタイプ
-    enum AKLabelFrame m_frame;
+    enum AKLabelFrame frame_;
 }
 
 /// 表示文字列

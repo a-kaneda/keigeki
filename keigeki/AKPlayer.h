@@ -8,16 +8,16 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 #import "AKCharacter.h"
-#import "common.h"
+#import "AKCommon.h"
 
 // 自機クラス
 @interface AKPlayer : AKCharacter {
     /// 無敵状態かどうか
-    BOOL m_isInvincible;
+    BOOL isInvincible_;
     /// 無敵状態の残り時間
-    float m_invincivleTime;
+    float invincivleTime_;
     /// アニメーション間隔
-    float m_animationTime;
+    float animationTime_;
 }
 
 /// 無敵状態かどうか

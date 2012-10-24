@@ -10,7 +10,7 @@
 // ハイスコアファイル管理クラス
 @interface AKHiScoreFile : NSObject <NSCoding> {
     /// ハイスコア
-    NSInteger m_hiScore;
+    NSInteger hiScore_;
 }
 
 /// ハイスコア

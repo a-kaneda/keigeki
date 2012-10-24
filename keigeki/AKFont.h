@@ -14,9 +14,9 @@ extern const NSInteger kAKFontSize;
 // フォント管理クラス
 @interface AKFont : NSObject {
     /// 文字のテクスチャ内の位置情報
-    NSDictionary *m_fontMap;
+    NSDictionary *fontMap_;
     /// フォントテクスチャ
-    CCTexture2D *m_fontTexture;
+    CCTexture2D *fontTexture_;
 }
 
 /// 文字のテクスチャ内の位置情報

@@ -12,7 +12,7 @@
 // 弾クラス
 @interface AKShot : AKCharacter {
     /// 移動距離
-    float m_distance;
+    float distance_;
 }
 
 // 生成処理

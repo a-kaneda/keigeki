@@ -189,17 +189,17 @@ static NSString *kAK1UpSE = @"1Up.caf";
 @implementation AKGameScene
 
 // シングルトンオブジェクト
-static AKGameScene *g_scene = nil;
+static AKGameScene *sharedScene = nil;
 
-@synthesize player = m_player;
-@synthesize playerShotPool = m_playerShotPool;
-@synthesize enemyPool = m_enemyPool;
-@synthesize enemyShotPool = m_enemyShotPool;
-@synthesize rader = m_radar;
-@synthesize effectPool = m_effectPool;
-@synthesize lifeMark = m_lifeMark;
-@synthesize shotCount = m_shotCount;
-@synthesize hitCount = m_hitCount;
+@synthesize player = player_;
+@synthesize playerShotPool = playerShotPool_;
+@synthesize enemyPool = enemyPool_;
+@synthesize enemyShotPool = enemyShotPool_;
+@synthesize rader = radar_;
+@synthesize effectPool = effectPool_;
+@synthesize lifeMark = lifeMark_;
+@synthesize shotCount = shotCount_;
+@synthesize hitCount = hitCount_;
 
 /*!
  @brief シングルトンオブジェクト取得
@@ -209,16 +209,16 @@ static AKGameScene *g_scene = nil;
  */
 + (AKGameScene *)sharedInstance
 {
-    DBGLOG(0, @"sharedInstance 開始");
+    AKLog(0, @"sharedInstance 開始");
     
     // シングルトンオブジェクトが作成されていない場合は作成する。
-    if (g_scene == nil) {
-        g_scene = [AKGameScene node];
+    if (sharedScene == nil) {
+        sharedScene = [AKGameScene node];
     }
     
-    DBGLOG(0, @"sharedInstance 終了");
+    AKLog(0, @"sharedInstance 終了");
     // シングルトンオブジェクトを返す。
-    return g_scene;
+    return sharedScene;
 }
 
 /*!
@@ -229,7 +229,7 @@ static AKGameScene *g_scene = nil;
  */
 - (id)init
 {
-    DBGLOG(0, @"init 開始");
+    AKLog(0, @"init 開始");
     
     // スーパークラスの生成処理
     self = [super init];
@@ -329,7 +329,7 @@ static AKGameScene *g_scene = nil;
                                             line:1
                                         hasFrame:YES];
     
-    DBGLOG(0, @"resumeRect=(%f, %f, %f, %f)", resumeRect.origin.x, resumeRect.origin.y, resumeRect.size.width, resumeRect.size.height);
+    AKLog(0, @"resumeRect=(%f, %f, %f, %f)", resumeRect.origin.x, resumeRect.origin.y, resumeRect.size.width, resumeRect.size.height);
     
     // ポーズ解除入力を生成する
     [self.interfaceLayer.menuItems addObject:[AKMenuItem itemWithRect:resumeRect
@@ -386,10 +386,10 @@ static AKGameScene *g_scene = nil;
     
     // スコアラベルのx座標を計算する。スコアラベルは左詰めにするため、x座標は右に幅の半分移動する。
     float scoreLabelPosX = [AKScreenSize positionFromLeftPoint:kAKScorePosLeftPoint] +
-        [AKLabel widthWithLength:[[NSString stringWithFormat:kAKScoreFormat, m_score] length] hasFrame:NO] / 2;
+        [AKLabel widthWithLength:[[NSString stringWithFormat:kAKScoreFormat, score_] length] hasFrame:NO] / 2;
     
     // スコアラベルを生成する
-    [self setLabelToInfoLayer:[NSString stringWithFormat:kAKScoreFormat, m_score]
+    [self setLabelToInfoLayer:[NSString stringWithFormat:kAKScoreFormat, score_]
                         atPos:ccp(scoreLabelPosX,
                                   [AKScreenSize positionFromTopPoint:kAKScorePosTopPoint])
                           tag:kAKInfoTagScore
@@ -401,12 +401,12 @@ static AKGameScene *g_scene = nil;
     // ハイスコアラベルのx座標を計算する。
     // ハイスコアラベルは左詰めにし、スコアラベルの右端を原点とする。
     float hiScoreLabelPosX = scoreLabelPosX +
-        [AKLabel widthWithLength:[[NSString stringWithFormat:kAKScoreFormat, m_score] length] hasFrame:NO] / 2 +
+        [AKLabel widthWithLength:[[NSString stringWithFormat:kAKScoreFormat, score_] length] hasFrame:NO] / 2 +
         kAKHiScorePosLeftPoint +
-        [AKLabel widthWithLength:[[NSString stringWithFormat:kAKHiScoreFormat, m_hiScore] length] hasFrame:NO] / 2;
+        [AKLabel widthWithLength:[[NSString stringWithFormat:kAKHiScoreFormat, hiScore_] length] hasFrame:NO] / 2;
 
     // ハイスコアラベルを生成する
-    [self setLabelToInfoLayer:[NSString stringWithFormat:kAKHiScoreFormat, m_hiScore]
+    [self setLabelToInfoLayer:[NSString stringWithFormat:kAKHiScoreFormat, hiScore_]
                         atPos:ccp(hiScoreLabelPosX,
                                   [AKScreenSize positionFromTopPoint:kAKHiScorePosTopPoint])
                           tag:kAKInfoTagHiScore
@@ -453,7 +453,7 @@ static AKGameScene *g_scene = nil;
  */
 - (void)dealloc
 {
-    DBGLOG(0, @"dealloc 開始");
+    AKLog(0, @"dealloc 開始");
     
     // 更新処理停止
     [self unscheduleUpdate];
@@ -466,12 +466,12 @@ static AKGameScene *g_scene = nil;
     self.background = nil;
     
     // シングルトンオブジェクトを初期化する
-    g_scene = nil;
+    sharedScene = nil;
     
     // スーパークラスの処理を実行する
     [super dealloc];
     
-    DBGLOG(0, @"dealloc 終了");
+    AKLog(0, @"dealloc 終了");
 }
 
 /*!
@@ -482,7 +482,7 @@ static AKGameScene *g_scene = nil;
  */
 - (enum AKGameState)state
 {
-    return m_state;
+    return state_;
 }
 
 /*!
@@ -495,7 +495,7 @@ static AKGameScene *g_scene = nil;
 - (void)setState:(enum AKGameState)state
 {
     // メンバ変数に設定する
-    m_state = state;
+    state_ = state;
     
     // インターフェースレイヤーを取得する
     AKGameIFLayer *interface = (AKGameIFLayer *)[self getChildByTag:kAKLayerPosZInterface];
@@ -594,7 +594,7 @@ static AKGameScene *g_scene = nil;
     [[SimpleAudioEngine sharedEngine] playBackgroundMusic:kAKPlayBGM loop:YES];
 
     // ステージ構成スクリプトを読み込む
-    [self readScriptOfStage:m_stageNo Wave:m_waveNo];
+    [self readScriptOfStage:stageNo_ Wave:waveNo_];
     
     // 状態をプレイ中へと進める
     self.state = kAKGameStatePlaying;
@@ -619,10 +619,10 @@ static AKGameScene *g_scene = nil;
     // 自機が破壊されている場合は復活までの時間をカウントする
     if (!self.player.isStaged) {
         
-        m_rebirthInterval -= dt;
+        rebirthInterval_ -= dt;
         
         // 復活までの時間が経過している場合は自機を復活する
-        if (m_rebirthInterval < 0) {
+        if (rebirthInterval_ < 0) {
             
             // 自機を復活させる
             [self.player rebirth];
@@ -632,18 +632,18 @@ static AKGameScene *g_scene = nil;
     // 自機の移動
     // 自機にスクリーン座標は無関係なため、0をダミーで格納する。
     [self.player move:dt ScreenX:0 ScreenY:0];
-    DBGLOG(0, @"m_player.abspos=(%f, %f)", self.player.absx, self.player.absy);
+    AKLog(0, @"m_player.abspos=(%f, %f)", self.player.absx, self.player.absy);
         
     // 移動後のスクリーン座標の取得
     scrx = [self.player getScreenPosX];
     scry = [self.player getScreenPosY];
-    DBGLOG(0, @"x=%f y=%f", scrx, scry);
+    AKLog(0, @"x=%f y=%f", scrx, scry);
     
     // 自機弾の移動
     enumerator = [self.playerShotPool.pool objectEnumerator];
     for (character in enumerator) {
         [character move:dt ScreenX:scrx ScreenY:scry];
-        DBGLOG(0 && character.isStaged, @"playerShot.abxpos=(%f, %f)",
+        AKLog(0 && character.isStaged, @"playerShot.abxpos=(%f, %f)",
                character.absx, character.absy);
     }
     
@@ -656,7 +656,7 @@ static AKGameScene *g_scene = nil;
     enumerator = [self.enemyPool.pool objectEnumerator];
     for (character in enumerator) {
         if (character.isStaged) {
-            DBGLOG(0, @"enemy move start.");
+            AKLog(0, @"enemy move start.");
             [character move:dt ScreenX:scrx ScreenY:scry];
             isClear = NO;
         }
@@ -691,7 +691,7 @@ static AKGameScene *g_scene = nil;
     enumerator = [self.effectPool.pool objectEnumerator];
     for (character in enumerator) {
         [character move:dt ScreenX:scrx ScreenY:scry];
-        DBGLOG(0 && character.isStaged, @"effect=(%f, %f) player=(%f, %f)",
+        AKLog(0 && character.isStaged, @"effect=(%f, %f) player=(%f, %f)",
                character.image.position.x, character.image.position.y,
                self.player.image.position.x, self.player.image.position.y);
     }
@@ -709,38 +709,38 @@ static AKGameScene *g_scene = nil;
     // 画面の回転
     baseLayer = [self getChildByTag:kAKLayerPosZBase];
     baseLayer.rotation = angle;
-    DBGLOG(0, @"m_baseLayer angle=%f", baseLayer.rotation);
+    AKLog(0, @"m_baseLayer angle=%f", baseLayer.rotation);
     
     // 命中率の表示を更新する
     [self updateHit];
     
     // プレイ時間のカウントとクリア判定はプレイ中のみ行う
-    if (m_state == kAKGameStatePlaying) {
+    if (state_ == kAKGameStatePlaying) {
     
         // プレイ時間を更新する
-        m_playTime += dt;
+        playTime_ += dt;
         [self updateTime];
         
         // 敵と敵弾がひとつも存在しない場合は次のウェーブ開始までの時間をカウントする
         if (isClear) {
             // 次のウェーブ開始までの時間をカウントする
-            m_waveInterval -= dt;
+            waveInterval_ -= dt;
             
             // ウェーブ開始の間隔が経過した場合はウェーブクリア処理を行う
-            if (m_waveInterval < 0.0f) {
+            if (waveInterval_ < 0.0f) {
                 
                 // ウェーブクリア処理を行う
                 [self clearWave];
                 
                 // ウェーブ間隔をリセットする
-                m_waveInterval = kAKWaveInterval;
+                waveInterval_ = kAKWaveInterval;
             }
         }
     }
     
     // ゲームオーバーになっていた場合はハイスコアをファイルに書き込む
     // (ゲームオーバーになった時点で書き込みを行わないのはupdateの途中でスコアが変動する可能性があるため)
-    if (self.state == kAKGameStateSleep && m_nextState == kAKGameStateGameOver) {
+    if (self.state == kAKGameStateSleep && nextState_ == kAKGameStateGameOver) {
         // ハイスコアをファイルに書き込む
         [self writeHiScore];
     }
@@ -756,10 +756,10 @@ static AKGameScene *g_scene = nil;
 - (void)updateClear:(ccTime)dt
 {
     // クリア表示中の間隔をカウントする
-    m_stateInterval -= dt;
+    stateInterval_ -= dt;
     
     // クリア表示中の間隔を経過している場合はリザルト画面を表示する
-    if (m_stateInterval < 0.0f) {
+    if (stateInterval_ < 0.0f) {
         
         // 状態をリザルト画面表示に遷移する
         self.state = kAKGameStateResult;
@@ -782,11 +782,11 @@ static AKGameScene *g_scene = nil;
 - (void)updateSleep:(ccTime)dt
 {
     // スリープ時間をカウントする
-    m_sleepTime -= dt;
+    sleepTime_ -= dt;
     
     // スリープ時間が経過している場合は次の状態に遷移する
-    if (m_sleepTime < 0.0f) {
-        self.state = m_nextState;
+    if (sleepTime_ < 0.0f) {
+        self.state = nextState_;
     }
 }
 
@@ -799,7 +799,7 @@ static AKGameScene *g_scene = nil;
  */
 - (void)movePlayerByVX:(float)vx VY:(float)vy
 {
-    [m_player setVelocityX:vx Y:vy];
+    [player_ setVelocityX:vx Y:vy];
 }
 
 /*!
@@ -821,7 +821,7 @@ static AKGameScene *g_scene = nil;
     shot = [self.playerShotPool getNext];
     if (shot == nil) {
         // 空きがない場合は処理終了s
-        DBGLOG(1, @"自機弾プールに空きなし");
+        AKLog(1, @"自機弾プールに空きなし");
         assert(0);
         return;
     }
@@ -856,14 +856,14 @@ static AKGameScene *g_scene = nil;
     AKEnemy *enemy = nil;     // 敵
     SEL createEnemy = nil;  // 敵生成のメソッド
     
-    DBGLOG(0, @"type=%d posx=%d posy=%d angle=%f", type, posx, posy, AKCnvAngleRad2Deg(angle));
+    AKLog(0, @"type=%d posx=%d posy=%d angle=%f", type, posx, posy, AKCnvAngleRad2Deg(angle));
     
     // プールから未使用のメモリを取得する
     enemy = [self.enemyPool getNext];
     if (enemy == nil) {
         // 空きがない場合は処理終了
         assert(0);
-        DBGLOG(1, @"敵プールに空きなし");
+        AKLog(1, @"敵プールに空きなし");
         return;
     }
     
@@ -876,7 +876,7 @@ static AKGameScene *g_scene = nil;
         default:        // その他
             // エラー
             assert(0);
-            DBGLOG(1, @"不正な敵の種類:%d", type);
+            AKLog(1, @"不正な敵の種類:%d", type);
             
             // 仮に雑魚を設定
             createEnemy = @selector(createNoraml);
@@ -961,19 +961,19 @@ static AKGameScene *g_scene = nil;
 - (void)miss
 {
     // 残機が残っている場合は残機を減らして復活する
-    if (m_life > 0) {
+    if (life_ > 0) {
 
         // ライフを一つ減らす
-        m_life--;
+        life_--;
         
         // 撃墜された数をカウントする
-        m_missCount++;
+        missCount_++;
         
         // 残機の表示を更新する
-        [self.lifeMark updateImage:m_life];
+        [self.lifeMark updateImage:life_];
         
         // 自機復活までの間隔を設定する
-        m_rebirthInterval = kAKRebirthInterval;
+        rebirthInterval_ = kAKRebirthInterval;
     }
     // 残機がなければゲームオーバーとする
     else {
@@ -982,8 +982,8 @@ static AKGameScene *g_scene = nil;
         [[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
         
         // ゲームの状態を少し間を空けて、ゲームオーバーに変更する
-        m_sleepTime = kAKGameOverInterval;
-        m_nextState = kAKGameStateGameOver;
+        sleepTime_ = kAKGameOverInterval;
+        nextState_ = kAKGameStateGameOver;
         self.state = kAKGameStateSleep;
         
         // ゲームオーバーのラベルを生成する
@@ -1005,25 +1005,25 @@ static AKGameScene *g_scene = nil;
 {
     // 各種メンバを初期化する
     self.state = kAKGameStatePreLoad;
-    m_stageNo = 1;
-    m_waveNo = 1;
-    m_life = kAKStartLifeCount;
-    m_rebirthInterval = 0.0f;
-    m_waveInterval = kAKWaveInterval;
-    m_score = 0;
-    m_shotCount = 0;
-    m_hitCount = 0;
-    m_missCount = 0;
-    m_playTime = 0.0f;
+    stageNo_ = 1;
+    waveNo_ = 1;
+    life_ = kAKStartLifeCount;
+    rebirthInterval_ = 0.0f;
+    waveInterval_ = kAKWaveInterval;
+    score_ = 0;
+    shotCount_ = 0;
+    hitCount_ = 0;
+    missCount_ = 0;
+    playTime_ = 0.0f;
     
     // 残機マークの初期個数を反映させる
-    [self.lifeMark updateImage:m_life];
+    [self.lifeMark updateImage:life_];
     
     // 情報レイヤーを取得する
     CCNode *infoLayer = [self getChildByTag:kAKLayerPosZInfo];
     
     // ラベルの内容を更新する
-    NSString *scoreString = [NSString stringWithFormat:kAKScoreFormat, m_score];
+    NSString *scoreString = [NSString stringWithFormat:kAKScoreFormat, score_];
     AKLabel *scoreLabel = (AKLabel *)[infoLayer getChildByTag:kAKInfoTagScore];
     [scoreLabel setString:scoreString];
 
@@ -1050,39 +1050,39 @@ static AKGameScene *g_scene = nil;
 - (void)addScore:(NSInteger)score
 {
     // エクステンドの判定を行う
-    if ((int)(m_score / kAKExtendScore) < (int)((m_score + score) / kAKExtendScore)) {
+    if ((int)(score_ / kAKExtendScore) < (int)((score_ + score) / kAKExtendScore)) {
         
-        DBGLOG(1, @"エクステンド:m_score=%d score=%d しきい値=%d", m_score, score, kAKExtendScore);
+        AKLog(1, @"エクステンド:m_score=%d score=%d しきい値=%d", score_, score, kAKExtendScore);
         
         // エクステンドの効果音を鳴らす
         [[SimpleAudioEngine sharedEngine] playEffect:kAK1UpSE];
         
         // 残機の数を増やす
-        m_life++;
+        life_++;
         
         // 実績を解除する
         [[AKGameCenterHelper sharedHelper] reportAchievements:kAKGC1UpID];
     }
     
     // スコアを加算する
-    m_score += score;
+    score_ += score;
     
     // 情報レイヤーを取得する
     CCNode *infoLayer = [self getChildByTag:kAKLayerPosZInfo];
     
     // ラベルの内容を更新する
-    NSString *scoreString = [NSString stringWithFormat:kAKScoreFormat, m_score];
+    NSString *scoreString = [NSString stringWithFormat:kAKScoreFormat, score_];
     AKLabel *scoreLabel = (AKLabel *)[infoLayer getChildByTag:kAKInfoTagScore];
     [scoreLabel setString:scoreString];
     
     // ハイスコアを更新している場合はハイスコアを設定する
-    if (m_score > m_hiScore) {
+    if (score_ > hiScore_) {
         
         // ハイスコアにスコアの値を設定する
-        m_hiScore = m_score;
+        hiScore_ = score_;
         
         // ラベルの内容を更新する
-        NSString *hiScoreString = [NSString stringWithFormat:kAKHiScoreFormat, m_hiScore];
+        NSString *hiScoreString = [NSString stringWithFormat:kAKHiScoreFormat, hiScore_];
         AKLabel *hiScoreLabel = (AKLabel *)[infoLayer getChildByTag:kAKInfoTagHiScore];
         [hiScoreLabel setString:hiScoreString];
     }
@@ -1240,19 +1240,19 @@ static AKGameScene *g_scene = nil;
     
     // ファイル名をステージ番号、ウェイブ番号から決定する
     fileName = [NSString stringWithFormat:@"stage%d_%d", stage, wave];
-    DBGLOG(0, @"fileName=%@", fileName);
+    AKLog(0, @"fileName=%@", fileName);
     
     // ファイルパスをバンドルから取得する
     bundle = [NSBundle mainBundle];
     filePath = [bundle pathForResource:fileName ofType:@"txt"];
-    DBGLOG(0, @"filePath=%@", filePath);
+    AKLog(0, @"filePath=%@", filePath);
     
     // ステージ定義ファイルを読み込む
     stageScript = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding
                                                error:&error];
     // ファイル読み込みエラー
     if (stageScript == nil && error != nil) {
-        DBGLOG(0, @"%@", [error localizedDescription]);
+        AKLog(0, @"%@", [error localizedDescription]);
     }
     
     // ステージ定義ファイルの範囲の間は処理を続ける
@@ -1263,11 +1263,11 @@ static AKGameScene *g_scene = nil;
         
         // 1行の文字列を取得する
         line = [stageScript substringWithRange:lineRange];
-        DBGLOG(0, @"%@", line);
+        AKLog(0, @"%@", line);
         
         // 1文字目が"#"の場合は処理を飛ばす
         if ([[line substringToIndex:1] isEqualToString:@"#"]) {
-            DBGLOG(0, @"コメント:%@", line);
+            AKLog(0, @"コメント:%@", line);
         }
         // コメントでない場合はパラメータを読み込む
         else {
@@ -1289,17 +1289,17 @@ static AKGameScene *g_scene = nil;
             param = [params objectAtIndex:2];
             enemyPosY = [param integerValue];
             
-            DBGLOG(0, @"type=%d posx=%d posy=%d", enemyType, enemyPosX, enemyPosY);
+            AKLog(0, @"type=%d posx=%d posy=%d", enemyType, enemyPosX, enemyPosY);
             
             // 角度を自機のいる位置に設定する
             // スクリプト上の座標は自機の位置からの相対位置なので目標座標は(0, 0)
             enemyAngle = AKCalcDestAngle(enemyPosX, enemyPosY, 0, 0);
             
-            DBGLOG(0, @"angle=%f", AKCnvAngleRad2Deg(enemyAngle));
+            AKLog(0, @"angle=%f", AKCnvAngleRad2Deg(enemyAngle));
             
             // 生成位置は自機の位置からの相対位置とする
-            enemyPosX += m_player.absx;
-            enemyPosY += m_player.absy;
+            enemyPosX += player_.absx;
+            enemyPosY += player_.absy;
             
             // 敵を生成する
             [self entryEnemy:(enum AKEnemyType)enemyType PosX:enemyPosX PosY:enemyPosY Angle:enemyAngle];
@@ -1320,16 +1320,16 @@ static AKGameScene *g_scene = nil;
 - (void)clearWave
 {
     // ウェーブを進める
-    m_waveNo++;
+    waveNo_++;
     
     // ステージのウェーブ個数を超えている場合はステージクリア
-    if (m_waveNo > kAKWaveCount) {
+    if (waveNo_ > kAKWaveCount) {
         
         // 状態をゲームクリアに移行する
         self.state = kAKGameStateClear;
         
         // クリアキャプション表示中の間隔を設定する
-        m_stateInterval = kAKStageClearInterval;
+        stateInterval_ = kAKStageClearInterval;
         
         // クリアBGMを再生する
         [[SimpleAudioEngine sharedEngine] playBackgroundMusic:kAKClearBGM loop:NO];
@@ -1341,27 +1341,27 @@ static AKGameScene *g_scene = nil;
                             frame:kAKLabelFrameNone];
         
         // ステージクリアの実績を解除する
-        [[AKGameCenterHelper sharedHelper] reportStageClear:m_stageNo];
+        [[AKGameCenterHelper sharedHelper] reportStageClear:stageNo_];
         
         // ステージクリア数の実績を増加させる
         [[AKGameCenterHelper sharedHelper] reportAchievements:kAKGCPlayCountID percentIncrement:1.0f];
         
         // 撃墜された数が0の場合は実績を解除する
-        if (m_missCount <= 0) {
+        if (missCount_ <= 0) {
             [[AKGameCenterHelper sharedHelper] reportAchievements:kAKGCNoMissID];
         }
         
         // 撃墜された数を初期化する
-        m_missCount = 0;
+        missCount_ = 0;
         
         // プレイ時間がしきい値以下の場合は実績を解除する
-        if (m_playTime < kAKClearShortTime) {
+        if (playTime_ < kAKClearShortTime) {
             [[AKGameCenterHelper sharedHelper] reportAchievements:kAKGCShortTimeID];
         }
     }
     // ステージクリアでない場合は次のウェーブのスクリプトを読み込む
     else {
-        [self readScriptOfStage:m_stageNo Wave:m_waveNo];
+        [self readScriptOfStage:stageNo_ Wave:waveNo_];
     }
 }
 
@@ -1373,7 +1373,7 @@ static AKGameScene *g_scene = nil;
  */
 - (void)skipResult
 {
-    DBGLOG(1, @"start");
+    AKLog(1, @"start");
     
     // ステージクリア画面の表示が完了している場合は次のステージを開始する
     if (self.resultLayer.isFinish) {
@@ -1395,13 +1395,13 @@ static AKGameScene *g_scene = nil;
 - (void)clearStage
 {
     // ステージ番号を進める
-    m_stageNo++;
+    stageNo_++;
     
     // ステージクリア結果画面を削除する
     [self removeChildByTag:kAKLayerPosZResult cleanup:YES];
     
     // まだ全ステージをクリアしていない場合は次のステージを開始する
-    if (m_stageNo <= kAKStageCount) {
+    if (stageNo_ <= kAKStageCount) {
         
         // プレイ中BGMを開始する
         [[SimpleAudioEngine sharedEngine] playBackgroundMusic:kAKPlayBGM loop:YES];
@@ -1410,34 +1410,34 @@ static AKGameScene *g_scene = nil;
         self.state = kAKGameStatePlaying;
         
         // ウェーブ番号を初期化する
-        m_waveNo = 1;
+        waveNo_ = 1;
     
         // 自機復活までのインターバルを初期化する
-        m_rebirthInterval = 0.0f;
+        rebirthInterval_ = 0.0f;
         
         // 命中率を初期化する
-        m_shotCount = 0;
-        m_hitCount = 0;
+        shotCount_ = 0;
+        hitCount_ = 0;
         
         // ステージのプレイ時間を初期化する
-        m_playTime = 0.0f;
+        playTime_ = 0.0f;
 
         // 残機マークを更新する
-        [self.lifeMark updateImage:m_life];
+        [self.lifeMark updateImage:life_];
 
         // 情報レイヤーを取得する
         CCNode *infoLayer = [self getChildByTag:kAKLayerPosZInfo];
 
         // スコアラベルの内容を更新する
         {
-            NSString *scoreString = [NSString stringWithFormat:kAKScoreFormat, m_score];
+            NSString *scoreString = [NSString stringWithFormat:kAKScoreFormat, score_];
             AKLabel *scoreLabel = (AKLabel *)[infoLayer getChildByTag:kAKInfoTagScore];
             [scoreLabel setString:scoreString];
         }
         
         // ハイスコアラベルの内容を更新する
         {
-            NSString *hiScoreString = [NSString stringWithFormat:kAKHiScoreFormat, m_hiScore];
+            NSString *hiScoreString = [NSString stringWithFormat:kAKHiScoreFormat, hiScore_];
             AKLabel *hiScoreLabel = (AKLabel *)[infoLayer getChildByTag:kAKInfoTagHiScore];
             [hiScoreLabel setString:hiScoreString];
         }
@@ -1451,7 +1451,7 @@ static AKGameScene *g_scene = nil;
         [self.effectPool reset];
         
         // 次のステージのスクリプトを読み込む
-        [self readScriptOfStage:m_stageNo Wave:m_waveNo];
+        [self readScriptOfStage:stageNo_ Wave:waveNo_];
     }
     // 全ステージクリアしている場合はエンディング画面の表示を行う
     else {
@@ -1487,7 +1487,7 @@ static AKGameScene *g_scene = nil;
  */
 - (void)readHiScore
 {
-    DBGLOG(1, @"start readHiScore");
+    AKLog(1, @"start readHiScore");
     
     // HOMEディレクトリのパスを取得する
     NSString *homeDir = NSHomeDirectory();
@@ -1514,9 +1514,9 @@ static AKGameScene *g_scene = nil;
         [decoder finishDecoding];
         
         // メンバに読み込む
-        m_hiScore = hiScore.hiscore;
+        hiScore_ = hiScore.hiscore;
         
-        DBGLOG(1, @"m_hiScore=%d", m_hiScore);
+        AKLog(1, @"m_hiScore=%d", hiScore_);
     }
 }
 
@@ -1527,7 +1527,7 @@ static AKGameScene *g_scene = nil;
  */
 - (void)writeHiScore
 {
-    DBGLOG(1, @"start writeHiScore:m_hiScore=%d m_score=%d", m_hiScore, m_score);
+    AKLog(1, @"start writeHiScore:m_hiScore=%d m_score=%d", hiScore_, score_);
     
     // HOMEディレクトリのパスを取得する
     NSString *homeDir = NSHomeDirectory();
@@ -1542,7 +1542,7 @@ static AKGameScene *g_scene = nil;
     AKHiScoreFile *hiScore = [[[AKHiScoreFile alloc] init] autorelease];
     
     // ハイスコアを設定する
-    hiScore.hiscore = m_hiScore;
+    hiScore.hiscore = hiScore_;
     
     // エンコーダーを生成する
     NSMutableData *data = [NSMutableData data];
@@ -1558,7 +1558,7 @@ static AKGameScene *g_scene = nil;
     [data writeToFile:filePath atomically:YES];
     
     // Game Centerにスコアを送信する
-    [[AKGameCenterHelper sharedHelper] reportHiScore:m_score];
+    [[AKGameCenterHelper sharedHelper] reportHiScore:score_];
 }
 
 /*!
@@ -1570,13 +1570,13 @@ static AKGameScene *g_scene = nil;
 {
     // 命中率を計算する。1発も発射していない場合は100%とする。
     NSInteger hit = 0;
-    if (m_shotCount == 0) {
+    if (shotCount_ == 0) {
         hit = 100;
     }
     else {
-        hit = (float)m_hitCount / m_shotCount * 100.0f;
+        hit = (float)hitCount_ / shotCount_ * 100.0f;
     }
-    DBGLOG(0, @"hitCount=%d shotCount=%d hit=%d", m_hitCount, m_shotCount, hit);
+    AKLog(0, @"hitCount=%d shotCount=%d hit=%d", hitCount_, shotCount_, hit);
     
     // 情報レイヤーを取得する
     CCNode *infoLayer = [self getChildByTag:kAKLayerPosZInfo];
@@ -1588,7 +1588,7 @@ static AKGameScene *g_scene = nil;
     NSString *hitString = [NSString stringWithFormat:kAKHitFormat, hit];
     [hitLabel setString:hitString];
     
-    DBGLOG(0, @"str=%@", hitString);
+    AKLog(0, @"str=%@", hitString);
 }
 
 /*!
@@ -1600,13 +1600,13 @@ static AKGameScene *g_scene = nil;
 {
     // プレイ時間を分、秒、ミリ秒に分割する
     // 分を計算する
-    NSInteger min = ((NSInteger)m_playTime) / 60;
+    NSInteger min = ((NSInteger)playTime_) / 60;
     
     // 秒を計算する
-    NSInteger sec = ((NSInteger)m_playTime) % 60;
+    NSInteger sec = ((NSInteger)playTime_) % 60;
     
     // ミリ秒を計算する
-    NSInteger millisec = ((NSInteger)(m_playTime * 100.0f)) % 100;
+    NSInteger millisec = ((NSInteger)(playTime_ * 100.0f)) % 100;
     
     // 99分を超えている場合はカンストとする
     if (min > 99) {
@@ -1706,7 +1706,7 @@ static AKGameScene *g_scene = nil;
  */
 - (void)backToTitle
 {
-    DBGLOG(0, @"backToTitle開始");
+    AKLog(0, @"backToTitle開始");
     
     // BGMを停止する
     [[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
@@ -1717,7 +1717,7 @@ static AKGameScene *g_scene = nil;
     // タイトルシーンへ遷移する
     [[CCDirector sharedDirector] replaceScene:transition];
 
-    DBGLOG(0, @"backToTitle終了");
+    AKLog(0, @"backToTitle終了");
 }
 
 /*!
@@ -1734,15 +1734,15 @@ static AKGameScene *g_scene = nil;
     
     // 命中率を計算する。1発も発射していない場合は100%とする。
     NSInteger hit = 0;
-    if (m_shotCount == 0) {
+    if (shotCount_ == 0) {
         hit = 100;
     }
     else {
-        hit = (float)m_hitCount / m_shotCount * 100.0f;
+        hit = (float)hitCount_ / shotCount_ * 100.0f;
     }
     
     // 各種パラメータを設定する
-    [resultLayer setScore:m_score andTime:(NSInteger)m_playTime andHit:hit andRest:m_life];
+    [resultLayer setScore:score_ andTime:(NSInteger)playTime_ andHit:hit andRest:life_];
 }
 
 /*!

@@ -7,7 +7,7 @@
 
 #import "AKGameCenterHelper.h"
 #import "AKNavigationController.h"
-#import "common.h"
+#import "AKCommon.h"
 
 /// 実績ノーミスクリアのID
 NSString *kAKGCNoMissID = @"keigeki_no_miss";
@@ -149,7 +149,7 @@ static AKGameCenterHelper *sharedHelper_ = nil;
     // ファイルが読み込めた場合はデータを取得する
     if (data != nil) {
         
-        DBGLOG(1, @"ファイル読み込み成功");
+        AKLog(1, @"ファイル読み込み成功");
         
         // ファイルからデコーダーを生成する
         NSKeyedUnarchiver *decoder = [[[NSKeyedUnarchiver alloc] initForReadingWithData:data] autorelease];
@@ -159,7 +159,7 @@ static AKGameCenterHelper *sharedHelper_ = nil;
         
 #ifdef DEBUG
         for (GKAchievement *achievement in [localAchievements objectEnumerator]) {
-            DBGLOG(1, @"identifier=%@", achievement.identifier);
+            AKLog(1, @"identifier=%@", achievement.identifier);
         }
 #endif
         
@@ -171,7 +171,7 @@ static AKGameCenterHelper *sharedHelper_ = nil;
     }
     // ファイルが読み込めなかった場合は新規に辞書を作成する
     else {
-        DBGLOG(1, @"ファイル読み込み失敗");
+        AKLog(1, @"ファイル読み込み失敗");
         
         self.localAchievements = [[[NSMutableDictionary alloc] init] autorelease];
     }
@@ -185,11 +185,11 @@ static AKGameCenterHelper *sharedHelper_ = nil;
 - (void)writeLocalAchievements
 {
 
-    DBGLOG(1, @"ファイル書き込み開始");
+    AKLog(1, @"ファイル書き込み開始");
     
 #ifdef DEBUG
     for (GKAchievement *achievement in [self.localAchievements objectEnumerator]) {
-        DBGLOG(1, @"identifier=%@", achievement.identifier);
+        AKLog(1, @"identifier=%@", achievement.identifier);
     }
 #endif
     
@@ -228,7 +228,7 @@ static AKGameCenterHelper *sharedHelper_ = nil;
     
     // すでに認証済みならば処理を終了する
     if (localPlayer.isAuthenticated) {
-        DBGLOG(1, @"すでに認証済み");
+        AKLog(1, @"すでに認証済み");
         return;
     }
     
@@ -238,13 +238,13 @@ static AKGameCenterHelper *sharedHelper_ = nil;
         // 認証ができた場合
         if (localPlayer.isAuthenticated) {
             
-            DBGLOG(1, @"Game Center認証に成功");
+            AKLog(1, @"Game Center認証に成功");
             
             // 実績データを取得する
             [self loadAchievements];
         }
         
-        DBGLOG(!localPlayer.isAuthenticated, @"Game Center認証に失敗");
+        AKLog(!localPlayer.isAuthenticated, @"Game Center認証に失敗");
     }];
 }
 
@@ -278,10 +278,10 @@ static AKGameCenterHelper *sharedHelper_ = nil;
         [achievement reportAchievementWithCompletionHandler:^(NSError *error) {
             
             // 送信に失敗した場合のログを出力する
-            DBGLOG(error != nil, @"実績送信に失敗:identifier=%@ [%@]", achievement.identifier, [error localizedDescription]);
+            AKLog(error != nil, @"実績送信に失敗:identifier=%@ [%@]", achievement.identifier, [error localizedDescription]);
             
             // 送信に成功した場合のログを出力する
-            DBGLOG(error == nil, @"実績送信完了:identifier=%@", achievement.identifier);
+            AKLog(error == nil, @"実績送信完了:identifier=%@", achievement.identifier);
         }];
     }
 }
@@ -293,12 +293,12 @@ static AKGameCenterHelper *sharedHelper_ = nil;
  */
 - (void)loadAchievements
 {
-    DBGLOG(1, @"start loadAchievements");
+    AKLog(1, @"start loadAchievements");
     
     // 実績データを取得する
     [GKAchievement loadAchievementsWithCompletionHandler:^(NSArray *achievements, NSError *error) {
         
-        DBGLOG(error != nil, @"error=%@", error.description);
+        AKLog(error != nil, @"error=%@", error.description);
         
         // エラーがない場合は実績をローカル辞書に格納する
         if (error == nil) {
@@ -309,14 +309,14 @@ static AKGameCenterHelper *sharedHelper_ = nil;
             NSMutableDictionary *work = [NSMutableDictionary dictionaryWithCapacity:achievements.count];
             
             for (GKAchievement *achivement in achievements) {
-                DBGLOG(1, @"achivement.identifier=%@", achivement.identifier);
+                AKLog(1, @"achivement.identifier=%@", achivement.identifier);
                 
                 // ローカル辞書の実績を検索する
                 GKAchievement *localAchievement = [self.localAchievements objectForKey:achivement.identifier];
                 
                 // ローカル辞書に保存されていない場合は格納する
                 if (localAchievement == nil) {
-                    DBGLOG(1, @"ローカル辞書に登録");
+                    AKLog(1, @"ローカル辞書に登録");
                     [self.localAchievements setObject:achivement forKey:achivement.identifier];
                 }
                 // ローカル辞書の達成率が低い場合は入れ替える
@@ -360,10 +360,10 @@ static AKGameCenterHelper *sharedHelper_ = nil;
     [scoreReporter reportScoreWithCompletionHandler:^(NSError *error) {
         
         // 送信に失敗した場合のログを出力する
-        DBGLOG(error != nil, @"ハイスコア送信に失敗:score=%d [%@]", score, [error localizedDescription]);
+        AKLog(error != nil, @"ハイスコア送信に失敗:score=%d [%@]", score, [error localizedDescription]);
 
         // 送信に成功した場合のログを出力する
-        DBGLOG(error == nil, @"ハイスコア送信完了:score=%d", score);
+        AKLog(error == nil, @"ハイスコア送信完了:score=%d", score);
     }];
 }
 
@@ -429,10 +429,10 @@ static AKGameCenterHelper *sharedHelper_ = nil;
         [achievement reportAchievementWithCompletionHandler:^(NSError *error) {
             
             // 送信に失敗した場合のログを出力する
-            DBGLOG(error != nil, @"実績送信に失敗:identifier=%@ [%@]", identifier, [error localizedDescription]);
+            AKLog(error != nil, @"実績送信に失敗:identifier=%@ [%@]", identifier, [error localizedDescription]);
             
             // 送信に成功した場合のログを出力する
-            DBGLOG(error == nil, @"実績送信完了:identifier=%@ percent=%f", identifier, achievement.percentComplete);
+            AKLog(error == nil, @"実績送信完了:identifier=%@ percent=%f", identifier, achievement.percentComplete);
         }];
         
         // 送信済み実績データのファイルの内容を更新する
@@ -468,7 +468,7 @@ static AKGameCenterHelper *sharedHelper_ = nil;
     
     // LeaderboardのView Controllerの生成に失敗した場合は処理を終了する
     if (leaderboard == nil) {
-        DBGLOG(1, @"LeaderboardのView Controller生成に失敗");
+        AKLog(1, @"LeaderboardのView Controller生成に失敗");
         return;
     }
     
@@ -494,7 +494,7 @@ static AKGameCenterHelper *sharedHelper_ = nil;
     
     // AchievementsのView Controllerの生成に失敗した場合は処理を終了する
     if (achievements == nil) {
-        DBGLOG(1, @"AchievementsのView Controller生成に失敗");
+        AKLog(1, @"AchievementsのView Controller生成に失敗");
         return;
     }
     

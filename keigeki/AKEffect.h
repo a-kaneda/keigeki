@@ -12,7 +12,7 @@
 // 画面効果クラス
 @interface AKEffect : AKCharacter {
     /// 生存時間
-    float m_lifetime;
+    float lifetime_;
 }
 
 // 画面効果開始

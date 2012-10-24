@@ -111,10 +111,10 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     if (UIInterfaceOrientationLandscapeRight == interfaceOrientation) {
-        DBGLOG(1, @"return YES");
+        AKLog(1, @"return YES");
         return YES;
     } else {
-        DBGLOG(1, @"return NO");
+        AKLog(1, @"return NO");
         return NO;
     }
 }
@@ -150,7 +150,7 @@
  */
 -(void) applicationDidEnterBackground:(UIApplication*)application
 {
-    DBGLOG(1, @"applicationDidEnterBackground start.");
+    AKLog(1, @"applicationDidEnterBackground start.");
 	if( [navController_ visibleViewController] == director_ ) {
 		[director_ stopAnimation];
         

@@ -11,25 +11,25 @@
 // キャラクタークラス
 @interface AKCharacter : NSObject {
     /// 画像
-    CCNode *m_image;
+    CCNode *image_;
     /// 当たり判定サイズ幅
-    NSInteger m_width;
+    NSInteger width_;
     /// 当たり判定サイズ高さ
-    NSInteger m_height;
+    NSInteger height_;
     /// 絶対座標x
-    float m_absx;
+    float absx_;
     /// 絶対座標y
-    float m_absy;
+    float absy_;
     /// 速度
-    float m_speed;
+    float speed_;
     /// 向き
-    float m_angle;
+    float angle_;
     /// 回転速度
-    float m_rotSpeed;
+    float rotSpeed_;
     /// HP
-    NSInteger m_hitPoint;
+    NSInteger hitPoint_;
     /// ステージ上に存在しているかどうか
-    BOOL m_isStaged;
+    BOOL isStaged_;
 }
 
 /// 画像

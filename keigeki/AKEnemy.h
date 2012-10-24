@@ -8,16 +8,16 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 #import "AKCharacter.h"
-#import "common.h"
+#import "AKCommon.h"
 
 // 敵クラス
 @interface AKEnemy : AKCharacter {
     /// 動作開始からの経過時間(各敵種別で使用)
-    ccTime m_time;
+    ccTime time_;
     /// 動作処理のセレクタ
-    SEL m_action;
+    SEL action_;
     /// 破壊処理のセレクタ
-    SEL m_destroy;
+    SEL destroy_;
 }
 
 // 生成処理

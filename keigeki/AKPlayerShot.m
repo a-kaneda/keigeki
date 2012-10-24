@@ -7,7 +7,7 @@
 
 #import "AKPlayerShot.h"
 #import "AKGameScene.h"
-#import "common.h"
+#import "AKCommon.h"
 
 /// 自機弾のスピード
 static const NSInteger kAKPlayerShotSpeed = 1200;
@@ -37,12 +37,12 @@ static const CGSize kAKPlayerShotSize = {2, 8};
     
     // 画像の読込
     self.image = [CCSprite spriteWithFile:@"PlayerShot.png"];
-    assert(m_image != nil);
+    assert(image_ != nil);
     
     // 各種パラメータを設定する
-    m_speed = kAKPlayerShotSpeed;
-    m_width = kAKPlayerShotSize.width;
-    m_height = kAKPlayerShotSize.height;
+    speed_ = kAKPlayerShotSpeed;
+    width_ = kAKPlayerShotSize.width;
+    height_ = kAKPlayerShotSize.height;
     
     return self;
 }
@@ -59,10 +59,10 @@ static const CGSize kAKPlayerShotSize = {2, 8};
     [AKGameScene sharedInstance].shotCount++;
     
     // 射程距離が残っていれば命中数をカウントする
-    if (m_distance > 0.0f) {
+    if (distance_ > 0.0f) {
         [AKGameScene sharedInstance].hitCount++;
     }
-    DBGLOG(0, @"hitCount=%d shotCount=%d", [AKGameScene sharedInstance].hitCount, [AKGameScene sharedInstance].shotCount);
+    AKLog(0, @"hitCount=%d shotCount=%d", [AKGameScene sharedInstance].hitCount, [AKGameScene sharedInstance].shotCount);
     
     // スーパークラスの処理を行う
     [super destroy];

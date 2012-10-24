@@ -21,7 +21,7 @@ static NSString *kAKTileFile = @"Back.png";
  */
 @implementation AKBackground
 
-@synthesize batch = m_batch;
+@synthesize batch = batch_;
 
 /*!
  @brief オブジェクト生成処理
@@ -97,7 +97,7 @@ static NSString *kAKTileFile = @"Back.png";
     // そこからタイルサイズ分の範囲でスクロールする。(-32 〜 +32)
     posx = AKPlayerPosX() + kAKTileSize / 2 + (-scrx % kAKTileSize);
     posy = AKPlayerPosY() + kAKTileSize / 2 + (-scry % kAKTileSize);
-    DBGLOG(0, @"basex=%f basey=%f", posx, posy);
+    AKLog(0, @"basex=%f basey=%f", posx, posy);
     
     // 背景画像の位置を移動する。
     self.batch.position = ccp(posx, posy);

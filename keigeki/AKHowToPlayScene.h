@@ -13,7 +13,7 @@
 // プレイ方法画面シーン
 @interface AKHowToPlayScene : CCScene {
     /// ページ番号
-    NSInteger m_pageNo;
+    NSInteger pageNo_;
 }
 
 // インターフェース取得

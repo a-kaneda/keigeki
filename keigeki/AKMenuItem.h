@@ -11,11 +11,11 @@
 // メニュー項目クラス
 @interface AKMenuItem : NSObject {
     /// 位置
-    CGRect m_pos;
+    CGRect pos_;
     /// 処理
-    SEL m_action;
+    SEL action_;
     /// タグ
-    NSInteger m_tag;
+    NSInteger tag_;
 }
 
 /// 処理

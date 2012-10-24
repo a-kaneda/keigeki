@@ -23,29 +23,29 @@ enum AKResultState {
 // ステージクリア結果レイヤー
 @interface AKResultLayer : CCNode {
     /// 計算状態
-    enum AKResultState m_state;
+    enum AKResultState state_;
     /// クリア時の残機
-    NSInteger m_rest;
+    NSInteger rest_;
     /// クリアタイム
-    NSInteger m_time;
+    NSInteger time_;
     /// 命中率
-    NSInteger m_hit;
+    NSInteger hit_;
     /// 表示中のスコア
-    NSInteger m_score;
+    NSInteger score_;
     /// 表示中の残機ボーナス
-    NSInteger m_restBonus;
+    NSInteger restBonus_;
     /// 表示中のタイムボーナス
-    NSInteger m_timeBonus;
+    NSInteger timeBonus_;
     /// 表示中の命中率ボーナス
-    NSInteger m_hitBonus;
+    NSInteger hitBonus_;
     /// 残機ボーナスの計算値
-    NSInteger m_restBonusTarget;
+    NSInteger restBonusTarget_;
     /// タイムボーナスの計算値
-    NSInteger m_timeBonusTarget;
+    NSInteger timeBonusTarget_;
     /// 命中率ボーナスの計算値
-    NSInteger m_hitBonusTarget;
+    NSInteger hitBonusTarget_;
     /// 表示更新待ち時間
-    float m_delay;
+    float delay_;
 }
 
 /// 表示が完了しているかどうか

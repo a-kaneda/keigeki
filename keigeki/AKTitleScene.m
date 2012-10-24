@@ -11,7 +11,7 @@
 #import "AKGameScene.h"
 #import "AKHowToPlayScene.h"
 #import "AKScreenSize.h"
-#import "common.h"
+#import "AKCommon.h"
 #import "SimpleAudioEngine.h"
 #import "AKGameCenterHelper.h"
 #import "AKOptionScene.h"
@@ -79,7 +79,7 @@ enum {
  */
 - (id)init
 {
-    DBGLOG(0, @"init 開始");
+    AKLog(0, @"init 開始");
     
     // スーパークラスの生成処理
     self = [super init];
@@ -147,7 +147,7 @@ enum {
     interface.enableItemTagStart = 0;
     interface.enableItemTagEnd = kAKTitleMenuCount - 1;
     
-    DBGLOG(0, @"init 終了");
+    AKLog(0, @"init 終了");
     return self;
 }
 
@@ -169,7 +169,7 @@ enum {
  */
 - (void)startGame
 {
-    DBGLOG(0, @"startGame");
+    AKLog(0, @"startGame");
     
     // ボタン選択エフェクトを発生させる
     [self selectButton:kAKTitleMenuGame];
@@ -188,7 +188,7 @@ enum {
  */
 - (void)startHowTo
 {
-    DBGLOG(0, @"startHowTo");
+    AKLog(0, @"startHowTo");
     
     // ボタン選択エフェクトを発生させる
     [self selectButton:kAKTitleMenuHowTo];
@@ -207,7 +207,7 @@ enum {
  */
 - (void)startOption
 {
-    DBGLOG(1, @"startOption");
+    AKLog(1, @"startOption");
 
     // ボタン選択エフェクトを発生させる
     [self selectButton:kAKTitleMenuOption];
@@ -226,7 +226,7 @@ enum {
  */
 - (void)startCredit
 {
-    DBGLOG(1, @"startCredit");
+    AKLog(1, @"startCredit");
 
     // ボタン選択エフェクトを発生させる
     [self selectButton:kAKTitleMenuCredit];

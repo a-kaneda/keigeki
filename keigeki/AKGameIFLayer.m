@@ -7,7 +7,7 @@
 
 #import "AKGameIFLayer.h"
 #import "AKGameScene.h"
-#import "common.h"
+#import "AKCommon.h"
 
 /// ショットボタンのサイズ
 static const NSInteger kAKShotButtonSize = 64;
@@ -56,7 +56,7 @@ static float AKAccel2Ratio(float accel);
     float ax = 0.0f;
     float ay = 0.0f;
     
-    DBGLOG(0, @"x=%g,y=%g,z=%g",acceleration.x, acceleration.y, acceleration.z);
+    AKLog(0, @"x=%g,y=%g,z=%g",acceleration.x, acceleration.y, acceleration.z);
     
     // 加速度センサーの入力値を-1.0〜1.0の比率に変換
     // 画面を横向きに使用するのでx軸y軸を入れ替える
@@ -64,7 +64,7 @@ static float AKAccel2Ratio(float accel);
     ax = AKAccel2Ratio(-acceleration.y);
     ay = AKAccel2Ratio(acceleration.x);
     
-    DBGLOG(0, @"ax=%f,ay=%f", ax, ay);
+    AKLog(0, @"ax=%f,ay=%f", ax, ay);
 
     // 速度の変更
     [[AKGameScene sharedInstance] movePlayerByVX:ax VY:ay];

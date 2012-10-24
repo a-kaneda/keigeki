@@ -6,7 +6,7 @@
  */
 
 #import "AKCharacterPool.h"
-#import "common.h"
+#import "AKCommon.h"
 
 /*!
  @brief キャラクタープールクラス
@@ -15,7 +15,7 @@
  */
 @implementation AKCharacterPool
 
-@synthesize pool = m_pool;
+@synthesize pool = pool_;
 
 /*!
  @brief オブジェクト生成処理
@@ -30,7 +30,7 @@
     int i = 0;                  // ループ変数
     AKCharacter *character = nil; // キャラクター生成用バッファ
     
-    DBGLOG(0, @"class=%@ size=%d", characlass, size);
+    AKLog(0, @"class=%@ size=%d", characlass, size);
     
     // スーパークラスの生成処理
     self = [super init];
@@ -39,20 +39,20 @@
     }
     
     // パラメータをメンバに設定する
-    m_class = characlass;
-    m_size = size;
+    class_ = characlass;
+    size_ = size;
     
     // プールの生成
-    self.pool = [NSMutableArray arrayWithCapacity:m_size];
+    self.pool = [NSMutableArray arrayWithCapacity:size_];
 
     // キャラクターの生成
-    for (i = 0; i < m_size; i++) {
-        character = [[[m_class alloc] init] autorelease];
-        [m_pool addObject:character];
+    for (i = 0; i < size_; i++) {
+        character = [[[class_ alloc] init] autorelease];
+        [pool_ addObject:character];
     }
     
     // 次にキャラクターを生成するインデックスを初期化する
-    m_next = 0;
+    next_ = 0;
     
     return self;
 }
@@ -83,18 +83,18 @@
     AKCharacter *ret = nil;   // 戻り値
     AKCharacter *work = nil;  // ワーク変数
     
-    DBGLOG(0, @"m_size=%d", m_size);
+    AKLog(0, @"m_size=%d", size_);
     
     // 未使用のキャラクターを検索する
-    for (i = 0; i < m_size; i++) {
+    for (i = 0; i < size_; i++) {
         
         // キャラクターを取得する
-        work = [m_pool objectAtIndex:m_next];
+        work = [pool_ objectAtIndex:next_];
         
         // インデックスを進める
-        m_next = (m_next + 1) % m_size;
+        next_ = (next_ + 1) % size_;
         
-        DBGLOG(0, @"i=%d work.isStaged=%d", i, work.isStaged);
+        AKLog(0, @"i=%d work.isStaged=%d", i, work.isStaged);
         
         // 使用中かどうか調べる
         if (!work.isStaged) {
@@ -134,6 +134,6 @@
     }
     
     // インデックスを初期化する
-    m_next = 0;
+    next_ = 0;
 }
 @end

@@ -6,7 +6,7 @@
  */
 
 #import "AKEffect.h"
-#import "common.h"
+#import "AKCommon.h"
 
 /*!
  @brief 画面効果クラス
@@ -31,7 +31,7 @@
     
     // パーティクルを配置するためダミーのノードを作成する
     self.image = [CCNode node];
-    assert(m_image != nil);
+    assert(image_ != nil);
         
     return self;
 }
@@ -44,17 +44,17 @@
  */
 - (void)action:(ccTime)dt
 {
-    DBGLOG(0, @"lifetime=%f dt=%f", m_lifetime, dt);
-    DBGLOG(0, @"position=(%f, %f)", self.image.position.x, self.image.position.y);
-    DBGLOG(0, @"abspos=(%f, %f)", self.absx, self.absy);
+    AKLog(0, @"lifetime=%f dt=%f", lifetime_, dt);
+    AKLog(0, @"position=(%f, %f)", self.image.position.x, self.image.position.y);
+    AKLog(0, @"abspos=(%f, %f)", self.absx, self.absy);
     
     // 生存時間を減らす
-    m_lifetime -= dt;
+    lifetime_ -= dt;
     
     // 生存時間がつきた場合は削除する
-    if (m_lifetime < 0) {
-        DBGLOG(0, @"effect end");
-        m_hitPoint = -1.0f;
+    if (lifetime_ < 0) {
+        AKLog(0, @"effect end");
+        hitPoint_ = -1.0f;
         
         // 画面効果を削除する
         [self.image removeAllChildrenWithCleanup:YES];
@@ -119,7 +119,7 @@
     self.absy = posy;
     
     // フレーム数 * ディレイ時間を生存時間とする
-    m_lifetime = count * delay;
+    lifetime_ = count * delay;
     
     // 画面配置フラグとHPを設定する
     self.isStaged = YES;

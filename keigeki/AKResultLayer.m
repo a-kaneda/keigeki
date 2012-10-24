@@ -10,7 +10,7 @@
 #import "AKGameScene.h"
 #import "AKLabel.h"
 #import "AKScreenSize.h"
-#import "common.h"
+#import "AKCommon.h"
 
 /// ラベルのタグ
 enum {
@@ -108,15 +108,15 @@ static NSString *kAKScoreCountSE = @"ScoreCount.caf";
     [self addChild:AKCreateBackColorLayer() z:0];
     
     // メンバの初期化
-    m_state = kAKstateScoreView;
-    m_score = 0;
-    m_rest = 0;
-    m_time = 0;
-    m_hit = 0;
-    m_restBonus = 0;
-    m_timeBonus = 0;
-    m_hitBonus = 0;
-    m_delay = kAKDelayLong;
+    state_ = kAKstateScoreView;
+    score_ = 0;
+    rest_ = 0;
+    time_ = 0;
+    hit_ = 0;
+    restBonus_ = 0;
+    timeBonus_ = 0;
+    hitBonus_ = 0;
+    delay_ = kAKDelayLong;
     
     // タイトルキャプションラベルを生成する
     [self createLabelWithString:kAKTitleCaption
@@ -201,7 +201,7 @@ static NSString *kAKScoreCountSE = @"ScoreCount.caf";
  */
 - (BOOL)isFinish
 {
-    if (m_state == kAKstateFinish) {
+    if (state_ == kAKstateFinish) {
         return YES;
     }
     else {
@@ -236,27 +236,27 @@ static NSString *kAKScoreCountSE = @"ScoreCount.caf";
          andRest:(NSInteger)rest
 {
     // メンバに設定する
-    m_score = score;
-    m_time = time;
-    m_hit = hit;
-    m_rest = rest;
+    score_ = score;
+    time_ = time;
+    hit_ = hit;
+    rest_ = rest;
     
     // タイムが最大値を超えている場合は最大値に補正する
-    if (m_time > kAKTimeMax) {
-        m_time = kAKTimeMax;
+    if (time_ > kAKTimeMax) {
+        time_ = kAKTimeMax;
     }
     
     // タイムボーナスを計算する
-    m_timeBonusTarget = (kAKBaseTime - m_time) * kAKTimeBonus;
-    if (m_timeBonusTarget < 0) {
-        m_timeBonusTarget = 0;
+    timeBonusTarget_ = (kAKBaseTime - time_) * kAKTimeBonus;
+    if (timeBonusTarget_ < 0) {
+        timeBonusTarget_ = 0;
     }
     
     // 命中率ボーナスを計算する
-    m_hitBonusTarget = m_hit * kAKHitBonus;
+    hitBonusTarget_ = hit_ * kAKHitBonus;
     
     // 残機ボーナスを計算する
-    m_restBonusTarget = m_rest * kAKRestIncrementValue;
+    restBonusTarget_ = rest_ * kAKRestIncrementValue;
 }
 
 /*!
@@ -364,10 +364,10 @@ static NSString *kAKScoreCountSE = @"ScoreCount.caf";
         [[AKGameScene sharedInstance] addScore:value - current];
         
         // ステージクリア結果画面のスコアを加算する
-        m_score += (value - current);
+        score_ += (value - current);
         
         // スコア文字列を生成する
-        NSString *scoreString = [NSString stringWithFormat:kAKLabelFormat, m_score];
+        NSString *scoreString = [NSString stringWithFormat:kAKLabelFormat, score_];
         
         // スコアラベルを取得する
         AKLabel *scoreLabel = (AKLabel *)[self getChildByTag:kAKScoreNumTag];
@@ -380,19 +380,19 @@ static NSString *kAKScoreCountSE = @"ScoreCount.caf";
     if (value >= target) {
         
         // 更新が完了していれば待ち時間は長めに設定する
-        m_delay = kAKDelayLong;
+        delay_ = kAKDelayLong;
         
         // 状態をひとつ進める
-        m_state++;
+        state_++;
     }
     else {
         // まだ増加中の時は待ち時間は短めの時間を設定する。
         // ただし、引数で長めの待ち時間を設定するようになっている場合は長めの時間とする
         if (isLongWait) {
-            m_delay = kAKDelayLong;
+            delay_ = kAKDelayLong;
         }
         else {
-            m_delay = kAKDealyShort;
+            delay_ = kAKDealyShort;
         }
     }
     
@@ -407,46 +407,46 @@ static NSString *kAKScoreCountSE = @"ScoreCount.caf";
 - (void)updateCalc:(ccTime)dt
 {    
     // 表示更新待ち時間をカウントする
-    m_delay -= dt;
+    delay_ -= dt;
     
     // 待ち時間が経過しているときは表示を更新する
-    if (m_delay < 0.0f) {
+    if (delay_ < 0.0f) {
         
         // 現在の状態によって更新対象を変える
-        switch (m_state) {
+        switch (state_) {
             case kAKstateScoreView:   // 初期スコア表示中
                 
                 // スコアを更新する
-                [self updateItemWithTag:kAKScoreNumTag currentValue:0 targetValue:m_score
+                [self updateItemWithTag:kAKScoreNumTag currentValue:0 targetValue:score_
                          incrementValue:-1 isAddScore:NO isLongWait:NO withSE:YES];
                 break;
                 
             case kAKstateTimeView:    // タイム表示中
                 
                 // タイムラベルを更新する
-                [self updateItemWithTag:kAKTimeNumTag currentValue:0 targetValue:m_time
+                [self updateItemWithTag:kAKTimeNumTag currentValue:0 targetValue:time_
                          incrementValue:-1 isAddScore:NO isLongWait:NO withSE:YES];
                 break;
                 
             case kAKstateHitView:     // 命中率表示中
                 
                 // 命中率ラベルを更新する
-                [self updateItemWithTag:kAKHitNumTag currentValue:0 targetValue:m_hit
+                [self updateItemWithTag:kAKHitNumTag currentValue:0 targetValue:hit_
                          incrementValue:-1 isAddScore:NO isLongWait:NO withSE:YES];
                 break;
                 
             case kAKstateRestView:    // 残機表示中
                 
                 // 残機ラベルを更新する
-                [self updateItemWithTag:kAKRestNumTag currentValue:0 targetValue:m_rest
+                [self updateItemWithTag:kAKRestNumTag currentValue:0 targetValue:rest_
                          incrementValue:-1 isAddScore:NO isLongWait:NO withSE:YES];
                 break;
                 
             case kAKstateTimeBonus:   // タイムボーナス表示中
                 
                 // タイムボーナスを更新する
-                m_timeBonus = [self updateItemWithTag:kAKTimeBonusTag currentValue:m_timeBonus
-                                          targetValue:m_timeBonusTarget
+                timeBonus_ = [self updateItemWithTag:kAKTimeBonusTag currentValue:timeBonus_
+                                          targetValue:timeBonusTarget_
                                        incrementValue:kAKIncrementValue
                                            isAddScore:YES isLongWait:NO withSE:YES];
                 break;
@@ -454,8 +454,8 @@ static NSString *kAKScoreCountSE = @"ScoreCount.caf";
             case kAKstateHitBonus:    // 命中率ボーナス表示中
                 
                 // 命中率ボーナスを更新する
-                m_hitBonus = [self updateItemWithTag:kAKHitBonusTag currentValue:m_hitBonus
-                                         targetValue:m_hitBonusTarget
+                hitBonus_ = [self updateItemWithTag:kAKHitBonusTag currentValue:hitBonus_
+                                         targetValue:hitBonusTarget_
                                       incrementValue:kAKIncrementValue
                                           isAddScore:YES isLongWait:NO withSE:YES];
                 break;
@@ -463,8 +463,8 @@ static NSString *kAKScoreCountSE = @"ScoreCount.caf";
             case kAKstateRestBonus:   // 残機ボーナス表示中
                 
                 // 残機ボーナスを更新する
-                m_restBonus = [self updateItemWithTag:kAKRestBonusTag currentValue:m_restBonus
-                                          targetValue:m_restBonusTarget
+                restBonus_ = [self updateItemWithTag:kAKRestBonusTag currentValue:restBonus_
+                                          targetValue:restBonusTarget_
                                        incrementValue:kAKRestIncrementValue
                                            isAddScore:YES isLongWait:YES withSE:YES];
                 
@@ -487,25 +487,25 @@ static NSString *kAKScoreCountSE = @"ScoreCount.caf";
 - (void)finish
 {
     // すべての項目を更新させる
-    [self updateItemWithTag:kAKScoreNumTag currentValue:0 targetValue:m_score
+    [self updateItemWithTag:kAKScoreNumTag currentValue:0 targetValue:score_
              incrementValue:-1 isAddScore:NO isLongWait:NO withSE:NO];
-    [self updateItemWithTag:kAKTimeNumTag currentValue:0 targetValue:m_time
+    [self updateItemWithTag:kAKTimeNumTag currentValue:0 targetValue:time_
              incrementValue:-1 isAddScore:NO isLongWait:NO withSE:NO];
-    [self updateItemWithTag:kAKHitNumTag currentValue:0 targetValue:m_hit
+    [self updateItemWithTag:kAKHitNumTag currentValue:0 targetValue:hit_
              incrementValue:-1 isAddScore:NO isLongWait:NO withSE:NO];
-    [self updateItemWithTag:kAKRestNumTag currentValue:0 targetValue:m_rest
+    [self updateItemWithTag:kAKRestNumTag currentValue:0 targetValue:rest_
              incrementValue:-1 isAddScore:NO isLongWait:NO withSE:NO];
-    [self updateItemWithTag:kAKTimeBonusTag currentValue:m_timeBonus
-                targetValue:m_timeBonusTarget incrementValue:-1 isAddScore:YES isLongWait:NO withSE:NO];
-    [self updateItemWithTag:kAKHitBonusTag currentValue:m_hitBonus
-                targetValue:m_hitBonusTarget incrementValue:-1 isAddScore:YES isLongWait:NO withSE:NO];
-    [self updateItemWithTag:kAKRestBonusTag currentValue:m_restBonus
-                targetValue:m_restBonusTarget incrementValue:-1 isAddScore:YES isLongWait:NO withSE:NO];
+    [self updateItemWithTag:kAKTimeBonusTag currentValue:timeBonus_
+                targetValue:timeBonusTarget_ incrementValue:-1 isAddScore:YES isLongWait:NO withSE:NO];
+    [self updateItemWithTag:kAKHitBonusTag currentValue:hitBonus_
+                targetValue:hitBonusTarget_ incrementValue:-1 isAddScore:YES isLongWait:NO withSE:NO];
+    [self updateItemWithTag:kAKRestBonusTag currentValue:restBonus_
+                targetValue:restBonusTarget_ incrementValue:-1 isAddScore:YES isLongWait:NO withSE:NO];
     
     // スコアカウントの効果音を鳴らす
     [[SimpleAudioEngine sharedEngine] playEffect:kAKScoreCountSE];
     
     // 状態を表示完了にする
-    m_state = kAKstateFinish;
+    state_ = kAKstateFinish;
 }
 @end

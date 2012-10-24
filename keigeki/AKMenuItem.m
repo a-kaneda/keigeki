@@ -6,7 +6,7 @@
  */
 
 #import "AKMenuItem.h"
-#import "common.h"
+#import "AKCommon.h"
 
 /*!
  @brief メニュー項目クラス
@@ -16,8 +16,8 @@
  */
 @implementation AKMenuItem
 
-@synthesize action = m_action;
-@synthesize tag = m_tag;
+@synthesize action = action_;
+@synthesize tag = tag_;
 
 /*!
  @brief 矩形指定のメニュー項目生成
@@ -36,12 +36,12 @@
         return nil;
     }
     
-    DBGLOG(0, "rect = (%f, %f, %f, %f)", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+    AKLog(0, "rect = (%f, %f, %f, %f)", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
     
     // 引数をメンバに設定する
-    m_pos = rect;
-    m_action = action;
-    m_tag = tag;
+    pos_ = rect;
+    action_ = action;
+    tag_ = tag;
     
     return self;
 }
@@ -65,9 +65,9 @@
     }
     
     // 引数をメンバに設定する
-    m_pos = AKMakeRectFromCenter(point, size);
-    m_action = action;
-    m_tag = tag;
+    pos_ = AKMakeRectFromCenter(point, size);
+    action_ = action;
+    tag_ = tag;
     
     return self;
 }
@@ -111,7 +111,7 @@
 - (BOOL)isSelectPos:(CGPoint)pos
 {
     // 座標がメニュー項目の範囲内の場合は処理を行う
-    return AKIsInside(pos, m_pos);
+    return AKIsInside(pos, pos_);
 }
 
 @end

@@ -25,8 +25,8 @@ static const float kAKRadarPosTopPoint = 130.0f;
  */
 @implementation AKRadar
 
-@synthesize radarImage = m_radarImage;
-@synthesize markerImage = m_markerImage;
+@synthesize radarImage = radarImage_;
+@synthesize markerImage = markerImage_;
 
 /*!
  @brief オブジェクト生成処理
@@ -125,7 +125,7 @@ static const float kAKRadarPosTopPoint = 130.0f;
         
         // 敵が画面に配置されていない場合はマーカーの表示を消す
         if (!enemy.isStaged) {
-            DBGLOG(0 && marker.visible, @"visible=NO i=%d", i);
+            AKLog(0 && marker.visible, @"visible=NO i=%d", i);
             marker.visible = NO;
             continue;
         }
@@ -144,7 +144,7 @@ static const float kAKRadarPosTopPoint = 130.0f;
         // レーダーの中心を原点とするため、xyそれぞれレーダーの幅の半分を加算する。
         posx = ((kAKRadarSize / 2) * cos(angle)) + (kAKRadarSize / 2);
         posy = ((kAKRadarSize / 2) * sin(angle)) + (kAKRadarSize / 2);
-        DBGLOG(0, @"enemy=(%f,%f) angle=%f marker=(%f,%f)",
+        AKLog(0, @"enemy=(%f,%f) angle=%f marker=(%f,%f)",
                enemy.image.position.x, enemy.image.position.y,
                AKCnvAngleRad2Deg(angle), posx, posy);
         

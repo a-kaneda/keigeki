@@ -16,7 +16,7 @@
 #import "AKResultLayer.h"
 #import "AKInterface.h"
 #import "AKLabel.h"
-#import "common.h"
+#import "AKCommon.h"
 
 /// ゲームプレイの状態
 enum AKGameState {
@@ -41,51 +41,51 @@ enum AKEnemyType {
 // ゲームプレイシーン
 @interface AKGameScene : CCScene {
     /// 現在の状態
-    enum AKGameState m_state;
+    enum AKGameState state_;
     /// スリープ終了後の状態
-    enum AKGameState m_nextState;
+    enum AKGameState nextState_;
     /// 現在のステージ番号
-    NSInteger m_stageNo;
+    NSInteger stageNo_;
     /// 現在のウェイブ番号
-    NSInteger m_waveNo;
+    NSInteger waveNo_;
     /// 残機の数
-    NSInteger m_life;
+    NSInteger life_;
     /// スコア
-    NSInteger m_score;
+    NSInteger score_;
     /// ハイスコア
-    NSInteger m_hiScore;
+    NSInteger hiScore_;
     /// ショット発射数
-    NSInteger m_shotCount;
+    NSInteger shotCount_;
     /// ショット命中数
-    NSInteger m_hitCount;
+    NSInteger hitCount_;
     /// 撃墜された数
-    NSInteger m_missCount;
+    NSInteger missCount_;
     /// 自機復活までの間隔
-    float m_rebirthInterval;
+    float rebirthInterval_;
     /// 次のウェーブ開始までの間隔
-    float m_waveInterval;
+    float waveInterval_;
     /// 状態変更時の間隔
-    float m_stateInterval;
+    float stateInterval_;
     /// ステージのプレイ時間
-    float m_playTime;
+    float playTime_;
     /// スリープ時間
-    float m_sleepTime;
+    float sleepTime_;
     /// 背景
-    AKBackground *m_background;
+    AKBackground *background_;
     /// 自機
-    AKPlayer *m_player;
+    AKPlayer *player_;
     /// 自機弾プール
-    AKCharacterPool *m_playerShotPool;
+    AKCharacterPool *playerShotPool_;
     /// 敵プール
-    AKCharacterPool *m_enemyPool;
+    AKCharacterPool *enemyPool_;
     /// 敵弾プール
-    AKCharacterPool *m_enemyShotPool;
+    AKCharacterPool *enemyShotPool_;
     /// 画面効果プール
-    AKCharacterPool *m_effectPool;
+    AKCharacterPool *effectPool_;
     /// レーダー
-    AKRadar *m_radar;
+    AKRadar *radar_;
     /// 残機表示
-    AKLifeMark *m_lifeMark;
+    AKLifeMark *lifeMark_;
 }
 
 /// 現在の状態

@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 #import "AKInterface.h"
-#import "common.h"
+#import "AKCommon.h"
 
 // ゲームプレイ画面インターフェースクラス
 @interface AKGameIFLayer : AKInterface {

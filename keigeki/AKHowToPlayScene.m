@@ -14,17 +14,15 @@
 // シーンに配置するノードのz座標
 enum {
     kAKHowToBackPosZ = 0,   ///< 背景のz座標
-    kAKHowToItemPosZ        ///< 背景以外のz座標
+    kAKHowToItemPosZ,       ///< 背景以外のz座標
+    kAKHowToInterface       ///< インターフェースのz座標
 };
 
 // シーンに配置するノードのタグ
 enum {
     kAKHowToIntarfeceTag = 0,   ///< インターフェースのタグ
     kAKHowToMessageTag,         ///< メッセージのタグ
-    kAKHowToPageTag,            ///< ページ番号のタグ
-    kAKHowToPrevTag,            ///< 前ページボタンのタグ
-    kAKHowToBackTag,            ///< 戻るボタンのタグ
-    kAKHowToNextTag             ///< 次ページボタンのタグ
+    kAKHowToPageTag             ///< ページ番号のタグ
 };
 
 /// 前ページボタンの画像ファイル名
@@ -61,6 +59,13 @@ static const float kAKHowToMsgPosBottomPoint = 110.0f;
 /// ページ数
 static const NSInteger kAKHowToPageCount = 3;
 
+/// 前ページボタンのタグ
+static const NSUInteger kAKHowToPrevTag = 0x01;
+/// 次ページボタンのタグ
+static const NSUInteger kAKHowToNextTag = 0x02;
+/// 戻るボタンのタグ
+static const NSUInteger kAKHowToBackTag = 0x03;
+
 /*!
  @brief プレイ方法画面シーン
  
@@ -85,17 +90,11 @@ static const NSInteger kAKHowToPageCount = 3;
         return nil;
     }
     
-    // インターフェースを作成する
-    AKInterface *interface = [AKInterface interfaceWithCapacity:kAKMenuItemCount];
-    
-    // シーンへ配置する
-    [self addChild:interface z:0 tag:kAKHowToIntarfeceTag];
-    
     // 背景色レイヤーを作成する
     CCLayerColor *backColor = AKCreateBackColorLayer();
-  
-    // インターフェースに配置する
-    [interface addChild:backColor z:kAKHowToBackPosZ];
+    
+    // シーンに配置する
+    [self addChild:backColor z:kAKHowToBackPosZ];
     
     // メッセージボックスを作成する
     AKLabel *message = [AKLabel labelWithString:@"" maxLength:kAKHowToMsgLength maxLine:kAKHowToMsgLineCount frame:kAKLabelFrameMessage];
@@ -104,8 +103,27 @@ static const NSInteger kAKHowToPageCount = 3;
     message.position = ccp([AKScreenSize center].x,
                            [AKScreenSize positionFromBottomPoint:kAKHowToMsgPosBottomPoint]);
     
-    // インターフェースに配置する
-    [interface addChild:message z:kAKHowToItemPosZ tag:kAKHowToMessageTag];
+    // シーンに配置する
+    [self addChild:message z:kAKHowToItemPosZ tag:kAKHowToMessageTag];
+    
+    // ページ番号の初期文字列を作成する
+    NSString *pageString = [NSString stringWithFormat:kAKHowToPageFormat, 1, kAKHowToPageCount];
+    
+    // ページ番号のラベルを作成する
+    AKLabel *pageLabel = [AKLabel labelWithString:pageString maxLength:pageString.length maxLine:1 frame:kAKLabelFrameNone];
+    
+    // ページ番号の位置を設定する
+    pageLabel.position = ccp([AKScreenSize center].x,
+                             [AKScreenSize positionFromBottomPoint:kAKHowToPagePosBottomPoint]);
+    
+    // ページ番号のラベルをシーンに配置する
+    [self addChild:pageLabel z:kAKHowToItemPosZ tag:kAKHowToPageTag];
+    
+    // インターフェースを作成する
+    AKInterface *interface = [AKInterface interfaceWithCapacity:kAKMenuItemCount];
+    
+    // シーンへ配置する
+    [self addChild:interface z:0 tag:kAKHowToIntarfeceTag];
     
     // 前ページボタンをインターフェースに配置する
     [interface addMenuWithFile:kAKHowToPrevImage
@@ -131,19 +149,6 @@ static const NSInteger kAKHowToPageCount = 3;
                              z:kAKHowToItemPosZ
                            tag:kAKHowToBackTag];
 
-    // ページ番号の初期文字列を作成する
-    NSString *pageString = [NSString stringWithFormat:kAKHowToPageFormat, 1, kAKHowToPageCount];
-    
-    // ページ番号のラベルを作成する
-    AKLabel *pageLabel = [AKLabel labelWithString:pageString maxLength:pageString.length maxLine:1 frame:kAKLabelFrameNone];
-    
-    // ページ番号の位置を設定する
-    pageLabel.position = ccp([AKScreenSize center].x,
-                             [AKScreenSize positionFromBottomPoint:kAKHowToPagePosBottomPoint]);
-    
-    // ページ番号のラベルをインターフェースに配置する
-    [interface addChild:pageLabel z:kAKHowToItemPosZ tag:kAKHowToPageTag];
-    
     // 初期ページ番号を設定する
     self.pageNo = 1;
     
@@ -194,8 +199,8 @@ static const NSInteger kAKHowToPageCount = 3;
  */
 - (AKLabel *)pageLabel
 {
-    NSAssert([self.interface getChildByTag:kAKHowToPageTag] != nil, @"page label is nil");
-    return (AKLabel *)[self.interface getChildByTag:kAKHowToPageTag];
+    NSAssert([self getChildByTag:kAKHowToPageTag] != nil, @"page label is nil");
+    return (AKLabel *)[self getChildByTag:kAKHowToPageTag];
 }
 
 /*!
@@ -206,8 +211,8 @@ static const NSInteger kAKHowToPageCount = 3;
  */
 - (AKLabel *)messageLabel
 {
-    NSAssert([self.interface getChildByTag:kAKHowToMessageTag] != nil, @"message label is nil");
-    return (AKLabel *)[self.interface getChildByTag:kAKHowToMessageTag];
+    NSAssert([self getChildByTag:kAKHowToMessageTag] != nil, @"message label is nil");
+    return (AKLabel *)[self getChildByTag:kAKHowToMessageTag];
 }
 
 /*!
@@ -259,43 +264,25 @@ static const NSInteger kAKHowToPageCount = 3;
  */
 - (void)updatePageButton
 {
-    // 最初のページの場合は前ページボタンを無効にする
-    if (pageNo_ == 1) {
-        
-        // インターフェースの有効タグを前ページの次の項目からとする
-        [self.interface setEnableItemTagStart:kAKHowToPrevTag + 1];
-        
-        // 前ページボタンを非表示にする
-        self.prevButton.visible = NO;
-    }
+    // 有効タグの初期値を0(すべて無効)とする
+    NSUInteger enableTag = 0;
+    
     // 最初のページ以外の場合は前ページボタンを有効にする
-    else {
-        
-        // インターフェースの有効タグを前ページからとする
-        [self.interface setEnableItemTagStart:kAKHowToPrevTag];
-        
-        // 前ページボタンを表示する
-        self.prevButton.visible = YES;
+    if (pageNo_ > 1) {
+
+        // 有効タグに前ページボタンを追加する
+        enableTag |= kAKHowToPrevTag;
     }
     
-    // 最後のページの場合は次ページボタンを無効にする
-    if (pageNo_ == kAKHowToPageCount) {
-        
-        // インターフェースの有効タグを次ページの前の項目までとする
-        [self.interface setEnableItemTagEnd:kAKHowToNextTag - 1];
-        
-        // 次ページボタンを非表示にする
-        self.nextButton.visible = NO;
-    }
     // 最後のページ以外の場合は次ページボタンを有効にする
-    else {
+    if (pageNo_ < kAKHowToPageCount) {
         
-        // インターフェースの有効タグを次ページまでとする
-        [self.interface setEnableItemTagEnd:kAKHowToNextTag];
-        
-        // 次ページボタンを表示する
-        self.nextButton.visible = YES;
+        // 有効タグに次ページボタンを追加する
+        enableTag |= kAKHowToNextTag;
     }
+    
+    // 有効タグをインターフェースに反映する
+    self.interface.enableTag = enableTag;
 }
 
 /*!

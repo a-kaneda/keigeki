@@ -25,10 +25,14 @@ enum AKLabelFrame {
     NSInteger line_;
     /// 枠のタイプ
     enum AKLabelFrame frame_;
+    /// 色反転するかどうか
+    BOOL isReverse_;
 }
 
 /// 表示文字列
 @property (nonatomic, retain)NSString *labelString;
+/// 色反転するかどうか
+@property (nonatomic)BOOL isReverse;
 
 // 指定文字数の幅取得
 + (NSInteger)widthWithLength:(NSInteger)length hasFrame:(BOOL)hasFrame;

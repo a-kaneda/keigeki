@@ -5,8 +5,12 @@
  UINavigationControllerのカスタマイズクラスを定義する。
  */
 
-
+#import <Twitter/TWTweetComposeViewController.h>
 #import "AKNavigationController.h"
+#import "AKCommon.h"
+
+/// アプリのURL
+static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id569653828?l=ja&ls=1&mt=8";
 
 /*!
  @brief UINavigationControllerのカスタマイズ
@@ -102,5 +106,39 @@
 - (void)achievementViewControllerDidFinish:(GKAchievementViewController *)viewController
 {
     [self dismissModalViewControllerAnimated:YES];
+}
+
+/*!
+ @brief Twitter Viewの表示
+ 
+ Twitter Viewを表示する。
+ */
+- (void)viewTwitterWithInitialString:(NSString *)string
+{
+    // Twitter Viewを生成する
+    TWTweetComposeViewController *viewController = [[[TWTweetComposeViewController alloc] init] autorelease];
+    
+    // 初期文字列を設定する
+    [viewController setInitialText:string];
+
+    // URLを設定する
+    [viewController addURL:[NSURL URLWithString:kAKAplUrl]];
+    
+    // Twitter Viewを閉じる時の処理を設定する
+    viewController.completionHandler = ^(TWTweetComposeViewControllerResult res) {
+        
+        // 送信完了時のログを出力する
+        AKLog(res == TWTweetComposeViewControllerResultDone, @"Tweet送信完了");
+        
+        // 送信キャンセル時のログを出力する
+        AKLog(res == TWTweetComposeViewControllerResultCancelled, @"Tweetキャンセル");
+        
+        // モーダルウィンドウを閉じる
+        [self dismissModalViewControllerAnimated:YES];
+    };
+    
+    AKLog(1, @"Twitter View表示");
+    // Twitter Viewを表示する
+    [self presentModalViewController:viewController animated:YES];
 }
 @end

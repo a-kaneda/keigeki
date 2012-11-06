@@ -12,6 +12,7 @@
 #import "AKTitleScene.h"
 #import "AKGameScene.h"
 #import "AKGameCenterHelper.h"
+#import "AKTwitterHelper.h"
 
 /*!
  @brief Application controller
@@ -86,6 +87,10 @@
     // BGMとSEの音量を下げる
     [SimpleAudioEngine sharedEngine].backgroundMusicVolume = 0.5f;
     [SimpleAudioEngine sharedEngine].effectsVolume = 0.2f;
+    
+    // Twitterアカウントの認証ダイアログをアプリ起動時に表示するため、
+    // ここでTwitter管理クラスのインスタンスを生成する。
+    [AKTwitterHelper sharedHelper];
 
 	// and add the scene to the stack. The director will run it when it automatically when the view is displayed.
 	[director_ runWithScene:[AKTitleScene node]];

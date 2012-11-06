@@ -153,6 +153,9 @@ enum {
     line_ = line;
     frame_ = frame;
     
+    // 色反転はなしとする
+    isReverse_ = NO;
+    
     // 文字表示用バッチノードを生成する
     [self addChild:[CCSpriteBatchNode batchNodeWithTexture:[AKFont sharedInstance].fontTexture capacity:length * line]
                  z:kAKLabelBatchPosZ
@@ -160,6 +163,15 @@ enum {
     
     // 枠付きの場合は枠の生成を行う
     if (frame_ != kAKLabelFrameNone) {
+        
+        // 枠示用バッチノードを生成する
+        [self addChild:[CCSpriteBatchNode batchNodeWithTexture:[AKFont sharedInstance].fontTexture
+                                                      capacity:(length_ + 2) * (line_ * 1.5 + 2)]
+                     z:kAKFrameBatchPosZ
+                   tag:kAKFrameBatchPosZ];
+        
+
+        // 枠を作成する
         [self createFrame];
     }
     
@@ -169,7 +181,7 @@ enum {
         for (int x = 0; x < length_; x++) {
                 
             // フォントクラスからスプライトフレームを生成する
-            CCSpriteFrame *charSpriteFrame = [[AKFont sharedInstance] spriteFrameOfChar:' '];
+            CCSpriteFrame *charSpriteFrame = [[AKFont sharedInstance] spriteFrameOfChar:' ' isReverse:self.isReverse];
             
             // スプライトを生成する
             CCSprite *charSprite = [CCSprite spriteWithSpriteFrame:charSpriteFrame];
@@ -208,6 +220,42 @@ enum {
 + (id)labelWithString:(NSString *)str maxLength:(NSInteger)length maxLine:(NSInteger)line frame:(enum AKLabelFrame)frame
 {
     return [[[[self class] alloc] initWithString:str maxLength:length maxLine:line frame:frame] autorelease];
+}
+
+/*!
+ @brief 色反転するかどうかの取得
+ 
+ 色反転するかどうかを取得する。
+ @return 色反転するかどうか
+ */
+- (BOOL)isReverse
+{
+    return isReverse_;
+}
+
+/*!
+ @brief 色反転するかどうかの設定
+ 
+ 色反転するかどうかを設定する。
+ 設定したあとに表示文字列の更新を行う。
+ @param isReverse 色反転するかどうか
+ */
+- (void)setIsReverse:(BOOL)isReverse
+{
+    // 変更された場合のみ処理を行う
+    if (isReverse_ != isReverse) {
+        
+        AKLog(1, @"色反転設定:%d", isReverse);
+
+        // メンバに設定する
+        isReverse_ = isReverse;
+        
+        // 枠を更新する
+        [self createFrame];
+        
+        // 表示文字列を更新する
+        [self setString:self.labelString];
+    }
 }
 
 /*!
@@ -271,7 +319,9 @@ enum {
     assert(label.length <= length_ * line_);
     
     // パラメータをメンバに設定する
-    self.labelString = [[label copy] autorelease];
+    if (![self.labelString isEqualToString:label]) {
+        self.labelString = [[label copy] autorelease];
+    }
     
     // 各文字のスプライトを変更する
     int charpos = 0;
@@ -307,7 +357,7 @@ enum {
             AKLog(0, @"x=%d y=%d c=%C", x, y, c);
             
             // フォントクラスからスプライトフレームを生成する
-            CCSpriteFrame *charSpriteFrame = [[AKFont sharedInstance] spriteFrameOfChar:c];
+            CCSpriteFrame *charSpriteFrame = [[AKFont sharedInstance] spriteFrameOfChar:c isReverse:self.isReverse];
             
             // スプライトを差し替える
             [charSprite setDisplayFrame:charSpriteFrame];
@@ -419,12 +469,6 @@ enum {
             return;
     }
     
-    // 枠示用バッチノードを生成する
-    [self addChild:[CCSpriteBatchNode batchNodeWithTexture:[AKFont sharedInstance].fontTexture
-                                                  capacity:(length_ + 2) * (line_ * 1.5 + 2)]
-                 z:kAKFrameBatchPosZ
-               tag:kAKFrameBatchPosZ];
-    
     // 行間に0.5文字分の隙間を空けるため、行数の1.5倍の高さを用意する。
     // 枠を入れるため、上下+-1個分用意する。
     for (int y = -1; y < (int)(line_ * kAKLabelLineHeight) + 1; y++) {
@@ -484,20 +528,37 @@ enum {
                 key = kAKBlank;
             }
             
+            // 先頭からの文字数をタグとする
+            // xとyはそれぞれ-1からスタートしているため、+1して0からスタートするように補正する。
+            NSInteger tag = (x + 1) + (y + 1) * (length_ + 1 + 1);
+            AKLog(0, @"tag=%d", tag);
+            
             // フォントクラスからスプライトフレームを生成する
-            CCSpriteFrame *charSpriteFrame = [[AKFont sharedInstance] spriteFrameWithKey:key];
+            CCSpriteFrame *charSpriteFrame = [[AKFont sharedInstance] spriteFrameWithKey:key isReverse:self.isReverse];
             
-            // スプライトを生成する
-            CCSprite *charSprite = [CCSprite spriteWithSpriteFrame:charSpriteFrame];
+            // バッチノードからスプライトを取り出す
+            CCSprite *charSprite = (CCSprite *)[self.frameBatch getChildByTag:tag];
             
-            // 表示位置を設定する。
-            // テキスト領域の中央とバッチノードの中央を一致させるため、
-            // 左に1行の長さの半分、上方向に行数の半分移動する。
-            charSprite.position = ccp((x - (length_ - 1) / 2.0f) * kAKFontSize,
-                                      (-y + (line_ - 1) * kAKLabelLineHeight / 2.0f) * kAKFontSize);
+            // 取得できない場合はスプライトを生成する
+            if (charSprite == nil) {
+                
+                //　スプライトを生成する
+                charSprite = [CCSprite spriteWithSpriteFrame:charSpriteFrame];
+                
+                // 表示位置を設定する。
+                // テキスト領域の中央とバッチノードの中央を一致させるため、
+                // 左に1行の長さの半分、上方向に行数の半分移動する。
+                charSprite.position = ccp((x - (length_ - 1) / 2.0f) * kAKFontSize,
+                                          (-y + (line_ - 1) * kAKLabelLineHeight / 2.0f) * kAKFontSize);
+                
+                // バッチノードに登録する
+                [self.frameBatch addChild:charSprite z:0 tag:tag];
+            }
+            else {
             
-            // バッチノードに登録する
-            [self.frameBatch addChild:charSprite];
+                // スプライトを差し替える
+                [charSprite setDisplayFrame:charSpriteFrame];
+            }
         }
     }
 }

@@ -18,22 +18,16 @@
 #import "AKScreenSize.h"
 #import "SimpleAudioEngine.h"
 #import "AKGameCenterHelper.h"
+#import "AKTwitterHelper.h"
 
 /// 情報レイヤーに配置するノードのタグ
 enum {
-    kAKInfoTagPause = 0,    ///< 一時停止
-    kAKInfoTagResumeButton, ///< 一時停止解除ボタン
-    kAKInfoTagQuitButton,   ///< 終了ボタン
-    kAKInfoTagStageClear,   ///< ステージクリア
-    kAKInfoTagGameClear,    ///< ゲームクリア
-    kAKInfoTagGameOver,     ///< ゲームオーバー
-    kAKInfoTagScore,        ///< スコア
-    kAKInfoTagHiScore,      ///< ハイスコア
-    kAKInfoTagHit,          ///< 命中率
-    kAKInfoTagTime,         ///< プレイ時間
-    kAKInfoTagQuitMessage,  ///< 終了メニューキャプション
-    kAKInfoTagQuitYes,      ///< 終了メニューYESボタン
-    kAKInfoTagQuitNo        ///< 終了メニューNOボタン
+    kAKInfoTagStageClear = 0,   ///< ステージクリア
+    kAKInfoTagGameClear,        ///< ゲームクリア
+    kAKInfoTagScore,            ///< スコア
+    kAKInfoTagHiScore,          ///< ハイスコア
+    kAKInfoTagHit,              ///< 命中率
+    kAKInfoTagTime              ///< プレイ時間
 };
 
 /// レイヤーのz座標、タグの値にも使用する
@@ -41,7 +35,8 @@ enum {
     kAKLayerPosZBase = 0,   ///< ベースレイヤー
     kAKLayerPosZInfo,       ///< 情報レイヤー
     kAKLayerPosZResult,     ///< ステージクリアレイヤー
-    kAKLayerPosZInterface   ///< インターフェースレイヤー
+    kAKLayerPosZInterface,  ///< インターフェースレイヤー
+    kAKLayerPosZGameOver    ///< ゲームオーバーレイヤー
 };
 
 /// キャラクターのz座標
@@ -62,7 +57,7 @@ static const NSInteger kAKEnemyShotCount = 64;
 static const NSInteger kAKMaxEffectCount = 16;
 
 /// 初期残機数
-static const NSInteger kAKStartLifeCount = 3;
+static const NSInteger kAKStartLifeCount = 0;
 /// 自機復活までの間隔
 static const float kAKRebirthInterval = 1.0f;
 /// 短時間クリアの実績解除の時間
@@ -83,14 +78,6 @@ static const float kAKStageClearInterval = 3.0f;
 /// ゲームオーバーのキャプション表示中の間隔
 static const float kAKGameOverInterval = 2.0f;
 
-/// ショットボタンの配置位置、右からの位置
-static const float kAKShotButtonPosRightPoint = 50.0f;
-/// ショットボタンの配置位置、下からの位置
-static const float kAKShotButtonPosBottomPoint = 50.0f;
-/// ポーズボタンの配置位置、右からの位置
-static const float kAKPauseButtonPosRightPoint = 26.0f;
-/// ポーズボタンの配置位置、上からの位置
-static const float kAKPauseButtonPosTopPoint = 26.0f;
 /// スコアの表示位置、左からの位置
 static const float kAKScorePosLeftPoint = 10.0f;
 /// スコアの表示位置、上からの位置
@@ -107,37 +94,17 @@ static const float kAKHitPosTopPoint = 40.0f;
 static const float kAKTimePosLeftPoint = 20.0f;
 /// プレイ時間の表示位置、上からの位置
 static const float kAKTimePosTopPoint = 40.0f;
-/// 一時停止メッセージの表示位置(1行目)、下からの比率
-static const float kAKPauseMessage1PosBottomRatio = 0.6f;
-/// 一時停止メッセージの表示位置(2行目)、下からの比率
-static const float kAKPauseMessage2PosBottomRatio = 0.4f;
-/// レジュームボタンの表示位置、左からの比率
-static const float kAKResumeButtonPosLeftRatio = 0.3f;
-/// 終了ボタンの表示位置、右からの比率
-static const float kAKQuitButtonPosRightRatio = 0.3f;
-/// 終了メニューキャプションの表示位置、下からの比率
-static const float kAKQuitMessagePosBottomRatio = 0.6f;
-/// 終了メニューボタンの表示位置、下からの比率
-static const float kAKQuitButtonPosBottomRatio = 0.4f;
-/// 終了メニューYESボタンの表示位置、左からの比率
-static const float kAKQuitYesButtonPosLeftRatio = 0.3f;
-/// 終了メニューNOボタンの表示位置、右からの比率
-static const float kAKQuitNoButtonPosRightRatio = 0.3f;
 
 /// メニュー項目の数
 static const NSInteger kAKItemCount = 8;
 
-/// ショットボタンの画像ファイル名
-static NSString *kAKShotButtonImageFile = @"ShotButton.png";
-/// ポーズボタンの画像ファイル名
-static NSString *kAKPauseButtonImageFile = @"PauseButton.png";
 /// ゲームクリア画面の画像ファイル名
 static NSString *kAKGameClearImageFile = @"GameClear.png";
 
 /// スコア表示のフォーマット
-static NSString *kAKScoreFormat = @"SCORE:%08d";
+static NSString *kAKScoreFormat = @"SCORE:%06d";
 /// ハイスコア表示のフォーマット
-static NSString *kAKHiScoreFormat = @"HI:%08d";
+static NSString *kAKHiScoreFormat = @"HI:%06d";
 /// 命中率表示のフォーマット
 static NSString *kAKHitFormat = @"HIT:%3d%%";
 /// プレイ時間のフォーマット
@@ -147,26 +114,12 @@ static NSString *kAKDataFileName = @"hiscore.dat";
 /// ハイスコアファイルのエンコードキー名
 static NSString *kAKDataFileKey = @"hiScoreData";
 
-/// 一時停止中の表示文字列
-static NSString *kAKPauseString = @"  PAUSE  ";
-/// 一時停止解除のボタンの文字列
-static NSString *kAKResumeString = @"RESUME";
-/// 終了ボタンの文字列
-static NSString *kAKQuitButtonString = @" QUIT ";
-
-/// 終了確認メッセージ
-static NSString *kAKQuitMessageString = @"QUIT GAME?";
-/// YESボタンの文字列
-static NSString *kAKQuitYesString = @" YES ";
-/// NOボタンの文字列
-static NSString *kAKQuitNoString = @" N O ";
-
 /// ステージクリア時の表示文字列
 static NSString *kAKStageClearString = @"STAGE CLEAR";
-/// ゲームオーバー時の表示文字列
-static NSString *kAKGameOverString = @"GAME OVER";
-/// ゲームクリア時の表示文字列
-static NSString *kAKGameClearString = @"GAME CLEAR";
+/// ゲームクリア時のツイートのフォーマットのキー
+static NSString *kAKGameClearTweetKey = @"GameClearTweet";
+/// ゲームオーバー時のツイートのフォーマットのキー
+static NSString *kAKGameOverTweetKey = @"GameOverTweet";
 
 /// プレイ中BGMファイル名
 static NSString *kAKPlayBGM = @"Play.mp3";
@@ -180,6 +133,9 @@ static NSString *kAKPauseSE = @"Pause.caf";
 static NSString *kAKHitSE = @"Hit.caf";
 /// エクステンド時の効果音
 static NSString *kAK1UpSE = @"1Up.caf";
+
+/// アプリのURL
+static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id569653828?l=ja&ls=1&mt=8";
 
 /*!
  @brief ゲームプレイシーン
@@ -296,82 +252,6 @@ static AKGameScene *sharedScene = nil;
     self.effectPool = [[[AKCharacterPool alloc] initWithClass:[AKEffect class]
                                                          Size:kAKMaxEffectCount] autorelease];
     
-    // ショットボタンを追加する
-    [self addButtonWithFile:kAKShotButtonImageFile
-                      atPos:ccp([AKScreenSize positionFromRightPoint:kAKShotButtonPosRightPoint],
-                                [AKScreenSize positionFromBottomPoint:kAKShotButtonPosBottomPoint])
-                     action:@selector(firePlayerShot)
-                    ofState:kAKGameStatePlaying];
-
-    // ポーズボタンを追加する
-    [self addButtonWithFile:kAKPauseButtonImageFile
-                      atPos:ccp([AKScreenSize positionFromRightPoint:kAKPauseButtonPosRightPoint],
-                                [AKScreenSize positionFromTopPoint:kAKPauseButtonPosTopPoint])
-                     action:@selector(pause)
-                    ofState:kAKGameStatePlaying];
-    
-    // クリア画面スキップ入力を生成する
-    [self addButtonWithFile:nil
-                      atPos:ccp(0, 0)
-                     action:@selector(skipResult)
-                    ofState:kAKGameStateResult];
-    
-    // ゲームオーバースキップ入力を生成する
-    [self addButtonWithFile:nil
-                      atPos:ccp(0, 0)
-                     action:@selector(backToTitle)
-                    ofState:kAKGameStateGameOver];
-    
-    // ポーズ解除ボタンの矩形位置を作成する
-    CGRect resumeRect = [AKLabel rectWithCenterX:[AKScreenSize positionFromLeftRatio:kAKResumeButtonPosLeftRatio]
-                                         centerY:[AKScreenSize positionFromBottomRatio:kAKPauseMessage2PosBottomRatio]
-                                          length:kAKResumeString.length
-                                            line:1
-                                        hasFrame:YES];
-    
-    AKLog(0, @"resumeRect=(%f, %f, %f, %f)", resumeRect.origin.x, resumeRect.origin.y, resumeRect.size.width, resumeRect.size.height);
-    
-    // ポーズ解除入力を生成する
-    [self.interfaceLayer.menuItems addObject:[AKMenuItem itemWithRect:resumeRect
-                                                               action:@selector(selectResumeButton)
-                                                                  tag:kAKGameStatePause]];
-    
-    // 終了ボタンの矩形位置を作成する
-    CGRect quitButtonRect = [AKLabel rectWithCenterX:[AKScreenSize positionFromRightRatio:kAKQuitButtonPosRightRatio]
-                                             centerY:[AKScreenSize positionFromBottomRatio:kAKPauseMessage2PosBottomRatio]
-                                              length:kAKQuitButtonString.length
-                                                line:1
-                                            hasFrame:YES];
-    
-    // 終了ボタン入力項目を生成する
-    [self.interfaceLayer.menuItems addObject:[AKMenuItem itemWithRect:quitButtonRect
-                                                               action:@selector(selectQuitButton)
-                                                                  tag:kAKGameStatePause]];
-    
-    // 終了メニューYESボタンの矩形位置を作成する
-    CGRect quitYesRect = [AKLabel rectWithCenterX:[AKScreenSize positionFromLeftRatio:kAKQuitYesButtonPosLeftRatio]
-                                          centerY:[AKScreenSize positionFromBottomRatio:kAKQuitButtonPosBottomRatio]
-                                           length:kAKQuitYesString.length
-                                             line:1
-                                        hasFrame:YES];
-    
-    // 終了メニューYESボタンの入力項目を作成する
-    [self.interfaceLayer.menuItems addObject:[AKMenuItem itemWithRect:quitYesRect
-                                                               action:@selector(execQuitMenu)
-                                                                  tag:kAKGameStateQuitMenu]];
-    
-    // 終了メニューNOボタンの矩形位置を作成する
-    CGRect quitNoRect = [AKLabel rectWithCenterX:[AKScreenSize positionFromRightRatio:kAKQuitNoButtonPosRightRatio]
-                                         centerY:[AKScreenSize positionFromBottomRatio:kAKQuitButtonPosBottomRatio]
-                                          length:kAKQuitNoString.length
-                                            line:1
-                                        hasFrame:YES];
-    
-    // 終了メニューNOボタンの入力項目を作成する
-    [self.interfaceLayer.menuItems addObject:[AKMenuItem itemWithRect:quitNoRect
-                                                               action:@selector(selectQuitNoButton)
-                                                                  tag:kAKGameStateQuitMenu]];
-
     // レーダーの生成
     self.rader = [AKRadar node];
     
@@ -497,11 +377,51 @@ static AKGameScene *sharedScene = nil;
     // メンバ変数に設定する
     state_ = state;
     
+    // 自動ツイート設定の場合、ゲームオーバー時・ゲームクリア時は結果をツイートする
+    if ([AKTwitterHelper sharedHelper].mode == kAKTwitterModeAuto &&
+        ((self.state == kAKGameStateGameOver) || (self.state == kAKGameStateGameClear))) {
+        
+        NSString *tweet = [NSString stringWithFormat:@"%@ %@", [self makeTweet], kAKAplUrl];
+        [[AKTwitterHelper sharedHelper] tweet:tweet];
+    }
+    
     // インターフェースレイヤーを取得する
     AKGameIFLayer *interface = (AKGameIFLayer *)[self getChildByTag:kAKLayerPosZInterface];
     
     // 有効なメニューアイテムを変更する
-    interface.enableItemTag = state;
+    switch (state) {
+        case kAKGameStatePlaying:
+            interface.enableTag = kAKGameIFTagPlaying;
+            break;
+            
+        case kAKGameStatePause:
+            interface.enableTag = kAKGameIFTagPause;
+            break;
+            
+        case kAKGameStateQuitMenu:
+            interface.enableTag = kAKGameIFTagQuit;
+            break;
+            
+        case kAKGameStateGameOver:
+            interface.enableTag = kAKGameIFTagGameOver;
+            break;
+            
+        case kAKGameStateGameClear:
+            interface.enableTag = kAKGameIFTagGameClear;
+            break;
+            
+        case kAKGameStateResult:
+            interface.enableTag = kAKGameIFTagResult;
+            break;
+            
+        case kAKGameStateWait:
+            interface.enableTag = kAKGameIFTagWait;
+            break;
+            
+        default:
+            interface.enableTag = 0;
+            break;
+    }
 }
 
 /*!
@@ -522,10 +442,10 @@ static AKGameScene *sharedScene = nil;
  入力レイヤーのインスタンスを取得する。
  @return 入力レイヤー
  */
-- (AKInterface *)interfaceLayer
+- (AKGameIFLayer *)interfaceLayer
 {
     NSAssert([self getChildByTag:kAKLayerPosZInterface] != nil, @"入力レイヤーが作成されていない");
-    return (AKInterface *)[self getChildByTag:kAKLayerPosZInterface];
+    return (AKGameIFLayer *)[self getChildByTag:kAKLayerPosZInterface];
 }
 
 /*!
@@ -562,7 +482,7 @@ static AKGameScene *sharedScene = nil;
             [self updatePlaying:dt];
             break;
             
-        case kAKGameStateClear:     // クリア表示中
+        case kAKGameStateStageClear:     // クリア表示中
             [self updatePlaying:dt];
             [self updateClear:dt];
             
@@ -736,13 +656,6 @@ static AKGameScene *sharedScene = nil;
                 waveInterval_ = kAKWaveInterval;
             }
         }
-    }
-    
-    // ゲームオーバーになっていた場合はハイスコアをファイルに書き込む
-    // (ゲームオーバーになった時点で書き込みを行わないのはupdateの途中でスコアが変動する可能性があるため)
-    if (self.state == kAKGameStateSleep && nextState_ == kAKGameStateGameOver) {
-        // ハイスコアをファイルに書き込む
-        [self writeHiScore];
     }
 }
 
@@ -985,14 +898,6 @@ static AKGameScene *sharedScene = nil;
         sleepTime_ = kAKGameOverInterval;
         nextState_ = kAKGameStateGameOver;
         self.state = kAKGameStateSleep;
-        
-        // ゲームオーバーのラベルを生成する
-        [self setLabelToInfoLayer:kAKGameOverString
-                            atPos:ccp([AKScreenSize center].x, [AKScreenSize center].y)
-                              tag:kAKInfoTagGameOver
-                            frame:kAKLabelFrameNone];
-        
-        
     }
 }
 
@@ -1034,9 +939,6 @@ static AKGameScene *sharedScene = nil;
     [self.playerShotPool reset];
     [self.enemyPool reset];
     [self.effectPool reset];
-    
-    // ゲームオーバーの表示を削除する
-    [infoLayer removeChildByTag:kAKInfoTagGameOver cleanup:YES];
     
     // ゲームクリアの表示を削除する
     [infoLayer removeChildByTag:kAKInfoTagGameClear cleanup:YES];
@@ -1134,27 +1036,6 @@ static AKGameScene *sharedScene = nil;
     for (AKCharacter *character in [self.effectPool.pool objectEnumerator]) {
         [character.image pauseSchedulerAndActions];
     }
-    
-    // 一時停止中のラベルを作成する
-    [self setLabelToInfoLayer:kAKPauseString
-                        atPos:ccp([AKScreenSize center].x,
-                                  [AKScreenSize positionFromBottomRatio:kAKPauseMessage1PosBottomRatio])
-                          tag:kAKInfoTagPause
-                        frame:kAKLabelFrameMessage];
-    
-    // 一時停止解除ボタンを作成する
-    [self setLabelToInfoLayer:kAKResumeString
-                        atPos:ccp([AKScreenSize positionFromLeftRatio:kAKResumeButtonPosLeftRatio],
-                                  [AKScreenSize positionFromBottomRatio:kAKPauseMessage2PosBottomRatio])
-                          tag:kAKInfoTagResumeButton
-                        frame:kAKLabelFrameButton];
-    
-    // 終了ボタンを作成する
-    [self setLabelToInfoLayer:kAKQuitButtonString
-                        atPos:ccp([AKScreenSize positionFromRightRatio:kAKQuitButtonPosRightRatio],
-                                  [AKScreenSize positionFromBottomRatio:kAKPauseMessage2PosBottomRatio])
-                          tag:kAKInfoTagQuitButton
-                        frame:kAKLabelFrameButton];
 }
 
 /*!
@@ -1208,11 +1089,6 @@ static AKGameScene *sharedScene = nil;
     for (AKCharacter *character in self.effectPool.pool.objectEnumerator) {
         [character.image resumeSchedulerAndActions];
     }
-    
-    // 一時停止中のラベルを取り除く
-    [[self getChildByTag:kAKLayerPosZInfo] removeChildByTag:kAKInfoTagPause cleanup:YES];
-    [[self getChildByTag:kAKLayerPosZInfo] removeChildByTag:kAKInfoTagResumeButton cleanup:YES];
-    [[self getChildByTag:kAKLayerPosZInfo] removeChildByTag:kAKInfoTagQuitButton cleanup:YES];
 }
 
 /*!
@@ -1326,7 +1202,7 @@ static AKGameScene *sharedScene = nil;
     if (waveNo_ > kAKWaveCount) {
         
         // 状態をゲームクリアに移行する
-        self.state = kAKGameStateClear;
+        self.state = kAKGameStateStageClear;
         
         // クリアキャプション表示中の間隔を設定する
         stateInterval_ = kAKStageClearInterval;
@@ -1457,23 +1333,13 @@ static AKGameScene *sharedScene = nil;
     else {
         
         // ゲームの状態をゲームオーバーに変更する
-        self.state = kAKGameStateGameOver;
+        self.state = kAKGameStateGameClear;
         
         // 背景色レイヤーを作成する
         CCLayerColor *backColor = AKCreateBackColorLayer();
         
         // タグを設定する
         backColor.tag = kAKInfoTagGameClear;
-        
-        // ゲームクリアのラベルを作成する
-        AKLabel *label = [AKLabel labelWithString:kAKGameClearString maxLength:kAKGameClearString.length maxLine:1 frame:kAKLabelFrameNone];
-        
-        // 表示位置を設定する
-        label.position = ccp([AKScreenSize center].x,
-                             [AKScreenSize screenSize].height / 2);
-        
-        // ラベルを背景画像に貼り付ける
-        [backColor addChild:label];
 
         // 情報レイヤーへ配置する
         [[self getChildByTag:kAKLayerPosZInfo] addChild:backColor];
@@ -1650,54 +1516,6 @@ static AKGameScene *sharedScene = nil;
     [[self getChildByTag:kAKLayerPosZInfo] addChild:label];
 }
 
-/*!
- @brief ボタンの追加
- 
- ボタンの画像ファイルを読み込み、画面への登録とメニュー項目の追加を行う。
- nilを指定した場合はメニュー項目の追加のみ行う.
- @param filename 画像ファイル名
- @param pos ボタンの位置
- @param action ボタンタップ時の処理
- @param state ボタンが有効になるゲームシーンの状態
- */
-- (void)addButtonWithFile:(NSString *)filename atPos:(CGPoint)pos action:(SEL)action ofState:(enum AKGameState)state
-{
-    // メニュー項目の位置と大きさ
-    CGRect rect;
-    
-    // ファイル名が指定されている場合は画像ファイルを読み込む
-    if (filename != nil) {
-        
-        // ボタンの画像を読み込む
-        CCSprite *button = [CCSprite spriteWithFile:filename];
-        assert(button != nil);
-        
-        // ボタンの位置を設定する
-        button.position = pos;
-        
-        // ボタンをレイヤーに配置する
-        [[self getChildByTag:kAKLayerPosZInfo] addChild:button];
-        
-        // メニュー項目の大きさにスプライトのサイズを設定する
-        rect.size = button.contentSize;
-        
-        // メニュー項目の位置をスプライトの左上の端を設定する
-        rect.origin = ccp(button.position.x - button.contentSize.width / 2,
-                          button.position.y - button.contentSize.height / 2);
-    }
-    // ファイル名が指定されていない場合、メニュー項目の位置と大きさは画面全体とする
-    else {
-        rect = CGRectMake(0, 0, [AKScreenSize screenSize].width, [AKScreenSize screenSize].height);
-    }
-    
-    // インターフェースを取得する
-    AKGameIFLayer *intarfece = (AKGameIFLayer *)[self getChildByTag:kAKLayerPosZInterface];
-    
-    // メニュー項目を追加する
-    [intarfece.menuItems addObject:[AKMenuItem itemWithRect:rect
-                                                     action:action
-                                                        tag:state]];
-}
 
 /*!
  @brief タイトル画面に戻る
@@ -1707,6 +1525,9 @@ static AKGameScene *sharedScene = nil;
 - (void)backToTitle
 {
     AKLog(0, @"backToTitle開始");
+    
+    // ハイスコアをファイルに書き込む
+    [self writeHiScore];
     
     // BGMを停止する
     [[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
@@ -1752,34 +1573,8 @@ static AKGameScene *sharedScene = nil;
  */
 - (void)viewQuitMenu
 {
-    // 一時停止中のラベルを取り除く
-    [[self getChildByTag:kAKLayerPosZInfo] removeChildByTag:kAKInfoTagPause cleanup:YES];
-    [[self getChildByTag:kAKLayerPosZInfo] removeChildByTag:kAKInfoTagResumeButton cleanup:YES];
-    [[self getChildByTag:kAKLayerPosZInfo] removeChildByTag:kAKInfoTagQuitButton cleanup:YES];
-    
     // ゲーム状態を終了メニュー表示中に遷移する
-    self.state = kAKGameStateQuitMenu;
-    
-    // 終了メニューのラベルを作成する
-    [self setLabelToInfoLayer:kAKQuitMessageString
-                        atPos:ccp([AKScreenSize center].x,
-                                  [AKScreenSize positionFromBottomRatio:kAKQuitMessagePosBottomRatio])
-                          tag:kAKInfoTagQuitMessage
-                        frame:kAKLabelFrameMessage];
-    
-    // 終了メニューYESボタンを作成する
-    [self setLabelToInfoLayer:kAKQuitYesString
-                        atPos:ccp([AKScreenSize positionFromLeftRatio:kAKQuitYesButtonPosLeftRatio],
-                                  [AKScreenSize positionFromBottomRatio:kAKQuitButtonPosBottomRatio])
-                          tag:kAKInfoTagQuitYes
-                        frame:kAKLabelFrameButton];
-    
-    // 終了メニューNOボタンを作成する
-    [self setLabelToInfoLayer:kAKQuitNoString
-                        atPos:ccp([AKScreenSize positionFromRightRatio:kAKQuitNoButtonPosRightRatio],
-                                  [AKScreenSize positionFromBottomRatio:kAKQuitButtonPosBottomRatio])
-                          tag:kAKInfoTagQuitNo
-                        frame:kAKLabelFrameButton];
+    self.state = kAKGameStateQuitMenu;    
 }
 
 /*!
@@ -1793,14 +1588,6 @@ static AKGameScene *sharedScene = nil;
     // メニュー選択時の効果音を鳴らす
     [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
     
-    // ハイスコアをファイルに書き込む
-    [self writeHiScore];
-
-    // 終了メニューを削除する
-    [[self getChildByTag:kAKLayerPosZInfo] removeChildByTag:kAKInfoTagQuitMessage cleanup:YES];
-    [[self getChildByTag:kAKLayerPosZInfo] removeChildByTag:kAKInfoTagQuitYes cleanup:YES];
-    [[self getChildByTag:kAKLayerPosZInfo] removeChildByTag:kAKInfoTagQuitNo cleanup:YES];
-    
     // タイトル画面へ戻る
     [self backToTitle];
 }
@@ -1813,34 +1600,8 @@ static AKGameScene *sharedScene = nil;
  */
 - (void)cancelQuitMenu
 {
-    // 終了メニューを削除する
-    [[self getChildByTag:kAKLayerPosZInfo] removeChildByTag:kAKInfoTagQuitMessage cleanup:YES];
-    [[self getChildByTag:kAKLayerPosZInfo] removeChildByTag:kAKInfoTagQuitYes cleanup:YES];
-    [[self getChildByTag:kAKLayerPosZInfo] removeChildByTag:kAKInfoTagQuitNo cleanup:YES];
-    
     // ゲーム状態を一時停止中に遷移する
     self.state = kAKGameStatePause;
-
-    // 一時停止中のラベルを作成する
-    [self setLabelToInfoLayer:kAKPauseString
-                        atPos:ccp([AKScreenSize center].x,
-                                  [AKScreenSize positionFromBottomRatio:kAKPauseMessage1PosBottomRatio])
-                          tag:kAKInfoTagPause
-                        frame:kAKLabelFrameMessage];
-    
-    // 一時停止解除ボタンを作成する
-    [self setLabelToInfoLayer:kAKResumeString
-                        atPos:ccp([AKScreenSize positionFromLeftRatio:kAKResumeButtonPosLeftRatio],
-                                  [AKScreenSize positionFromBottomRatio:kAKPauseMessage2PosBottomRatio])
-                          tag:kAKInfoTagResumeButton
-                        frame:kAKLabelFrameButton];
-    
-    // 終了ボタンを作成する
-    [self setLabelToInfoLayer:kAKQuitButtonString
-                        atPos:ccp([AKScreenSize positionFromRightRatio:kAKQuitButtonPosRightRatio],
-                                  [AKScreenSize positionFromBottomRatio:kAKPauseMessage2PosBottomRatio])
-                          tag:kAKInfoTagQuitButton
-                        frame:kAKLabelFrameButton];
 }
 
 /*!
@@ -1860,7 +1621,7 @@ static AKGameScene *sharedScene = nil;
     CCSequence *action = [CCSequence actions:blink, callFunc, nil];
     
     // ボタンを取得する
-    CCNode *button = [[self getChildByTag:kAKLayerPosZInfo] getChildByTag:kAKInfoTagResumeButton];
+    CCNode *button = self.interfaceLayer.resumeButton;
     
     // ブリンクアクションを開始する
     [button runAction:action];
@@ -1887,7 +1648,7 @@ static AKGameScene *sharedScene = nil;
     CCSequence *action = [CCSequence actions:blink, callFunc, nil];
     
     // ボタンを取得する
-    CCNode *button = [[self getChildByTag:kAKLayerPosZInfo] getChildByTag:kAKInfoTagQuitButton];
+    CCNode *button = self.interfaceLayer.quitButton;
     
     // ブリンクアクションを開始する
     [button runAction:action];
@@ -1913,12 +1674,57 @@ static AKGameScene *sharedScene = nil;
     CCSequence *action = [CCSequence actions:blink, callFunc, nil];
     
     // ボタンを取得する
-    CCNode *button = [[self getChildByTag:kAKLayerPosZInfo] getChildByTag:kAKInfoTagQuitNo];
+    CCNode *button = self.interfaceLayer.quitNoButton;
     
     // ブリンクアクションを開始する
     [button runAction:action];
-
+    
     // メニュー選択時の効果音を鳴らす
     [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
+}
+
+/*!
+ @brief ツイートボタン選択
+ 
+ ツイートボタン選択時の処理。
+ ツイートビューを表示し、タイトルへ戻る。
+ */
+- (void)selectTweetButton
+{
+    // メニュー選択時の効果音を鳴らす
+    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
+    
+    // ツイートビューを表示する
+    [[AKTwitterHelper sharedHelper] viewTwitterWithInitialString:[self makeTweet]];
+
+    // タイトル画面へ戻る
+    [self backToTitle];
+}
+
+/*!
+ @brief ツイート内容作成
+ 
+ ツイート内容を作成する。
+ */
+- (NSString *)makeTweet
+{
+    NSString *tweet = nil;
+
+    // 全ステージクリアの場合と途中でゲームオーバーになった時でツイート内容を変更する。
+    if (stageNo_ > kAKStageCount) {
+        NSString *format = NSLocalizedString(kAKGameClearTweetKey, @"ゲームクリア時のツイート");
+        tweet = [NSString stringWithFormat:format, score_];
+    }
+    else {
+        NSString *format = NSLocalizedString(kAKGameOverTweetKey, @"ゲームオーバー時のツイート");
+        tweet = [NSString stringWithFormat:format, stageNo_, score_];
+    }
+    
+    
+#ifdef DEBUG
+    return [NSString stringWithFormat:@"%@ %@", tweet, [[NSDate date] description]];
+#else
+    return tweet;
+#endif
 }
 @end

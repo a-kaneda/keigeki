@@ -14,18 +14,19 @@
 #import "AKLifeMark.h"
 #import "AKEnemyShot.h"
 #import "AKResultLayer.h"
-#import "AKInterface.h"
 #import "AKLabel.h"
 #import "AKCommon.h"
+#import "AKGameIFLayer.h"
 
 /// ゲームプレイの状態
 enum AKGameState {
     kAKGameStatePreLoad = 0,    ///< ゲームシーン読み込み前
     kAKGameStateStart,          ///< ゲーム開始時
     kAKGameStatePlaying,        ///< プレイ中
-    kAKGameStateClear,          ///< ステージクリア後
+    kAKGameStateStageClear,     ///< ステージクリア後
     kAKGameStateResult,         ///< リザルト画面表示中
     kAKGameStateGameOver,       ///< ゲームオーバーの表示中
+    kAKGameStateGameClear,      ///< ゲームクリア時
     kAKGameStatePause,          ///< 一時停止中
     kAKGameStateQuitMenu,       ///< 終了メニュー表示中
     kAKGameStateWait,           ///< アクション終了待機中
@@ -116,7 +117,7 @@ enum AKEnemyType {
 // リザルト画面取得
 - (AKResultLayer *)resultLayer;
 // 入力レイヤー取得
-- (AKInterface *)interfaceLayer;
+- (AKGameIFLayer *)interfaceLayer;
 // ゲーム開始時の更新処理
 - (void)updateStart:(ccTime)dt;
 // プレイ中の更新処理
@@ -169,8 +170,6 @@ enum AKEnemyType {
 - (void)updateTime;
 // 情報レイヤーへのラベル配置
 - (void)setLabelToInfoLayer:(NSString *)str atPos:(CGPoint)pos tag:(NSInteger)tag frame:(enum AKLabelFrame)frame;
-// ボタンの追加
-- (void)addButtonWithFile:(NSString *)filename atPos:(CGPoint)pos action:(SEL)action ofState:(enum AKGameState)state;
 // タイトル画面に戻る
 - (void)backToTitle;
 // リザルト画面表示
@@ -187,4 +186,8 @@ enum AKEnemyType {
 - (void)selectQuitButton;
 // 終了メニューNOボタン選択
 - (void)selectQuitNoButton;
+// ツイートボタン選択
+- (void)selectTweetButton;
+// ツイート内容作成
+- (NSString *)makeTweet;
 @end

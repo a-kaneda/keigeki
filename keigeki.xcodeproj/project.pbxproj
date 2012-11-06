@@ -237,6 +237,9 @@
 		0CE2AE89161CE7A000FD3AE3 /* Ending.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0CE2AE81161CE08000FD3AE3 /* Ending.mp3 */; };
 		0CE2AE8A161CE7A400FD3AE3 /* Play.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0CE2AE82161CE08000FD3AE3 /* Play.mp3 */; };
 		0CEA5B5C16374276005747F4 /* AKCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA5B5B16374275005747F4 /* AKCommon.m */; };
+		0CEA5B5F16388A2C005747F4 /* AKTwitterHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA5B5E16388A2B005747F4 /* AKTwitterHelper.m */; };
+		0CEA5B6116388ED8005747F4 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CEA5B6016388ED7005747F4 /* Twitter.framework */; };
+		0CEA5B6F163B3734005747F4 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CEA5B6E163B3734005747F4 /* Accounts.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -632,6 +635,10 @@
 		0CE2AE81161CE08000FD3AE3 /* Ending.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Ending.mp3; sourceTree = "<group>"; };
 		0CE2AE82161CE08000FD3AE3 /* Play.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Play.mp3; sourceTree = "<group>"; };
 		0CEA5B5B16374275005747F4 /* AKCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKCommon.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		0CEA5B5D16388A2B005747F4 /* AKTwitterHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKTwitterHelper.h; sourceTree = "<group>"; };
+		0CEA5B5E16388A2B005747F4 /* AKTwitterHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKTwitterHelper.m; sourceTree = "<group>"; };
+		0CEA5B6016388ED7005747F4 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
+		0CEA5B6E163B3734005747F4 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -639,6 +646,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CEA5B6F163B3734005747F4 /* Accounts.framework in Frameworks */,
+				0CEA5B6116388ED8005747F4 /* Twitter.framework in Frameworks */,
 				0C3705F415C6BEC900295D96 /* QuartzCore.framework in Frameworks */,
 				0C3705F615C6BEC900295D96 /* OpenGLES.framework in Frameworks */,
 				0C3705F815C6BEC900295D96 /* OpenAL.framework in Frameworks */,
@@ -739,6 +748,8 @@
 		0C3705F215C6BEC900295D96 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0CEA5B6E163B3734005747F4 /* Accounts.framework */,
+				0CEA5B6016388ED7005747F4 /* Twitter.framework */,
 				0C3705F315C6BEC900295D96 /* QuartzCore.framework */,
 				0C3705F515C6BEC900295D96 /* OpenGLES.framework */,
 				0C3705F715C6BEC900295D96 /* OpenAL.framework */,
@@ -780,10 +791,10 @@
 				0C2A39F015D460B2005B9272 /* AKEnemy+Normal.m */,
 				0C21F1AD15CE6472004C64E9 /* AKCharacterPool.h */,
 				0C21F1AE15CE6474004C64E9 /* AKCharacterPool.m */,
-				0C3707AC15C6C82B00295D96 /* AKGameIFLayer.h */,
-				0C3707AD15C6C82B00295D96 /* AKGameIFLayer.m */,
 				0C3707AE15C6C82C00295D96 /* AKGameScene.h */,
 				0C3707AF15C6C82C00295D96 /* AKGameScene.m */,
+				0C3707AC15C6C82B00295D96 /* AKGameIFLayer.h */,
+				0C3707AD15C6C82B00295D96 /* AKGameIFLayer.m */,
 				0C3707B015C6C82C00295D96 /* AKPlayer.h */,
 				0C3707B115C6C82C00295D96 /* AKPlayer.m */,
 				0C69226F15E1231C002656AD /* AKShot.h */,
@@ -812,6 +823,8 @@
 				0C183EC616293D4200B40B7B /* AKGameCenterHelper.m */,
 				0C183EC9162984E800B40B7B /* AKNavigationController.h */,
 				0C183ECA162984E800B40B7B /* AKNavigationController.m */,
+				0CEA5B5D16388A2B005747F4 /* AKTwitterHelper.h */,
+				0CEA5B5E16388A2B005747F4 /* AKTwitterHelper.m */,
 				0C2A3A2015D64B12005B9272 /* StageScript */,
 				0C03CCC315FC5D7E003AA059 /* Languages */,
 				0C37060615C6BEC900295D96 /* Resources */,
@@ -1495,6 +1508,7 @@
 				0C183ECB162984E800B40B7B /* AKNavigationController.m in Sources */,
 				0C183ECE162A838100B40B7B /* AKOptionScene.m in Sources */,
 				0CEA5B5C16374276005747F4 /* AKCommon.m in Sources */,
+				0CEA5B5F16388A2C005747F4 /* AKTwitterHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

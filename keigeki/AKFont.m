@@ -15,6 +15,8 @@ const NSInteger kAKFontSize = 16;
 static NSString *kAKFontImageName = @"Font.png";
 /// フォント中の文字の位置情報のファイル名
 static NSString *kAKFontMapName = @"Font";
+/// 色反転フォントの位置のキー
+static NSString *kAKReversePosKey = @"Reverse";
 
 // シングルトンオブジェクト
 static AKFont *sharedInstance_;
@@ -62,7 +64,7 @@ static AKFont *sharedInstance_;
     
     // フォント画像を読み込む
     self.fontTexture = [[CCTextureCache sharedTextureCache] addImage:kAKFontImageName];
-    assert(self.fontTexture != nil);
+    NSAssert(self.fontTexture != nil, @"フォント画像の読み込みに失敗");
     
     // ファイルパスをバンドルから取得する
     NSString *filePath = [[NSBundle mainBundle] pathForResource:kAKFontMapName ofType:@"plist"];
@@ -135,13 +137,26 @@ static AKFont *sharedInstance_;
  
  文字のスプライトフレームを取得する。
  @param c 文字
+ @param isReverse 色反転するかどうか
  @return 文字のスプライトフレーム
  */
-- (CCSpriteFrame *)spriteFrameOfChar:(unichar)c
+- (CCSpriteFrame *)spriteFrameOfChar:(unichar)c isReverse:(BOOL)isReverse
 {
-    AKLog(0, @"c=%c rect=(%f,%f)", c, [self rectOfChar:c].origin.x, [self rectOfChar:c].origin.y);
+    AKLog(0, @"c=%c rect=(%f,%f) isReverse=%d", c, [self rectOfChar:c].origin.x, [self rectOfChar:c].origin.y, isReverse);
+    
+    // 文字の座標を取得する
+    CGRect charRect = [self rectOfChar:c];
+    
+    // 色反転する場合は色反転の座標をプラスする
+    if (isReverse) {
+        CGRect reverseRect = [self rectByKey:kAKReversePosKey];
+        
+        charRect.origin.x += reverseRect.origin.x;
+        charRect.origin.y += reverseRect.origin.y;
+    }
+    
     // フォントのテクスチャから文字の部分を切り出して返す
-    return [CCSpriteFrame frameWithTexture:self.fontTexture rect:[self rectOfChar:c]];
+    return [CCSpriteFrame frameWithTexture:self.fontTexture rect:charRect];
 }
 
 /*!
@@ -149,12 +164,25 @@ static AKFont *sharedInstance_;
  
  キーからスプライトフレームを取得する。
  @param key キー
+ @param isReverse 色反転するかどうか
  @return キーのスプライトフレーム
  */
-- (CCSpriteFrame *)spriteFrameWithKey:(NSString *)key
+- (CCSpriteFrame *)spriteFrameWithKey:(NSString *)key isReverse:(BOOL)isReverse
 {
-    AKLog(0, @"key=%@ rect=(%f,%f)", key, [self rectByKey:key].origin.x, [self rectByKey:key].origin.y);
+    AKLog(0, @"key=%@ rect=(%f,%f) isReverse=%d", key, [self rectByKey:key].origin.x, [self rectByKey:key].origin.y, isReverse);
+    
+    // 文字の座標を取得する
+    CGRect charRect = [self rectByKey:key];
+    
+    // 色反転する場合は色反転の座標をプラスする
+    if (isReverse) {
+        CGRect reverseRect = [self rectByKey:kAKReversePosKey];
+        
+        charRect.origin.x += reverseRect.origin.x;
+        charRect.origin.y += reverseRect.origin.y;
+    }
+
     // フォントのテクスチャからキーに対応する部分を切り出して返す
-    return [CCSpriteFrame frameWithTexture:self.fontTexture rect:[self rectByKey:key]];
+    return [CCSpriteFrame frameWithTexture:self.fontTexture rect:charRect];
 }
 @end

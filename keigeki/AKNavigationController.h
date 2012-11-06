@@ -11,4 +11,6 @@
 // UINavigationControllerのカスタマイズ
 @interface AKNavigationController : UINavigationController<GKLeaderboardViewControllerDelegate, GKAchievementViewControllerDelegate>
 
+// Twitter Viewの表示
+- (void)viewTwitterWithInitialString:(NSString *)string;
 @end

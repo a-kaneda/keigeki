@@ -31,7 +31,7 @@ extern const NSInteger kAKFontSize;
 // キーからテクスチャ内の位置を取得する
 - (CGRect)rectByKey:(NSString *)key;
 // 文字のスプライトフレームを取得する
-- (CCSpriteFrame *)spriteFrameOfChar:(unichar)c;
+- (CCSpriteFrame *)spriteFrameOfChar:(unichar)c isReverse:(BOOL)isReverse;
 // キーからスプライトフレームを取得する
-- (CCSpriteFrame *)spriteFrameWithKey:(NSString *)key;
+- (CCSpriteFrame *)spriteFrameWithKey:(NSString *)key isReverse:(BOOL)isReverse;
 @end

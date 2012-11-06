@@ -7,7 +7,6 @@
 
 #import "AKInterface.h"
 #import "AKCommon.h"
-#import "AKLabel.h"
 #import "AKScreenSize.h"
 
 /*!
@@ -18,8 +17,6 @@
 @implementation AKInterface
 
 @synthesize menuItems = menuItems_;
-@synthesize enableItemTagStart = enableItemTagStart_;
-@synthesize enableItemTagEnd = enableItemTagEnd_;
 
 /*!
  @brief オブジェクト生成処理
@@ -36,8 +33,7 @@
     }
     
     // メンバの初期化を行う
-    self.enableItemTagStart = 0;
-    self.enableItemTagEnd = 0;
+    enableTag_ = 0;
 
     return self;
 }
@@ -57,8 +53,7 @@
     }
     
     // メンバの初期化を行う
-    self.enableItemTagStart = 0;
-    self.enableItemTagEnd = 0;
+    enableTag_ = 0;
     
     // メニュー項目格納用配列を生成する
     self.menuItems = [NSMutableArray arrayWithCapacity:capacity];
@@ -92,28 +87,31 @@
 }
 
 /*!
- @brief 有効化するタグの取得
+ @brief 有効タグの取得
  
  有効化するアイテムのタグを取得する。
  タグ1個だけを有効化しているときに使用する。
  @return 有効化するアイテムのタグ
  */
-- (NSInteger)enableItemTag
+- (NSUInteger)enableTag
 {
-    return self.enableItemTagStart;
+    return enableTag_;
 }
 
 /*!
- @brief 有効化するタグの設定
+ @brief 有効タグの設定
  
  有効化するアイテムのタグを設定する。
- タグ1個だけを有効化するときに使用する。
+ 有効化したアイテムのみを表示状態にする。
  @param enableItemTag 有効化するアイテムのタグ
  */
-- (void)setEnableItemTag:(NSInteger)enableItemTag
+- (void)setEnableTag:(NSUInteger)enableTag
 {
-    self.enableItemTagStart = enableItemTag;
-    self.enableItemTagEnd = enableItemTag;
+    // 有効化タグに値を設定する
+    enableTag_ = enableTag;
+    
+    // メニュー項目の表示非表示に設定内容を反映する
+    [self updateVisible];
 }
 
 /*!
@@ -146,7 +144,7 @@
 {
     // メニュー項目が登録されていない場合は処理を終了する
     if (self.menuItems == nil) {
-        return NO;
+        return YES;
     }
     
     // 画面上のタッチ位置を取得する
@@ -161,9 +159,7 @@
     for (AKMenuItem *item in [self.menuItems objectEnumerator]) {
         
         // 有効な項目で選択されている場合は処理を行う
-        if (item.tag >= self.enableItemTagStart &&
-            item.tag <= self.enableItemTagEnd &&
-            [item isSelectPos:location]) {
+        if ((item.tag & self.enableTag) && [item isSelectPos:location]) {
             
             AKLog(0, @"tag = %d action = %@", item.tag, NSStringFromSelector(item.action));
                         
@@ -174,7 +170,7 @@
         }
     }
     
-    return NO;
+    return YES;
 }
 
 /*!
@@ -186,17 +182,20 @@
  @param action ボタンタップ時の処理
  @param z メニュー項目のz座標
  @param tag メニュー項目のタグ
+ @return 作成したメニュー項目
  */
-- (void)addMenuWithFile:(NSString *)filename atPos:(CGPoint)pos action:(SEL)action z:(NSInteger)z tag:(NSInteger)tag
+- (CCSprite *)addMenuWithFile:(NSString *)filename atPos:(CGPoint)pos action:(SEL)action z:(NSInteger)z tag:(NSInteger)tag
 {
     // メニュー項目の位置と大きさ
     CGRect rect;
+    // ボタンの画像
+    CCSprite *item = nil;
     
     // ファイル名が指定されている場合は画像ファイルを読み込む
     if (filename != nil) {
         
         // ボタンの画像を読み込む
-        CCSprite *item = [CCSprite spriteWithFile:filename];
+        item = [CCSprite spriteWithFile:filename];
         assert(item != nil);
         
         // ボタンの位置を設定する
@@ -222,6 +221,9 @@
     [self.menuItems addObject:[AKMenuItem itemWithRect:rect
                                                 action:action
                                                    tag:tag]];
+    
+    // 作成したメニュー項目を返す
+    return item;
 }
 
 /*!
@@ -234,8 +236,9 @@
  @param z メニュー項目のz座標
  @param tag メニュー項目のタグ
  @param withFrame 枠を付けるかどうか
+ @return 作成したメニュー項目
  */
-- (void)addMenuWithString:(NSString *)menuString
+- (AKLabel *)addMenuWithString:(NSString *)menuString
                     atPos:(CGPoint)pos
                    action:(SEL)action
                         z:(NSInteger)z
@@ -258,5 +261,47 @@
     
     // メニュー項目をインターフェースに追加する
     [self.menuItems addObject:[AKMenuItem itemWithRect:label.rect action:action tag:tag]];
+    
+    // 作成したメニュー項目を返す
+    return label;
 }
+
+/*!
+ @brief メニュー項目表示非表示設定
+ 
+ メニュー項目の表示非表示を有効化タグ範囲をもとに設定する。
+ 有効化タグ範囲内の項目は表示、範囲外の項目は非表示とする。
+ */
+- (void)updateVisible;
+{
+    // レイヤー上のすべてのノードに対して処理を行う
+    CCNode *item = nil;
+    CCARRAY_FOREACH(self.children, item) {
+        
+        // 有効タグならば表示する、タグが0の場合は無条件に表示する
+        if ((item.tag == 0) || (item.tag & self.enableTag)) {
+            item.visible = YES;
+        }
+        // 範囲外ならば非表示にする
+        else {
+            item.visible = NO;
+        }
+        
+        // 個別に表示非表示を設定
+        [self updateVisibleItem:item];
+    }
+}
+
+/*!
+ @brief メニュー項目個別表示設定
+ 
+ メニュー項目の表示非表示を有効タグとは別に設定したい場合に個別に設定を行う。
+ 派生クラスで使用する。
+ @param item 設定するメニュー項目
+ */
+- (void)updateVisibleItem:(CCNode *)item
+{
+    // 派生クラスで処理を追加する
+}
+
 @end

@@ -18,17 +18,17 @@
 
 /// メニュー項目のタグ
 enum {
-    kAKTitleMenuGame = 0,   ///< ゲーム開始ボタン
+    kAKTitleMenuGame = 1,   ///< ゲーム開始ボタン
     kAKTitleMenuHowTo,      ///< 遊び方ボタン
     kAKTitleMenuOption,     ///< オプションボタン
     kAKTitleMenuCredit,     ///< クレジットボタン
     kAKTitleMenuCount       ///< メニュー項目数
 };
 
-/// レイヤーのタグ
+/// シーンに配置するレイヤーのタグ
 enum {
-    kAKTitleLayerBackground = 0,    ///< 背景レイヤー
-    kAKTitleLayerInterface          ///< インターフェースレイヤー
+    kAKTitleBackground = 0,     ///< 背景レイヤー
+    kAKTitleInterface           ///< インターフェースレイヤー
 };
 
 /// タイトル画像のファイル名
@@ -61,6 +61,7 @@ static const float kAKCreditMenuPosTopRatio = 0.8f;
 /// 各ノードのz座標
 enum {
     kAKTitleBackPosZ = 0,   ///< 背景のz座標
+    kAKTitleLogoPosZ,       ///< タイトルロゴのz座標
     kAKTitleMenuPosZ        ///< メニュー項目のz座標
 };
 
@@ -88,13 +89,13 @@ enum {
     }
     
     // 背景レイヤーを配置する
-    [self addChild:AKCreateBackColorLayer() z:kAKTitleLayerBackground tag:kAKTitleLayerBackground];
+    [self addChild:AKCreateBackColorLayer() z:kAKTitleBackground tag:kAKTitleBackground];
     
     // インターフェースを作成する
-    AKInterface *interface = [AKInterface interfaceWithCapacity:kAKMenuItemCount];
+    AKInterface *interface = [AKInterface interfaceWithCapacity:kAKMenuItemCount + 1];
     
     // インターフェースをシーンに配置する
-    [self addChild:interface z:kAKTitleLayerInterface tag:kAKTitleLayerInterface];
+    [self addChild:interface z:kAKTitleInterface tag:kAKTitleInterface];
     
     // タイトル画像を読み込む
     CCSprite *image = [CCSprite spriteWithFile:kAKTitleImage];
@@ -104,8 +105,8 @@ enum {
     image.position = ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKTitlePosFromHorizontalCenterPoint],
                          [AKScreenSize center].y);
     
-    // タイトル画像をインターフェースに配置する
-    [interface addChild:image z:kAKTitleBackPosZ];
+    // タイトル画像をシーンに配置する
+    [self addChild:image z:kAKTitleLogoPosZ];
     
     // ゲームスタートのメニューを作成する
     [interface addMenuWithString:kAKGameStartCaption
@@ -144,8 +145,7 @@ enum {
                        withFrame:YES];
     
     // すべてのメニュー項目を有効とする
-    interface.enableItemTagStart = 0;
-    interface.enableItemTagEnd = kAKTitleMenuCount - 1;
+    interface.enableTag = 0xFFFFFFFFUL;
     
     AKLog(0, @"init 終了");
     return self;
@@ -159,7 +159,7 @@ enum {
  */
 - (AKInterface *)interface
 {
-    return (AKInterface *)[self getChildByTag:kAKTitleLayerInterface];
+    return (AKInterface *)[self getChildByTag:kAKTitleInterface];
 }
 
 /*!

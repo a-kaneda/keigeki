@@ -50,13 +50,13 @@ static const NSInteger kAKMenuItemCount = 3;
 /// メニュー項目の位置、右からの位置
 static const float kAKMenuPosRightPoint = 120.0f;
 /// ゲーム開始メニューのキャプションの表示位置、上からの比率
-static const float kAKGameStartMenuPosTopRatio = 0.2f;
+static const float kAKGameStartMenuPosTopRatio = 0.27f;
 /// 遊び方画面メニューのキャプションの表示位置、上からの比率
-static const float kAKHowToPlayMenuPosTopRatio = 0.4f;
+static const float kAKHowToPlayMenuPosTopRatio = 0.47f;
 /// オプション画面メニューのキャプションの表示位置、上からの位置
-static const float kAKOptionMenuPosTopRatio = 0.6f;
+static const float kAKOptionMenuPosTopRatio = 0.67f;
 /// クレジット画面メニューのキャプションの表示位置、上からの比率
-static const float kAKCreditMenuPosTopRatio = 0.8f;
+static const float kAKCreditMenuPosTopRatio = 0.87f;
 
 /// 各ノードのz座標
 enum {

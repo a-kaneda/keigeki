@@ -8,9 +8,18 @@
 #import <Twitter/TWTweetComposeViewController.h>
 #import "AKNavigationController.h"
 #import "AKCommon.h"
+#import "AKScreenSize.h"
+#import "AKGameScene.h"
+#import "SimpleAudioEngine.h"
 
 /// アプリのURL
 static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id569653828?l=ja&ls=1&mt=8";
+/// AdMobパブリッシャーID
+static NSString *kAKAdMobID = @"0fc25f9edb6a4772";
+/// テストデバイス(iPhone4)のID
+static NSString *kAKTestDeviceIPhone4ID = @"764805932506a86afa8091da68200eab3fb177b9";
+/// テストデバイス(iPhone5)のID
+static NSString *kAKTestDeviceIPhone5ID = @"59d89c955b8adbe31a45ec3f07ad5ea813b11c24";
 
 /*!
  @brief UINavigationControllerのカスタマイズ
@@ -19,6 +28,8 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id5696538
  画面回転処理とGame Centerのdelegateを実装。
  */
 @implementation AKNavigationController
+
+@synthesize bannerView = bannerView_;
 
 /*!
  @brief 初期化処理
@@ -39,15 +50,76 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id5696538
 }
 
 /*!
+ @brief 解放時処理
+ 
+ 解放時の処理を行う。
+ メンバを解放する。
+ */
+- (void)dealloc
+{
+    // viewDidLoadで生成したオブジェクトを解放する
+    [self viewDidUnload];
+    
+    // スーパークラスの処理を実行する
+    [super dealloc];
+}
+
+/*!
  @brief 読み込み時処理
  
  ビューが読み込まれたときの処理。
- スーパークラスの処理をそのまま実行する。
+ AdMobの広告バナーを生成する。
  */
 - (void)viewDidLoad
 {
+    AKLog(1, @"start");
+    
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+
+    // 画面下部に標準サイズのビューを作成する
+    self.bannerView = [[[GADBannerView alloc] initWithFrame:CGRectMake(0.0,
+                                                                       0.0,
+                                                                       GAD_SIZE_320x50.width,
+                                                                       GAD_SIZE_320x50.height)]
+                       autorelease];
+    
+    // 広告の「ユニット ID」を指定する。これは AdMob パブリッシャー ID です。
+    self.bannerView.adUnitID = kAKAdMobID;
+    
+    // デリゲートを設定する
+    self.bannerView.delegate = self;
+    
+    // ユーザーに広告を表示した場所に後で復元する UIViewController をランタイムに知らせて
+    // ビュー階層に追加する。
+    self.bannerView.rootViewController = self;
+    [self.view addSubview:self.bannerView];
+    
+    // テスト広告の設定をする
+    GADRequest *request = [GADRequest request];
+    request.testing = YES;
+    request.testDevices = [NSArray arrayWithObjects:GAD_SIMULATOR_ID, kAKTestDeviceIPhone4ID, kAKTestDeviceIPhone5ID, nil];
+    
+    AKLog(1, @"testDevices=%@", request.testDevices);
+    
+    // リクエストを行って広告を読み込む
+    [self.bannerView loadRequest:request];
+    
+    AKLog(1, @"end");
+}
+
+/*!
+ @brief メモリ不足時の処理
+ 
+ メモリが不足したときの処理。
+ viewDidLoadで生成したオブジェクトを解放する。
+ */
+- (void)viewDidUnload
+{
+    // 広告バナーを解放する
+    self.bannerView = nil;
+    
+    // スーパークラスの処理を実行する
+    [super viewDidUnload];
 }
 
 /*!
@@ -140,5 +212,86 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id5696538
     AKLog(1, @"Twitter View表示");
     // Twitter Viewを表示する
     [self presentModalViewController:viewController animated:YES];
+}
+
+/*!
+ @brief リクエスト成功時処理
+ 
+ 広告リクエストに成功した時の処理。
+ 画面内に広告バナーを表示する。
+ @param bannerView 広告バナー
+ */
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView
+{
+    AKLog(1, @"start");
+    
+    // 画面内にスライドするアニメーションを実行する
+    [UIView beginAnimations:@"BannerSlide" context:nil];
+    bannerView.frame = CGRectMake(0.0,
+                                  0.0,
+                                  bannerView.frame.size.width,
+                                  bannerView.frame.size.height);
+    [UIView commitAnimations];
+}
+
+/*!
+ @brief リクエスト失敗時処理
+ 
+ 広告リクエストに失敗した時の処理。
+ 画面外に広告バナーを移動する。
+ @param bannerView 広告バナー
+ @param error エラー内容
+ */
+- (void)adView:(GADBannerView *)bannerView didFailToReceiveAdWithError:(GADRequestError *)error
+{
+    AKLog(1, @"start");
+    
+    // ビューの位置を画面外に設定する
+    bannerView.frame = CGRectMake(0.0,
+                                  -bannerView.frame.size.height,
+                                  bannerView.frame.size.width,
+                                  bannerView.frame.size.height);
+}
+
+/*!
+ @brief 広告フルスクリーン表示時処理
+ 
+ 広告がフルスクリーン表示される前に行う処理。
+ ゲームプレイ中の場合は一時停止状態にする。
+ @param bannerView 広告バナー
+ */
+- (void)adViewWillPresentScreen:(GADBannerView *)bannerView
+{
+    AKLog(1, @"start");
+    
+    // ゲームプレイ中の場合は一時停止状態にする
+    if ([AKGameScene sharedInstance].state == kAKGameStatePlaying) {
+        [[AKGameScene sharedInstance] pause:NO];
+        
+        // BGMは停止させる
+        [[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
+    }
+}
+
+/*!
+ @brief 広告フルスクリーン終了時処理
+ 
+ フルスクリーン広告が閉じられる時に行う処理。
+ @param bannerView 広告バナー
+ */
+- (void)adViewDidDismissScreen:(GADBannerView *)bannerView
+{
+    AKLog(1, @"start");
+}
+
+/*!
+ @brief 広告表示によるバックグラウンド移行時処理
+ 
+ 広告表示によってアプリケーションがバックグラウンドに移行するときの処理。
+ @param bannerView 広告バナー
+ */
+- (void)adViewWillLeaveApplication:(GADBannerView *)bannerView
+{
+    AKLog(1, @"start");
 }
 @end

@@ -21,6 +21,10 @@
 /// 広告バナー
 @property (nonatomic, retain)GADBannerView *bannerView;
 
+// 広告バナーを作成
+- (void)createAdBanner;
+// 広告バナーを削除
+- (void)deleteAdBanner;
 // Twitter Viewの表示
 - (void)viewTwitterWithInitialString:(NSString *)string;
 

@@ -3,3 +3,6 @@
 "HowToPlay_3" = "てきが いる ほうこうが みぎがわの レーダーに ひょうじ されます。";
 "GameClearTweet" = "傾撃、全ステージをクリア。スコアを%d点獲得しました。 #傾撃 #keigeki";
 "GameOverTweet" = "傾撃、ステージ%dまで進めてスコアを%d点獲得しました。 #傾撃 #keigeki";
+"StoreMessage" = "・こうこくのさくじょ\n・2しゅうめのステージついか\n・かかく 85えん";
+"ErrorGetAddOnInfo" = "アドオン情報の取得に失敗しました。";
+"StorePurchased" = "こうにゅうずみ";

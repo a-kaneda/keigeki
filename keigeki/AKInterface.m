@@ -159,7 +159,7 @@
     for (AKMenuItem *item in [self.menuItems objectEnumerator]) {
         
         // 有効な項目で選択されている場合は処理を行う
-        if ((item.tag & self.enableTag) && [item isSelectPos:location]) {
+        if ((item.tag & self.enableTag || item.tag == 0) && [item isSelectPos:location]) {
             
             AKLog(0, @"tag = %d action = %@", item.tag, NSStringFromSelector(item.action));
                         

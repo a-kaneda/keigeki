@@ -15,6 +15,7 @@
 #import "SimpleAudioEngine.h"
 #import "AKGameCenterHelper.h"
 #import "AKOptionScene.h"
+#import "AKInAppPurchaseHelper.h"
 
 /// メニュー項目のタグ
 enum {
@@ -50,13 +51,15 @@ static const NSInteger kAKMenuItemCount = 3;
 /// メニュー項目の位置、右からの位置
 static const float kAKMenuPosRightPoint = 120.0f;
 /// ゲーム開始メニューのキャプションの表示位置、上からの比率
-static const float kAKGameStartMenuPosTopRatio = 0.27f;
+static const float kAKGameStartMenuPosTopRatio = 0.15f;
 /// 遊び方画面メニューのキャプションの表示位置、上からの比率
-static const float kAKHowToPlayMenuPosTopRatio = 0.47f;
+static const float kAKHowToPlayMenuPosTopRatio = 0.35f;
 /// オプション画面メニューのキャプションの表示位置、上からの位置
-static const float kAKOptionMenuPosTopRatio = 0.67f;
+static const float kAKOptionMenuPosTopRatio = 0.55f;
 /// クレジット画面メニューのキャプションの表示位置、上からの比率
-static const float kAKCreditMenuPosTopRatio = 0.87f;
+static const float kAKCreditMenuPosTopRatio = 0.75f;
+/// メニュー位置広告のマージン
+static const float kAKAdMarginPosRatio = 0.05f;
 
 /// 各ノードのz座標
 enum {
@@ -108,10 +111,18 @@ enum {
     // タイトル画像をシーンに配置する
     [self addChild:image z:kAKTitleLogoPosZ];
     
+    // 広告分のマージンの初期値は0とする
+    float adMargin = 0.0f;
+    
+    // 広告非表示の場合はマージンを設定する
+    if ([AKInAppPurchaseHelper sharedHelper].isRemoveAd) {
+        adMargin = kAKAdMarginPosRatio;
+    }
+    
     // ゲームスタートのメニューを作成する
     [interface addMenuWithString:kAKGameStartCaption
                            atPos:ccp([AKScreenSize positionFromRightPoint:kAKMenuPosRightPoint],
-                                     [AKScreenSize positionFromTopRatio:kAKGameStartMenuPosTopRatio])
+                                     [AKScreenSize positionFromTopRatio:kAKGameStartMenuPosTopRatio + adMargin])
                           action:@selector(startGame)
                                z:0
                              tag:kAKTitleMenuGame
@@ -120,7 +131,7 @@ enum {
     // 遊び方のメニューを作成する
     [interface addMenuWithString:kAKHowToPlayCaption
                            atPos:ccp([AKScreenSize positionFromRightPoint:kAKMenuPosRightPoint],
-                                     [AKScreenSize positionFromTopRatio:kAKHowToPlayMenuPosTopRatio])
+                                     [AKScreenSize positionFromTopRatio:kAKHowToPlayMenuPosTopRatio + adMargin])
                           action:@selector(startHowTo)
                                z:0
                              tag:kAKTitleMenuHowTo
@@ -129,7 +140,7 @@ enum {
     // オプションのメニューを作成する
     [interface addMenuWithString:kAKOptionCaption
                            atPos:ccp([AKScreenSize positionFromRightPoint:kAKMenuPosRightPoint],
-                                     [AKScreenSize positionFromTopRatio:kAKOptionMenuPosTopRatio])
+                                     [AKScreenSize positionFromTopRatio:kAKOptionMenuPosTopRatio + adMargin])
                           action:@selector(startOption)
                                z:0
                              tag:kAKTitleMenuOption
@@ -138,7 +149,7 @@ enum {
     // クレジットのメニューを作成する
     [interface addMenuWithString:kAKCreditCaption
                            atPos:ccp([AKScreenSize positionFromRightPoint:kAKMenuPosRightPoint],
-                                     [AKScreenSize positionFromTopRatio:kAKCreditMenuPosTopRatio])
+                                     [AKScreenSize positionFromTopRatio:kAKCreditMenuPosTopRatio + adMargin])
                           action:@selector(startCredit)
                                z:0
                              tag:kAKTitleMenuCredit

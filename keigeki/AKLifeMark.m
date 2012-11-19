@@ -10,8 +10,8 @@
 
 /// 残機マーク表示位置、左からの位置
 static const float kAKLifeMarkPosLeftPoint = 10.0f;
-/// 残機マーク表示位置、下からの位置
-static const float kAKLifeMarkPosBottomPoint = 60.0f;
+/// 残機マーク表示位置、上からの位置
+static const float kAKLifeMarkPosTopPoint = 60.0f;
 /// 残機マーク表示位置のインターバル
 static const NSInteger kAKLifeMarkInterval = 20;
 
@@ -90,7 +90,7 @@ static const NSInteger kAKLifeMarkInterval = 20;
             x = [AKScreenSize positionFromLeftPoint:kAKLifeMarkPosLeftPoint + (imageCount + i) * kAKLifeMarkInterval];
             
             // 画像のy座標はすべて共通とする
-            y = [AKScreenSize positionFromBottomPoint:kAKLifeMarkPosBottomPoint];
+            y = [AKScreenSize positionFromTopPoint:kAKLifeMarkPosTopPoint];
             
             // 画像の座標を設定する
             image.position = ccp(x, y);

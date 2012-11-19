@@ -80,20 +80,20 @@ static const float kAKGameOverInterval = 2.0f;
 
 /// スコアの表示位置、左からの位置
 static const float kAKScorePosLeftPoint = 10.0f;
-/// スコアの表示位置、下からの位置
-static const float kAKScorePosBottomPoint = 40.0f;
+/// スコアの表示位置、上からの位置
+static const float kAKScorePosTopPoint = 20.0f;
 /// ハイスコアの表示位置、左からの位置
 static const float kAKHiScorePosLeftPoint = 20.0f;
-/// ハイスコアの表示位置、下からの位置
-static const float kAKHiScorePosBottomPoint = 40.0f;
+/// ハイスコアの表示位置、上からの位置
+static const float kAKHiScorePosTopPoint = 20.0f;
 /// 命中率の表示位置、左からの位置
 static const float kAKHitPosLeftPoint = 10.0f;
-/// 命中率の表示位置、下からの位置
-static const float kAKHitPosBottomPoint = 20.0f;
+/// 命中率の表示位置、上からの位置
+static const float kAKHitPosTopPoint = 40.0f;
 /// プレイ時間の表示位置、左からの位置
 static const float kAKTimePosLeftPoint = 20.0f;
-/// プレイ時間の表示位置、下からの位置
-static const float kAKTimePosBottomPoint = 20.0f;
+/// プレイ時間の表示位置、上からの位置
+static const float kAKTimePosTopPoint = 40.0f;
 
 /// メニュー項目の数
 static const NSInteger kAKItemCount = 8;
@@ -271,7 +271,7 @@ static AKGameScene *sharedScene = nil;
     // スコアラベルを生成する
     [self setLabelToInfoLayer:[NSString stringWithFormat:kAKScoreFormat, score_]
                         atPos:ccp(scoreLabelPosX,
-                                  [AKScreenSize positionFromBottomPoint:kAKScorePosBottomPoint])
+                                  [AKScreenSize positionFromTopPoint:kAKScorePosTopPoint])
                           tag:kAKInfoTagScore
                         frame:kAKLabelFrameNone];
     
@@ -288,7 +288,7 @@ static AKGameScene *sharedScene = nil;
     // ハイスコアラベルを生成する
     [self setLabelToInfoLayer:[NSString stringWithFormat:kAKHiScoreFormat, hiScore_]
                         atPos:ccp(hiScoreLabelPosX,
-                                  [AKScreenSize positionFromBottomPoint:kAKHiScorePosBottomPoint])
+                                  [AKScreenSize positionFromTopPoint:kAKHiScorePosTopPoint])
                           tag:kAKInfoTagHiScore
                         frame:kAKLabelFrameNone];
         
@@ -299,7 +299,7 @@ static AKGameScene *sharedScene = nil;
     // 命中率ラベルを生成する
     [self setLabelToInfoLayer:[NSString stringWithFormat:kAKHitFormat, 100]
                         atPos:ccp(hitLabelPosX,
-                                  [AKScreenSize positionFromBottomPoint:kAKHitPosBottomPoint])
+                                  [AKScreenSize positionFromTopPoint:kAKHitPosTopPoint])
                           tag:kAKInfoTagHit
                         frame:kAKLabelFrameNone];
 
@@ -313,7 +313,7 @@ static AKGameScene *sharedScene = nil;
     // プレイ時間ラベルを生成する
     [self setLabelToInfoLayer:[NSString stringWithFormat:kAKTimeFormat, 0, 0, 0]
                         atPos:ccp(timeLabelPosX,
-                                  [AKScreenSize positionFromBottomPoint:kAKTimePosBottomPoint])
+                                  [AKScreenSize positionFromTopPoint:kAKTimePosTopPoint])
                           tag:kAKInfoTagTime
                         frame:kAKLabelFrameNone];
 

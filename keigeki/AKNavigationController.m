@@ -11,6 +11,7 @@
 #import "AKScreenSize.h"
 #import "AKGameScene.h"
 #import "SimpleAudioEngine.h"
+#import "AKInAppPurchaseHelper.h"
 
 /// アプリのURL
 static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id569653828?l=ja&ls=1&mt=8";
@@ -74,35 +75,13 @@ static NSString *kAKTestDeviceIPhone5ID = @"59d89c955b8adbe31a45ec3f07ad5ea813b1
 {
     AKLog(1, @"start");
     
+    // スーパークラスの処理を実行する
     [super viewDidLoad];
 
-    // 画面下部に標準サイズのビューを作成する
-    self.bannerView = [[[GADBannerView alloc] initWithFrame:CGRectMake(0.0,
-                                                                       0.0,
-                                                                       GAD_SIZE_320x50.width,
-                                                                       GAD_SIZE_320x50.height)]
-                       autorelease];
-    
-    // 広告の「ユニット ID」を指定する。これは AdMob パブリッシャー ID です。
-    self.bannerView.adUnitID = kAKAdMobID;
-    
-    // デリゲートを設定する
-    self.bannerView.delegate = self;
-    
-    // ユーザーに広告を表示した場所に後で復元する UIViewController をランタイムに知らせて
-    // ビュー階層に追加する。
-    self.bannerView.rootViewController = self;
-    [self.view addSubview:self.bannerView];
-    
-    // テスト広告の設定をする
-    GADRequest *request = [GADRequest request];
-    request.testing = YES;
-    request.testDevices = [NSArray arrayWithObjects:GAD_SIMULATOR_ID, kAKTestDeviceIPhone4ID, kAKTestDeviceIPhone5ID, nil];
-    
-    AKLog(1, @"testDevices=%@", request.testDevices);
-    
-    // リクエストを行って広告を読み込む
-    [self.bannerView loadRequest:request];
+    // 広告解除の無効の場合は広告を作成する
+    if (![[AKInAppPurchaseHelper sharedHelper] isRemoveAd]) {
+        [self createAdBanner];
+    }
     
     AKLog(1, @"end");
 }
@@ -116,7 +95,7 @@ static NSString *kAKTestDeviceIPhone5ID = @"59d89c955b8adbe31a45ec3f07ad5ea813b1
 - (void)viewDidUnload
 {
     // 広告バナーを解放する
-    self.bannerView = nil;
+    [self deleteAdBanner];
     
     // スーパークラスの処理を実行する
     [super viewDidUnload];
@@ -181,6 +160,59 @@ static NSString *kAKTestDeviceIPhone5ID = @"59d89c955b8adbe31a45ec3f07ad5ea813b1
 }
 
 /*!
+ @brief 広告バナーを作成
+ 
+ 広告バナーを作成する。
+ */
+- (void)createAdBanner
+{
+    // 画面下部に標準サイズのビューを作成する
+    self.bannerView = [[[GADBannerView alloc] initWithFrame:CGRectMake(0.0,
+                                                                       self.view.bounds.size.height - GAD_SIZE_320x50.height,
+                                                                       GAD_SIZE_320x50.width,
+                                                                       GAD_SIZE_320x50.height)]
+                       autorelease];
+    
+    // 広告の「ユニット ID」を指定する。これは AdMob パブリッシャー ID です。
+    self.bannerView.adUnitID = kAKAdMobID;
+    
+    // デリゲートを設定する
+    self.bannerView.delegate = self;
+    
+    // ユーザーに広告を表示した場所に後で復元する UIViewController をランタイムに知らせて
+    // ビュー階層に追加する。
+    self.bannerView.rootViewController = self;
+    [self.view addSubview:self.bannerView];
+    
+    // テスト広告の設定をする
+    GADRequest *request = [GADRequest request];
+    request.testing = YES;
+    request.testDevices = [NSArray arrayWithObjects:GAD_SIMULATOR_ID, kAKTestDeviceIPhone4ID, kAKTestDeviceIPhone5ID, nil];
+    
+    AKLog(1, @"testDevices=%@", request.testDevices);
+    
+    // リクエストを行って広告を読み込む
+    [self.bannerView loadRequest:request];
+}
+
+/*!
+ @brief 広告バナーを削除
+ 
+ 広告バナーを削除する。
+ */
+- (void)deleteAdBanner
+{
+    // バナーを取り除く
+    [self.bannerView removeFromSuperview];
+    
+    // デリゲートを削除する
+    self.bannerView.delegate = nil;
+    
+    // バナーを削除する
+    self.bannerView = nil;
+}
+
+/*!
  @brief Twitter Viewの表示
  
  Twitter Viewを表示する。
@@ -228,7 +260,7 @@ static NSString *kAKTestDeviceIPhone5ID = @"59d89c955b8adbe31a45ec3f07ad5ea813b1
     // 画面内にスライドするアニメーションを実行する
     [UIView beginAnimations:@"BannerSlide" context:nil];
     bannerView.frame = CGRectMake(0.0,
-                                  0.0,
+                                  self.view.bounds.size.height - GAD_SIZE_320x50.height,
                                   bannerView.frame.size.width,
                                   bannerView.frame.size.height);
     [UIView commitAnimations];

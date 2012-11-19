@@ -13,6 +13,7 @@
 #import "AKGameScene.h"
 #import "AKGameCenterHelper.h"
 #import "AKTwitterHelper.h"
+#import "AKInAppPurchaseHelper.h"
 
 /*!
  @brief Application controller

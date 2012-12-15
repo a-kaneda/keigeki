@@ -853,7 +853,7 @@ static const float kAKAdMarginPosPoint = 20.0f;
         case kAKPageStore:          // Storeのページ
             
             // 購入済みかどうかで有効化する項目を変える
-            if ([AKInAppPurchaseHelper sharedHelper].isEnable2Playthrough) {
+            if ([AKInAppPurchaseHelper sharedHelper].isEnableContinue) {
                 return kAKMenuStore | kAKMenuStoreAfterPurcase;
             }
             else {

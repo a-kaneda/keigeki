@@ -186,7 +186,7 @@ enum {
     [self selectButton:kAKTitleMenuGame];
     
     // ゲームシーンへの遷移を作成する
-    CCTransitionFade *transition = [CCTransitionFade transitionWithDuration:0.5f scene:[AKGameScene sharedInstance]];
+    CCTransitionFade *transition = [CCTransitionFade transitionWithDuration:0.5f scene:[AKGameScene node]];
     
     // ゲームシーンへ遷移する
     [[CCDirector sharedDirector] replaceScene:transition];

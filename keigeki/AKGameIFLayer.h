@@ -50,6 +50,8 @@ extern NSUInteger kAKGameIFTagWait;
 - (void)createQuitMenu;
 // ゲームオーバー時のメニュー項目作成
 - (void)createGameOverMenu;
+// ゲームクリア時のメニュー項目作成
+- (void)createGameClearMenu;
 // リザルト表示時のメニュー項目作成
 - (void)createResultMenu;
 

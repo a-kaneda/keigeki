@@ -61,12 +61,14 @@ static const NSInteger kAKStartLifeCount = 2;
 /// 自機復活までの間隔
 static const float kAKRebirthInterval = 1.0f;
 /// 短時間クリアの実績解除の時間
-static const float kAKClearShortTime = 300.0f;
+static const float kAKClearShortTime = 120.0f;
 /// 1UPするスコア
 static const NSInteger kAKExtendScore = 50000;
 
+/// 開始ステージ
+static const NSInteger kAKStartStage = 5;
 /// 1ステージのウェイブの数
-static const NSInteger kAKWaveCount = 10;
+static const NSInteger kAKWaveCount = 6;
 /// ステージの数
 static const NSInteger kAKStageCount = 5;
 /// ウェイブが始まるまでの間隔
@@ -98,9 +100,6 @@ static const float kAKTimePosTopPoint = 40.0f;
 /// メニュー項目の数
 static const NSInteger kAKItemCount = 8;
 
-/// ゲームクリア画面の画像ファイル名
-static NSString *kAKGameClearImageFile = @"GameClear.png";
-
 /// スコア表示のフォーマット
 static NSString *kAKScoreFormat = @"SCORE:%06d";
 /// ハイスコア表示のフォーマット
@@ -121,10 +120,10 @@ static NSString *kAKGameClearTweetKey = @"GameClearTweet";
 /// ゲームオーバー時のツイートのフォーマットのキー
 static NSString *kAKGameOverTweetKey = @"GameOverTweet";
 
-/// プレイ中BGMファイル名
-static NSString *kAKPlayBGM = @"Play.mp3";
 /// ステージクリア画面のBGMファイル名
 static NSString *kAKClearBGM = @"Clear.mp3";
+/// 全ステージクリア時のBGMファイル名
+static NSString *kAKEndingBGM = @"Ending.mp3";
 /// ショット発射効果音ファイル名
 static NSString *kAKShotSE = @"Shot.caf";
 /// 一時停止効果音ファイル名
@@ -144,9 +143,6 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id5696538
  */
 @implementation AKGameScene
 
-// シングルトンオブジェクト
-static AKGameScene *sharedScene = nil;
-
 @synthesize player = player_;
 @synthesize playerShotPool = playerShotPool_;
 @synthesize enemyPool = enemyPool_;
@@ -158,23 +154,27 @@ static AKGameScene *sharedScene = nil;
 @synthesize hitCount = hitCount_;
 
 /*!
- @brief シングルトンオブジェクト取得
-
- シングルトンオブジェクトを返す。初回呼び出し時はオブジェクトを作成して返す。
- @return シングルトンオブジェクト
+ @brief ゲームシーンクラス取得
+ 
+ 現在実行中のシーンをゲームプレイシーンクラスにキャストして返す。
+ ゲームプレイシーンが実行中でない場合はnilを返す。
+ @return ゲームプレイシーンのインスタンス
  */
-+ (AKGameScene *)sharedInstance
++ (AKGameScene *)getInstance
 {
-    AKLog(0, @"sharedInstance 開始");
+    // 実行中のシーンを取得する
+    CCScene *scene = [[CCDirector sharedDirector] runningScene];
     
-    // シングルトンオブジェクトが作成されていない場合は作成する。
-    if (sharedScene == nil) {
-        sharedScene = [AKGameScene node];
+    // ゲームプレイシーンでゲームプレイ中の場合は一時停止状態にする
+    if ([scene isKindOfClass:[AKGameScene class]]) {
+        
+        // ゲームプレイシーンにキャストして返す
+        return (AKGameScene *)scene;
     }
     
-    AKLog(0, @"sharedInstance 終了");
-    // シングルトンオブジェクトを返す。
-    return sharedScene;
+    // 現在実行中のシーンがゲームプレイシーンでない場合はエラー
+    NSAssert(0, @"ゲームプレイ中以外にゲームシーンクラスの取得が行われた");
+    return nil;
 }
 
 /*!
@@ -318,7 +318,7 @@ static AKGameScene *sharedScene = nil;
                         frame:kAKLabelFrameNone];
 
     // 状態を初期化する
-    [self resetAll];
+    [self resetAll:kAKStartStage];
         
     // 更新処理開始
     [self scheduleUpdate];
@@ -333,7 +333,7 @@ static AKGameScene *sharedScene = nil;
  */
 - (void)dealloc
 {
-    AKLog(0, @"dealloc 開始");
+    AKLog(1, @"dealloc 開始");
     
     // 更新処理停止
     [self unscheduleUpdate];
@@ -345,13 +345,10 @@ static AKGameScene *sharedScene = nil;
     self.effectPool = nil;
     self.background = nil;
     
-    // シングルトンオブジェクトを初期化する
-    sharedScene = nil;
-    
     // スーパークラスの処理を実行する
     [super dealloc];
     
-    AKLog(0, @"dealloc 終了");
+    AKLog(1, @"dealloc 終了");
 }
 
 /*!
@@ -511,7 +508,7 @@ static AKGameScene *sharedScene = nil;
 - (void)updateStart:(ccTime)dt
 {
     // BGMを再生する
-    [[SimpleAudioEngine sharedEngine] playBackgroundMusic:kAKPlayBGM loop:YES];
+    [self startBGM];
 
     // ステージ構成スクリプトを読み込む
     [self readScriptOfStage:stageNo_ Wave:waveNo_];
@@ -786,6 +783,26 @@ static AKGameScene *sharedScene = nil;
             createEnemy = @selector(createNoraml);
             break;
             
+        case kAKEnemyTypeHighSpeed: // 高速移動
+            createEnemy = @selector(createHighSpeed);
+            break;
+            
+        case kAKEnemyTypeHighTurn:  // 高速旋回
+            createEnemy = @selector(createHighTurn);
+            break;
+            
+        case kAKEnemyTypeHighShot:  // 高速ショット
+            createEnemy = @selector(createHighShot);
+            break;
+            
+        case kAKEnemyType3Way:      // 3-Way弾
+            createEnemy = @selector(create3WayShot);
+            break;
+            
+        case kAKEnemyTypeCanon:      // 大砲
+            createEnemy = @selector(createCanon);
+            break;
+            
         default:        // その他
             // エラー
             assert(0);
@@ -905,12 +922,15 @@ static AKGameScene *sharedScene = nil;
  @brief ゲーム状態リセット
  
  ゲームの状態を初期状態にリセットする。
+ @param stage 開始ステージ番号
  */
-- (void)resetAll
+- (void)resetAll:(NSInteger)stage
 {
+    AKLog(1, @"ゲーム状態リセット");
+    
     // 各種メンバを初期化する
     self.state = kAKGameStatePreLoad;
-    stageNo_ = 1;
+    stageNo_ = stage;
     waveNo_ = 1;
     life_ = kAKStartLifeCount;
     rebirthInterval_ = 0.0f;
@@ -952,7 +972,9 @@ static AKGameScene *sharedScene = nil;
 - (void)addScore:(NSInteger)score
 {
     // エクステンドの判定を行う
-    if ((int)(score_ / kAKExtendScore) < (int)((score_ + score) / kAKExtendScore)) {
+    // ゲームオーバー時にはエクステンドしない(相打ちによってスコアが入った時)
+    if ((int)(score_ / kAKExtendScore) < (int)((score_ + score) / kAKExtendScore) &&
+        nextState_ != kAKGameStateGameOver) {
         
         AKLog(1, @"エクステンド:m_score=%d score=%d しきい値=%d", score_, score, kAKExtendScore);
         
@@ -961,6 +983,9 @@ static AKGameScene *sharedScene = nil;
         
         // 残機の数を増やす
         life_++;
+        
+        // 残機マークを更新する
+        [self.lifeMark updateImage:life_];
         
         // 実績を解除する
         [[AKGameCenterHelper sharedHelper] reportAchievements:kAKGC1UpID];
@@ -1116,7 +1141,7 @@ static AKGameScene *sharedScene = nil;
     
     // ファイル名をステージ番号、ウェイブ番号から決定する
     fileName = [NSString stringWithFormat:@"stage%d_%d", stage, wave];
-    AKLog(0, @"fileName=%@", fileName);
+    AKLog(1, @"fileName=%@", fileName);
     
     // ファイルパスをバンドルから取得する
     bundle = [NSBundle mainBundle];
@@ -1280,7 +1305,7 @@ static AKGameScene *sharedScene = nil;
     if (stageNo_ <= kAKStageCount) {
         
         // プレイ中BGMを開始する
-        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:kAKPlayBGM loop:YES];
+        [self startBGM];
         
         // ゲームの状態をプレイ中に変更する
         self.state = kAKGameStatePlaying;
@@ -1332,7 +1357,10 @@ static AKGameScene *sharedScene = nil;
     // 全ステージクリアしている場合はエンディング画面の表示を行う
     else {
         
-        // ゲームの状態をゲームオーバーに変更する
+        // ゲームクリア時のBGMを鳴らす
+        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:kAKEndingBGM loop:NO];
+        
+        // ゲームの状態をゲームクリアに変更する
         self.state = kAKGameStateGameClear;
         
         // 背景色レイヤーを作成する
@@ -1563,7 +1591,7 @@ static AKGameScene *sharedScene = nil;
     }
     
     // 各種パラメータを設定する
-    [resultLayer setScore:score_ andTime:(NSInteger)playTime_ andHit:hit andRest:life_];
+    [resultLayer setParameterStage:stageNo_ andScore:score_ andTime:(NSInteger)playTime_ andHit:hit andRest:life_];
 }
 
 /*!
@@ -1696,9 +1724,6 @@ static AKGameScene *sharedScene = nil;
     
     // ツイートビューを表示する
     [[AKTwitterHelper sharedHelper] viewTwitterWithInitialString:[self makeTweet]];
-
-    // タイトル画面へ戻る
-    [self backToTitle];
 }
 
 /*!
@@ -1726,5 +1751,39 @@ static AKGameScene *sharedScene = nil;
 #else
     return tweet;
 #endif
+}
+
+/*!
+ @brief コンティニューボタン選択
+ 
+ コンティニューボタンが選択された時の処理。
+ ステージ番号以外をすべてリセットする。
+ */
+- (void)selectContinueButton
+{
+    // メニュー選択時の効果音を鳴らす
+    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
+    
+    // 現在のステージ番号を指定して初期化を行う
+    [self resetAll:stageNo_];
+    
+    // ゲーム状態を開始時に変更する。
+    self.state = kAKGameStateStart;
+}
+
+/*!
+ @brief BGM再生
+ 
+ ステージ番号に対応したBGM再生を開始する。
+ */
+- (void)startBGM
+{
+    /// プレイ中BGMファイル名
+    NSString *kAKPlayBGM = @"Stage%d.mp3";
+
+    NSString *fileName = [NSString stringWithFormat:kAKPlayBGM, stageNo_];
+    
+    // BGMを再生する
+    [[SimpleAudioEngine sharedEngine] playBackgroundMusic:fileName loop:YES];
 }
 @end

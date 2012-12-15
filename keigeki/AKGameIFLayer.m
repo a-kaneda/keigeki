@@ -10,6 +10,7 @@
 #import "AKCommon.h"
 #import "AKTwitterHelper.h"
 #import "AKScreenSize.h"
+#import "AKInAppPurchaseHelper.h"
 
 /// ゲームプレイ中のタグ
 NSUInteger kAKGameIFTagPlaying = 0x01;
@@ -25,11 +26,6 @@ NSUInteger kAKGameIFTagGameClear = 0x10;
 NSUInteger kAKGameIFTagResult = 0x20;
 /// 待機中のタグ
 NSUInteger kAKGameIFTagWait = 0x80;
-
-/// ショットボタンのサイズ
-static const NSInteger kAKShotButtonSize = 64;
-/// ポーズボタンのサイズ
-static const NSInteger kAKPauseButtonSize = 32;
 
 // 加速度センサーの値を比率換算する
 static float AKAccel2Ratio(float accel);
@@ -73,6 +69,9 @@ static float AKAccel2Ratio(float accel);
     
     // ゲームオーバー時のメニュー項目を作成する
     [self createGameOverMenu];
+    
+    // ゲームクリア時のメニュー項目を作成する
+    [self createGameClearMenu];
     
     // リザルト表示時のメニュー項目を作成する
     [self createResultMenu];
@@ -240,88 +239,142 @@ static float AKAccel2Ratio(float accel);
  @brief ゲームオーバー時のメニュー項目作成
  
  ゲームオーバー時のメニュー項目を作成する。
- ゲームクリア時も同様の処理とするため、メニュー項目のタグにORを取る。
  */
 - (void)createGameOverMenu
 {
     // ゲームオーバー時の表示文字列
     NSString *kAKGameOverString = @"GAME OVER";
-    // ゲームクリア時の表示文字列
-    NSString *kAKGameClearString = @"GAME CLEAR";
     // タイトルへ戻るボタンのキャプション
     NSString *kAKGameOverQuitButtonCaption = @"QUIT";
-    // ツイートボタンのキャプション
-    NSString *kAKGameOverTweetButtonCaption = @"TWEET";
+    // コンティニューボタンのキャプション
+    NSString *kAKGameOverContinueButtonCaption = @"RETRY";
+    // Twitterボタンの画像ファイル名
+    NSString *kAKTwitterButtonImageFile = @"Twitter.png";
     // ゲームオーバーキャプションの表示位置、下からの比率
     const float kAKGameOverCaptionPosBottomRatio = 0.6f;
-    // メニュー項目の位置、下からの比率
-    const float kAKGameOverMenuPosBottomRatio = 0.4f;
+    // タイトルへ戻るボタンの位置、下からの比率
+    const float kAKGameOverQuitButtonPosBottomRatio = 0.4f;
     // タイトルへ戻るボタンの位置、左からの比率
     const float kAKGameOverQuitButtonPosLeftRatio = 0.3f;
-    // ツイートボタンの位置、右からの比率
-    const float kAKGameOverTweetButtonPosRightRatio = 0.3f;
+    // コンティニューボタンの位置、右からの比率
+    const float kAKGameOverContinueButtonPosRightRatio = 0.3f;
+    // Twitterボタンの配置位置、中心からの横方向の位置
+    const float kAKTwitterButtonPosHorizontalCenterPoint = 120.0f;
+    // Twitterボタンの配置位置、下からの位置
+    const float kAKTwitterButtonPosBottomRatio = 0.6f;
     
-    {
-        // ゲームオーバーラベルを生成する
-        AKLabel *label = [AKLabel labelWithString:kAKGameOverString maxLength:kAKGameOverString.length maxLine:1 frame:kAKLabelFrameMessage];
+    // ゲームオーバーラベルを生成する
+    AKLabel *label = [AKLabel labelWithString:kAKGameOverString maxLength:kAKGameOverString.length maxLine:1 frame:kAKLabelFrameMessage];
         
-        // ゲームオーバーラベルの位置を設定する
-        label.position = ccp([AKScreenSize center].x, [AKScreenSize positionFromBottomRatio:kAKGameOverCaptionPosBottomRatio]);
+    // ゲームオーバーラベルの位置を設定する
+    label.position = ccp([AKScreenSize center].x, [AKScreenSize positionFromBottomRatio:kAKGameOverCaptionPosBottomRatio]);
         
-        // ゲームオーバーラベルをレイヤーに配置する
-        [self addChild:label z:0 tag:kAKGameIFTagGameOver];
+    // ゲームオーバーラベルをレイヤーに配置する
+    [self addChild:label z:0 tag:kAKGameIFTagGameOver];
+    
+    // タイトルへ戻るボタンの位置を設定する
+    float quitButtonPos = [AKScreenSize center].x;
+    
+    // コンティニュー機能が有効な場合はタイトルへ戻るボタンを左にずらす
+    if ([AKInAppPurchaseHelper sharedHelper].isEnableContinue) {
+        quitButtonPos = [AKScreenSize positionFromLeftRatio:kAKGameOverQuitButtonPosLeftRatio];
     }
     
-    {
-        // ゲームクリアのラベルを作成する
-        AKLabel *label = [AKLabel labelWithString:kAKGameClearString maxLength:kAKGameClearString.length maxLine:1 frame:kAKLabelFrameNone];
+    // タイトルへ戻るボタンを作成する
+    [self addMenuWithString:kAKGameOverQuitButtonCaption
+                      atPos:ccp(quitButtonPos,
+                                [AKScreenSize positionFromBottomRatio:kAKGameOverQuitButtonPosBottomRatio])
+                     action:@selector(execQuitMenu)
+                          z:0
+                        tag:kAKGameIFTagGameOver
+                  withFrame:YES];
+    
+    AKLog(1, @"コンティニュー機能:%d", [AKInAppPurchaseHelper sharedHelper].isEnableContinue);
+    
+    // コンティニュー機能が有効な場合はコンティニューボタンを作成する
+    if ([AKInAppPurchaseHelper sharedHelper].isEnableContinue) {
 
-        // ゲームクリアラベルの位置を設定する
-        label.position = ccp([AKScreenSize center].x, [AKScreenSize positionFromBottomRatio:kAKGameOverCaptionPosBottomRatio]);
-        
-        // ゲームクリアラベルをレイヤーに配置する
-        [self addChild:label z:0 tag:kAKGameIFTagGameClear];
+        [self addMenuWithString:kAKGameOverContinueButtonCaption
+                          atPos:ccp([AKScreenSize positionFromRightRatio:kAKGameOverContinueButtonPosRightRatio],
+                                    [AKScreenSize positionFromBottomRatio:kAKGameOverQuitButtonPosBottomRatio])
+                         action:@selector(selectContinueButton)
+                              z:0
+                            tag:kAKGameIFTagGameOver
+                      withFrame:YES];
     }
+    
+    // Twitter設定が手動の場合はTwitterボタンを作成する
+    if ([AKTwitterHelper sharedHelper].mode == kAKTwitterModeManual) {
 
-    // Twitter設定によって処理を分岐する
-    switch ([AKTwitterHelper sharedHelper].mode) {
-            
-        case kAKTwitterModeOff:     // Off
-        case kAKTwitterModeAuto:    // 自動
-        {
-            // 画面全体を画面へ戻るボタンとする
-            CGRect rect = CGRectMake(0, 0, [AKScreenSize screenSize].width, [AKScreenSize screenSize].height);
-            [self.menuItems addObject:[AKMenuItem itemWithRect:rect
-                                                        action:@selector(backToTitle)
-                                                           tag:kAKGameIFTagGameOver | kAKGameIFTagGameClear]];
-        }
-            break;
-            
-        case kAKTwitterModeManual:  // 手動
-            
-            // タイトルへ戻るボタンを作成する
-            [self addMenuWithString:kAKGameOverQuitButtonCaption
-                              atPos:ccp([AKScreenSize positionFromLeftRatio:kAKGameOverQuitButtonPosLeftRatio],
-                                        [AKScreenSize positionFromBottomRatio:kAKGameOverMenuPosBottomRatio])
-                             action:@selector(execQuitMenu)
-                                  z:0
-                                tag:kAKGameIFTagGameOver | kAKGameIFTagGameClear
-                          withFrame:YES];
-            
-            // ツイートボタンを作成する
-            [self addMenuWithString:kAKGameOverTweetButtonCaption
-                              atPos:ccp([AKScreenSize positionFromRightRatio:kAKGameOverTweetButtonPosRightRatio],
-                                        [AKScreenSize positionFromBottomRatio:kAKGameOverMenuPosBottomRatio])
-                             action:@selector(selectTweetButton)
-                                  z:0
-                                tag:kAKGameIFTagGameOver | kAKGameIFTagGameClear
-                          withFrame:YES];
-            
-            break;
-            
-        default:
-            NSAssert(0, @"不正なTwitter設定:%d", [AKTwitterHelper sharedHelper].mode);
-            break;
+        [self addMenuWithFile:kAKTwitterButtonImageFile
+                        atPos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKTwitterButtonPosHorizontalCenterPoint],
+                                  [AKScreenSize positionFromBottomRatio:kAKTwitterButtonPosBottomRatio])
+                       action:@selector(selectTweetButton)
+                            z:0
+                          tag:kAKGameIFTagGameOver];
+    }
+}
+
+/*!
+ @brief ゲームクリア時のメニュー項目作成
+ 
+ ゲームクリア時のメニュー項目を作成する。
+ */
+- (void)createGameClearMenu
+{
+    // ゲームクリア時の表示文字列1
+    NSString *kAKGameClearCaption1 = @"CONGRATULATIONS!!";
+    // ゲームクリア時の表示文字列2
+    NSString *kAKGameClearCaption2 = @"ALL STAGE CLEAR";
+    // タイトルへ戻るボタンのキャプション
+    NSString *kAKGameOverQuitButtonCaption = @"BACK TO TITLE";
+    // Twitterボタンの画像ファイル名
+    NSString *kAKTwitterButtonImageFile = @"Twitter.png";
+    // ゲームクリア時の表示文字列1の表示位置、下からの比率
+    const float kAKGameClearCaption1PosBottomRatio = 0.7f;
+    // ゲームクリア時の表示文字列2の表示位置、下からの比率
+    const float kAKGameClearCaption2PosBottomRatio = 0.6f;
+    // タイトルへ戻るボタンの位置、下からの比率
+    const float kAKGameOverQuitButtonPosBottomRatio = 0.4f;
+    // Twitterボタンの配置位置、下からの位置
+    const float kAKTwitterButtonPosBottomRatio = 0.2f;
+    
+    // ゲームクリア時の表示文字列1のラベルを作成する
+    AKLabel *label1 = [AKLabel labelWithString:kAKGameClearCaption1 maxLength:kAKGameClearCaption1.length maxLine:1 frame:kAKLabelFrameNone];
+    
+    // ゲームクリア時の表示文字列1の位置を設定する
+    label1.position = ccp([AKScreenSize center].x, [AKScreenSize positionFromBottomRatio:kAKGameClearCaption1PosBottomRatio]);
+    
+    // ゲームクリア時の表示文字列1をレイヤーに配置する
+    [self addChild:label1 z:0 tag:kAKGameIFTagGameClear];
+
+    // ゲームクリア時の表示文字列2のラベルを作成する
+    AKLabel *label2 = [AKLabel labelWithString:kAKGameClearCaption2 maxLength:kAKGameClearCaption2.length maxLine:1 frame:kAKLabelFrameNone];
+        
+    // ゲームクリア時の表示文字列2の位置を設定する
+    label2.position = ccp([AKScreenSize center].x, [AKScreenSize positionFromBottomRatio:kAKGameClearCaption2PosBottomRatio]);
+        
+    // ゲームクリア時の表示文字列2をレイヤーに配置する
+    [self addChild:label2 z:0 tag:kAKGameIFTagGameClear];
+    
+    // タイトルへ戻るボタンを作成する
+    [self addMenuWithString:kAKGameOverQuitButtonCaption
+                      atPos:ccp([AKScreenSize center].x,
+                                [AKScreenSize positionFromBottomRatio:kAKGameOverQuitButtonPosBottomRatio])
+                     action:@selector(execQuitMenu)
+                          z:0
+                        tag:kAKGameIFTagGameClear
+                  withFrame:YES];
+        
+    // Twitter設定が手動の場合はTwitterボタンを作成する
+    if ([AKTwitterHelper sharedHelper].mode == kAKTwitterModeManual) {
+        
+        [self addMenuWithFile:kAKTwitterButtonImageFile
+                        atPos:ccp([AKScreenSize center].x,
+                                  [AKScreenSize positionFromBottomRatio:kAKTwitterButtonPosBottomRatio])
+                       action:@selector(selectTweetButton)
+                            z:0
+                          tag:kAKGameIFTagGameClear];
     }
 }
 
@@ -387,12 +440,15 @@ static float AKAccel2Ratio(float accel);
     // 画面を横向きに使用するのでx軸y軸を入れ替える
     // x軸は+-逆なので反転させる
     ax = AKAccel2Ratio(-acceleration.y);
-    ay = AKAccel2Ratio(acceleration.x);
+    ay = AKAccel2Ratio(acceleration.x + 0.3);
     
     AKLog(0, @"ax=%f,ay=%f", ax, ay);
+    
+    // 親クラスをゲームシーンクラスにキャストする
+    AKGameScene *gameScene = (AKGameScene *)self.parent;
 
     // 速度の変更
-    [[AKGameScene sharedInstance] movePlayerByVX:ax VY:ay];
+    [gameScene movePlayerByVX:ax VY:ay];
 }
 @end
 

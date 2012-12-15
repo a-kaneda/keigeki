@@ -55,7 +55,7 @@ static const float kAKCaptionPosTopPoint = 140.0f;
 static const float kAKCaptionPosMargin = 20.0f;
 
 /// ステージクリアのタイトルキャプション
-static NSString *kAKTitleCaption = @"STAGE CLEAR";
+static NSString *kAKTitleCaption = @"STAGE %d CLEAR";
 /// タイムのキャプション
 static NSString *kAKTimeCaption = @" TIME:";
 /// 命中率のキャプション
@@ -76,7 +76,7 @@ static const NSInteger kAKBaseTime = 300;
 /// 1秒あたりのタイムボーナス
 static const NSInteger kAKTimeBonus = 50;
 /// 1%あたりの命中率ボーナス
-static const NSInteger kAKHitBonus = 50;
+static const NSInteger kAKHitBonus = 100;
 /// タイムの最大値
 static const NSInteger kAKTimeMax = 9999;
 
@@ -117,11 +117,6 @@ static NSString *kAKScoreCountSE = @"ScoreCount.caf";
     timeBonus_ = 0;
     hitBonus_ = 0;
     delay_ = kAKDelayLong;
-    
-    // タイトルキャプションラベルを生成する
-    [self createLabelWithString:kAKTitleCaption
-                            pos:ccp([AKScreenSize center].x,
-                                    [AKScreenSize positionFromTopPoint:kAKTitleCaptionPosTopPoint])];
     
     // キャプション位置縦方向は一番上の項目からマージンを等間隔であけて配置する
     float position = [AKScreenSize positionFromTopPoint:kAKCaptionPosTopPoint];
@@ -227,14 +222,24 @@ static NSString *kAKScoreCountSE = @"ScoreCount.caf";
  @brief パラメータの設定
  
  スコア計算に必要なパラメータを設定する。
+ @param state ステージ番号
  @param score 現在のスコア
  @param time ステージクリアにかかった時間
  @param hit 命中率
  @param rest 残機
  */
-- (void)setScore:(NSInteger)score andTime:(NSInteger)time andHit:(NSInteger)hit
-         andRest:(NSInteger)rest
+- (void)setParameterStage:(NSInteger)stage
+                 andScore:(NSInteger)score
+                  andTime:(NSInteger)time
+                   andHit:(NSInteger)hit
+                  andRest:(NSInteger)rest;
 {
+    // タイトルキャプションラベルを生成する
+    NSString *title = [NSString stringWithFormat:kAKTitleCaption, stage];
+    [self createLabelWithString:title
+                            pos:ccp([AKScreenSize center].x,
+                                    [AKScreenSize positionFromTopPoint:kAKTitleCaptionPosTopPoint])];
+    
     // メンバに設定する
     score_ = score;
     time_ = time;
@@ -360,8 +365,11 @@ static NSString *kAKScoreCountSE = @"ScoreCount.caf";
     // スコアに加算する項目の場合は加算処理を行う
     if (isAddScore) {
         
+        // 親クラスをゲームシーンクラスにキャストする
+        AKGameScene *gameScene = (AKGameScene *)self.parent;
+
         // ゲームシーンクラスのスコアを加算する
-        [[AKGameScene sharedInstance] addScore:value - current];
+        [gameScene addScore:value - current];
         
         // ステージクリア結果画面のスコアを加算する
         score_ += (value - current);

@@ -55,14 +55,17 @@ static const CGSize kAKPlayerShotSize = {2, 8};
  */
 - (void)destroy
 {
+    // ゲームプレイシーンクラスを取得する
+    AKGameScene *gameScene = [AKGameScene getInstance];
+    
     // ショット発射数をカウントする
-    [AKGameScene sharedInstance].shotCount++;
+    gameScene.shotCount++;
     
     // 射程距離が残っていれば命中数をカウントする
     if (distance_ > 0.0f) {
-        [AKGameScene sharedInstance].hitCount++;
+        gameScene.hitCount++;
     }
-    AKLog(0, @"hitCount=%d shotCount=%d", [AKGameScene sharedInstance].hitCount, [AKGameScene sharedInstance].shotCount);
+    AKLog(0, @"hitCount=%d shotCount=%d", gameScene.hitCount, gameScene.shotCount);
     
     // スーパークラスの処理を行う
     [super destroy];

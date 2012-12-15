@@ -131,12 +131,24 @@
 	if( [navController_ visibleViewController] == director_ ) {
 		[director_ pause];
 
-        // ゲームプレイ中の場合は一時停止状態にする
-        if ([AKGameScene sharedInstance].state == kAKGameStatePlaying) {
-            [[AKGameScene sharedInstance] pause:NO];
+        // 実行中のシーンを取得する
+        CCScene *scene = [[CCDirector sharedDirector] runningScene];
+        
+        // ゲームプレイシーンでゲームプレイ中の場合は一時停止状態にする
+        if ([scene isKindOfClass:[AKGameScene class]]) {
             
-            // BGMは停止させる
-            [[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
+            // ゲームプレイシーンにキャストする
+            AKGameScene *gameScene = (AKGameScene *)scene;
+            
+            // ゲームプレイ中の場合は一時停止状態にする
+            if (gameScene.state == kAKGameStatePlaying) {
+
+                // 一時停止する
+                [gameScene pause:NO];
+                
+                // BGMは停止させる
+                [[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
+            }
         }
     }
 }

@@ -156,11 +156,11 @@ static NSString *kAKHitSE = @"Hit.caf";
     [[SimpleAudioEngine sharedEngine] playEffect:kAKHitSE];
 
     // 画面効果を生成する
-    [[AKGameScene sharedInstance] entryEffect:kAKExplosion
-                                    startRect:kAKExplosionRect
-                                   frameCount:kAKExplosionFrameCount
-                                        delay:kAKExplosionFrameDelay
-                                         posX:self.absx posY:self.absy];
+    [[AKGameScene getInstance] entryEffect:kAKExplosion
+                                 startRect:kAKExplosionRect
+                                frameCount:kAKExplosionFrameCount
+                                     delay:kAKExplosionFrameDelay
+                                      posX:self.absx posY:self.absy];
     
     // 配置フラグを落とす
     self.isStaged = NO;
@@ -169,7 +169,7 @@ static NSString *kAKHitSE = @"Hit.caf";
     self.image.visible = NO;
     
     // 自機破壊時の処理を行う
-    [[AKGameScene sharedInstance] miss];
+    [[AKGameScene getInstance] miss];
 }
 
 /*!
@@ -208,7 +208,7 @@ static NSString *kAKHitSE = @"Hit.caf";
 - (void)setVelocityX:(float)vx Y:(float)vy
 {
     // スピードは縦方向の傾きから決定する
-    speed_ = (vy + 1.5) * kAKPlayerSpeed;
+    speed_ = (vy + 1.2) * kAKPlayerSpeed;
     
     // 角速度は横方向の傾きから決定する
     rotSpeed_ = -1 * vx * kAKPlayerRotSpeed;

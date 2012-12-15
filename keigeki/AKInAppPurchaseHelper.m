@@ -11,12 +11,12 @@
 #import "AKOptionScene.h"
 #import "AKNavigationController.h"
 
-/// 2周目解除のプロダクトID
-static NSString *kAKProductID2Playthrough = @"com.monochromesoft.keigeki.2playthrough";
+/// コンティニュー解除のプロダクトID
+static NSString *kAKProductIDContinue = @"continue";
 /// 広告解除の設定のキー
 static NSString *kAKRemoveAdKey = @"remove_ad";
 /// 2周目解除の設定のキー
-static NSString *kAK2Playthrough = @"2playthrough";
+static NSString *kAKContinue = @"continue";
 
 /*!
  @brief アプリ内課金管理クラス
@@ -29,7 +29,7 @@ static NSString *kAK2Playthrough = @"2playthrough";
 static AKInAppPurchaseHelper *sharedHelper_ = nil;
 
 @synthesize isRemoveAd = isRemoveAd_;
-@synthesize isEnable2Playthrough = isEnable2Playthrough_;
+@synthesize isEnableContinue = isEnableContinue_;
 
 /*!
  @brief シングルトンオブジェクト取得
@@ -91,20 +91,20 @@ static AKInAppPurchaseHelper *sharedHelper_ = nil;
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSMutableDictionary *defaultData = [NSMutableDictionary dictionaryWithCapacity:2];
     [defaultData setObject:[NSNumber numberWithBool:NO] forKey:kAKRemoveAdKey];
-    [defaultData setObject:[NSNumber numberWithBool:NO] forKey:kAK2Playthrough];
+    [defaultData setObject:[NSNumber numberWithBool:NO] forKey:kAKContinue];
     [userDefaults registerDefaults:defaultData];
     
     // テスト用、課金情報をクリアする
-    [userDefaults setBool:NO forKey:kAKRemoveAdKey];
-    [userDefaults setBool:NO forKey:kAK2Playthrough];
+//    [userDefaults setBool:NO forKey:kAKRemoveAdKey];
+//    [userDefaults setBool:NO forKey:kAK2Playthrough];
     
     // 広告解除の設定を読み込む
     isRemoveAd_ = [userDefaults boolForKey:kAKRemoveAdKey];
     
-    // 2周目解除の設定を読み込む
-    isEnable2Playthrough_ = [userDefaults boolForKey:kAK2Playthrough];
+    // コンティニュー解除の設定を読み込む
+    isEnableContinue_ = [userDefaults boolForKey:kAKContinue];
     
-    AKLog(1, @"isRemoveAd=%d isEnable2playthrough=%d", isRemoveAd_, isEnable2Playthrough_);
+    AKLog(1, @"isRemoveAd=%d isEnableContinue=%d", isRemoveAd_, isEnableContinue_);
     
     // ペイメントキューにオブザーバーとして登録する
     [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
@@ -155,7 +155,7 @@ static AKInAppPurchaseHelper *sharedHelper_ = nil;
     AKLog(1, @"プロダクト情報要求");
     
     // アプリ課金のプロダクトID;
-    NSSet *productIDs = [NSSet setWithObject:kAKProductID2Playthrough];
+    NSSet *productIDs = [NSSet setWithObject:kAKProductIDContinue];
     
     // リクエストを作成する
     SKProductsRequest *request = [[[SKProductsRequest alloc] initWithProductIdentifiers:productIDs] autorelease];
@@ -299,11 +299,11 @@ static AKInAppPurchaseHelper *sharedHelper_ = nil;
  */
 - (void)completeTransaction:(SKPaymentTransaction *)transaction
 {
-    AKLog(1, @"購入完了");
+    AKLog(1, @"購入完了:ID=%@", transaction.payment.productIdentifier);
     
-    // 2周目解除の場合は2周目解除処理を行う
-    if ([transaction.payment.productIdentifier isEqualToString:kAKProductID2Playthrough]) {
-        [self enable2Playthrough];
+    // コンティニュー解除の場合はコンティニュー解除処理を行う
+    if ([transaction.payment.productIdentifier isEqualToString:kAKProductIDContinue]) {
+        [self enableContinue];
     }
     
     // ペイメントキューからトランザクションを削除する
@@ -332,11 +332,11 @@ static AKInAppPurchaseHelper *sharedHelper_ = nil;
  */
 - (void)restoreTransaction:(SKPaymentTransaction *)transaction
 {
-    AKLog(1, @"リストア完了");
+    AKLog(1, @"リストア完了:ID=%@", transaction.payment.productIdentifier);
     
-    // 2周目解除の場合は2周目解除処理を行う
-    if ([transaction.payment.productIdentifier isEqualToString:kAKProductID2Playthrough]) {
-        [self enable2Playthrough];
+    // コンティニュー解除の場合はコンティニュー解除処理を行う
+    if ([transaction.payment.productIdentifier isEqualToString:kAKProductIDContinue]) {
+        [self enableContinue];
     }
     
     // ペイメントキューからトランザクションを削除する
@@ -344,12 +344,12 @@ static AKInAppPurchaseHelper *sharedHelper_ = nil;
 }
 
 /*!
- @brief 2周目解除
+ @brief コンティニュー解除
  
- 2周目のステージを解除する。
+ コンティニュー機能を解除する。
  また、広告バナーの削除も行う。
  */
-- (void)enable2Playthrough
+- (void)enableContinue
 {
     AKLog(1, @"start");
     
@@ -360,9 +360,9 @@ static AKInAppPurchaseHelper *sharedHelper_ = nil;
     isRemoveAd_ = YES;
     [userDefaults setBool:isRemoveAd_ forKey:kAKRemoveAdKey];
     
-    // 2周目解除の設定を有効にする
-    isEnable2Playthrough_ = YES;
-    [userDefaults setBool:isEnable2Playthrough_ forKey:kAK2Playthrough];
+    // コンティニュー解除の設定を有効にする
+    isEnableContinue_ = YES;
+    [userDefaults setBool:isEnableContinue_ forKey:kAKContinue];
     
     // Navigation Controllerを取得する
     AKNavigationController *navigationController = (AKNavigationController *)[UIApplication sharedApplication].keyWindow.rootViewController;

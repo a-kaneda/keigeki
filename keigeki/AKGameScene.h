@@ -35,7 +35,12 @@ enum AKGameState {
 
 /// 敵の種類
 enum AKEnemyType {
-    kAKEnemyTypeNormal = 0  ///< 雑魚
+    kAKEnemyTypeNormal = 0, ///< 雑魚
+    kAKEnemyTypeHighSpeed,  ///< 高速移動
+    kAKEnemyTypeHighTurn,   ///< 高速旋回
+    kAKEnemyTypeHighShot,   ///< 高速ショット
+    kAKEnemyType3Way,       ///< 3-Way弾発射
+    kAKEnemyTypeCanon       ///< 大砲
 };
 
 
@@ -112,8 +117,8 @@ enum AKEnemyType {
 /// ショット命中数
 @property (nonatomic)NSInteger hitCount;
 
-// シングルトンオブジェクト取得
-+ (AKGameScene *)sharedInstance;
+// ゲームシーンクラス取得
++ (AKGameScene *)getInstance;
 // リザルト画面取得
 - (AKResultLayer *)resultLayer;
 // 入力レイヤー取得
@@ -143,7 +148,7 @@ enum AKEnemyType {
 // 自機破壊時の処理
 - (void)miss;
 // ゲーム状態リセット
-- (void)resetAll;
+- (void)resetAll:(NSInteger)stage;
 // スコア加算
 - (void)addScore:(NSInteger)score;
 // ポーズ(効果音有無指定)
@@ -190,4 +195,8 @@ enum AKEnemyType {
 - (void)selectTweetButton;
 // ツイート内容作成
 - (NSString *)makeTweet;
+// コンティニューボタン選択
+- (void)selectContinueButton;
+// BGM再生
+- (void)startBGM;
 @end

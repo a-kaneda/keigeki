@@ -12,14 +12,14 @@
 @interface AKInAppPurchaseHelper : NSObject <SKProductsRequestDelegate, SKPaymentTransactionObserver> {
     /// 広告解除有無
     BOOL isRemoveAd_;
-    /// 2周目有無
-    BOOL isEnable2Playthrough_;
+    /// コンティニュー有無
+    BOOL isEnableContinue_;
 }
 
 /// 広告解除有無
 @property (nonatomic, readonly)BOOL isRemoveAd;
 /// 2周目有無
-@property (nonatomic, readonly)BOOL isEnable2Playthrough;
+@property (nonatomic, readonly)BOOL isEnableContinue;
 
 // シングルトンオブジェクト取得
 + (AKInAppPurchaseHelper *)sharedHelper;
@@ -33,8 +33,8 @@
 - (void)failedTransaction:(SKPaymentTransaction *)transaction;
 // リストア完了処理
 - (void)restoreTransaction:(SKPaymentTransaction *)transaction;
-// 2周目解除
-- (void)enable2Playthrough;
+// コンティニュー解除
+- (void)enableContinue;
 // 購入要求
 - (void)buy;
 // リストア要求

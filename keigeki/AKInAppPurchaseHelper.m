@@ -83,7 +83,7 @@ static AKInAppPurchaseHelper *sharedHelper_ = nil;
 {
     // スーパークラスの処理を実行する
     self = [super init];
-    if (self == nil) {
+    if (!self) {
         return nil;
     }
     
@@ -96,7 +96,7 @@ static AKInAppPurchaseHelper *sharedHelper_ = nil;
     
     // テスト用、課金情報をクリアする
 //    [userDefaults setBool:NO forKey:kAKRemoveAdKey];
-//    [userDefaults setBool:NO forKey:kAK2Playthrough];
+//    [userDefaults setBool:NO forKey:kAKContinue];
     
     // 広告解除の設定を読み込む
     isRemoveAd_ = [userDefaults boolForKey:kAKRemoveAdKey];

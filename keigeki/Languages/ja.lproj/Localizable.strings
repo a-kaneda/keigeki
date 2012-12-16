@@ -6,3 +6,6 @@
 "StoreMessage" = "・こうこくのさくじょ\n・コンティニューきのう\n・かかく 85えん";
 "ErrorGetAddOnInfo" = "アドオン情報の取得に失敗しました。";
 "StorePurchased" = "こうにゅうずみ";
+"Credit_1" = "せいさく\n  かねだ";
+"Credit_2" = "おんがく\n  ユウラボ8bit\n  サウンドこうぼう";
+"Credit_3" = "フォント\n  みさきフォント";

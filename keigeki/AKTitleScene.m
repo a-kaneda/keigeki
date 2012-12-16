@@ -16,6 +16,7 @@
 #import "AKGameCenterHelper.h"
 #import "AKOptionScene.h"
 #import "AKInAppPurchaseHelper.h"
+#import "AKCreditScene.h"
 
 /// メニュー項目のタグ
 enum {
@@ -69,7 +70,7 @@ enum {
 };
 
 /*!
- @brief タイトルレイヤークラス
+ @brief タイトルシーンクラス
  
  タイトルシーンを管理する。
  */
@@ -242,6 +243,11 @@ enum {
     // ボタン選択エフェクトを発生させる
     [self selectButton:kAKTitleMenuCredit];
     
+    // クレジット画面シーンへの遷移を作成する
+    CCTransitionFade *transition = [CCTransitionFade transitionWithDuration:0.5f scene:[AKCreditScene node]];
+    
+    // クレジット画面シーンへ遷移する
+    [[CCDirector sharedDirector] replaceScene:transition];
 }
 
 /*!

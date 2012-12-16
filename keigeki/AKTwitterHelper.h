@@ -15,7 +15,7 @@ enum AKTwitterMode {
     kAKTwitterModeAuto      ///< 自動ツイート
 };
 
-// Twitter管理
+/// Twitter管理
 @interface AKTwitterHelper : NSObject {
     /// Twitter設定
     enum AKTwitterMode mode_;

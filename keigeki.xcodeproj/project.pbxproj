@@ -207,6 +207,7 @@
 		0C61DE39167C448E0017D9B4 /* Stage3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0C61DE35167C448E0017D9B4 /* Stage3.mp3 */; };
 		0C61DE3A167C448E0017D9B4 /* Stage4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0C61DE36167C448E0017D9B4 /* Stage4.mp3 */; };
 		0C61DE3B167C448E0017D9B4 /* Stage5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0C61DE37167C448E0017D9B4 /* Stage5.mp3 */; };
+		0C61DE3E167DFFC10017D9B4 /* AKCreditScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C61DE3D167DFFC10017D9B4 /* AKCreditScene.m */; };
 		0C69227115E1231C002656AD /* AKShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C69227015E1231C002656AD /* AKShot.m */; };
 		0C69227815E127A8002656AD /* AKEnemyShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C69227715E127A8002656AD /* AKEnemyShot.m */; };
 		0C69227A15E18F56002656AD /* EnemyShot.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C69227915E18F56002656AD /* EnemyShot.png */; };
@@ -624,6 +625,8 @@
 		0C61DE35167C448E0017D9B4 /* Stage3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Stage3.mp3; sourceTree = "<group>"; };
 		0C61DE36167C448E0017D9B4 /* Stage4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Stage4.mp3; sourceTree = "<group>"; };
 		0C61DE37167C448E0017D9B4 /* Stage5.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Stage5.mp3; sourceTree = "<group>"; };
+		0C61DE3C167DFFC00017D9B4 /* AKCreditScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKCreditScene.h; sourceTree = "<group>"; };
+		0C61DE3D167DFFC10017D9B4 /* AKCreditScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKCreditScene.m; sourceTree = "<group>"; };
 		0C69226F15E1231C002656AD /* AKShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKShot.h; sourceTree = "<group>"; };
 		0C69227015E1231C002656AD /* AKShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKShot.m; sourceTree = "<group>"; };
 		0C69227615E127A8002656AD /* AKEnemyShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEnemyShot.h; sourceTree = "<group>"; };
@@ -913,6 +916,8 @@
 				0C11664516503D8400098322 /* AKInAppPurchaseHelper.m */,
 				0C1166591652F27F00098322 /* AKAppBankNetworkBanner.h */,
 				0C11665A1652F27F00098322 /* AKAppBankNetworkBanner.m */,
+				0C61DE3C167DFFC00017D9B4 /* AKCreditScene.h */,
+				0C61DE3D167DFFC10017D9B4 /* AKCreditScene.m */,
 				0C2A3A2015D64B12005B9272 /* StageScript */,
 				0C03CCC315FC5D7E003AA059 /* Languages */,
 				0C37060615C6BEC900295D96 /* Resources */,
@@ -1594,6 +1599,7 @@
 				0CEA5B5F16388A2C005747F4 /* AKTwitterHelper.m in Sources */,
 				0C11664616503D8400098322 /* AKInAppPurchaseHelper.m in Sources */,
 				0C11665B1652F27F00098322 /* AKAppBankNetworkBanner.m in Sources */,
+				0C61DE3E167DFFC10017D9B4 /* AKCreditScene.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

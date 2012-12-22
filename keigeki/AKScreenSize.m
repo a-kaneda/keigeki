@@ -35,8 +35,8 @@
  */
 + (CGSize)stageSize
 {
-    // ステージサイズは画面サイズの8倍とする
-    const NSInteger kAKStageSizeParam = 8;
+    // ステージサイズは画面サイズの64倍とする
+    const NSInteger kAKStageSizeParam = 64;
     
     return CGSizeMake([AKScreenSize screenSize].width * kAKStageSizeParam,
                       [AKScreenSize screenSize].height * kAKStageSizeParam);

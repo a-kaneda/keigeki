@@ -18,9 +18,9 @@ static NSString *kAKHitSE = @"Hit.caf";
 static float kAKBackShortCos = -0.95f;
 
 /// 雑魚の移動速度
-static const NSInteger kAKEnemySpeed = 240;
+static const NSInteger kAKEnemySpeed = 260;
 /// 雑魚の回転速度
-static const float kAKEnemyRotSpeed = 0.3f;
+static const float kAKEnemyRotSpeed = 0.4f;
 /// 雑魚の弾発射の時間
 static const NSInteger kAKEnemyActionTime = 5;
 /// 雑魚の敵のサイズ
@@ -179,7 +179,7 @@ static const float kAKExplosionFrameDelay = 0.2f;
 - (void)createHighSpeed
 {
     // 動作処理を設定する
-    action_ = @selector(actionNoraml:);
+    action_ = @selector(actionHighSpeed:);
     
     // 破壊処理を設定する
     destroy_ = @selector(destroyNormal);
@@ -249,7 +249,7 @@ static const float kAKExplosionFrameDelay = 0.2f;
     self.height = kAKEnemySize;
     
     // 速度を設定する
-    speed_ = kAKEnemySpeed * 1.3;
+    speed_ = kAKEnemySpeed * 1.1;
     
     // HPを設定する
     hitPoint_ = 1;    
@@ -344,6 +344,38 @@ static const float kAKExplosionFrameDelay = 0.2f;
 }
 
 /*!
+ @brief 高速移動動作処理
+ 
+ 自機を追う。一定間隔で自機を狙う1-way弾発射。
+ @param dt フレーム更新間隔
+ */
+- (void)actionHighSpeed:(ccTime)dt
+{
+    int rotdirect = 0;      // 回転方向
+    
+    // 回転方向を自機のある方に決定する
+    rotdirect = AKCalcRotDirect(angle_, self.image.position.x, self.image.position.y,
+                                AKPlayerPosX(), AKPlayerPosY());
+    
+    // 自機の方に向かって向きを回転する
+    self.rotSpeed = rotdirect * kAKEnemyRotSpeed * 1.2;
+    AKLog(0, @"rotspeed=%f roddirect=%d", rotSpeed_, rotdirect);
+    
+    // 一定時間経過しているときは自機を狙う1-way弾を発射する
+    if (time_ > kAKEnemyActionTime) {
+        
+        // 弾を発射する
+        [self fireNormal];
+        
+        // 動作時間の初期化を行う
+        time_ = 0.0f;
+    }
+    
+    AKLog(0, @"pos=(%f, %f) angle=%f", self.image.position.x, self.image.position.y,
+          AKCnvAngleRad2Deg(angle_));
+}
+
+/*!
  @brief 高速旋回動作処理
  
  自機を追う。一定間隔で自機を狙う1-way弾発射。
@@ -386,10 +418,10 @@ static const float kAKExplosionFrameDelay = 0.2f;
                                 AKPlayerPosX(), AKPlayerPosY());
     
     // 自機の方に向かって向きを回転する
-    self.rotSpeed = rotdirect * kAKEnemyRotSpeed;
+    self.rotSpeed = rotdirect * kAKEnemyRotSpeed * 1.4;
     
     // 一定時間経過しているときは自機を狙う1-way弾を発射する
-    if (time_ > kAKEnemyActionTime / 5.0f) {
+    if (time_ > kAKEnemyActionTime / 10.0f) {
         
         // 弾を発射する
         [self fireNormal];

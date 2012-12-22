@@ -336,8 +336,8 @@ static float AKAccel2Ratio(float accel);
     const float kAKGameClearCaption2PosBottomRatio = 0.6f;
     // タイトルへ戻るボタンの位置、下からの比率
     const float kAKGameOverQuitButtonPosBottomRatio = 0.4f;
-    // Twitterボタンの配置位置、下からの位置
-    const float kAKTwitterButtonPosBottomRatio = 0.2f;
+    // Twitterボタンの配置位置、中心からの横方向の位置
+    const float kAKTwitterButtonPosHorizontalCenterPoint = 150.0f;
     
     // ゲームクリア時の表示文字列1のラベルを作成する
     AKLabel *label1 = [AKLabel labelWithString:kAKGameClearCaption1 maxLength:kAKGameClearCaption1.length maxLine:1 frame:kAKLabelFrameNone];
@@ -370,8 +370,8 @@ static float AKAccel2Ratio(float accel);
     if ([AKTwitterHelper sharedHelper].mode == kAKTwitterModeManual) {
         
         [self addMenuWithFile:kAKTwitterButtonImageFile
-                        atPos:ccp([AKScreenSize center].x,
-                                  [AKScreenSize positionFromBottomRatio:kAKTwitterButtonPosBottomRatio])
+                        atPos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKTwitterButtonPosHorizontalCenterPoint],
+                                  [AKScreenSize positionFromBottomRatio:kAKGameOverQuitButtonPosBottomRatio])
                        action:@selector(selectTweetButton)
                             z:0
                           tag:kAKGameIFTagGameClear];

@@ -74,9 +74,9 @@ enum {
     // 戻るボタンの位置、上からの位置
     const float kAKBackPosTopPoint = 26.0f;
     // リンクボタンのキャプション
-    NSString *kAKLinkCaption = @"H P";
+    NSString *kAKLinkCaption = @"WEB SITE";
     // ボタンの位置、左からの比率
-    const float kAKLabelPosLeftRatio = 0.7f;
+    const float kAKLabelPosLeftRatio = 0.75f;
     // 製作者ボタンの位置、上からの比率
     const float kAKLabel1PosTopRatio = 0.25f;
     // 音楽素材ボタンの位置、上からの比率
@@ -135,7 +135,7 @@ enum {
 - (void)initMessage
 {
     // ラベルの位置、左からの比率
-    const float kAKLabelPosLeftRatio = 0.2f;
+    const float kAKLabelPosLeftRatio = 0.1f;
     // 製作者ラベルの位置、上からの比率
     const float kAKLabel1PosTopRatio = 0.25f;
     // 音楽素材ラベルの位置、上からの比率
@@ -149,7 +149,7 @@ enum {
     // フォントラベルメッセージのキー
     NSString *kAKMessageKey3 = @"Credit_3";
     // メッセージの1行の最大長
-    NSInteger kAKMessageLength = 12;
+    NSInteger kAKMessageLength = 14;
     
     // メッセージレイヤーを作成する
     CCLayer *messageLayer = [CCLayer node];

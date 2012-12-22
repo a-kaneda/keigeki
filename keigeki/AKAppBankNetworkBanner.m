@@ -75,6 +75,8 @@
     
     // 広告を読み込む
     [self.nadView load];
+    
+    AKLog(1, @"end");
 }
 
 /*!

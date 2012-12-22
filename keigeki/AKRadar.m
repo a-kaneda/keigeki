@@ -134,6 +134,8 @@ static const float kAKRadarPosTopPoint = 130.0f;
         // 上向き(π/2)を0とするので、自機の角度 - π / 2をマイナスする。
         angle -= screenAngle - M_PI / 2;
         
+        AKLog(0, @"angle=%f", angle);
+        
         // マーカーの向きを計算する
         // 敵の向いている向きから自機の向いている向きをマイナスして画面の向きに補正する
         float makerAngle =  enemy.angle - [AKGameScene getInstance].player.angle + M_PI / 2.0f;

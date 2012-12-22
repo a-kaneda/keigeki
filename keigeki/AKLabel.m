@@ -313,7 +313,7 @@ enum {
  */
 - (void)setString:(NSString *)label
 {
-    AKLog(0, @"start setString:");
+    AKLog(0, @"start setString:label.lengt=%d length_=%d line_=%d", label.length, length_, line_);
     
     // 文字列が表示可能文字数を超えている場合はエラー
     assert(label.length <= length_ * line_);

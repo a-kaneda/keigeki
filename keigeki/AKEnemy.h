@@ -39,6 +39,8 @@
 - (void)createCanon;
 // 雑魚動作処理
 - (void)actionNoraml:(ccTime)dt;
+// 高速移動動作処理
+- (void)actionHighSpeed:(ccTime)dt;
 // 高速旋回動作処理
 - (void)actionHighTurn:(ccTime)dt;
 // 高速ショット処理

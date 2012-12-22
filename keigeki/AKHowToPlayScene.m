@@ -22,6 +22,7 @@ enum {
 // シーンに配置するノードのタグ
 enum {
     kAKHowToIntarfeceTag = 0,   ///< インターフェースのタグ
+    kAKHowToImageTag,           ///< 説明画像のタグ
     kAKHowToMessageTag,         ///< メッセージのタグ
     kAKHowToPageTag             ///< ページ番号のタグ
 };
@@ -49,12 +50,15 @@ static const float kAKHowToBackPosTopPoint = 26.0f;
 /// メッセージボックスの1行の文字数
 static const NSInteger kAKHowToMsgLength = 20;
 /// メッセージボックスの行数
-static const NSInteger kAKHowToMsgLineCount = 5;
+static const NSInteger kAKHowToMsgLineCount = 3;
 /// メッセージボックスの位置、下からの位置
-static const float kAKHowToMsgPosBottomPoint = 130.0f;
+static const float kAKHowToMsgPosBottomPoint = 105.0f;
+
+/// イメージ表示位置、下からの位置
+static const float kAKHowToImagePosBottomPoint = 220.0f;
 
 /// ページ数
-static const NSInteger kAKHowToPageCount = 3;
+static const NSInteger kAKHowToPageCount = 4;
 
 /// 前ページボタンのタグ
 static const NSUInteger kAKHowToPrevTag = 0x01;
@@ -72,6 +76,8 @@ static const float kAKAdMarginPosPoint = 30.0f;
  プレイ方法画面のシーンを実現する。
  */
 @implementation AKHowToPlayScene
+
+@synthesize image = image_;
 
 /*!
  @brief オブジェクト生成処理
@@ -242,6 +248,9 @@ static const float kAKAdMarginPosPoint = 30.0f;
  */
 - (void)setPageNo:(NSInteger)pageNo
 {
+    // 表示画像ファイル名
+    NSString *kAKFileNameFormat = @"HowTo%d.png";
+    
     NSAssert(pageNo > 0 || pageNo <= kAKHowToPageCount, @"ページ番号が範囲外");
     
     // ページ番号を変更する
@@ -261,6 +270,34 @@ static const float kAKAdMarginPosPoint = 30.0f;
     
     // 表示文字列を変更する
     self.messageLabel.string = string;
+    
+    // 表示ファイル名を作成する
+    NSString *fileName = [NSString stringWithFormat:kAKFileNameFormat, pageNo_];
+    
+    AKLog(1, @"画像ファイル名:%@", fileName);
+    
+    // すでに画像を読み込んでいるときは画像を解放する
+    if (self.image != nil) {
+        [self removeChild:self.image cleanup:YES];
+    }
+    
+    // ファイルからスプライトを作成する
+    self.image = [CCSprite spriteWithFile:fileName];
+    
+    // 広告分のマージンの初期値は0とする
+    float adMargin = 0.0f;
+    
+    // 広告非表示の場合はマージンを設定する
+    if ([AKInAppPurchaseHelper sharedHelper].isRemoveAd) {
+        adMargin = kAKAdMarginPosPoint;
+    }
+
+    // 表示位置を設定する
+    self.image.position = ccp([AKScreenSize center].x,
+                              [AKScreenSize positionFromBottomPoint:kAKHowToImagePosBottomPoint] - adMargin);
+    
+    // シーンに追加する
+    [self addChild:self.image z:kAKHowToItemPosZ tag:kAKHowToImageTag];
 }
 
 /*!

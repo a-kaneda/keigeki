@@ -14,7 +14,12 @@
 @interface AKHowToPlayScene : CCScene {
     /// ページ番号
     NSInteger pageNo_;
+    /// 説明画像
+    CCSprite *image_;
 }
+
+/// 説明画像
+@property (nonatomic, retain)CCSprite *image;
 
 // インターフェース取得
 - (AKInterface *)interface;

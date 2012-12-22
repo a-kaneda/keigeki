@@ -264,6 +264,8 @@ static NSString *kAKTestDeviceIPhone5ID = @"59d89c955b8adbe31a45ec3f07ad5ea813b1
                                   bannerView.frame.size.width,
                                   bannerView.frame.size.height);
     [UIView commitAnimations];
+    
+    AKLog(1, @"end");
 }
 
 /*!

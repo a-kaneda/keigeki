@@ -47,6 +47,8 @@ static NSString *kAKCreditCaption = @"CREDIT     ";
 
 /// タイトルの位置、横方向の中心からの位置
 static const float kAKTitlePosFromHorizontalCenterPoint = -100.0f;
+/// タイトルの位置、上からの比率
+static const float kAKTitlePosFromTopRatio = 0.45f;
 /// メニュー項目の数
 static const NSInteger kAKMenuItemCount = 3;
 /// メニュー項目の位置、右からの位置
@@ -101,17 +103,6 @@ enum {
     // インターフェースをシーンに配置する
     [self addChild:interface z:kAKTitleInterface tag:kAKTitleInterface];
     
-    // タイトル画像を読み込む
-    CCSprite *image = [CCSprite spriteWithFile:kAKTitleImage];
-    NSAssert(image != nil, @"can not open title image : %@", kAKTitleImage);
-    
-    // 配置位置を設定する
-    image.position = ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKTitlePosFromHorizontalCenterPoint],
-                         [AKScreenSize center].y);
-    
-    // タイトル画像をシーンに配置する
-    [self addChild:image z:kAKTitleLogoPosZ];
-    
     // 広告分のマージンの初期値は0とする
     float adMargin = 0.0f;
     
@@ -119,6 +110,17 @@ enum {
     if ([AKInAppPurchaseHelper sharedHelper].isRemoveAd) {
         adMargin = kAKAdMarginPosRatio;
     }
+    
+    // タイトル画像を読み込む
+    CCSprite *image = [CCSprite spriteWithFile:kAKTitleImage];
+    NSAssert(image != nil, @"can not open title image : %@", kAKTitleImage);
+    
+    // 配置位置を設定する
+    image.position = ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKTitlePosFromHorizontalCenterPoint],
+                         [AKScreenSize positionFromTopRatio:kAKTitlePosFromTopRatio + adMargin]);
+    
+    // タイトル画像をシーンに配置する
+    [self addChild:image z:kAKTitleLogoPosZ];
     
     // ゲームスタートのメニューを作成する
     [interface addMenuWithString:kAKGameStartCaption

@@ -66,7 +66,7 @@ static const float kAKClearShortTime = 120.0f;
 static const NSInteger kAKExtendScore = 50000;
 
 /// 開始ステージ
-static const NSInteger kAKStartStage = 5;
+static const NSInteger kAKStartStage = 1;
 /// 1ステージのウェイブの数
 static const NSInteger kAKWaveCount = 6;
 /// ステージの数
@@ -525,6 +525,19 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id5696538
  */
 - (void)updatePlaying:(ccTime)dt
 {
+    // For Debug. 処理落ち調査 <START>
+    static NSDate *start = nil;
+    static NSDate *end = nil;
+    start = [NSDate date];
+    if (end) {
+        NSTimeInterval since = [start timeIntervalSinceDate:end];
+        if (since > 1.0f) {
+            AKLog(1, @"##############################################");
+            AKLog(1, @"処理落ち:%f秒", since);
+            AKLog(1, @"##############################################");
+        }        
+    }
+    // For Debug. 処理落ち調査 <END>
     float scrx = 0.0f;      // スクリーン座標x
     float scry = 0.0f;      // スクリーン座標y
     float angle = 0.0f;     // スクリーンの向き
@@ -654,6 +667,17 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id5696538
             }
         }
     }
+    
+    // For Debug. 処理落ち調査 <START>
+    [end release];
+    end = [[NSDate date] retain];
+    NSTimeInterval since = [end timeIntervalSinceDate:start];
+    if (since > 1.0f) {
+        AKLog(1, @"##############################################");
+        AKLog(1, @"処理落ち:%f秒", since);
+        AKLog(1, @"##############################################");
+    }
+    // For Debug. 処理落ち調査 <END>
 }
 
 /*
@@ -813,13 +837,13 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id5696538
             break;
     }
     
+    // 敵を生成する
+    [enemy createWithX:posx Y:posy Z:kAKCharaPosZEnemy Angle:angle
+                Parent:[self getChildByTag:kAKLayerPosZBase] CreateSel:createEnemy];    
+    
     // 初回の移動更新処理が終わるまでは表示されないように画面外に移動する
     enemy.image.position = ccp([AKScreenSize screenSize].width * 2,
                                [AKScreenSize screenSize].height * 2);
-    
-    // 敵を生成する
-    [enemy createWithX:posx Y:posy Z:kAKCharaPosZEnemy Angle:angle
-                Parent:[self getChildByTag:kAKLayerPosZBase] CreateSel:createEnemy];
 }
 
 /*!

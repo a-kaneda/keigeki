@@ -238,10 +238,16 @@ static AKTwitterHelper *sharedHelper_ = nil;
         
         
         if (responseData) {
+#ifndef DEBUG
+            [NSJSONSerialization JSONObjectWithData:responseData
+                                            options:NSJSONReadingMutableLeaves
+                                              error:nil];
+#else
             id data =[NSJSONSerialization JSONObjectWithData:responseData
                                                      options:NSJSONReadingMutableLeaves
                                                        error:nil];
             AKLog(1, @"%@", data);
+#endif
         }
     }];
 }

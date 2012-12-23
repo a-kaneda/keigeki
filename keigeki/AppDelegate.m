@@ -116,6 +116,7 @@
 // Supported orientations: Landscape. Customize it for your own needs
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+    AKLog(1, @"interfaceOrientation=%d", interfaceOrientation);
     if (UIInterfaceOrientationLandscapeRight == interfaceOrientation) {
         AKLog(1, @"return YES");
         return YES;

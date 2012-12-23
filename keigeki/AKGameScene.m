@@ -26,6 +26,7 @@ enum {
     kAKInfoTagGameClear,        ///< ゲームクリア
     kAKInfoTagScore,            ///< スコア
     kAKInfoTagHiScore,          ///< ハイスコア
+    kAKInfoTagWaveNo,           ///< Wave番号
     kAKInfoTagHit,              ///< 命中率
     kAKInfoTagTime              ///< プレイ時間
 };
@@ -88,6 +89,10 @@ static const float kAKScorePosTopPoint = 20.0f;
 static const float kAKHiScorePosLeftPoint = 20.0f;
 /// ハイスコアの表示位置、上からの位置
 static const float kAKHiScorePosTopPoint = 20.0f;
+/// Wave番号の表示位置、左からの位置
+static const float kAKWaveNoPosLeftPoint = 20.0f;
+/// Wave番号の表示位置、上からの位置
+static const float kAKWaveNoPosTopPoint = 20.0f;
 /// 命中率の表示位置、左からの位置
 static const float kAKHitPosLeftPoint = 10.0f;
 /// 命中率の表示位置、上からの位置
@@ -104,6 +109,8 @@ static const NSInteger kAKItemCount = 8;
 static NSString *kAKScoreFormat = @"SCORE:%06d";
 /// ハイスコア表示のフォーマット
 static NSString *kAKHiScoreFormat = @"HI:%06d";
+/// Wave番号表示のフォーマット
+static NSString *kAKWaveNoFormat = @"%d/%d";
 /// 命中率表示のフォーマット
 static NSString *kAKHitFormat = @"HIT:%3d%%";
 /// プレイ時間のフォーマット
@@ -291,7 +298,21 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id5696538
                                   [AKScreenSize positionFromTopPoint:kAKHiScorePosTopPoint])
                           tag:kAKInfoTagHiScore
                         frame:kAKLabelFrameNone];
-        
+    
+    // Wave番号ラベルのx座標を計算する。
+    // Wave番号ラベルは左詰めにし、ハイスコアラベルの右端を原点とする。
+    float waveNoLabelPosX = hiScoreLabelPosX +
+        [AKLabel widthWithLength:[[NSString stringWithFormat:kAKHiScoreFormat, hiScore_] length] hasFrame:NO] / 2 +
+        kAKWaveNoPosLeftPoint +
+        [AKLabel widthWithLength:[[NSString stringWithFormat:kAKWaveNoFormat, 1, kAKWaveCount] length] hasFrame:NO] / 2;
+    
+    // Wave番号ラベルを生成する
+    [self setLabelToInfoLayer:[NSString stringWithFormat:kAKWaveNoFormat, 1, kAKWaveCount]
+                        atPos:ccp(waveNoLabelPosX,
+                                  [AKScreenSize positionFromTopPoint:kAKWaveNoPosTopPoint])
+                          tag:kAKInfoTagWaveNo
+                        frame:kAKLabelFrameNone];
+    
     // 命中率ラベルのx座標を計算する。命中率ラベルは左詰めにするため、x座標は右に幅の半分移動する。
     float hitLabelPosX = [AKScreenSize positionFromLeftPoint:kAKHitPosLeftPoint] +
         [AKLabel widthWithLength:[[NSString stringWithFormat:kAKHitFormat, 100] length] hasFrame:NO] / 2;
@@ -525,19 +546,6 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id5696538
  */
 - (void)updatePlaying:(ccTime)dt
 {
-    // For Debug. 処理落ち調査 <START>
-    static NSDate *start = nil;
-    static NSDate *end = nil;
-    start = [NSDate date];
-    if (end) {
-        NSTimeInterval since = [start timeIntervalSinceDate:end];
-        if (since > 1.0f) {
-            AKLog(1, @"##############################################");
-            AKLog(1, @"処理落ち:%f秒", since);
-            AKLog(1, @"##############################################");
-        }        
-    }
-    // For Debug. 処理落ち調査 <END>
     float scrx = 0.0f;      // スクリーン座標x
     float scry = 0.0f;      // スクリーン座標y
     float angle = 0.0f;     // スクリーンの向き
@@ -667,17 +675,6 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id5696538
             }
         }
     }
-    
-    // For Debug. 処理落ち調査 <START>
-    [end release];
-    end = [[NSDate date] retain];
-    NSTimeInterval since = [end timeIntervalSinceDate:start];
-    if (since > 1.0f) {
-        AKLog(1, @"##############################################");
-        AKLog(1, @"処理落ち:%f秒", since);
-        AKLog(1, @"##############################################");
-    }
-    // For Debug. 処理落ち調査 <END>
 }
 
 /*
@@ -964,6 +961,7 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id5696538
     hitCount_ = 0;
     missCount_ = 0;
     playTime_ = 0.0f;
+    enemyCount_ = 0;
     
     // 残機マークの初期個数を反映させる
     [self.lifeMark updateImage:life_];
@@ -1149,45 +1147,34 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id5696538
  */
 - (void)readScriptOfStage:(NSInteger)stage Wave:(NSInteger)wave
 {
-    NSRange lineRange = {0};        // 処理対象の行の範囲
-    NSString *fileName = nil;       // ステージ定義ファイルのファイル名
-    NSString *filePath = nil;       // ステージ定義ファイルのパス
-    NSString *stageScript = nil;    // ステージ定義ファイルの内容
-    NSString *line = nil;           // 処理対象の行の文字列
-    NSError *error = nil;           // ファイル読み込みエラー内容
-    NSBundle *bundle = nil;         // バンドル
-    NSArray *params = nil;          // ステージ定義ファイルの1行のパラメータ
-    NSString *param = nil;          // ステージ定義ファイルの1個のパラメータ
-    enum AKEnemyType enemyType = 0;  // 敵の種類
-    NSInteger enemyPosX = 0;        // 敵の配置位置x座標
-    NSInteger enemyPosY = 0;        // 敵の配置位置y座標
-    float enemyAngle = 0.0f;        // 敵の向き
-    
     // ファイル名をステージ番号、ウェイブ番号から決定する
-    fileName = [NSString stringWithFormat:@"stage%d_%d", stage, wave];
+    NSString *fileName = [NSString stringWithFormat:@"stage%d_%d", stage, wave];
     AKLog(1, @"fileName=%@", fileName);
     
     // ファイルパスをバンドルから取得する
-    bundle = [NSBundle mainBundle];
-    filePath = [bundle pathForResource:fileName ofType:@"txt"];
+    NSBundle *bundle = [NSBundle mainBundle];
+    NSString *filePath = [bundle pathForResource:fileName ofType:@"txt"];
     AKLog(0, @"filePath=%@", filePath);
     
     // ステージ定義ファイルを読み込む
-    stageScript = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding
-                                               error:&error];
+    NSError *error = nil;
+    NSString *stageScript = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding
+                                                         error:&error];
     // ファイル読み込みエラー
     if (stageScript == nil && error != nil) {
         AKLog(0, @"%@", [error localizedDescription]);
     }
     
     // ステージ定義ファイルの範囲の間は処理を続ける
+    NSInteger count = 0;
+    NSRange lineRange = {0};
     while (lineRange.location < stageScript.length) {
         
         // 1行の範囲を取得する
         lineRange = [stageScript lineRangeForRange:lineRange];
         
         // 1行の文字列を取得する
-        line = [stageScript substringWithRange:lineRange];
+        NSString *line = [stageScript substringWithRange:lineRange];
         AKLog(0, @"%@", line);
         
         // 1文字目が"#"の場合は処理を飛ばす
@@ -1197,28 +1184,28 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id5696538
         // コメントでない場合はパラメータを読み込む
         else {
             // カンマ区切りでパラメータを分割する
-            params = [line componentsSeparatedByString:@","];
+            NSArray *params = [line componentsSeparatedByString:@","];
             
             // 1個目のパラメータは敵の種類として扱う。
-            param = [params objectAtIndex:0];
-            enemyType = [param integerValue];
+            NSString *param = [params objectAtIndex:0];
+            enum AKEnemyType enemyType = [param integerValue];
             
             // 敵の種類は0始まりとするため、-1する。
             enemyType--;
             
             // 2個目のパラメータはx座標として扱う
             param = [params objectAtIndex:1];
-            enemyPosX = [param integerValue];
+            NSInteger enemyPosX = [param integerValue];
             
             // 3個目のパラメータはy座標として扱う
             param = [params objectAtIndex:2];
-            enemyPosY = [param integerValue];
+            NSInteger enemyPosY = [param integerValue];
             
             AKLog(0, @"type=%d posx=%d posy=%d", enemyType, enemyPosX, enemyPosY);
             
             // 角度を自機のいる位置に設定する
             // スクリプト上の座標は自機の位置からの相対位置なので目標座標は(0, 0)
-            enemyAngle = AKCalcDestAngle(enemyPosX, enemyPosY, 0, 0);
+            float enemyAngle = AKCalcDestAngle(enemyPosX, enemyPosY, 0, 0);
             
             AKLog(0, @"angle=%f", AKCnvAngleRad2Deg(enemyAngle));
             
@@ -1228,12 +1215,26 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id5696538
             
             // 敵を生成する
             [self entryEnemy:(enum AKEnemyType)enemyType PosX:enemyPosX PosY:enemyPosY Angle:enemyAngle];
+            
+            // 生成した敵の数をカウントする
+            count++;
         }
         
         // 次の行へ処理を進める
         lineRange.location = lineRange.location + lineRange.length;
         lineRange.length = 0;
     }
+    
+    // 敵の数を保持する
+    enemyCount_ += count;
+    
+    // 情報レイヤーを取得する
+    CCNode *infoLayer = [self getChildByTag:kAKLayerPosZInfo];
+    
+    // ラベルの内容を更新する
+    NSString *waveNoString = [NSString stringWithFormat:kAKWaveNoFormat, waveNo_, kAKWaveCount];
+    AKLabel *waveNoLabel = (AKLabel *)[infoLayer getChildByTag:kAKInfoTagWaveNo];
+    [waveNoLabel setString:waveNoString];
 }
 
 /*!
@@ -1278,11 +1279,6 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id5696538
         
         // 撃墜された数を初期化する
         missCount_ = 0;
-        
-        // プレイ時間がしきい値以下の場合は実績を解除する
-        if (playTime_ < kAKClearShortTime) {
-            [[AKGameCenterHelper sharedHelper] reportAchievements:kAKGCShortTimeID];
-        }
     }
     // ステージクリアでない場合は次のウェーブのスクリプトを読み込む
     else {
@@ -1343,6 +1339,9 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id5696538
         // 命中率を初期化する
         shotCount_ = 0;
         hitCount_ = 0;
+        
+        // 敵の数を初期化する
+        enemyCount_ = 0;
         
         // ステージのプレイ時間を初期化する
         playTime_ = 0.0f;
@@ -1615,7 +1614,12 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id5696538
     }
     
     // 各種パラメータを設定する
-    [resultLayer setParameterStage:stageNo_ andScore:score_ andTime:(NSInteger)playTime_ andHit:hit andRest:life_];
+    [resultLayer setParameterStage:stageNo_
+                             score:score_
+                              time:(NSInteger)playTime_
+                               hit:hit
+                              rest:life_
+                        enemyCount:enemyCount_];
 }
 
 /*!

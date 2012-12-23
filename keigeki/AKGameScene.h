@@ -66,6 +66,8 @@ enum AKEnemyType {
     NSInteger hitCount_;
     /// 撃墜された数
     NSInteger missCount_;
+    /// 1ステージの敵の数
+    NSInteger enemyCount_;
     /// 自機復活までの間隔
     float rebirthInterval_;
     /// 次のウェーブ開始までの間隔

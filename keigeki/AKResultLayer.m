@@ -11,6 +11,7 @@
 #import "AKLabel.h"
 #import "AKScreenSize.h"
 #import "AKCommon.h"
+#import "AKGameCenterHelper.h"
 
 /// ラベルのタグ
 enum {
@@ -71,8 +72,10 @@ static NSString *kAKLabelFormat = @"%8d";
 static const NSInteger kAKIncrementValue = 100;
 /// 残機ボーナスの増加分
 static const NSInteger kAKRestIncrementValue = 1000;
-/// タイムボーナスの基準となる時間
-static const NSInteger kAKBaseTime = 300;
+/// タイムボーナスの基準となる時間、敵1体を撃墜する時間
+static const NSInteger kAKBaseTime = 15;
+/// タイムボーナスの最大値
+static const NSInteger kAKMaxTimeBonus = 10000;
 /// 1秒あたりのタイムボーナス
 static const NSInteger kAKTimeBonus = 50;
 /// 1%あたりの命中率ボーナス
@@ -229,10 +232,11 @@ static NSString *kAKScoreCountSE = @"ScoreCount.caf";
  @param rest 残機
  */
 - (void)setParameterStage:(NSInteger)stage
-                 andScore:(NSInteger)score
-                  andTime:(NSInteger)time
-                   andHit:(NSInteger)hit
-                  andRest:(NSInteger)rest;
+                    score:(NSInteger)score
+                     time:(NSInteger)time
+                      hit:(NSInteger)hit
+                     rest:(NSInteger)rest
+               enemyCount:(NSInteger)enemyCount
 {
     // タイトルキャプションラベルを生成する
     NSString *title = [NSString stringWithFormat:kAKTitleCaption, stage];
@@ -252,13 +256,26 @@ static NSString *kAKScoreCountSE = @"ScoreCount.caf";
     }
     
     // タイムボーナスを計算する
-    timeBonusTarget_ = (kAKBaseTime - time_) * kAKTimeBonus;
+    timeBonusTarget_ = kAKMaxTimeBonus - (time_ - kAKBaseTime * enemyCount) * kAKTimeBonus;
     if (timeBonusTarget_ < 0) {
         timeBonusTarget_ = 0;
     }
     
+    // タイムボーナスが最大値を超えている場合は最大値に補正する
+    if (timeBonusTarget_ >= kAKMaxTimeBonus) {
+        timeBonusTarget_ = kAKMaxTimeBonus;
+        
+        // 実績の解除を行う
+        [[AKGameCenterHelper sharedHelper] reportAchievements:kAKGCShortTimeID];
+    }
+    
     // 命中率ボーナスを計算する
     hitBonusTarget_ = hit_ * kAKHitBonus;
+    
+    // 命中率が100%の場合は実績を解除する
+    if (hit_ >= 100.0f) {
+        [[AKGameCenterHelper sharedHelper] reportAchievements:kAKGCInfallibleShoot];
+    }
     
     // 残機ボーナスを計算する
     restBonusTarget_ = rest_ * kAKRestIncrementValue;

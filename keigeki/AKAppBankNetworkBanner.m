@@ -37,6 +37,8 @@
     
     // スーパークラスの処理を実行する
     [super dealloc];
+    
+    AKLog(1, @"end");
 }
 
 /*!
@@ -91,6 +93,8 @@
     AKLog(1, @"広告読み込み完了");
     
     [self.delegate customEventBanner:self didReceiveAd:adView];
+    
+    AKLog(1, @"end");
 }
 
 @end

@@ -78,7 +78,7 @@ static NSString *kAKTestDeviceIPhone5ID = @"59d89c955b8adbe31a45ec3f07ad5ea813b1
     // スーパークラスの処理を実行する
     [super viewDidLoad];
 
-    // 広告解除の無効の場合は広告を作成する
+    // 広告解除が無効の場合は広告を作成する
     if (![[AKInAppPurchaseHelper sharedHelper] isRemoveAd]) {
         [self createAdBanner];
     }
@@ -166,6 +166,8 @@ static NSString *kAKTestDeviceIPhone5ID = @"59d89c955b8adbe31a45ec3f07ad5ea813b1
  */
 - (void)createAdBanner
 {
+    AKLog(1, @"start");
+    
     // 画面下部に標準サイズのビューを作成する
     self.bannerView = [[[GADBannerView alloc] initWithFrame:CGRectMake(0.0,
                                                                        self.view.bounds.size.height - GAD_SIZE_320x50.height,
@@ -193,6 +195,8 @@ static NSString *kAKTestDeviceIPhone5ID = @"59d89c955b8adbe31a45ec3f07ad5ea813b1
     
     // リクエストを行って広告を読み込む
     [self.bannerView loadRequest:request];
+    
+    AKLog(1, @"end");
 }
 
 /*!
@@ -202,6 +206,8 @@ static NSString *kAKTestDeviceIPhone5ID = @"59d89c955b8adbe31a45ec3f07ad5ea813b1
  */
 - (void)deleteAdBanner
 {
+    AKLog(1, @"start");
+    
     // バナーを取り除く
     [self.bannerView removeFromSuperview];
     
@@ -210,6 +216,8 @@ static NSString *kAKTestDeviceIPhone5ID = @"59d89c955b8adbe31a45ec3f07ad5ea813b1
     
     // バナーを削除する
     self.bannerView = nil;
+    
+    AKLog(1, @"end");
 }
 
 /*!
@@ -285,6 +293,8 @@ static NSString *kAKTestDeviceIPhone5ID = @"59d89c955b8adbe31a45ec3f07ad5ea813b1
                                   -bannerView.frame.size.height,
                                   bannerView.frame.size.width,
                                   bannerView.frame.size.height);
+    
+    AKLog(1, @"end");
 }
 
 /*!
@@ -317,6 +327,8 @@ static NSString *kAKTestDeviceIPhone5ID = @"59d89c955b8adbe31a45ec3f07ad5ea813b1
             [[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
         }
     }
+    
+    AKLog(1, @"end");
 }
 
 /*!

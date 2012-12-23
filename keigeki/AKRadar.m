@@ -57,6 +57,15 @@ static const float kAKRadarPosTopPoint = 130.0f;
     self.radarImage.position = ccp([AKScreenSize positionFromRightPoint:kAKRadarPosRightPoint],
                                    [AKScreenSize positionFromTopPoint:kAKRadarPosTopPoint]);
     
+    // 自機用のマーカーの画像を読み込む
+    marker = [CCSprite spriteWithFile:@"Marker.png"];
+    
+    // 自機のマーカーはレーダーの中心とする
+    marker.position = ccp(kAKRadarSize / 2, kAKRadarSize / 2);
+    
+    // レーダーの上に配置する
+    [self.radarImage addChild:marker];
+
     // マーカーを保存する配列を生成する
     self.markerImage = [NSMutableArray arrayWithCapacity:kAKMaxEnemyCount];
     

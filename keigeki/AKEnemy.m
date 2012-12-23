@@ -90,7 +90,7 @@ static const float kAKExplosionFrameDelay = 0.2f;
                                 AKPlayerPosX(), AKPlayerPosY());
     score = kAKEnemyScore * (2 - cos(destAngle - self.angle));
     
-    AKLog(1, @"destAngle=%f self.angle=%f cos()=%f", destAngle, self.angle, cos(destAngle - self.angle));
+    AKLog(0, @"destAngle=%f self.angle=%f cos()=%f", destAngle, self.angle, cos(destAngle - self.angle));
     // cos値が背面攻撃のしきい値よりも小さい場合は実績を解除する
     if (cos(destAngle - self.angle) < kAKBackShortCos) {
         [[AKGameCenterHelper sharedHelper] reportAchievements:kAKGCBackShootID];

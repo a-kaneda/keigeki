@@ -980,6 +980,7 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id5696538
     // 画面上の全キャラクターを削除する
     [self.playerShotPool reset];
     [self.enemyPool reset];
+    [self.enemyShotPool reset];
     [self.effectPool reset];
     
     // ゲームクリアの表示を削除する

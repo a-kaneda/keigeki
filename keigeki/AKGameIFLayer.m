@@ -438,9 +438,8 @@ static float AKAccel2Ratio(float accel);
     
     // 加速度センサーの入力値を-1.0〜1.0の比率に変換
     // 画面を横向きに使用するのでx軸y軸を入れ替える
-    // x軸は+-逆なので反転させる
-    ax = AKAccel2Ratio(-acceleration.y);
-    ay = AKAccel2Ratio(acceleration.x + 0.3);
+    ax = AKAccel2Ratio(acceleration.y);
+    ay = AKAccel2Ratio(-acceleration.x + 0.3);
     
     AKLog(0, @"ax=%f,ay=%f", ax, ay);
     

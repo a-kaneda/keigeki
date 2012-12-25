@@ -129,12 +129,12 @@ static NSString *kAKTestDeviceIPhone5ID = @"59d89c955b8adbe31a45ec3f07ad5ea813b1
  @brief 回転できる画面の向き
  
  回転できる画面の向きを返す。
- 右側にホームボタンを配置した横向きのみを許可する。
+ 左側にホームボタンを配置した横向きのみを許可する。
  @return 回転できる画面の向き
  */
 - (NSUInteger)supportedInterfaceOrientations
 {
-    return UIInterfaceOrientationMaskLandscapeRight;
+    return UIInterfaceOrientationMaskLandscapeLeft;
 }
 
 /*!

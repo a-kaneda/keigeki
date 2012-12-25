@@ -117,7 +117,7 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     AKLog(1, @"interfaceOrientation=%d", interfaceOrientation);
-    if (UIInterfaceOrientationLandscapeRight == interfaceOrientation) {
+    if (UIInterfaceOrientationLandscapeLeft == interfaceOrientation) {
         AKLog(1, @"return YES");
         return YES;
     } else {

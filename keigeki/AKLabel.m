@@ -74,11 +74,11 @@ enum {
 {
     // 枠がある場合は枠の領域を2文字分プラスして返す
     if (hasFrame) {
-        return (length + 2) * kAKFontSize;
+        return (length + 2) * [AKFont fontSize];
     }
     // 枠がない場合は文字領域のサイズを返す
     else {
-        return length * kAKFontSize;
+        return length * [AKFont fontSize];
     }
 }
 
@@ -96,11 +96,11 @@ enum {
 {
     // 枠がある場合は枠の領域を2文字分プラスして返す
     if (hasFrame) {
-        return ((int)(line * kAKLabelLineHeight) + 2) * kAKFontSize;
+        return ((int)(line * kAKLabelLineHeight) + 2) * [AKFont fontSize];
     }
     // 枠がない場合は文字領域のサイズを返す
     else {
-        return (int)(line * kAKLabelLineHeight) * kAKFontSize;
+        return (int)(line * kAKLabelLineHeight) * [AKFont fontSize];
     }
 }
 
@@ -190,8 +190,8 @@ enum {
             // テキスト領域の中央とバッチノードの中央を一致させるため、
             // 左に1行の長さの半分、上方向に行数の半分移動する。
             // 行間に0.5文字分の隙間を入れるため、高さは1.5倍する。
-            charSprite.position = ccp((x - (length_ - 1) / 2.0f) * kAKFontSize,
-                                      (-y + (line_ - 1) / 2.0f) * kAKFontSize * kAKLabelLineHeight);
+            charSprite.position = ccp((x - (length_ - 1) / 2.0f) * [AKFont fontSize],
+                                      (-y + (line_ - 1) / 2.0f) * [AKFont fontSize] * kAKLabelLineHeight);
             
             // 先頭からの文字数をタグにする
             charSprite.tag = x + y * length_;
@@ -473,12 +473,12 @@ enum {
     // 枠を入れるため、上下+-1個分用意する。
     for (int y = -1; y < (int)(line_ * kAKLabelLineHeight) + 1; y++) {
         
-        AKLog(0, @"y=%d pos=%f", y, (-y + line_ * kAKLabelLineHeight / 2.0f) * kAKFontSize);
+        AKLog(0, @"y=%d pos=%f", y, (-y + line_ * kAKLabelLineHeight / 2.0f) * [AKFont fontSize]);
         
         // 枠を入れるため、左右+-1個分用意する。
         for (int x = -1; x < length_ + 1; x++) {
             
-            AKLog(0 && y == -1, @"x=%d pos=%f", x, (x - length_ / 2.0f) * kAKFontSize);
+            AKLog(0 && y == -1, @"x=%d pos=%f", x, (x - length_ / 2.0f) * [AKFont fontSize]);
             
             // キー文字列
             NSString *key = nil;
@@ -548,8 +548,8 @@ enum {
                 // 表示位置を設定する。
                 // テキスト領域の中央とバッチノードの中央を一致させるため、
                 // 左に1行の長さの半分、上方向に行数の半分移動する。
-                charSprite.position = ccp((x - (length_ - 1) / 2.0f) * kAKFontSize,
-                                          (-y + (line_ - 1) * kAKLabelLineHeight / 2.0f) * kAKFontSize);
+                charSprite.position = ccp((x - (length_ - 1) / 2.0f) * [AKFont fontSize],
+                                          (-y + (line_ - 1) * kAKLabelLineHeight / 2.0f) * [AKFont fontSize]);
                 
                 // バッチノードに登録する
                 [self.frameBatch addChild:charSprite z:0 tag:tag];

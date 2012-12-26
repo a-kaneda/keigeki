@@ -150,6 +150,12 @@
     velx = self.speed * cosf(self.angle);
     vely = self.speed * sinf(self.angle);
     
+    // iPadの場合は速度を倍にする
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        velx *= 2.0f;
+        vely *= 2.0f;
+    }
+    
     AKLog(0, @"angle=%f vx=%f vy=%f", self.angle / M_PI * 180, velx / self.speed, vely / self.speed);
     
     // 座標の移動

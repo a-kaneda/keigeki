@@ -26,6 +26,8 @@ extern const NSInteger kAKFontSize;
 
 // シングルトンオブジェクトの取得
 + (AKFont *)sharedInstance;
+// フォントサイズ取得
++ (NSInteger)fontSize;
 // 文字のテクスチャ内の位置を取得する
 - (CGRect)rectOfChar:(unichar)c;
 // キーからテクスチャ内の位置を取得する

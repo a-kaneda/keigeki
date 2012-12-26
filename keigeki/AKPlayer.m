@@ -76,14 +76,28 @@ static NSString *kAKHitSE = @"Hit.caf";
     width_ = kAKPlayerSize;
     height_ = kAKPlayerSize;
     
+    // iPadの場合はサイズを倍にする
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        width_ *= 2;
+        height_ *= 2;
+    }
+    
     // 状態を初期化する
     [self reset];
     
     // アニメーションの間隔を初期化する
     animationTime_ = 0.0f;
     
+    // 画像サイズを決める
+    NSInteger imageSize = kAKPlayerImageSize;
+    
+    // iPadの場合はサイズを倍にする
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        imageSize *= 2;
+    }
+    
     // 画像の読込
-    self.image = [CCSprite spriteWithFile:@"Player.png" rect:CGRectMake(0, 0, kAKPlayerImageSize, kAKPlayerImageSize)];
+    self.image = [CCSprite spriteWithFile:@"Player.png" rect:CGRectMake(0, 0, imageSize, imageSize)];
     assert(image_ != nil);
     
     return self;
@@ -122,20 +136,28 @@ static NSString *kAKHitSE = @"Hit.caf";
         playerDirection = kAKPlayerImagePosStraight;
     }
     
+    // 画像サイズを決める
+    NSInteger imageSize = kAKPlayerImageSize;
+    
+    // iPadの場合はサイズを倍にする
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        imageSize *= 2;
+    }
+
     // アニメーションの間隔をカウントする
     animationTime_ += dt;
     // アニメーション間隔の経過時間によって表示するフレームを切り替える
     if (animationTime_ < kAKAnimationFrameDelay) {
-        [(CCSprite *)self.image setTextureRect:CGRectMake(playerDirection * kAKPlayerImageSize,
+        [(CCSprite *)self.image setTextureRect:CGRectMake(playerDirection * imageSize,
                                                           0,
-                                                          kAKPlayerImageSize,
-                                                          kAKPlayerImageSize)];
+                                                          imageSize,
+                                                          imageSize)];
     }
     else if (animationTime_ < kAKAnimationFrameDelay * 2) {
-        [(CCSprite *)self.image setTextureRect:CGRectMake((playerDirection + 1) * kAKPlayerImageSize,
+        [(CCSprite *)self.image setTextureRect:CGRectMake((playerDirection + 1) * imageSize,
                                                           0,
-                                                          kAKPlayerImageSize,
-                                                          kAKPlayerImageSize)];
+                                                          imageSize,
+                                                          imageSize)];
     }
     else {
         animationTime_ = 0.0f;

@@ -1202,6 +1202,12 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id5696538
             param = [params objectAtIndex:2];
             NSInteger enemyPosY = [param integerValue];
             
+            // iPadの場合は座標を倍にする
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                enemyPosX *= 2;
+                enemyPosY *= 2;
+            }
+            
             AKLog(0, @"type=%d posx=%d posy=%d", enemyType, enemyPosX, enemyPosY);
             
             // 角度を自機のいる位置に設定する

@@ -44,6 +44,12 @@ static const CGSize kAKPlayerShotSize = {2, 8};
     width_ = kAKPlayerShotSize.width;
     height_ = kAKPlayerShotSize.height;
     
+    // iPadの場合はサイズを倍にする
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        width_ *= 2;
+        height_ *= 2;
+    }
+    
     return self;
 }
 

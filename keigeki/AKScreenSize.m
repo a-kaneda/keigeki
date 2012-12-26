@@ -102,10 +102,16 @@
  @brief 左からの位置で座標取得
  
  左からの座標で距離を指定したときのデバイススクリーン座標を返す。
+ iPadの場合は座標を倍にして処理する。
  @return デバイススクリーン座標
  */
 + (NSInteger)positionFromLeftPoint:(float)point
 {
+    // iPadの場合は座標を倍にする
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        point *= 2.0f;
+    }
+    
     return point;
 }
 
@@ -113,10 +119,16 @@
  @brief 右からの位置で座標取得
  
  右からの座標で距離を指定したときのデバイススクリーン座標を返す。
+ iPadの場合は座標を倍にして処理する。
  @return デバイススクリーン座標
  */
 + (NSInteger)positionFromRightPoint:(float)point
 {
+    // iPadの場合は座標を倍にする
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        point *= 2.0f;
+    }
+    
     return [AKScreenSize screenSize].width - point;
 }
 
@@ -124,10 +136,16 @@
  @brief 上からの位置で座標取得
  
  上からの座標で距離を指定したときのデバイススクリーン座標を返す。
+ iPadの場合は座標を倍にして処理する。
  @return デバイススクリーン座標
  */
 + (NSInteger)positionFromTopPoint:(float)point
 {
+    // iPadの場合は座標を倍にする
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        point *= 2.0f;
+    }
+    
     return [AKScreenSize screenSize].height - point;
 }
 
@@ -135,10 +153,16 @@
  @brief 下からの位置で座標取得
  
  下からの座標で距離を指定したときのデバイススクリーン座標を返す。
+ iPadの場合は座標を倍にして処理する。
  @return デバイススクリーン座標
  */
 + (NSInteger)positionFromBottomPoint:(float)point
 {
+    // iPadの場合は座標を倍にする
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        point *= 2.0f;
+    }
+    
     return point;
 }
 
@@ -146,10 +170,16 @@
  @brief 中心からの横方向の位置で座標取得
 
  中心からの横方向の座標で距離を指定したときのデバイススクリーン座標を返す。
+ iPadの場合は座標を倍にして処理する。
  @return デバイススクリーン座標
  */
 + (NSInteger)positionFromHorizontalCenterPoint:(float)point
 {
+    // iPadの場合は座標を倍にする
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        point *= 2.0f;
+    }
+    
     return [AKScreenSize center].x + point;
 }
 
@@ -157,10 +187,16 @@
  @brief 中心からの縦方向の位置で座標取得
  
  中心からの縦方向の座標で距離を指定したときのデバイススクリーン座標を返す。
+ iPadの場合は座標を倍にして処理する。
  @return デバイススクリーン座標
  */
 + (NSInteger)positionFromVerticalCenterPoint:(float)point
 {
+    // iPadの場合は座標を倍にする
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        point *= 2.0f;
+    }
+    
     return [AKScreenSize center].y + point;
 }
 

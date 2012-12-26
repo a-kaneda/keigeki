@@ -61,6 +61,12 @@ static const int ENEMY_SHOT_HEIGHT[ENEMY_SHOT_TYPE_COUNT] = {
     width_ = ENEMY_SHOT_WIDTH[type];
     height_ = ENEMY_SHOT_HEIGHT[type];
     
+    // iPadの場合はサイズを倍にする
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        width_ *= 2;
+        height_ *= 2;
+    }
+    
     // 親クラスの生成処理を実行する
     [super createWithX:x Y:y Z:z Angle:angle Parent:parent];    
 }

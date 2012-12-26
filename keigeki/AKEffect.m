@@ -86,6 +86,14 @@
     
     // バッチノードにスプライトを登録する
     [batch addChild:sprite];
+    
+    // iPadの場合は座標とサイズを倍にする
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        rect.origin.x *= 2.0f;
+        rect.origin.y *= 2.0f;
+        rect.size.width *= 2.0f;
+        rect.size.height *= 2.0f;
+    }
 
     // ファイルからスプライトフレームをアニメーションのフレーム数分作成する
     NSMutableArray *animationFrames = [NSMutableArray arrayWithCapacity:count];

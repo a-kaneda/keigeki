@@ -41,6 +41,14 @@ static NSString *kAKTileFile = @"Back.png";
     self.batch = [CCSpriteBatchNode batchNodeWithFile:kAKTileFile capacity:kAKTileCount * kAKTileCount];
     NSAssert(self.batch != nil, @"can not create self.batch");
     
+    // タイルサイズを取得する
+    NSInteger tileSize = kAKTileSize;
+    
+    // iPadの場合はサイズを倍にする
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        tileSize *= 2;
+    }
+    
     // タイルを作成する
     for (int i = 0; i < kAKTileCount; i++) {
         
@@ -51,8 +59,8 @@ static NSString *kAKTileFile = @"Back.png";
             NSAssert(tile != nil, @"can not create tile");
             
             // アンカーポイントを中心にして画像を配置する
-            tile.position = ccp(kAKTileSize * (i - kAKTileCount / 2),
-                                kAKTileSize * (j - kAKTileCount / 2));
+            tile.position = ccp(tileSize * (i - kAKTileCount / 2),
+                                tileSize * (j - kAKTileCount / 2));
             
             // バッチノードに登録する
             [self.batch addChild:tile];
@@ -93,10 +101,18 @@ static NSString *kAKTileFile = @"Back.png";
     float posx = 0.0f; /* 背景画像のx座標 */
     float posy = 0.0f; /* 背景画像のy座標 */
 
+    // タイルサイズを取得する
+    NSInteger tileSize = kAKTileSize;
+    
+    // iPadの場合はサイズを倍にする
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        tileSize *= 2;
+    }
+
     // 自機の配置位置を中心とする。
     // そこからタイルサイズ分の範囲でスクロールする。(-32 〜 +32)
-    posx = AKPlayerPosX() + kAKTileSize / 2 + (-scrx % kAKTileSize);
-    posy = AKPlayerPosY() + kAKTileSize / 2 + (-scry % kAKTileSize);
+    posx = AKPlayerPosX() + tileSize / 2 + (-scrx % tileSize);
+    posy = AKPlayerPosY() + tileSize / 2 + (-scry % tileSize);
     AKLog(0, @"basex=%f basey=%f", posx, posy);
     
     // 背景画像の位置を移動する。

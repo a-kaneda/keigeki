@@ -137,6 +137,12 @@ static const float kAKExplosionFrameDelay = 0.2f;
     // 種別ごとの固有生成処理を実行する
     [self performSelector:create];
     
+    // iPadの場合はサイズを倍にする
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.width *= 2;
+        self.height *= 2;
+    }
+    
     // レイヤーに配置する
     [parent addChild:self.image z:z];
 }

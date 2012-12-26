@@ -122,71 +122,79 @@ static NSString *kAKScoreCountSE = @"ScoreCount.caf";
     delay_ = kAKDelayLong;
     
     // キャプション位置縦方向は一番上の項目からマージンを等間隔であけて配置する
-    float position = [AKScreenSize positionFromTopPoint:kAKCaptionPosTopPoint];
+    float position = kAKCaptionPosTopPoint;
+    
+    // マージンを決める
+    float margin = kAKCaptionPosMargin;
+    
+    // iPadの場合はマージンを倍にする
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        margin *= 2.0f;
+    }
     
     // タイムキャプションラベルを生成する
     [self createLabelWithString:kAKTimeCaption
                             pos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKCaptionPosHorizontalCenterPoint],
-                                    position)];
+                                    [AKScreenSize positionFromTopPoint:position])];
     
     
     // タイムラベルを生成する
     [self createLabelWithTag:kAKTimeNumTag
                          pos:ccp([AKScreenSize center].x,
-                                 position)];
+                                 [AKScreenSize positionFromTopPoint:position])];
     
     // タイムボーナスラベルを生成する
     [self createLabelWithTag:kAKTimeBonusTag
                          pos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKBonusPosHorizontalCenterPoint],
-                                 position)];
+                                 [AKScreenSize positionFromTopPoint:position])];
     
     // 縦方向の位置を下へずらす
-    position -= kAKCaptionPosMargin;
+    position += kAKCaptionPosMargin;
     
     // 命中率キャプションラベルを生成する
     [self createLabelWithString:kAKHitCaption
                             pos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKCaptionPosHorizontalCenterPoint],
-                                    position)];
+                                    [AKScreenSize positionFromTopPoint:position])];
     
     // 命中率ラベルを生成する
     [self createLabelWithTag:kAKHitNumTag
                          pos:ccp([AKScreenSize center].x,
-                                 position)];
+                                 [AKScreenSize positionFromTopPoint:position])];
     
     // 命中率ボーナスラベルを生成する
     [self createLabelWithTag:kAKHitBonusTag
                          pos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKBonusPosHorizontalCenterPoint],
-                                 position)];
+                                 [AKScreenSize positionFromTopPoint:position])];
     
     // 縦方向の位置を下へずらす
-    position -= kAKCaptionPosMargin;
+    position += kAKCaptionPosMargin;
 
     // 残機キャプションラベルを生成する
     [self createLabelWithString:kAKRestCaption
                             pos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKCaptionPosHorizontalCenterPoint],
-                                    position)];
+                                    [AKScreenSize positionFromTopPoint:position])];
     
     // 残機ラベルを生成する
     [self createLabelWithTag:kAKRestNumTag
                          pos:ccp([AKScreenSize center].x,
-                                 position)];
+                                 [AKScreenSize positionFromTopPoint:position])];
     
     // 残機ボーナスラベルを生成する
     [self createLabelWithTag:kAKRestBonusTag
                          pos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKBonusPosHorizontalCenterPoint],
-                                 position)];
+                                 [AKScreenSize positionFromTopPoint:position])];
     
     // 縦方向の位置を下へずらす
-    position -= kAKCaptionPosMargin;
+    position += kAKCaptionPosMargin;
 
     // スコアキャプションラベルを生成する
     [self createLabelWithString:kAKScoreCaption
                             pos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKCaptionPosHorizontalCenterPoint],
-                                    position)];
+                                    [AKScreenSize positionFromTopPoint:position])];
     // スコアラベルを生成する
     [self createLabelWithTag:kAKScoreNumTag
                          pos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKBonusPosHorizontalCenterPoint],
-                                 position)];
+                                 [AKScreenSize positionFromTopPoint:position])];
     
     return self;
 }

@@ -49,6 +49,23 @@ static AKFont *sharedInstance_;
 }
 
 /*!
+ @brief フォントサイズ取得
+ 
+ フォントサイズを取得する。
+ iPadの場合は倍のサイズを返す。
+ @return フォントサイズ
+ */
++ (NSInteger)fontSize
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        return kAKFontSize * 2;
+    }
+    else {
+        return kAKFontSize;
+    }
+}
+
+/*!
  @method オブジェクト生成処理
  
  オブジェクトの生成を行う。
@@ -116,19 +133,29 @@ static AKFont *sharedInstance_;
     // 文字の位置情報を文字全体の情報から検索する
     NSDictionary *charInfo = [self.fontMap objectForKey:key];
     
+    // iPadの場合は文字サイズを倍にする
+    NSInteger fontSize = kAKFontSize;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        fontSize *= 2;
+    }
+    
     // 見つからない場合は一番左上のダミー文字を返す
     if (charInfo == nil) {
-        return CGRectMake(0, 0, kAKFontSize, kAKFontSize);
+        return CGRectMake(0, 0, fontSize, fontSize);
     }
     
     // 位置情報を取得する
-    NSNumber *x = [charInfo objectForKey:@"x"];
-    NSNumber *y = [charInfo objectForKey:@"y"];
+    NSNumber *xobj = [charInfo objectForKey:@"x"];
+    NSNumber *yobj = [charInfo objectForKey:@"y"];
     
+    // オブジェクトから数値に変換する
+    NSInteger xValue = [xobj integerValue];
+    NSInteger yValue = [yobj integerValue];
+        
     // 位置情報から矩形座標を作成する
-    CGRect rect = CGRectMake([x integerValue] * kAKFontSize,
-                             [y integerValue] * kAKFontSize,
-                             kAKFontSize, kAKFontSize);
+    CGRect rect = CGRectMake(xValue * fontSize,
+                             yValue * fontSize,
+                             fontSize, fontSize);
     return rect;
 }
 

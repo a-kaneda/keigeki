@@ -60,8 +60,16 @@ static const float kAKRadarPosTopPoint = 130.0f;
     // 自機用のマーカーの画像を読み込む
     marker = [CCSprite spriteWithFile:@"Marker.png"];
     
+    // レーダーのサイズを決める
+    NSInteger radarSize = kAKRadarSize;
+    
+    // iPadの場合はサイズを倍にする
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        radarSize *= 2;
+    }
+    
     // 自機のマーカーはレーダーの中心とする
-    marker.position = ccp(kAKRadarSize / 2, kAKRadarSize / 2);
+    marker.position = ccp(radarSize / 2, radarSize / 2);
     
     // レーダーの上に配置する
     [self.radarImage addChild:marker];
@@ -115,6 +123,14 @@ static const float kAKRadarPosTopPoint = 130.0f;
  */
 - (void)updateMarker:(const NSArray *)enemys ScreenAngle:(float)screenAngle
 {
+    // レーダーのサイズを決める
+    NSInteger radarSize = kAKRadarSize;
+    
+    // iPadの場合はサイズを倍にする
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        radarSize *= 2;
+    }
+
     // 各敵の位置をマーカーに反映させる
     for (int i = 0; i < kAKMaxEnemyCount; i++) {
         
@@ -151,8 +167,8 @@ static const float kAKRadarPosTopPoint = 130.0f;
                 
         // 座標を計算する
         // レーダーの中心を原点とするため、xyそれぞれレーダーの幅の半分を加算する。
-        float posx = ((kAKRadarSize / 2) * cos(angle)) + (kAKRadarSize / 2);
-        float posy = ((kAKRadarSize / 2) * sin(angle)) + (kAKRadarSize / 2);
+        float posx = ((radarSize / 2) * cos(angle)) + (radarSize / 2);
+        float posy = ((radarSize / 2) * sin(angle)) + (radarSize / 2);
         AKLog(0, @"enemy=(%f,%f) angle=%f marker=(%f,%f)",
                enemy.image.position.x, enemy.image.position.y,
                AKCnvAngleRad2Deg(angle), posx, posy);

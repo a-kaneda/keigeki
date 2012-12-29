@@ -15,7 +15,7 @@ static const NSInteger kAKEnemyScore = 500;
 /// 破壊時の効果音
 static NSString *kAKHitSE = @"Hit.caf";
 /// 背面攻撃の実績解除のcosしきい値
-static float kAKBackShortCos = -0.95f;
+static float kAKBackShortCos = -0.99f;
 
 /// 雑魚の移動速度
 static const NSInteger kAKEnemySpeed = 260;
@@ -90,9 +90,10 @@ static const float kAKExplosionFrameDelay = 0.2f;
                                 AKPlayerPosX(), AKPlayerPosY());
     score = kAKEnemyScore * (2 - cos(destAngle - self.angle));
     
-    AKLog(0, @"destAngle=%f self.angle=%f cos()=%f", destAngle, self.angle, cos(destAngle - self.angle));
+    AKLog(1, @"destAngle=%f self.angle=%f cos()=%f", destAngle, self.angle, cos(destAngle - self.angle));
     // cos値が背面攻撃のしきい値よりも小さい場合は実績を解除する
     if (cos(destAngle - self.angle) < kAKBackShortCos) {
+        AKLog(1, @"背面攻撃");
         [[AKGameCenterHelper sharedHelper] reportAchievements:kAKGCBackShootID];
     }
     

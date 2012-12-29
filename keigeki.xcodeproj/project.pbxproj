@@ -699,6 +699,7 @@
 		0C5D411E168B2CA1000EBB80 /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
 		0C5D4124168B2F10000EBB80 /* Default-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x.png"; sourceTree = "<group>"; };
 		0C5D4125168B2F10000EBB80 /* Default-Portrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x.png"; sourceTree = "<group>"; };
+		0C5D4241168F3A63000EBB80 /* keigeki copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "keigeki copy-Info.plist"; path = "/Users/kaneda/Dropbox/src/keigeki/keigeki copy-Info.plist"; sourceTree = "<absolute>"; };
 		0C61DE34167C448E0017D9B4 /* Stage2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Stage2.mp3; sourceTree = "<group>"; };
 		0C61DE35167C448E0017D9B4 /* Stage3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Stage3.mp3; sourceTree = "<group>"; };
 		0C61DE36167C448E0017D9B4 /* Stage4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Stage4.mp3; sourceTree = "<group>"; };
@@ -901,6 +902,7 @@
 				0C37060515C6BEC900295D96 /* keigeki */,
 				0C3705F215C6BEC900295D96 /* Frameworks */,
 				0C3705F015C6BEC900295D96 /* Products */,
+				0C5D4241168F3A63000EBB80 /* keigeki copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1806,7 +1808,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: 明浩 金田 (E8ZRMTB82M)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: 明浩 金田 (E8ZRMTB82M)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1818,6 +1821,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				PROVISIONING_PROFILE = "C2422986-6959-40B7-BAC3-1EED4D0BDBF9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C2422986-6959-40B7-BAC3-1EED4D0BDBF9";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1827,7 +1832,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: 明浩 金田 (E8ZRMTB82M)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: 明浩 金田 (E8ZRMTB82M)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					NDEBUG,
@@ -1837,6 +1843,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				PROVISIONING_PROFILE = "C2422986-6959-40B7-BAC3-1EED4D0BDBF9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C2422986-6959-40B7-BAC3-1EED4D0BDBF9";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1867,6 +1875,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = NO;
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1896,11 +1905,63 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
+				VALIDATE_PRODUCT = NO;
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
+		};
+		0CD2CADC168F9D3C00088557 /* AppStore */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: AKIHIRO KANEDA";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: AKIHIRO KANEDA";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					"NS_BLOCK_ASSERTIONS=1",
+				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				PROVISIONING_PROFILE = "34D9B98B-2138-4337-B393-B341630B55B6";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "34D9B98B-2138-4337-B393-B341630B55B6";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = AppStore;
+		};
+		0CD2CADD168F9D3C00088557 /* AppStore */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer: 明浩 金田 (E8ZRMTB82M)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: 明浩 金田 (E8ZRMTB82M)";
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = keigeki/Prefix.pch;
+				HEADER_SEARCH_PATHS = "\"keigeki/libs/kazmath/include\"";
+				INFOPLIST_FILE = keigeki/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/keigeki/libs/admob\"",
+					"\"$(SRCROOT)/keigeki/libs/admob/Add-ons/GoogleAnalyticsiOS_2.0beta3/Library\"",
+					"\"$(SRCROOT)/keigeki/libs/NendAd\"",
+				);
+				OTHER_LDFLAGS = (
+					"-lz",
+					"-ObjC",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = NO;
+				VALID_ARCHS = "armv7 armv7s";
+				WRAPPER_EXTENSION = app;
+			};
+			name = AppStore;
 		};
 /* End XCBuildConfiguration section */
 
@@ -1910,6 +1971,7 @@
 			buildConfigurations = (
 				0C37078615C6BED200295D96 /* Debug */,
 				0C37078715C6BED200295D96 /* Release */,
+				0CD2CADC168F9D3C00088557 /* AppStore */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1919,6 +1981,7 @@
 			buildConfigurations = (
 				0C37078915C6BED200295D96 /* Debug */,
 				0C37078A15C6BED200295D96 /* Release */,
+				0CD2CADD168F9D3C00088557 /* AppStore */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

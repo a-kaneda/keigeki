@@ -265,13 +265,11 @@ static NSString *kAKTestDeviceIPhone5ID = @"59d89c955b8adbe31a45ec3f07ad5ea813b1
 {
     AKLog(1, @"start");
     
-    // 画面内にスライドするアニメーションを実行する
-    [UIView beginAnimations:@"BannerSlide" context:nil];
+    // 画面内に広告を表示する
     bannerView.frame = CGRectMake(0.0,
                                   self.view.bounds.size.height - GAD_SIZE_320x50.height,
                                   bannerView.frame.size.width,
                                   bannerView.frame.size.height);
-    [UIView commitAnimations];
     
     AKLog(1, @"end");
 }

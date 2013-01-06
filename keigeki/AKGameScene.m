@@ -36,8 +36,7 @@ enum {
     kAKLayerPosZBase = 0,   ///< ベースレイヤー
     kAKLayerPosZInfo,       ///< 情報レイヤー
     kAKLayerPosZResult,     ///< ステージクリアレイヤー
-    kAKLayerPosZInterface,  ///< インターフェースレイヤー
-    kAKLayerPosZGameOver    ///< ゲームオーバーレイヤー
+    kAKLayerPosZInterface   ///< インターフェースレイヤー
 };
 
 /// キャラクターのz座標

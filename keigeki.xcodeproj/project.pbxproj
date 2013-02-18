@@ -699,7 +699,6 @@
 		0C5D411E168B2CA1000EBB80 /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
 		0C5D4124168B2F10000EBB80 /* Default-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x.png"; sourceTree = "<group>"; };
 		0C5D4125168B2F10000EBB80 /* Default-Portrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x.png"; sourceTree = "<group>"; };
-		0C5D4241168F3A63000EBB80 /* keigeki copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "keigeki copy-Info.plist"; path = "/Users/kaneda/Dropbox/src/keigeki/keigeki copy-Info.plist"; sourceTree = "<absolute>"; };
 		0C61DE34167C448E0017D9B4 /* Stage2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Stage2.mp3; sourceTree = "<group>"; };
 		0C61DE35167C448E0017D9B4 /* Stage3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Stage3.mp3; sourceTree = "<group>"; };
 		0C61DE36167C448E0017D9B4 /* Stage4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Stage4.mp3; sourceTree = "<group>"; };
@@ -902,7 +901,6 @@
 				0C37060515C6BEC900295D96 /* keigeki */,
 				0C3705F215C6BEC900295D96 /* Frameworks */,
 				0C3705F015C6BEC900295D96 /* Products */,
-				0C5D4241168F3A63000EBB80 /* keigeki copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};

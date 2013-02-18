@@ -6,6 +6,8 @@ cocos2d for iPhoneを使用しています。
 
 [iTunes Store](https://itunes.apple.com/jp/app/qing-ji/id569653828?mt=8)
 
+ライセンスは修正BSDライセンスを使用しています。
+
 使用したライブラリ
 ---
 * [cocos2d-iphone v2.0](http://www.cocos2d-iphone.org)

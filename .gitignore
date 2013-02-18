@@ -1,6 +1,9 @@
 # Xcode
 .DS_Store
+# 外部ライブラリは管理から除外する
 libs/
+# 音楽ファイルは管理から除外する
+Resources/Sound/
 build/
 *.pbxuser
 !default.pbxuser

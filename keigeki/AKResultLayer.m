@@ -261,11 +261,12 @@ static NSString *kAKScoreCountSE = @"ScoreCount.caf";
  @brief パラメータの設定
  
  スコア計算に必要なパラメータを設定する。
- @param state ステージ番号
+ @param stage ステージ番号
  @param score 現在のスコア
  @param time ステージクリアにかかった時間
  @param hit 命中率
  @param rest 残機
+ @param enemyCount ステージに出てきた敵の数
  */
 - (void)setParameterStage:(NSInteger)stage
                     score:(NSInteger)score

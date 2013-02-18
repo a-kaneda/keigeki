@@ -704,7 +704,7 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id5696538
     }
 }
 
-/*
+/*!
  @brief クリア表示中の更新処理
  
  クリア表示の間隔をカウントする。

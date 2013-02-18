@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 /*!
- @file common.h
+ @file AKCommon.h
  @brief 共通関数、共通定数定義
  
  アプリケーション全体で共通に使用する関数、定数の定義を行う。

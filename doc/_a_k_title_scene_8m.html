@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.3"/>
+<title>傾撃: keigeki/AKTitleScene.m</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Icon.png"/></td>
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">傾撃
+   &#160;<span id="projectnumber">1.0.0</span>
+   </div>
+   <div id="projectbrief">iPhoneを傾けて自機を操作するモノクロドット絵全方位シューティング</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 作成： Doxygen 1.8.3 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="annotated.html"><span>クラス</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>ファイルメンバ</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_e5f783dd576f4c70a6d8c8775f331588.html">keigeki</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#enum-members">列挙型</a>  </div>
+  <div class="headertitle">
+<div class="title">AKTitleScene.m</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>タイトルシーンクラスの定義  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#import &quot;<a class="el" href="_a_k_title_scene_8h_source.html">AKTitleScene.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_interface_8h_source.html">AKInterface.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_label_8h_source.html">AKLabel.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_game_scene_8h_source.html">AKGameScene.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_how_to_play_scene_8h_source.html">AKHowToPlayScene.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_screen_size_8h_source.html">AKScreenSize.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_common_8h_source.html">AKCommon.h</a>&quot;</code><br/>
+<code>#import &quot;SimpleAudioEngine.h&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_game_center_helper_8h_source.html">AKGameCenterHelper.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_option_scene_8h_source.html">AKOptionScene.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_in_app_purchase_helper_8h_source.html">AKInAppPurchaseHelper.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_credit_scene_8h_source.html">AKCreditScene.h</a>&quot;</code><br/>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+列挙型</h2></td></tr>
+<tr class="memitem:ab04a0655cd1e3bcac5e8f48c18df1a57"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <br/>
+&#160;&#160;<a class="el" href="_a_k_title_scene_8m.html#ab04a0655cd1e3bcac5e8f48c18df1a57a3738dee6374513f586f4ad027f9c11d4">kAKTitleMenuGame</a> = 1, 
+<a class="el" href="_a_k_title_scene_8m.html#ab04a0655cd1e3bcac5e8f48c18df1a57a82aed3b01e1c3ff42544541079768612">kAKTitleMenuHowTo</a>, 
+<a class="el" href="_a_k_title_scene_8m.html#ab04a0655cd1e3bcac5e8f48c18df1a57af026dbd2722c690830045d264cb5e909">kAKTitleMenuOption</a>, 
+<a class="el" href="_a_k_title_scene_8m.html#ab04a0655cd1e3bcac5e8f48c18df1a57a2dacc6ac8041cf14d13b3f64add4cab9">kAKTitleMenuCredit</a>, 
+<br/>
+&#160;&#160;<a class="el" href="_a_k_title_scene_8m.html#ab04a0655cd1e3bcac5e8f48c18df1a57a682fb368aa709bcb2085e15e6d1322fd">kAKTitleMenuCount</a>
+<br/>
+ }</td></tr>
+<tr class="memdesc:ab04a0655cd1e3bcac5e8f48c18df1a57"><td class="mdescLeft">&#160;</td><td class="mdescRight">メニュー項目のタグ  <a href="_a_k_title_scene_8m.html#ab04a0655cd1e3bcac5e8f48c18df1a57">[詳細]</a><br/></td></tr>
+<tr class="separator:ab04a0655cd1e3bcac5e8f48c18df1a57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a385c44f6fb256e5716a2302a5b940388"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="_a_k_title_scene_8m.html#a385c44f6fb256e5716a2302a5b940388acb87a95330269f017d4dfb54785c4146">kAKTitleBackground</a> = 0, 
+<a class="el" href="_a_k_title_scene_8m.html#a385c44f6fb256e5716a2302a5b940388a247091fe5de1c4293021312336351e1d">kAKTitleInterface</a>
+ }</td></tr>
+<tr class="memdesc:a385c44f6fb256e5716a2302a5b940388"><td class="mdescLeft">&#160;</td><td class="mdescRight">シーンに配置するレイヤーのタグ  <a href="_a_k_title_scene_8m.html#a385c44f6fb256e5716a2302a5b940388">[詳細]</a><br/></td></tr>
+<tr class="separator:a385c44f6fb256e5716a2302a5b940388"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc5c98fcc1211af2b80116dd6e0a035d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="_a_k_title_scene_8m.html#abc5c98fcc1211af2b80116dd6e0a035dac56beaf763d14a0dd5616ffeda41c987">kAKTitleBackPosZ</a> = 0, 
+<a class="el" href="_a_k_title_scene_8m.html#abc5c98fcc1211af2b80116dd6e0a035da5c9de17da1dd22207ae32ebe71f9866f">kAKTitleLogoPosZ</a>, 
+<a class="el" href="_a_k_title_scene_8m.html#abc5c98fcc1211af2b80116dd6e0a035dacaf64e92227f72c73b221145c4c4c2c4">kAKTitleMenuPosZ</a>
+ }</td></tr>
+<tr class="memdesc:abc5c98fcc1211af2b80116dd6e0a035d"><td class="mdescLeft">&#160;</td><td class="mdescRight">各ノードのz座標  <a href="_a_k_title_scene_8m.html#abc5c98fcc1211af2b80116dd6e0a035d">[詳細]</a><br/></td></tr>
+<tr class="separator:abc5c98fcc1211af2b80116dd6e0a035d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">説明</h2>
+<div class="textblock"><p>タイトルシーンクラスの定義 </p>
+<p>タイトルシーンを管理するクラスを定義する。 </p>
+</div><h2 class="groupheader">列挙型</h2>
+<a class="anchor" id="a385c44f6fb256e5716a2302a5b940388"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">anonymous enum</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>シーンに配置するレイヤーのタグ </p>
+<table class="fieldtable">
+<tr><th colspan="2">列挙型の値</th></tr><tr><td class="fieldname"><em><a class="anchor" id="a385c44f6fb256e5716a2302a5b940388acb87a95330269f017d4dfb54785c4146"></a>kAKTitleBackground</em>&nbsp;</td><td class="fielddoc">
+<p>背景レイヤー </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a385c44f6fb256e5716a2302a5b940388a247091fe5de1c4293021312336351e1d"></a>kAKTitleInterface</em>&nbsp;</td><td class="fielddoc">
+<p>インターフェースレイヤー </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a class="anchor" id="abc5c98fcc1211af2b80116dd6e0a035d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">anonymous enum</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>各ノードのz座標 </p>
+<table class="fieldtable">
+<tr><th colspan="2">列挙型の値</th></tr><tr><td class="fieldname"><em><a class="anchor" id="abc5c98fcc1211af2b80116dd6e0a035dac56beaf763d14a0dd5616ffeda41c987"></a>kAKTitleBackPosZ</em>&nbsp;</td><td class="fielddoc">
+<p>背景のz座標 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="abc5c98fcc1211af2b80116dd6e0a035da5c9de17da1dd22207ae32ebe71f9866f"></a>kAKTitleLogoPosZ</em>&nbsp;</td><td class="fielddoc">
+<p>タイトルロゴのz座標 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="abc5c98fcc1211af2b80116dd6e0a035dacaf64e92227f72c73b221145c4c4c2c4"></a>kAKTitleMenuPosZ</em>&nbsp;</td><td class="fielddoc">
+<p>メニュー項目のz座標 </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a class="anchor" id="ab04a0655cd1e3bcac5e8f48c18df1a57"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">anonymous enum</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>メニュー項目のタグ </p>
+<table class="fieldtable">
+<tr><th colspan="2">列挙型の値</th></tr><tr><td class="fieldname"><em><a class="anchor" id="ab04a0655cd1e3bcac5e8f48c18df1a57a3738dee6374513f586f4ad027f9c11d4"></a>kAKTitleMenuGame</em>&nbsp;</td><td class="fielddoc">
+<p>ゲーム開始ボタン </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="ab04a0655cd1e3bcac5e8f48c18df1a57a82aed3b01e1c3ff42544541079768612"></a>kAKTitleMenuHowTo</em>&nbsp;</td><td class="fielddoc">
+<p>遊び方ボタン </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="ab04a0655cd1e3bcac5e8f48c18df1a57af026dbd2722c690830045d264cb5e909"></a>kAKTitleMenuOption</em>&nbsp;</td><td class="fielddoc">
+<p>オプションボタン </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="ab04a0655cd1e3bcac5e8f48c18df1a57a2dacc6ac8041cf14d13b3f64add4cab9"></a>kAKTitleMenuCredit</em>&nbsp;</td><td class="fielddoc">
+<p>クレジットボタン </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="ab04a0655cd1e3bcac5e8f48c18df1a57a682fb368aa709bcb2085e15e6d1322fd"></a>kAKTitleMenuCount</em>&nbsp;</td><td class="fielddoc">
+<p>メニュー項目数 </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+傾撃に対してMon Feb 18 2013 15:51:04に生成されました。 &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.3
+</small></address>
+</body>
+</html>

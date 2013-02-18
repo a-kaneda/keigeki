@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.3"/>
+<title>傾撃: keigeki/AKCharacter.h ソースファイル</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Icon.png"/></td>
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">傾撃
+   &#160;<span id="projectnumber">1.0.0</span>
+   </div>
+   <div id="projectbrief">iPhoneを傾けて自機を操作するモノクロドット絵全方位シューティング</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 作成： Doxygen 1.8.3 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="annotated.html"><span>クラス</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>ファイルメンバ</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_e5f783dd576f4c70a6d8c8775f331588.html">keigeki</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">AKCharacter.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="_a_k_character_8h.html">説明を見る。</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Copyright (c) 2012-2013 Akihiro Kaneda.</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * All rights reserved.</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * Redistribution and use in source and binary forms, with or without</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * modification, are permitted provided that the following conditions are met:</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> *   1.Redistributions of source code must retain the above copyright notice,</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment"> *     this list of conditions and the following disclaimer.</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment"> *   2.Redistributions in binary form must reproduce the above copyright notice,</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment"> *     this list of conditions and the following disclaimer in the documentation</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment"> *     and/or other materials provided with the distribution.</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment"> *   3.Neither the name of the Monochrome Soft nor the names of its contributors</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment"> *     may be used to endorse or promote products derived from this software</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment"> *     without specific prior written permission.</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment"> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment"> * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment"> * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment"> * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment"> * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment"> * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment"> * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment"> * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment"> * POSSIBILITY OF SUCH DAMAGE.</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#import &lt;Foundation/Foundation.h&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#import &quot;cocos2d.h&quot;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">// キャラクタークラス</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="code" href="interface_a_k_character.html">   40</a></span>&#160;<span class="keyword">@interface </span><a class="code" href="interface_a_k_character.html" title="キャラクタークラス">AKCharacter</a> : NSObject {</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="code" href="interface_a_k_character.html#a5b7cbf52fdce8b477dbbadb56bdab2e7">   42</a></span>&#160;    CCNode *<a class="code" href="interface_a_k_character.html#a5b7cbf52fdce8b477dbbadb56bdab2e7" title="画像">image_</a>;</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="code" href="interface_a_k_character.html#a2a9aa851f36a49d4b52cc093c3efcdb9">   44</a></span>&#160;    NSInteger <a class="code" href="interface_a_k_character.html#a2a9aa851f36a49d4b52cc093c3efcdb9" title="当たり判定サイズ幅">width_</a>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="code" href="interface_a_k_character.html#a9951801ecc0bac4e074799180f8131c7">   46</a></span>&#160;    NSInteger <a class="code" href="interface_a_k_character.html#a9951801ecc0bac4e074799180f8131c7" title="当たり判定サイズ高さ">height_</a>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="code" href="interface_a_k_character.html#abed48b02b1d7fefad15fb19906f25324">   48</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="interface_a_k_character.html#abed48b02b1d7fefad15fb19906f25324" title="絶対座標x">absx_</a>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="code" href="interface_a_k_character.html#a39fecac40a17802fb845b049573bc7ea">   50</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="interface_a_k_character.html#a39fecac40a17802fb845b049573bc7ea" title="絶対座標y">absy_</a>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="code" href="interface_a_k_character.html#a4c3746b8098b7bb1616c8962e1bccfb3">   52</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="interface_a_k_character.html#a4c3746b8098b7bb1616c8962e1bccfb3" title="速度">speed_</a>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="code" href="interface_a_k_character.html#a325d444a3c64d83bb210e549a8a61ad9">   54</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="interface_a_k_character.html#a325d444a3c64d83bb210e549a8a61ad9" title="向き">angle_</a>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="code" href="interface_a_k_character.html#ab25178f2c7f7dc6f6ad49e704ab2e075">   56</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="interface_a_k_character.html#ab25178f2c7f7dc6f6ad49e704ab2e075" title="回転速度">rotSpeed_</a>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="code" href="interface_a_k_character.html#a7bed2b3d21a3f40248b77644bee9d60a">   58</a></span>&#160;    NSInteger <a class="code" href="interface_a_k_character.html#a7bed2b3d21a3f40248b77644bee9d60a" title="HP.">hitPoint_</a>;</div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="code" href="interface_a_k_character.html#abf0d921738797d998f0f19c03deaffd2">   60</a></span>&#160;    BOOL <a class="code" href="interface_a_k_character.html#abf0d921738797d998f0f19c03deaffd2" title="ステージ上に存在しているかどうか">isStaged_</a>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;}</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="code" href="interface_a_k_character.html#aecf83a9adf54507e0c0f8070b6e817c5">   64</a></span>&#160;<span class="keyword">@property</span> (nonatomic, retain)CCNode *image;</div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="code" href="interface_a_k_character.html#a214e4546ffdba13e06139c57c428f956">   66</a></span>&#160;<span class="keyword">@property</span> (nonatomic)NSInteger width;</div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="code" href="interface_a_k_character.html#a0be254b5ca5b66c8bba0789fed376b01">   68</a></span>&#160;<span class="keyword">@property</span> (nonatomic)NSInteger height;</div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="code" href="interface_a_k_character.html#a63e9f5b403b211e4ce7141eecec8c9ad">   70</a></span>&#160;<span class="keyword">@property</span> (nonatomic)<span class="keywordtype">float</span> absx;</div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="code" href="interface_a_k_character.html#abd62fa0741e065971fd5f02f3ef1fe4c">   72</a></span>&#160;<span class="keyword">@property</span> (nonatomic)<span class="keywordtype">float</span> absy;</div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="code" href="interface_a_k_character.html#afb45f8ef59a49213fd7dd29f68fa810d">   74</a></span>&#160;<span class="keyword">@property</span> (nonatomic)<span class="keywordtype">float</span> speed;</div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="code" href="interface_a_k_character.html#a945f5263caefdb4e712fd07f69613d6b">   76</a></span>&#160;<span class="keyword">@property</span> (nonatomic)<span class="keywordtype">float</span> angle;</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="code" href="interface_a_k_character.html#a60ea96bfd7b502456e5a9a7bfb2a8cb4">   78</a></span>&#160;<span class="keyword">@property</span> (nonatomic)<span class="keywordtype">float</span> rotSpeed;</div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="code" href="interface_a_k_character.html#ae971a98c6debec550be9aa93eae0a245">   80</a></span>&#160;<span class="keyword">@property</span> (nonatomic)NSInteger hitPoint;</div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="code" href="interface_a_k_character.html#a8f993aae340083d2800611351e8fafdc">   82</a></span>&#160;<span class="keyword">@property</span> (nonatomic)BOOL isStaged;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">// 移動処理</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;- (void)move:(ccTime)dt ScreenX:(NSInteger)scrx ScreenY:(NSInteger)scry;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">// キャラクター固有の動作</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;- (void)action:(ccTime)dt;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">// 破壊処理</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;- (void)destroy;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">// 衝突判定</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;- (void)hit:(const NSEnumerator *)characters;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keyword">@end</span></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+傾撃に対してMon Feb 18 2013 15:51:04に生成されました。 &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.3
+</small></address>
+</body>
+</html>

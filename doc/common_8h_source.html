@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<title>傾撃: /Users/kaneda/Dropbox/src/keigeki/keigeki/common.h ソースファイル</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">傾撃
+   &#160;<span id="projectnumber">1.0.0</span>
+   </div>
+   <div id="projectbrief">3Dシューティング風2Dシューティング</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 作成： Doxygen 1.8.2 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="annotated.html"><span>クラス</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>ファイルメンバ</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_090764e81a2f033cb65308e4a53f3f79.html">keigeki</a></li><li class="navelem"><a class="el" href="dir_bf56912da8a7665c809f9029c5938de7.html">keigeki</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">common.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="common_8h.html">説明を見る。</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#ifndef keigeki_common_h</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define keigeki_common_h</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#import &lt;Foundation/Foundation.h&gt;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="code" href="common_8h.html#a2cd109632a6dcccaa80b43561b1ab700">   14</a></span>&#160;<span class="preprocessor">#define SCREEN_WIDTH 480</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="code" href="common_8h.html#a6974d08a74da681b3957b2fead2608b8">   16</a></span>&#160;<span class="preprocessor">#define SCREEN_HEIGHT 320</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor"></span><span class="comment">// &lt;注意&gt; ループ時に背景が飛ばないようにステージサイズは背景のサイズの倍数とすること。</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="code" href="common_8h.html#a3e6e41bb808d99b0846c86921e7e71ea">   19</a></span>&#160;<span class="comment"></span><span class="preprocessor">#define STAGE_WIDTH SCREEN_WIDTH * 8</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="code" href="common_8h.html#a38376d615cf60c53b61e42d81b1496d1">   21</a></span>&#160;<span class="preprocessor">#define STAGE_HEIGHT SCREEN_HEIGHT * 8</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="code" href="common_8h.html#ad322869c46d53754092dd5391bc8af77">   23</a></span>&#160;<span class="preprocessor">#define PLAYER_POS_X    (SCREEN_WIDTH / 2)</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="code" href="common_8h.html#a23e4a20c724cefdd69b13c2826a8c12f">   25</a></span>&#160;<span class="preprocessor">#define PLAYER_POS_Y    (SCREEN_HEIGHT / 8)</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="code" href="common_8h.html#a61a0193997f8bfbffdf7594a5396ff46">   27</a></span>&#160;<span class="preprocessor">#define STAGE_COUNT 5</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="code" href="common_8h.html#a6c06410d109475bbc7bc6437acd92445">   29</a></span>&#160;<span class="preprocessor">#define MAX_ENEMY_COUNT 16</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#ifdef DEBUG</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#define DBGLOG(cond, fmt, ...) if (cond) NSLog(@&quot;%s(%d) &quot; fmt, __FUNCTION__, __LINE__, ## __VA_ARGS__)</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="code" href="common_8h.html#ab76819fd064e5143a615361aebfd9a78">   48</a></span>&#160;<span class="preprocessor">#define DBGLOG(cond, fmt, ...)</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">// 範囲チェック</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keywordtype">float</span> <a class="code" href="common_8h.html#aba350e34dbb41e7a4843b4b6f3628038" title="範囲チェック(ループ、 実数)">AKRangeCheckLF</a>(<span class="keywordtype">float</span> val, <span class="keywordtype">float</span> min, <span class="keywordtype">float</span> max);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordtype">float</span> <a class="code" href="common_8h.html#a5f6c6d22e5dcbd1cf8812a12f554e9b1" title="範囲チェック(実数)">AKRangeCheckF</a>(<span class="keywordtype">float</span> val, <span class="keywordtype">float</span> min, <span class="keywordtype">float</span> max);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// 角度変換</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keywordtype">float</span> <a class="code" href="common_8h.html#acb7a41106190289578ba764ac8dcadef" title="rad角度からdeg角度への変換">AKCnvAngleRad2Deg</a>(<span class="keywordtype">float</span> radAngle);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keywordtype">float</span> <a class="code" href="common_8h.html#a81686f48984b05ce9ef0d77399b08ca0" title="rad角度からスクリーン角度への変換">AKCnvAngleRad2Scr</a>(<span class="keywordtype">float</span> radAngle);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">// 2点間の角度計算</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keywordtype">float</span> <a class="code" href="common_8h.html#a0d9cb42da33ad7d1b10115f4c8242b9c" title="2点間の角度計算">AKCalcDestAngle</a>(<span class="keywordtype">float</span> srcx, <span class="keywordtype">float</span> srcy, <span class="keywordtype">float</span> dstx, <span class="keywordtype">float</span> dsty);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">// 回転方向の計算</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keywordtype">int</span> <a class="code" href="common_8h.html#ad194ce14c66dbd38942259bdfa079548" title="回転方向の計算">AKCalcRotDirect</a>(<span class="keywordtype">float</span> angle, <span class="keywordtype">float</span> srcx, <span class="keywordtype">float</span> srcy, <span class="keywordtype">float</span> dstx, <span class="keywordtype">float</span> dsty);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#endif</span></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+傾撃に対してSat Aug 18 2012 15:47:30に生成されました。 &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.2
+</small></address>
+</body>
+</html>

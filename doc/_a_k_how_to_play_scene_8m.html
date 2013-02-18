@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.3"/>
+<title>傾撃: keigeki/AKHowToPlayScene.m</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Icon.png"/></td>
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">傾撃
+   &#160;<span id="projectnumber">1.0.0</span>
+   </div>
+   <div id="projectbrief">iPhoneを傾けて自機を操作するモノクロドット絵全方位シューティング</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 作成： Doxygen 1.8.3 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="annotated.html"><span>クラス</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>ファイルメンバ</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_e5f783dd576f4c70a6d8c8775f331588.html">keigeki</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#enum-members">列挙型</a>  </div>
+  <div class="headertitle">
+<div class="title">AKHowToPlayScene.m</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>プレイ方法画面シーンクラスの定義  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#import &quot;<a class="el" href="_a_k_how_to_play_scene_8h_source.html">AKHowToPlayScene.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_common_8h_source.html">AKCommon.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_title_scene_8h_source.html">AKTitleScene.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_screen_size_8h_source.html">AKScreenSize.h</a>&quot;</code><br/>
+<code>#import &quot;SimpleAudioEngine.h&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_in_app_purchase_helper_8h_source.html">AKInAppPurchaseHelper.h</a>&quot;</code><br/>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+列挙型</h2></td></tr>
+<tr class="memitem:adc29c2ff13d900c2f185ee95427fb06c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="_a_k_how_to_play_scene_8m.html#adc29c2ff13d900c2f185ee95427fb06ca1376e0ea0b222e33454ef0e3f267d160">kAKHowToBackPosZ</a> = 0, 
+<a class="el" href="_a_k_how_to_play_scene_8m.html#adc29c2ff13d900c2f185ee95427fb06ca1c6a36cf4764ecbe26ba64369a9cb2ad">kAKHowToItemPosZ</a>, 
+<a class="el" href="_a_k_how_to_play_scene_8m.html#adc29c2ff13d900c2f185ee95427fb06cabb03bbde1898727519843887d57b9a45">kAKHowToInterface</a>
+ }</td></tr>
+<tr class="separator:adc29c2ff13d900c2f185ee95427fb06c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61dadd085c1777f559549e05962b2c9e"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="_a_k_how_to_play_scene_8m.html#a61dadd085c1777f559549e05962b2c9eac95a7c9aee68ac5d513fe7813ce8a3fe">kAKHowToIntarfeceTag</a> = 0, 
+<a class="el" href="_a_k_how_to_play_scene_8m.html#a61dadd085c1777f559549e05962b2c9ea9184581e1503378a3b20c609c4bbd5f3">kAKHowToImageTag</a>, 
+<a class="el" href="_a_k_how_to_play_scene_8m.html#a61dadd085c1777f559549e05962b2c9eadd9e499a83cbcf86a0cb841f26121707">kAKHowToMessageTag</a>, 
+<a class="el" href="_a_k_how_to_play_scene_8m.html#a61dadd085c1777f559549e05962b2c9ea0fc926321692504587d2c0a4b9ade676">kAKHowToPageTag</a>
+ }</td></tr>
+<tr class="separator:a61dadd085c1777f559549e05962b2c9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">説明</h2>
+<div class="textblock"><p>プレイ方法画面シーンクラスの定義 </p>
+<p>プレイ方法画面シーンクラスを定義する。 </p>
+</div><h2 class="groupheader">列挙型</h2>
+<a class="anchor" id="adc29c2ff13d900c2f185ee95427fb06c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">anonymous enum</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">列挙型の値</th></tr><tr><td class="fieldname"><em><a class="anchor" id="adc29c2ff13d900c2f185ee95427fb06ca1376e0ea0b222e33454ef0e3f267d160"></a>kAKHowToBackPosZ</em>&nbsp;</td><td class="fielddoc">
+<p>背景のz座標 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="adc29c2ff13d900c2f185ee95427fb06ca1c6a36cf4764ecbe26ba64369a9cb2ad"></a>kAKHowToItemPosZ</em>&nbsp;</td><td class="fielddoc">
+<p>背景以外のz座標 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="adc29c2ff13d900c2f185ee95427fb06cabb03bbde1898727519843887d57b9a45"></a>kAKHowToInterface</em>&nbsp;</td><td class="fielddoc">
+<p>インターフェースのz座標 </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a class="anchor" id="a61dadd085c1777f559549e05962b2c9e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">anonymous enum</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">列挙型の値</th></tr><tr><td class="fieldname"><em><a class="anchor" id="a61dadd085c1777f559549e05962b2c9eac95a7c9aee68ac5d513fe7813ce8a3fe"></a>kAKHowToIntarfeceTag</em>&nbsp;</td><td class="fielddoc">
+<p>インターフェースのタグ </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a61dadd085c1777f559549e05962b2c9ea9184581e1503378a3b20c609c4bbd5f3"></a>kAKHowToImageTag</em>&nbsp;</td><td class="fielddoc">
+<p>説明画像のタグ </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a61dadd085c1777f559549e05962b2c9eadd9e499a83cbcf86a0cb841f26121707"></a>kAKHowToMessageTag</em>&nbsp;</td><td class="fielddoc">
+<p>メッセージのタグ </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a61dadd085c1777f559549e05962b2c9ea0fc926321692504587d2c0a4b9ade676"></a>kAKHowToPageTag</em>&nbsp;</td><td class="fielddoc">
+<p>ページ番号のタグ </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+傾撃に対してMon Feb 18 2013 15:51:04に生成されました。 &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.3
+</small></address>
+</body>
+</html>

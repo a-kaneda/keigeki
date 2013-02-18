@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.3"/>
+<title>傾撃: keigeki/AKResultLayer.m</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Icon.png"/></td>
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">傾撃
+   &#160;<span id="projectnumber">1.0.0</span>
+   </div>
+   <div id="projectbrief">iPhoneを傾けて自機を操作するモノクロドット絵全方位シューティング</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 作成： Doxygen 1.8.3 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="annotated.html"><span>クラス</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>ファイルメンバ</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_e5f783dd576f4c70a6d8c8775f331588.html">keigeki</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#define-members">マクロ定義</a> &#124;
+<a href="#enum-members">列挙型</a>  </div>
+  <div class="headertitle">
+<div class="title">AKResultLayer.m</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>ステージクリア結果レイヤー  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#import &quot;<a class="el" href="_a_k_result_layer_8h_source.html">AKResultLayer.h</a>&quot;</code><br/>
+<code>#import &quot;SimpleAudioEngine.h&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_game_scene_8h_source.html">AKGameScene.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_label_8h_source.html">AKLabel.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_screen_size_8h_source.html">AKScreenSize.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_common_8h_source.html">AKCommon.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_game_center_helper_8h_source.html">AKGameCenterHelper.h</a>&quot;</code><br/>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+マクロ定義</h2></td></tr>
+<tr class="memitem:a5a52b8ad84c915ca4da11f50424f59c6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5a52b8ad84c915ca4da11f50424f59c6"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_result_layer_8m.html#a5a52b8ad84c915ca4da11f50424f59c6">kAKCaptionPosX</a>&#160;&#160;&#160;60</td></tr>
+<tr class="memdesc:a5a52b8ad84c915ca4da11f50424f59c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">キャプション位置x座標 <br/></td></tr>
+<tr class="separator:a5a52b8ad84c915ca4da11f50424f59c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ab46513714a317ef4e1a1100bb68024"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5ab46513714a317ef4e1a1100bb68024"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_result_layer_8m.html#a5ab46513714a317ef4e1a1100bb68024">kAKValuePosX</a>&#160;&#160;&#160;(<a class="el" href="_a_k_result_layer_8m.html#a5a52b8ad84c915ca4da11f50424f59c6">kAKCaptionPosX</a> + 96)</td></tr>
+<tr class="memdesc:a5ab46513714a317ef4e1a1100bb68024"><td class="mdescLeft">&#160;</td><td class="mdescRight">値位置x座標 <br/></td></tr>
+<tr class="separator:a5ab46513714a317ef4e1a1100bb68024"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bb35f2a048a2ebcae96496040b304ba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6bb35f2a048a2ebcae96496040b304ba"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_result_layer_8m.html#a6bb35f2a048a2ebcae96496040b304ba">kAKBonusPosX</a>&#160;&#160;&#160;(<a class="el" href="_a_k_result_layer_8m.html#a5ab46513714a317ef4e1a1100bb68024">kAKValuePosX</a> + 144)</td></tr>
+<tr class="memdesc:a6bb35f2a048a2ebcae96496040b304ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">ボーナス位置x座標 <br/></td></tr>
+<tr class="separator:a6bb35f2a048a2ebcae96496040b304ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a082420ec0f25c307d393d293a172c394"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a082420ec0f25c307d393d293a172c394"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_result_layer_8m.html#a082420ec0f25c307d393d293a172c394">kAKTimePosY</a>&#160;&#160;&#160;180</td></tr>
+<tr class="memdesc:a082420ec0f25c307d393d293a172c394"><td class="mdescLeft">&#160;</td><td class="mdescRight">タイム位置y座標 <br/></td></tr>
+<tr class="separator:a082420ec0f25c307d393d293a172c394"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f5ecade2c08c7e1578b4d0c22cee6f6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2f5ecade2c08c7e1578b4d0c22cee6f6"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_result_layer_8m.html#a2f5ecade2c08c7e1578b4d0c22cee6f6">kAKHitPosY</a>&#160;&#160;&#160;(<a class="el" href="_a_k_result_layer_8m.html#a082420ec0f25c307d393d293a172c394">kAKTimePosY</a> - 20)</td></tr>
+<tr class="memdesc:a2f5ecade2c08c7e1578b4d0c22cee6f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">命中率位置y座標 <br/></td></tr>
+<tr class="separator:a2f5ecade2c08c7e1578b4d0c22cee6f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e8d91b2bb4ccad6281ceb7fb81169a5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7e8d91b2bb4ccad6281ceb7fb81169a5"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_result_layer_8m.html#a7e8d91b2bb4ccad6281ceb7fb81169a5">kAKRestPosY</a>&#160;&#160;&#160;(<a class="el" href="_a_k_result_layer_8m.html#a2f5ecade2c08c7e1578b4d0c22cee6f6">kAKHitPosY</a> - 20)</td></tr>
+<tr class="memdesc:a7e8d91b2bb4ccad6281ceb7fb81169a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">残機位置y座標 <br/></td></tr>
+<tr class="separator:a7e8d91b2bb4ccad6281ceb7fb81169a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d81a4df35dc08a9715e35670b559672"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3d81a4df35dc08a9715e35670b559672"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_result_layer_8m.html#a3d81a4df35dc08a9715e35670b559672">kAKScorePosY</a>&#160;&#160;&#160;(<a class="el" href="_a_k_result_layer_8m.html#a7e8d91b2bb4ccad6281ceb7fb81169a5">kAKRestPosY</a> - 20)</td></tr>
+<tr class="memdesc:a3d81a4df35dc08a9715e35670b559672"><td class="mdescLeft">&#160;</td><td class="mdescRight">スコア位置y座標 <br/></td></tr>
+<tr class="separator:a3d81a4df35dc08a9715e35670b559672"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+列挙型</h2></td></tr>
+<tr class="memitem:abed82baf7f470b522273a3e37c24c600"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <br/>
+&#160;&#160;<a class="el" href="_a_k_result_layer_8m.html#abed82baf7f470b522273a3e37c24c600ab8d889af0f828741008266aedf04d9b9">kAKTimeNumTag</a> = 0, 
+<a class="el" href="_a_k_result_layer_8m.html#abed82baf7f470b522273a3e37c24c600af2419c02e47db65c6b9ed2b4f2a0b2b8">kAKTimeBonusTag</a>, 
+<a class="el" href="_a_k_result_layer_8m.html#abed82baf7f470b522273a3e37c24c600abb236d6b09930d822450e6d667bd4945">kAKHitNumTag</a>, 
+<a class="el" href="_a_k_result_layer_8m.html#abed82baf7f470b522273a3e37c24c600ab19f5e2ea79f448d7b2fd23a3131edac">kAKHitBonusTag</a>, 
+<br/>
+&#160;&#160;<a class="el" href="_a_k_result_layer_8m.html#abed82baf7f470b522273a3e37c24c600a0e0c900728005371aa3b6d598e498ef3">kAKRestNumTag</a>, 
+<a class="el" href="_a_k_result_layer_8m.html#abed82baf7f470b522273a3e37c24c600a510eb0deb75619c2a49501a377f60301">kAKRestBonusTag</a>, 
+<a class="el" href="_a_k_result_layer_8m.html#abed82baf7f470b522273a3e37c24c600a28bc8c8f2cdc4ed270ac74d1d9446744">kAKScoreNumTag</a>
+<br/>
+ }</td></tr>
+<tr class="memdesc:abed82baf7f470b522273a3e37c24c600"><td class="mdescLeft">&#160;</td><td class="mdescRight">ラベルのタグ  <a href="_a_k_result_layer_8m.html#abed82baf7f470b522273a3e37c24c600">[詳細]</a><br/></td></tr>
+<tr class="separator:abed82baf7f470b522273a3e37c24c600"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">説明</h2>
+<div class="textblock"><p>ステージクリア結果レイヤー </p>
+<p>ステージクリア結果画面のレイヤーを定義する。 </p>
+</div><h2 class="groupheader">列挙型</h2>
+<a class="anchor" id="abed82baf7f470b522273a3e37c24c600"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">anonymous enum</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ラベルのタグ </p>
+<table class="fieldtable">
+<tr><th colspan="2">列挙型の値</th></tr><tr><td class="fieldname"><em><a class="anchor" id="abed82baf7f470b522273a3e37c24c600ab8d889af0f828741008266aedf04d9b9"></a>kAKTimeNumTag</em>&nbsp;</td><td class="fielddoc">
+<p>タイムラベルのタグ </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="abed82baf7f470b522273a3e37c24c600af2419c02e47db65c6b9ed2b4f2a0b2b8"></a>kAKTimeBonusTag</em>&nbsp;</td><td class="fielddoc">
+<p>タイムボーナスラベルのタグ </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="abed82baf7f470b522273a3e37c24c600abb236d6b09930d822450e6d667bd4945"></a>kAKHitNumTag</em>&nbsp;</td><td class="fielddoc">
+<p>命中率ラベルのタグ </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="abed82baf7f470b522273a3e37c24c600ab19f5e2ea79f448d7b2fd23a3131edac"></a>kAKHitBonusTag</em>&nbsp;</td><td class="fielddoc">
+<p>命中率ボーナスラベルのタブ </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="abed82baf7f470b522273a3e37c24c600a0e0c900728005371aa3b6d598e498ef3"></a>kAKRestNumTag</em>&nbsp;</td><td class="fielddoc">
+<p>残機ラベルのタグ </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="abed82baf7f470b522273a3e37c24c600a510eb0deb75619c2a49501a377f60301"></a>kAKRestBonusTag</em>&nbsp;</td><td class="fielddoc">
+<p>残機ボーナスラベルのタグ </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="abed82baf7f470b522273a3e37c24c600a28bc8c8f2cdc4ed270ac74d1d9446744"></a>kAKScoreNumTag</em>&nbsp;</td><td class="fielddoc">
+<p>スコアラベルのタグ </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+傾撃に対してMon Feb 18 2013 15:51:04に生成されました。 &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.3
+</small></address>
+</body>
+</html>

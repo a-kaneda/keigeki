@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.3"/>
+<title>傾撃: keigeki/AKGameScene.m</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Icon.png"/></td>
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">傾撃
+   &#160;<span id="projectnumber">1.0.0</span>
+   </div>
+   <div id="projectbrief">iPhoneを傾けて自機を操作するモノクロドット絵全方位シューティング</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 作成： Doxygen 1.8.3 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="annotated.html"><span>クラス</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>ファイルメンバ</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_e5f783dd576f4c70a6d8c8775f331588.html">keigeki</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#enum-members">列挙型</a>  </div>
+  <div class="headertitle">
+<div class="title">AKGameScene.m</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>ゲームプレイシーンクラス定義  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#import &quot;<a class="el" href="_a_k_game_scene_8h_source.html">AKGameScene.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_game_i_f_layer_8h_source.html">AKGameIFLayer.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_player_shot_8h_source.html">AKPlayerShot.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_enemy_8h_source.html">AKEnemy.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_enemy_shot_8h_source.html">AKEnemyShot.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_effect_8h_source.html">AKEffect.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_hi_score_file_8h_source.html">AKHiScoreFile.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_result_layer_8h_source.html">AKResultLayer.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_label_8h_source.html">AKLabel.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_title_scene_8h_source.html">AKTitleScene.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_screen_size_8h_source.html">AKScreenSize.h</a>&quot;</code><br/>
+<code>#import &quot;SimpleAudioEngine.h&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_game_center_helper_8h_source.html">AKGameCenterHelper.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_twitter_helper_8h_source.html">AKTwitterHelper.h</a>&quot;</code><br/>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+列挙型</h2></td></tr>
+<tr class="memitem:adf764cbdea00d65edcd07bb9953ad2b7"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <br/>
+&#160;&#160;<a class="el" href="_a_k_game_scene_8m.html#adf764cbdea00d65edcd07bb9953ad2b7a92ca271bce4c0a94071cd434758b0741">kAKInfoTagStageClear</a> = 0, 
+<a class="el" href="_a_k_game_scene_8m.html#adf764cbdea00d65edcd07bb9953ad2b7a68df6ee880eba438afd9a04d7b4ba7e9">kAKInfoTagGameClear</a>, 
+<a class="el" href="_a_k_game_scene_8m.html#adf764cbdea00d65edcd07bb9953ad2b7a0f6cc3097e6557e8b4918802582dc319">kAKInfoTagScore</a>, 
+<a class="el" href="_a_k_game_scene_8m.html#adf764cbdea00d65edcd07bb9953ad2b7afab2164d91aab88a0d63851a06f24b57">kAKInfoTagHiScore</a>, 
+<br/>
+&#160;&#160;<a class="el" href="_a_k_game_scene_8m.html#adf764cbdea00d65edcd07bb9953ad2b7ace7c946f4f1ffef45430c5b3703f40a2">kAKInfoTagWaveNo</a>, 
+<a class="el" href="_a_k_game_scene_8m.html#adf764cbdea00d65edcd07bb9953ad2b7a56f07d4ea75aee2e4ae1f2042827ddd2">kAKInfoTagHit</a>, 
+<a class="el" href="_a_k_game_scene_8m.html#adf764cbdea00d65edcd07bb9953ad2b7a20d7362a7b4763afff6f6cde92c357be">kAKInfoTagTime</a>
+<br/>
+ }</td></tr>
+<tr class="memdesc:adf764cbdea00d65edcd07bb9953ad2b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">情報レイヤーに配置するノードのタグ  <a href="_a_k_game_scene_8m.html#adf764cbdea00d65edcd07bb9953ad2b7">[詳細]</a><br/></td></tr>
+<tr class="separator:adf764cbdea00d65edcd07bb9953ad2b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99fb83031ce9923c84392b4e92f956b5"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="_a_k_game_scene_8m.html#a99fb83031ce9923c84392b4e92f956b5a5d73d389515d169498f49c0d94dcc8fb">kAKLayerPosZBase</a> = 0, 
+<a class="el" href="_a_k_game_scene_8m.html#a99fb83031ce9923c84392b4e92f956b5aa88c6406c3a4b8c75c7db77918be7523">kAKLayerPosZInfo</a>, 
+<a class="el" href="_a_k_game_scene_8m.html#a99fb83031ce9923c84392b4e92f956b5a3f7c820db38a8ea63bb92af8b40056e5">kAKLayerPosZResult</a>, 
+<a class="el" href="_a_k_game_scene_8m.html#a99fb83031ce9923c84392b4e92f956b5a4db82623121c4a4d2f991808111a3dc9">kAKLayerPosZInterface</a>
+ }</td></tr>
+<tr class="memdesc:a99fb83031ce9923c84392b4e92f956b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">レイヤーのz座標、タグの値にも使用する  <a href="_a_k_game_scene_8m.html#a99fb83031ce9923c84392b4e92f956b5">[詳細]</a><br/></td></tr>
+<tr class="separator:a99fb83031ce9923c84392b4e92f956b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc6126af1d45847bc59afa0aa3216b04"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <br/>
+&#160;&#160;<a class="el" href="_a_k_game_scene_8m.html#abc6126af1d45847bc59afa0aa3216b04a7e0a8a1e16d1b19e57b747f4738f0363">kAKCharaPosZBackground</a> = 0, 
+<a class="el" href="_a_k_game_scene_8m.html#abc6126af1d45847bc59afa0aa3216b04ac5272f8f8959bb1c1012f8780f6f07cb">kAKCharaPosZPlayer</a>, 
+<a class="el" href="_a_k_game_scene_8m.html#abc6126af1d45847bc59afa0aa3216b04ad15ef5e61ccd918d4b1ecc3f2a10d9e7">kAKCharaPosZEnemy</a>, 
+<a class="el" href="_a_k_game_scene_8m.html#abc6126af1d45847bc59afa0aa3216b04a38dd972c99f1882c99f55076f179f025">kAKCharaPosZPlayerShot</a>, 
+<br/>
+&#160;&#160;<a class="el" href="_a_k_game_scene_8m.html#abc6126af1d45847bc59afa0aa3216b04a4476180d2750d3c5857c426b84ace2bd">kAKCharaPosZEnemyShot</a>, 
+<a class="el" href="_a_k_game_scene_8m.html#abc6126af1d45847bc59afa0aa3216b04ab192095d549225c84595c777792ef95d">kAKCharaPosZEffect</a>
+<br/>
+ }</td></tr>
+<tr class="memdesc:abc6126af1d45847bc59afa0aa3216b04"><td class="mdescLeft">&#160;</td><td class="mdescRight">キャラクターのz座標  <a href="_a_k_game_scene_8m.html#abc6126af1d45847bc59afa0aa3216b04">[詳細]</a><br/></td></tr>
+<tr class="separator:abc6126af1d45847bc59afa0aa3216b04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">説明</h2>
+<div class="textblock"><p>ゲームプレイシーンクラス定義 </p>
+<p>ゲームプレイのメインのシーンを管理するクラスを定義する。 </p>
+</div><h2 class="groupheader">列挙型</h2>
+<a class="anchor" id="adf764cbdea00d65edcd07bb9953ad2b7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">anonymous enum</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>情報レイヤーに配置するノードのタグ </p>
+<table class="fieldtable">
+<tr><th colspan="2">列挙型の値</th></tr><tr><td class="fieldname"><em><a class="anchor" id="adf764cbdea00d65edcd07bb9953ad2b7a92ca271bce4c0a94071cd434758b0741"></a>kAKInfoTagStageClear</em>&nbsp;</td><td class="fielddoc">
+<p>ステージクリア </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="adf764cbdea00d65edcd07bb9953ad2b7a68df6ee880eba438afd9a04d7b4ba7e9"></a>kAKInfoTagGameClear</em>&nbsp;</td><td class="fielddoc">
+<p>ゲームクリア </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="adf764cbdea00d65edcd07bb9953ad2b7a0f6cc3097e6557e8b4918802582dc319"></a>kAKInfoTagScore</em>&nbsp;</td><td class="fielddoc">
+<p>スコア </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="adf764cbdea00d65edcd07bb9953ad2b7afab2164d91aab88a0d63851a06f24b57"></a>kAKInfoTagHiScore</em>&nbsp;</td><td class="fielddoc">
+<p>ハイスコア </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="adf764cbdea00d65edcd07bb9953ad2b7ace7c946f4f1ffef45430c5b3703f40a2"></a>kAKInfoTagWaveNo</em>&nbsp;</td><td class="fielddoc">
+<p>Wave番号 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="adf764cbdea00d65edcd07bb9953ad2b7a56f07d4ea75aee2e4ae1f2042827ddd2"></a>kAKInfoTagHit</em>&nbsp;</td><td class="fielddoc">
+<p>命中率 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="adf764cbdea00d65edcd07bb9953ad2b7a20d7362a7b4763afff6f6cde92c357be"></a>kAKInfoTagTime</em>&nbsp;</td><td class="fielddoc">
+<p>プレイ時間 </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a class="anchor" id="a99fb83031ce9923c84392b4e92f956b5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">anonymous enum</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>レイヤーのz座標、タグの値にも使用する </p>
+<table class="fieldtable">
+<tr><th colspan="2">列挙型の値</th></tr><tr><td class="fieldname"><em><a class="anchor" id="a99fb83031ce9923c84392b4e92f956b5a5d73d389515d169498f49c0d94dcc8fb"></a>kAKLayerPosZBase</em>&nbsp;</td><td class="fielddoc">
+<p>ベースレイヤー </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a99fb83031ce9923c84392b4e92f956b5aa88c6406c3a4b8c75c7db77918be7523"></a>kAKLayerPosZInfo</em>&nbsp;</td><td class="fielddoc">
+<p>情報レイヤー </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a99fb83031ce9923c84392b4e92f956b5a3f7c820db38a8ea63bb92af8b40056e5"></a>kAKLayerPosZResult</em>&nbsp;</td><td class="fielddoc">
+<p>ステージクリアレイヤー </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a99fb83031ce9923c84392b4e92f956b5a4db82623121c4a4d2f991808111a3dc9"></a>kAKLayerPosZInterface</em>&nbsp;</td><td class="fielddoc">
+<p>インターフェースレイヤー </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a class="anchor" id="abc6126af1d45847bc59afa0aa3216b04"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">anonymous enum</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>キャラクターのz座標 </p>
+<table class="fieldtable">
+<tr><th colspan="2">列挙型の値</th></tr><tr><td class="fieldname"><em><a class="anchor" id="abc6126af1d45847bc59afa0aa3216b04a7e0a8a1e16d1b19e57b747f4738f0363"></a>kAKCharaPosZBackground</em>&nbsp;</td><td class="fielddoc">
+<p>背景 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="abc6126af1d45847bc59afa0aa3216b04ac5272f8f8959bb1c1012f8780f6f07cb"></a>kAKCharaPosZPlayer</em>&nbsp;</td><td class="fielddoc">
+<p>自機 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="abc6126af1d45847bc59afa0aa3216b04ad15ef5e61ccd918d4b1ecc3f2a10d9e7"></a>kAKCharaPosZEnemy</em>&nbsp;</td><td class="fielddoc">
+<p>敵 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="abc6126af1d45847bc59afa0aa3216b04a38dd972c99f1882c99f55076f179f025"></a>kAKCharaPosZPlayerShot</em>&nbsp;</td><td class="fielddoc">
+<p>自機弾 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="abc6126af1d45847bc59afa0aa3216b04a4476180d2750d3c5857c426b84ace2bd"></a>kAKCharaPosZEnemyShot</em>&nbsp;</td><td class="fielddoc">
+<p>敵弾 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="abc6126af1d45847bc59afa0aa3216b04ab192095d549225c84595c777792ef95d"></a>kAKCharaPosZEffect</em>&nbsp;</td><td class="fielddoc">
+<p>画面効果 </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+傾撃に対してMon Feb 18 2013 15:51:04に生成されました。 &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.3
+</small></address>
+</body>
+</html>

@@ -1,0 +1,605 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.3"/>
+<title>傾撃: keigeki/AKCommon.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Icon.png"/></td>
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">傾撃
+   &#160;<span id="projectnumber">1.0.0</span>
+   </div>
+   <div id="projectbrief">iPhoneを傾けて自機を操作するモノクロドット絵全方位シューティング</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 作成： Doxygen 1.8.3 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="annotated.html"><span>クラス</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>ファイルメンバ</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_e5f783dd576f4c70a6d8c8775f331588.html">keigeki</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#define-members">マクロ定義</a> &#124;
+<a href="#func-members">関数</a> &#124;
+<a href="#var-members">変数</a>  </div>
+  <div class="headertitle">
+<div class="title">AKCommon.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>共通関数、共通定数定義  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#import &lt;Foundation/Foundation.h&gt;</code><br/>
+<code>#import &quot;cocos2d.h&quot;</code><br/>
+</div>
+<p><a href="_a_k_common_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+マクロ定義</h2></td></tr>
+<tr class="memitem:afbbb8b2613d43429492e05164af8bd2e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_common_8h.html#afbbb8b2613d43429492e05164af8bd2e">AKLog</a>(cond, fmt,...)</td></tr>
+<tr class="memdesc:afbbb8b2613d43429492e05164af8bd2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">デバッグログ  <a href="#afbbb8b2613d43429492e05164af8bd2e"></a><br/></td></tr>
+<tr class="separator:afbbb8b2613d43429492e05164af8bd2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+関数</h2></td></tr>
+<tr class="memitem:aba350e34dbb41e7a4843b4b6f3628038"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_common_8h.html#aba350e34dbb41e7a4843b4b6f3628038">AKRangeCheckLF</a> (float val, float min, float max)</td></tr>
+<tr class="memdesc:aba350e34dbb41e7a4843b4b6f3628038"><td class="mdescLeft">&#160;</td><td class="mdescRight">範囲チェック(ループ、 実数)  <a href="#aba350e34dbb41e7a4843b4b6f3628038"></a><br/></td></tr>
+<tr class="separator:aba350e34dbb41e7a4843b4b6f3628038"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f6c6d22e5dcbd1cf8812a12f554e9b1"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_common_8h.html#a5f6c6d22e5dcbd1cf8812a12f554e9b1">AKRangeCheckF</a> (float val, float min, float max)</td></tr>
+<tr class="memdesc:a5f6c6d22e5dcbd1cf8812a12f554e9b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">範囲チェック(実数)  <a href="#a5f6c6d22e5dcbd1cf8812a12f554e9b1"></a><br/></td></tr>
+<tr class="separator:a5f6c6d22e5dcbd1cf8812a12f554e9b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb7a41106190289578ba764ac8dcadef"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_common_8h.html#acb7a41106190289578ba764ac8dcadef">AKCnvAngleRad2Deg</a> (float radAngle)</td></tr>
+<tr class="memdesc:acb7a41106190289578ba764ac8dcadef"><td class="mdescLeft">&#160;</td><td class="mdescRight">rad角度からdeg角度への変換  <a href="#acb7a41106190289578ba764ac8dcadef"></a><br/></td></tr>
+<tr class="separator:acb7a41106190289578ba764ac8dcadef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81686f48984b05ce9ef0d77399b08ca0"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_common_8h.html#a81686f48984b05ce9ef0d77399b08ca0">AKCnvAngleRad2Scr</a> (float radAngle)</td></tr>
+<tr class="memdesc:a81686f48984b05ce9ef0d77399b08ca0"><td class="mdescLeft">&#160;</td><td class="mdescRight">rad角度からスクリーン角度への変換  <a href="#a81686f48984b05ce9ef0d77399b08ca0"></a><br/></td></tr>
+<tr class="separator:a81686f48984b05ce9ef0d77399b08ca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d9cb42da33ad7d1b10115f4c8242b9c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_common_8h.html#a0d9cb42da33ad7d1b10115f4c8242b9c">AKCalcDestAngle</a> (float srcx, float srcy, float dstx, float dsty)</td></tr>
+<tr class="memdesc:a0d9cb42da33ad7d1b10115f4c8242b9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">2点間の角度計算  <a href="#a0d9cb42da33ad7d1b10115f4c8242b9c"></a><br/></td></tr>
+<tr class="separator:a0d9cb42da33ad7d1b10115f4c8242b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad194ce14c66dbd38942259bdfa079548"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_common_8h.html#ad194ce14c66dbd38942259bdfa079548">AKCalcRotDirect</a> (float angle, float srcx, float srcy, float dstx, float dsty)</td></tr>
+<tr class="memdesc:ad194ce14c66dbd38942259bdfa079548"><td class="mdescLeft">&#160;</td><td class="mdescRight">回転方向の計算  <a href="#ad194ce14c66dbd38942259bdfa079548"></a><br/></td></tr>
+<tr class="separator:ad194ce14c66dbd38942259bdfa079548"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7525062af2743d9fe8c8673acce9b49"><td class="memItemLeft" align="right" valign="top">NSArray *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_common_8h.html#af7525062af2743d9fe8c8673acce9b49">AKCalcNWayAngle</a> (int count, float centerAngle, float space)</td></tr>
+<tr class="memdesc:af7525062af2743d9fe8c8673acce9b49"><td class="mdescLeft">&#160;</td><td class="mdescRight">n-way弾発射時の方向計算  <a href="#af7525062af2743d9fe8c8673acce9b49"></a><br/></td></tr>
+<tr class="separator:af7525062af2743d9fe8c8673acce9b49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a3ebcf09c4b121ecbad8081275e139b"><td class="memItemLeft" align="right" valign="top">BOOL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_common_8h.html#a0a3ebcf09c4b121ecbad8081275e139b">AKIsInside</a> (CGPoint point, CGRect rect)</td></tr>
+<tr class="memdesc:a0a3ebcf09c4b121ecbad8081275e139b"><td class="mdescLeft">&#160;</td><td class="mdescRight">矩形内判定  <a href="#a0a3ebcf09c4b121ecbad8081275e139b"></a><br/></td></tr>
+<tr class="separator:a0a3ebcf09c4b121ecbad8081275e139b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54227ca8ee6936e754961364d34f3936"><td class="memItemLeft" align="right" valign="top">CGRect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_common_8h.html#a54227ca8ee6936e754961364d34f3936">AKMakeRectFromCenter</a> (CGPoint center, NSInteger size)</td></tr>
+<tr class="memdesc:a54227ca8ee6936e754961364d34f3936"><td class="mdescLeft">&#160;</td><td class="mdescRight">中心座標とサイズから矩形を作成する  <a href="#a54227ca8ee6936e754961364d34f3936"></a><br/></td></tr>
+<tr class="separator:a54227ca8ee6936e754961364d34f3936"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53959eb504f4509d21e40086cabc1768"><td class="memItemLeft" align="right" valign="top">CCLayerColor *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_common_8h.html#a53959eb504f4509d21e40086cabc1768">AKCreateBackColorLayer</a> (void)</td></tr>
+<tr class="memdesc:a53959eb504f4509d21e40086cabc1768"><td class="mdescLeft">&#160;</td><td class="mdescRight">背景色レイヤーを作成する  <a href="#a53959eb504f4509d21e40086cabc1768"></a><br/></td></tr>
+<tr class="separator:a53959eb504f4509d21e40086cabc1768"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abee996427daf4f3915baeea934303f30"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_common_8h.html#abee996427daf4f3915baeea934303f30">AKPlayerPosX</a> (void)</td></tr>
+<tr class="memdesc:abee996427daf4f3915baeea934303f30"><td class="mdescLeft">&#160;</td><td class="mdescRight">自機の表示位置のx座標を取得する  <a href="#abee996427daf4f3915baeea934303f30"></a><br/></td></tr>
+<tr class="separator:abee996427daf4f3915baeea934303f30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c0f6b9d5743d92add4c6de1fae328a7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_common_8h.html#a4c0f6b9d5743d92add4c6de1fae328a7">AKPlayerPosY</a> (void)</td></tr>
+<tr class="memdesc:a4c0f6b9d5743d92add4c6de1fae328a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">自機の表示位置のy座標を取得する  <a href="#a4c0f6b9d5743d92add4c6de1fae328a7"></a><br/></td></tr>
+<tr class="separator:a4c0f6b9d5743d92add4c6de1fae328a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+変数</h2></td></tr>
+<tr class="memitem:aa18de738d06bba066eac058edfdb4d93"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa18de738d06bba066eac058edfdb4d93"></a>
+const NSInteger&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_common_8h.html#aa18de738d06bba066eac058edfdb4d93">kAKMaxEnemyCount</a></td></tr>
+<tr class="memdesc:aa18de738d06bba066eac058edfdb4d93"><td class="mdescLeft">&#160;</td><td class="mdescRight">同時に生成可能な敵の最大数 <br/></td></tr>
+<tr class="separator:aa18de738d06bba066eac058edfdb4d93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfe7e455cb24233636c34db7c4685db6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abfe7e455cb24233636c34db7c4685db6"></a>
+NSString *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_common_8h.html#abfe7e455cb24233636c34db7c4685db6">kAKMenuSelectSE</a></td></tr>
+<tr class="memdesc:abfe7e455cb24233636c34db7c4685db6"><td class="mdescLeft">&#160;</td><td class="mdescRight">メニュー選択時の効果音 <br/></td></tr>
+<tr class="separator:abfe7e455cb24233636c34db7c4685db6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">説明</h2>
+<div class="textblock"><p>共通関数、共通定数定義 </p>
+<p>アプリケーション全体で共通に使用する関数、定数の定義を行う。 </p>
+</div><h2 class="groupheader">マクロ定義</h2>
+<a class="anchor" id="afbbb8b2613d43429492e05164af8bd2e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AKLog</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">cond, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">fmt, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>デバッグログ </p>
+<p>デバッグログ。出力条件の指定が可能。ログの先頭にメソッド名と行数を付加する。 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cond</td><td>出力条件 </td></tr>
+    <tr><td class="paramname">fmt</td><td>出力フォーマット </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">関数</h2>
+<a class="anchor" id="a0d9cb42da33ad7d1b10115f4c8242b9c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float AKCalcDestAngle </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>srcx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>srcy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>dstx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>dsty</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>2点間の角度計算 </p>
+<p>2点間を線で結んだときの角度を計算する。 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">srcx</td><td>出発点x座標 </td></tr>
+    <tr><td class="paramname">srcy</td><td>出発点y座標 </td></tr>
+    <tr><td class="paramname">dstx</td><td>到達点x座標 </td></tr>
+    <tr><td class="paramname">dsty</td><td>到達点y座標 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>2点間の角度 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="af7525062af2743d9fe8c8673acce9b49"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">NSArray* AKCalcNWayAngle </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>count</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>centerAngle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>space</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>n-way弾発射時の方向計算 </p>
+<p>n-way弾を発射するときの角度を計算する。 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">count</td><td>弾の数 </td></tr>
+    <tr><td class="paramname">centerAngle</td><td>n-way弾の中心の角度 </td></tr>
+    <tr><td class="paramname">space</td><td>2点間の間隔 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>n-way弾の角度配列(autorelease済) </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ad194ce14c66dbd38942259bdfa079548"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int AKCalcRotDirect </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>srcx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>srcy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>dstx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>dsty</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>回転方向の計算 </p>
+<p>現在の角度から見て、到達点が時計回りの側にあるか反時計回りの側にあるかを計算する。 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">angle</td><td>現在の角度 </td></tr>
+    <tr><td class="paramname">srcx</td><td>出発点x座標 </td></tr>
+    <tr><td class="paramname">srcy</td><td>出発点y座標 </td></tr>
+    <tr><td class="paramname">dstx</td><td>到達点x座標 </td></tr>
+    <tr><td class="paramname">dsty</td><td>到達点y座標 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>1:反時計回り、-1:時計回り、0:直進 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="acb7a41106190289578ba764ac8dcadef"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float AKCnvAngleRad2Deg </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>radAngle</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>rad角度からdeg角度への変換 </p>
+<p>fadianからdegreeへ変換する。 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">radAngle</td><td>rad角度 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>deg角度 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a81686f48984b05ce9ef0d77399b08ca0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float AKCnvAngleRad2Scr </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>radAngle</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>rad角度からスクリーン角度への変換 </p>
+<p>radianからdegreeへ変換し、上向きを0°とする。時計回りを正とする。 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">radAngle</td><td>rad角度 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>スクリーン角度 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a53959eb504f4509d21e40086cabc1768"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">CCLayerColor* AKCreateBackColorLayer </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>背景色レイヤーを作成する </p>
+<p>背景色で塗りつぶされ、画面サイズを埋めるサイズ・位置のレイヤーを作成する。 </p>
+<dl class="section return"><dt>戻り値</dt><dd>背景レイヤー </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a0a3ebcf09c4b121ecbad8081275e139b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">BOOL AKIsInside </td>
+          <td>(</td>
+          <td class="paramtype">CGPoint&#160;</td>
+          <td class="paramname"><em>point</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CGRect&#160;</td>
+          <td class="paramname"><em>rect</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>矩形内判定 </p>
+<p>指定された座標が矩形内にあるかどうか判定する。 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">point</td><td>座標 </td></tr>
+    <tr><td class="paramname">rect</td><td>矩形 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>矩形内にあればYES、外側にあればNO </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a54227ca8ee6936e754961364d34f3936"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">CGRect AKMakeRectFromCenter </td>
+          <td>(</td>
+          <td class="paramtype">CGPoint&#160;</td>
+          <td class="paramname"><em>center</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">NSInteger&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>中心座標とサイズから矩形を作成する </p>
+<p>中心座標とサイズから矩形を作成する。 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">center</td><td>中心座標 </td></tr>
+    <tr><td class="paramname">size</td><td>サイズ </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>矩形 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="abee996427daf4f3915baeea934303f30"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float AKPlayerPosX </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>自機の表示位置のx座標を取得する </p>
+<p>自機の表示位置のx座標を取得する。 </p>
+<dl class="section return"><dt>戻り値</dt><dd>自機の表示位置のx座標 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a4c0f6b9d5743d92add4c6de1fae328a7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float AKPlayerPosY </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>自機の表示位置のy座標を取得する </p>
+<p>自機の表示位置のy座標を取得する。 </p>
+<dl class="section return"><dt>戻り値</dt><dd>自機の表示位置のy座標 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a5f6c6d22e5dcbd1cf8812a12f554e9b1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float AKRangeCheckF </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>val</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>min</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>max</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>範囲チェック(実数) </p>
+<p>値が範囲内にあるかチェックし、範囲外にあれば範囲内の値に補正する。 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">val</td><td>値 </td></tr>
+    <tr><td class="paramname">min</td><td>最小値 </td></tr>
+    <tr><td class="paramname">max</td><td>最大値 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>補正結果 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aba350e34dbb41e7a4843b4b6f3628038"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float AKRangeCheckLF </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>val</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>min</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>max</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>範囲チェック(ループ、 実数) </p>
+<p>値が範囲内にあるかチェックし、範囲外にあれば反対側にループする。 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">val</td><td>値 </td></tr>
+    <tr><td class="paramname">min</td><td>最小値 </td></tr>
+    <tr><td class="paramname">max</td><td>最大値 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>補正結果 </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+傾撃に対してMon Feb 18 2013 15:51:04に生成されました。 &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.3
+</small></address>
+</body>
+</html>

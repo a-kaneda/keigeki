@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.3"/>
+<title>傾撃: keigeki/AKEnemy.h ソースファイル</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Icon.png"/></td>
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">傾撃
+   &#160;<span id="projectnumber">1.0.0</span>
+   </div>
+   <div id="projectbrief">iPhoneを傾けて自機を操作するモノクロドット絵全方位シューティング</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 作成： Doxygen 1.8.3 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="annotated.html"><span>クラス</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>ファイルメンバ</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_e5f783dd576f4c70a6d8c8775f331588.html">keigeki</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">AKEnemy.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="_a_k_enemy_8h.html">説明を見る。</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Copyright (c) 2012-2013 Akihiro Kaneda.</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * All rights reserved.</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * Redistribution and use in source and binary forms, with or without</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * modification, are permitted provided that the following conditions are met:</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> *   1.Redistributions of source code must retain the above copyright notice,</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment"> *     this list of conditions and the following disclaimer.</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment"> *   2.Redistributions in binary form must reproduce the above copyright notice,</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment"> *     this list of conditions and the following disclaimer in the documentation</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment"> *     and/or other materials provided with the distribution.</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment"> *   3.Neither the name of the Monochrome Soft nor the names of its contributors</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment"> *     may be used to endorse or promote products derived from this software</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment"> *     without specific prior written permission.</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment"> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment"> * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment"> * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment"> * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment"> * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment"> * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment"> * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment"> * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment"> * POSSIBILITY OF SUCH DAMAGE.</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#import &lt;Foundation/Foundation.h&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#import &quot;cocos2d.h&quot;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#import &quot;<a class="code" href="_a_k_character_8h.html" title="キャラクタークラス定義">AKCharacter.h</a>&quot;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#import &quot;<a class="code" href="_a_k_common_8h.html" title="共通関数、共通定数定義">AKCommon.h</a>&quot;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">// 敵クラス</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="code" href="interface_a_k_enemy.html">   42</a></span>&#160;<span class="keyword">@interface </span><a class="code" href="interface_a_k_enemy.html" title="敵クラス">AKEnemy</a> : <a class="code" href="interface_a_k_character.html" title="キャラクタークラス">AKCharacter</a> {</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="code" href="interface_a_k_enemy.html#a109efe07a6b625196adfb04fdd6e46d4">   44</a></span>&#160;    ccTime <a class="code" href="interface_a_k_enemy.html#a109efe07a6b625196adfb04fdd6e46d4" title="動作開始からの経過時間(各敵種別で使用)">time_</a>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="code" href="interface_a_k_enemy.html#aebce63c2f6b757639bb85112d93b4fc6">   46</a></span>&#160;    NSInteger <a class="code" href="interface_a_k_enemy.html#aebce63c2f6b757639bb85112d93b4fc6" title="動作状態(各敵種別で使用)">state_</a>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="code" href="interface_a_k_enemy.html#a8bcbcf69b478d9f2b1d835551cadab01">   48</a></span>&#160;    <span class="keywordtype">SEL</span> <a class="code" href="interface_a_k_enemy.html#a8bcbcf69b478d9f2b1d835551cadab01" title="動作処理のセレクタ">action_</a>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="code" href="interface_a_k_enemy.html#a44e42070c241b3c6fa7870c26f6af057">   50</a></span>&#160;    <span class="keywordtype">SEL</span> <a class="code" href="interface_a_k_enemy.html#a44e42070c241b3c6fa7870c26f6af057" title="破壊処理のセレクタ">destroy_</a>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;}</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">// 生成処理</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;- (void)createWithX:(NSInteger)x Y:(NSInteger)y Z:(NSInteger)z Angle:(<span class="keywordtype">float</span>)angle</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;             Parent:(CCNode*)parent CreateSel:(<span class="keywordtype">SEL</span>)create;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">// 雑魚生成処理</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;- (void)createNoraml;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">// 高速移動生成</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;- (void)createHighSpeed;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">// 高速旋回生成</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;- (void)createHighTurn;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">// 高速ショット生成</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;- (void)createHighShot;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">// 3-Way弾発射生成</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;- (void)create3WayShot;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">// 大砲生成</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;- (void)createCanon;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">// 雑魚動作処理</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;- (void)actionNoraml:(ccTime)dt;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">// 高速移動動作処理</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;- (void)actionHighSpeed:(ccTime)dt;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">// 高速旋回動作処理</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;- (void)actionHighTurn:(ccTime)dt;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">// 高速ショット処理</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;- (void)actionHighShot:(ccTime)dt;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">// 3-Way弾発射処理</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;- (void)action3WayShot:(ccTime)dt;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">// 大砲動作処理</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;- (void)actionCanon:(ccTime)dt;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">// 雑魚破壊処理</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;- (void)destroyNormal;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">// 雑魚通常弾発射</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;- (void)fireNormal;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">// n-Way弾発射</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;- (void)fireNWay:(NSInteger)way;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword">@end</span></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+傾撃に対してMon Feb 18 2013 15:51:04に生成されました。 &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.3
+</small></address>
+</body>
+</html>

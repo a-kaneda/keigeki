@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.3"/>
+<title>傾撃: keigeki/AKGameScene.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Icon.png"/></td>
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">傾撃
+   &#160;<span id="projectnumber">1.0.0</span>
+   </div>
+   <div id="projectbrief">iPhoneを傾けて自機を操作するモノクロドット絵全方位シューティング</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 作成： Doxygen 1.8.3 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="annotated.html"><span>クラス</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>ファイルメンバ</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_e5f783dd576f4c70a6d8c8775f331588.html">keigeki</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">構成</a> &#124;
+<a href="#enum-members">列挙型</a>  </div>
+  <div class="headertitle">
+<div class="title">AKGameScene.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>ゲームプレイシーンクラス定義  
+<a href="#details">[詳細]</a></p>
+<div class="textblock"><code>#import &lt;Foundation/Foundation.h&gt;</code><br/>
+<code>#import &quot;cocos2d.h&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_background_8h_source.html">AKBackground.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_player_8h_source.html">AKPlayer.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_character_pool_8h_source.html">AKCharacterPool.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_radar_8h_source.html">AKRadar.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_life_mark_8h_source.html">AKLifeMark.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_enemy_shot_8h_source.html">AKEnemyShot.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_result_layer_8h_source.html">AKResultLayer.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_label_8h_source.html">AKLabel.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_common_8h_source.html">AKCommon.h</a>&quot;</code><br/>
+<code>#import &quot;<a class="el" href="_a_k_game_i_f_layer_8h_source.html">AKGameIFLayer.h</a>&quot;</code><br/>
+</div>
+<p><a href="_a_k_game_scene_8h_source.html">ソースコードを見る。</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+構成</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_a_k_game_scene.html">AKGameScene</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ゲームプレイシーン  <a href="interface_a_k_game_scene.html#details">[詳細]</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+列挙型</h2></td></tr>
+<tr class="memitem:a3022c455f1cba43742240f417e0cf113"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113">AKGameState</a> { <br/>
+&#160;&#160;<a class="el" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113af5506399552e7705e407a183d7f7934e">kAKGameStatePreLoad</a> = 0, 
+<a class="el" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113a8e0c5c2bed51685c9db53140c471db19">kAKGameStateStart</a>, 
+<a class="el" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113ae8fd876e0574e014bf122ae7047d8b98">kAKGameStatePlaying</a>, 
+<a class="el" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113a11ee53821508daa41fa9d35b11bbe30a">kAKGameStateStageClear</a>, 
+<br/>
+&#160;&#160;<a class="el" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113adb592e9048bf1aa1bb3b3783ef1b7720">kAKGameStateResult</a>, 
+<a class="el" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113a7e180dd6e6dedc33cf19d1f0937e4c8a">kAKGameStateGameOver</a>, 
+<a class="el" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113afdc28e296d719b5f2038c496b7195fc9">kAKGameStateGameClear</a>, 
+<a class="el" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113a0567af05bf5451e503e33566f64adf52">kAKGameStatePause</a>, 
+<br/>
+&#160;&#160;<a class="el" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113a1023052f27249bebf2531e0fd62e36d1">kAKGameStateQuitMenu</a>, 
+<a class="el" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113a8ec32d366db369ab7cf1d38248bba9b6">kAKGameStateWait</a>, 
+<a class="el" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113a56b1e617a55dec246d07cb0373b0f426">kAKGameStateSleep</a>
+<br/>
+ }</td></tr>
+<tr class="memdesc:a3022c455f1cba43742240f417e0cf113"><td class="mdescLeft">&#160;</td><td class="mdescRight">ゲームプレイの状態  <a href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113">[詳細]</a><br/></td></tr>
+<tr class="separator:a3022c455f1cba43742240f417e0cf113"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa0de1f13982298a42195364a61ff91f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91f">AKEnemyType</a> { <br/>
+&#160;&#160;<a class="el" href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91fa0bd1c5d7d88d9c342b90d23f4d2d07d4">kAKEnemyTypeNormal</a> = 0, 
+<a class="el" href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91faa21df33266fc114087e0f827fefaeb3c">kAKEnemyTypeHighSpeed</a>, 
+<a class="el" href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91fa24db9e0bca90637f36fe31908084af53">kAKEnemyTypeHighTurn</a>, 
+<a class="el" href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91fa225fc553c242a05f8853f28ad0ab7613">kAKEnemyTypeHighShot</a>, 
+<br/>
+&#160;&#160;<a class="el" href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91faab85c7298fa77747a585f3e72e8f9247">kAKEnemyType3Way</a>, 
+<a class="el" href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91fa02411cba5fd6d4fc49f1e9ddb9407d9f">kAKEnemyTypeCanon</a>
+<br/>
+ }</td></tr>
+<tr class="memdesc:aaa0de1f13982298a42195364a61ff91f"><td class="mdescLeft">&#160;</td><td class="mdescRight">敵の種類  <a href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91f">[詳細]</a><br/></td></tr>
+<tr class="separator:aaa0de1f13982298a42195364a61ff91f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">説明</h2>
+<div class="textblock"><p>ゲームプレイシーンクラス定義 </p>
+<p>ゲームプレイのメインのシーンを管理するクラスを定義する。 </p>
+</div><h2 class="groupheader">列挙型</h2>
+<a class="anchor" id="aaa0de1f13982298a42195364a61ff91f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91f">AKEnemyType</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>敵の種類 </p>
+<table class="fieldtable">
+<tr><th colspan="2">列挙型の値</th></tr><tr><td class="fieldname"><em><a class="anchor" id="aaa0de1f13982298a42195364a61ff91fa0bd1c5d7d88d9c342b90d23f4d2d07d4"></a>kAKEnemyTypeNormal</em>&nbsp;</td><td class="fielddoc">
+<p>雑魚 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="aaa0de1f13982298a42195364a61ff91faa21df33266fc114087e0f827fefaeb3c"></a>kAKEnemyTypeHighSpeed</em>&nbsp;</td><td class="fielddoc">
+<p>高速移動 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="aaa0de1f13982298a42195364a61ff91fa24db9e0bca90637f36fe31908084af53"></a>kAKEnemyTypeHighTurn</em>&nbsp;</td><td class="fielddoc">
+<p>高速旋回 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="aaa0de1f13982298a42195364a61ff91fa225fc553c242a05f8853f28ad0ab7613"></a>kAKEnemyTypeHighShot</em>&nbsp;</td><td class="fielddoc">
+<p>高速ショット </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="aaa0de1f13982298a42195364a61ff91faab85c7298fa77747a585f3e72e8f9247"></a>kAKEnemyType3Way</em>&nbsp;</td><td class="fielddoc">
+<p>3-Way弾発射 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="aaa0de1f13982298a42195364a61ff91fa02411cba5fd6d4fc49f1e9ddb9407d9f"></a>kAKEnemyTypeCanon</em>&nbsp;</td><td class="fielddoc">
+<p>大砲 </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a class="anchor" id="a3022c455f1cba43742240f417e0cf113"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113">AKGameState</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ゲームプレイの状態 </p>
+<table class="fieldtable">
+<tr><th colspan="2">列挙型の値</th></tr><tr><td class="fieldname"><em><a class="anchor" id="a3022c455f1cba43742240f417e0cf113af5506399552e7705e407a183d7f7934e"></a>kAKGameStatePreLoad</em>&nbsp;</td><td class="fielddoc">
+<p>ゲームシーン読み込み前 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a3022c455f1cba43742240f417e0cf113a8e0c5c2bed51685c9db53140c471db19"></a>kAKGameStateStart</em>&nbsp;</td><td class="fielddoc">
+<p>ゲーム開始時 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a3022c455f1cba43742240f417e0cf113ae8fd876e0574e014bf122ae7047d8b98"></a>kAKGameStatePlaying</em>&nbsp;</td><td class="fielddoc">
+<p>プレイ中 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a3022c455f1cba43742240f417e0cf113a11ee53821508daa41fa9d35b11bbe30a"></a>kAKGameStateStageClear</em>&nbsp;</td><td class="fielddoc">
+<p>ステージクリア後 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a3022c455f1cba43742240f417e0cf113adb592e9048bf1aa1bb3b3783ef1b7720"></a>kAKGameStateResult</em>&nbsp;</td><td class="fielddoc">
+<p>リザルト画面表示中 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a3022c455f1cba43742240f417e0cf113a7e180dd6e6dedc33cf19d1f0937e4c8a"></a>kAKGameStateGameOver</em>&nbsp;</td><td class="fielddoc">
+<p>ゲームオーバーの表示中 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a3022c455f1cba43742240f417e0cf113afdc28e296d719b5f2038c496b7195fc9"></a>kAKGameStateGameClear</em>&nbsp;</td><td class="fielddoc">
+<p>ゲームクリア時 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a3022c455f1cba43742240f417e0cf113a0567af05bf5451e503e33566f64adf52"></a>kAKGameStatePause</em>&nbsp;</td><td class="fielddoc">
+<p>一時停止中 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a3022c455f1cba43742240f417e0cf113a1023052f27249bebf2531e0fd62e36d1"></a>kAKGameStateQuitMenu</em>&nbsp;</td><td class="fielddoc">
+<p>終了メニュー表示中 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a3022c455f1cba43742240f417e0cf113a8ec32d366db369ab7cf1d38248bba9b6"></a>kAKGameStateWait</em>&nbsp;</td><td class="fielddoc">
+<p>アクション終了待機中 </p>
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a3022c455f1cba43742240f417e0cf113a56b1e617a55dec246d07cb0373b0f426"></a>kAKGameStateSleep</em>&nbsp;</td><td class="fielddoc">
+<p>スリープ処理中 </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+傾撃に対してMon Feb 18 2013 15:51:04に生成されました。 &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.3
+</small></address>
+</body>
+</html>

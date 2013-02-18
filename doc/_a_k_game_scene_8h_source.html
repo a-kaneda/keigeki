@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.3"/>
+<title>傾撃: keigeki/AKGameScene.h ソースファイル</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Icon.png"/></td>
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">傾撃
+   &#160;<span id="projectnumber">1.0.0</span>
+   </div>
+   <div id="projectbrief">iPhoneを傾けて自機を操作するモノクロドット絵全方位シューティング</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 作成： Doxygen 1.8.3 -->
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="annotated.html"><span>クラス</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+      <li><a href="globals.html"><span>ファイルメンバ</span></a></li>
+    </ul>
+  </div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_e5f783dd576f4c70a6d8c8775f331588.html">keigeki</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">AKGameScene.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="_a_k_game_scene_8h.html">説明を見る。</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Copyright (c) 2012-2013 Akihiro Kaneda.</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * All rights reserved.</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * Redistribution and use in source and binary forms, with or without</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * modification, are permitted provided that the following conditions are met:</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> *   1.Redistributions of source code must retain the above copyright notice,</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment"> *     this list of conditions and the following disclaimer.</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment"> *   2.Redistributions in binary form must reproduce the above copyright notice,</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment"> *     this list of conditions and the following disclaimer in the documentation</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment"> *     and/or other materials provided with the distribution.</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment"> *   3.Neither the name of the Monochrome Soft nor the names of its contributors</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment"> *     may be used to endorse or promote products derived from this software</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment"> *     without specific prior written permission.</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment"> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment"> * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment"> * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment"> * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment"> * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment"> * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment"> * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment"> * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment"> * POSSIBILITY OF SUCH DAMAGE.</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#import &lt;Foundation/Foundation.h&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#import &quot;cocos2d.h&quot;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#import &quot;<a class="code" href="_a_k_background_8h.html" title="背景クラス定義">AKBackground.h</a>&quot;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#import &quot;<a class="code" href="_a_k_player_8h.html" title="自機クラス定義">AKPlayer.h</a>&quot;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#import &quot;<a class="code" href="_a_k_character_pool_8h.html" title="キャラクタープールクラス定義">AKCharacterPool.h</a>&quot;</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#import &quot;<a class="code" href="_a_k_radar_8h.html" title="レーダークラス定義">AKRadar.h</a>&quot;</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#import &quot;<a class="code" href="_a_k_life_mark_8h.html" title="残機マーク表示クラス定義">AKLifeMark.h</a>&quot;</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#import &quot;<a class="code" href="_a_k_enemy_shot_8h.html" title="敵弾クラス定義">AKEnemyShot.h</a>&quot;</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#import &quot;<a class="code" href="_a_k_result_layer_8h.html" title="ステージクリア結果レイヤー">AKResultLayer.h</a>&quot;</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#import &quot;<a class="code" href="_a_k_label_8h.html" title="ラベル表示クラス">AKLabel.h</a>&quot;</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#import &quot;<a class="code" href="_a_k_common_8h.html" title="共通関数、共通定数定義">AKCommon.h</a>&quot;</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#import &quot;<a class="code" href="_a_k_game_i_f_layer_8h.html" title="ゲームプレイ画面インターフェース定義">AKGameIFLayer.h</a>&quot;</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113">   50</a></span>&#160;<span class="keyword">enum</span> <a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113" title="ゲームプレイの状態">AKGameState</a> {</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113af5506399552e7705e407a183d7f7934e">   51</a></span>&#160;    <a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113af5506399552e7705e407a183d7f7934e" title="ゲームシーン読み込み前">kAKGameStatePreLoad</a> = 0,    </div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113a8e0c5c2bed51685c9db53140c471db19">   52</a></span>&#160;    <a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113a8e0c5c2bed51685c9db53140c471db19" title="ゲーム開始時">kAKGameStateStart</a>,          </div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113ae8fd876e0574e014bf122ae7047d8b98">   53</a></span>&#160;    <a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113ae8fd876e0574e014bf122ae7047d8b98" title="プレイ中">kAKGameStatePlaying</a>,        </div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113a11ee53821508daa41fa9d35b11bbe30a">   54</a></span>&#160;    <a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113a11ee53821508daa41fa9d35b11bbe30a" title="ステージクリア後">kAKGameStateStageClear</a>,     </div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113adb592e9048bf1aa1bb3b3783ef1b7720">   55</a></span>&#160;    <a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113adb592e9048bf1aa1bb3b3783ef1b7720" title="リザルト画面表示中">kAKGameStateResult</a>,         </div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113a7e180dd6e6dedc33cf19d1f0937e4c8a">   56</a></span>&#160;    <a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113a7e180dd6e6dedc33cf19d1f0937e4c8a" title="ゲームオーバーの表示中">kAKGameStateGameOver</a>,       </div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113afdc28e296d719b5f2038c496b7195fc9">   57</a></span>&#160;    <a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113afdc28e296d719b5f2038c496b7195fc9" title="ゲームクリア時">kAKGameStateGameClear</a>,      </div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113a0567af05bf5451e503e33566f64adf52">   58</a></span>&#160;    <a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113a0567af05bf5451e503e33566f64adf52" title="一時停止中">kAKGameStatePause</a>,          </div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113a1023052f27249bebf2531e0fd62e36d1">   59</a></span>&#160;    <a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113a1023052f27249bebf2531e0fd62e36d1" title="終了メニュー表示中">kAKGameStateQuitMenu</a>,       </div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113a8ec32d366db369ab7cf1d38248bba9b6">   60</a></span>&#160;    <a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113a8ec32d366db369ab7cf1d38248bba9b6" title="アクション終了待機中">kAKGameStateWait</a>,           </div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113a56b1e617a55dec246d07cb0373b0f426">   61</a></span>&#160;    <a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113a56b1e617a55dec246d07cb0373b0f426" title="スリープ処理中">kAKGameStateSleep</a>           </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;};</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="code" href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91f">   65</a></span>&#160;<span class="keyword">enum</span> <a class="code" href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91f" title="敵の種類">AKEnemyType</a> {</div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="code" href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91fa0bd1c5d7d88d9c342b90d23f4d2d07d4">   66</a></span>&#160;    <a class="code" href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91fa0bd1c5d7d88d9c342b90d23f4d2d07d4" title="雑魚">kAKEnemyTypeNormal</a> = 0, </div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="code" href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91faa21df33266fc114087e0f827fefaeb3c">   67</a></span>&#160;    <a class="code" href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91faa21df33266fc114087e0f827fefaeb3c" title="高速移動">kAKEnemyTypeHighSpeed</a>,  </div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="code" href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91fa24db9e0bca90637f36fe31908084af53">   68</a></span>&#160;    <a class="code" href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91fa24db9e0bca90637f36fe31908084af53" title="高速旋回">kAKEnemyTypeHighTurn</a>,   </div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="code" href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91fa225fc553c242a05f8853f28ad0ab7613">   69</a></span>&#160;    <a class="code" href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91fa225fc553c242a05f8853f28ad0ab7613" title="高速ショット">kAKEnemyTypeHighShot</a>,   </div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="code" href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91faab85c7298fa77747a585f3e72e8f9247">   70</a></span>&#160;    <a class="code" href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91faab85c7298fa77747a585f3e72e8f9247" title="3-Way弾発射">kAKEnemyType3Way</a>,       </div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="code" href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91fa02411cba5fd6d4fc49f1e9ddb9407d9f">   71</a></span>&#160;    <a class="code" href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91fa02411cba5fd6d4fc49f1e9ddb9407d9f" title="大砲">kAKEnemyTypeCanon</a>       </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;};</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">// ゲームプレイシーン</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html">   76</a></span>&#160;<span class="keyword">@interface </span><a class="code" href="interface_a_k_game_scene.html" title="ゲームプレイシーン">AKGameScene</a> : CCScene {</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#ad4b07cd1e7c8b29fbaceac8428e45bb1">   78</a></span>&#160;    <span class="keyword">enum</span> <a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113" title="ゲームプレイの状態">AKGameState</a> <a class="code" href="interface_a_k_game_scene.html#ad4b07cd1e7c8b29fbaceac8428e45bb1" title="現在の状態">state_</a>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#a324c0a361732fb8d5a8062335894b55d">   80</a></span>&#160;    <span class="keyword">enum</span> <a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113" title="ゲームプレイの状態">AKGameState</a> <a class="code" href="interface_a_k_game_scene.html#a324c0a361732fb8d5a8062335894b55d" title="スリープ終了後の状態">nextState_</a>;</div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#ad62f00919df559d4373272171b72a120">   82</a></span>&#160;    NSInteger <a class="code" href="interface_a_k_game_scene.html#ad62f00919df559d4373272171b72a120" title="現在のステージ番号">stageNo_</a>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#a12f9c32767e06d384ac3f5ff4609bcf1">   84</a></span>&#160;    NSInteger <a class="code" href="interface_a_k_game_scene.html#a12f9c32767e06d384ac3f5ff4609bcf1" title="現在のウェイブ番号">waveNo_</a>;</div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#a8e1e2aa21d800d436253eca0af7cc9c6">   86</a></span>&#160;    NSInteger <a class="code" href="interface_a_k_game_scene.html#a8e1e2aa21d800d436253eca0af7cc9c6" title="残機の数">life_</a>;</div>
+<div class="line"><a name="l00088"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#a7992b161ec4d808d54ed6b5c7bb90ef9">   88</a></span>&#160;    NSInteger <a class="code" href="interface_a_k_game_scene.html#a7992b161ec4d808d54ed6b5c7bb90ef9" title="スコア">score_</a>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#a71c2750b92daa488665fe31665172b3f">   90</a></span>&#160;    NSInteger <a class="code" href="interface_a_k_game_scene.html#a71c2750b92daa488665fe31665172b3f" title="ハイスコア">hiScore_</a>;</div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#a5534e397b8b829085ae100ac7e356431">   92</a></span>&#160;    NSInteger <a class="code" href="interface_a_k_game_scene.html#a5534e397b8b829085ae100ac7e356431" title="ショット発射数">shotCount_</a>;</div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#af45c93bf87ce46bf3c6570071a3a5e72">   94</a></span>&#160;    NSInteger <a class="code" href="interface_a_k_game_scene.html#af45c93bf87ce46bf3c6570071a3a5e72" title="ショット命中数">hitCount_</a>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#acc349341c3e9b856a70372c36c6827dd">   96</a></span>&#160;    NSInteger <a class="code" href="interface_a_k_game_scene.html#acc349341c3e9b856a70372c36c6827dd" title="撃墜された数">missCount_</a>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#a95b8b2b157c81591f430b1a2b9cb6fb0">   98</a></span>&#160;    NSInteger <a class="code" href="interface_a_k_game_scene.html#a95b8b2b157c81591f430b1a2b9cb6fb0" title="1ステージの敵の数">enemyCount_</a>;</div>
+<div class="line"><a name="l00100"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#a779b46d0790f18df89501b90d70f051b">  100</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="interface_a_k_game_scene.html#a779b46d0790f18df89501b90d70f051b" title="自機復活までの間隔">rebirthInterval_</a>;</div>
+<div class="line"><a name="l00102"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#a009f435a6ccccdba0ae6a99e33123d3a">  102</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="interface_a_k_game_scene.html#a009f435a6ccccdba0ae6a99e33123d3a" title="次のウェーブ開始までの間隔">waveInterval_</a>;</div>
+<div class="line"><a name="l00104"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#a84e0ab6a1a2a0eed81b4ee21dfc0dadd">  104</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="interface_a_k_game_scene.html#a84e0ab6a1a2a0eed81b4ee21dfc0dadd" title="状態変更時の間隔">stateInterval_</a>;</div>
+<div class="line"><a name="l00106"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#afd46d42599a4806107f15c5127198843">  106</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="interface_a_k_game_scene.html#afd46d42599a4806107f15c5127198843" title="ステージのプレイ時間">playTime_</a>;</div>
+<div class="line"><a name="l00108"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#a8db6864c56a4fc2d268a4e809a6a0736">  108</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="interface_a_k_game_scene.html#a8db6864c56a4fc2d268a4e809a6a0736" title="スリープ時間">sleepTime_</a>;</div>
+<div class="line"><a name="l00110"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#a8080ebf0c49b205beb6b8ebe6ba75913">  110</a></span>&#160;    <a class="code" href="interface_a_k_background.html" title="背景クラス">AKBackground</a> *<a class="code" href="interface_a_k_game_scene.html#a8080ebf0c49b205beb6b8ebe6ba75913" title="背景">background_</a>;</div>
+<div class="line"><a name="l00112"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#a2f95cbf34e22c08317aac131ab347c92">  112</a></span>&#160;    <a class="code" href="interface_a_k_player.html" title="自機クラス">AKPlayer</a> *<a class="code" href="interface_a_k_game_scene.html#a2f95cbf34e22c08317aac131ab347c92" title="自機">player_</a>;</div>
+<div class="line"><a name="l00114"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#aaa3778e53ca2ec18c930bf2464488a35">  114</a></span>&#160;    <a class="code" href="interface_a_k_character_pool.html" title="キャラクタープールクラス">AKCharacterPool</a> *<a class="code" href="interface_a_k_game_scene.html#aaa3778e53ca2ec18c930bf2464488a35" title="自機弾プール">playerShotPool_</a>;</div>
+<div class="line"><a name="l00116"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#a1219827668d656824ad91b4b081f2ad9">  116</a></span>&#160;    <a class="code" href="interface_a_k_character_pool.html" title="キャラクタープールクラス">AKCharacterPool</a> *<a class="code" href="interface_a_k_game_scene.html#a1219827668d656824ad91b4b081f2ad9" title="敵プール">enemyPool_</a>;</div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#acc7bfebc678b1b8956b2d00aaf75cc19">  118</a></span>&#160;    <a class="code" href="interface_a_k_character_pool.html" title="キャラクタープールクラス">AKCharacterPool</a> *<a class="code" href="interface_a_k_game_scene.html#acc7bfebc678b1b8956b2d00aaf75cc19" title="敵弾プール">enemyShotPool_</a>;</div>
+<div class="line"><a name="l00120"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#a043e126fc31030281e917aaeebb83bc1">  120</a></span>&#160;    <a class="code" href="interface_a_k_character_pool.html" title="キャラクタープールクラス">AKCharacterPool</a> *<a class="code" href="interface_a_k_game_scene.html#a043e126fc31030281e917aaeebb83bc1" title="画面効果プール">effectPool_</a>;</div>
+<div class="line"><a name="l00122"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#a76538dff549a346bb850c423b4f8715d">  122</a></span>&#160;    <a class="code" href="interface_a_k_radar.html" title="レーダークラス">AKRadar</a> *<a class="code" href="interface_a_k_game_scene.html#a76538dff549a346bb850c423b4f8715d" title="レーダー">radar_</a>;</div>
+<div class="line"><a name="l00124"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#a23f52713bdb0cc7b1ab6195c62259ddb">  124</a></span>&#160;    <a class="code" href="interface_a_k_life_mark.html" title="残機マーク表示クラス">AKLifeMark</a> *<a class="code" href="interface_a_k_game_scene.html#a23f52713bdb0cc7b1ab6195c62259ddb" title="残機表示">lifeMark_</a>;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;}</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
+<div class="line"><a name="l00128"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#ae6ee9769364a254a959ca776aed4091a">  128</a></span>&#160;<span class="keyword">@property</span> (nonatomic)<span class="keyword">enum</span> <a class="code" href="_a_k_game_scene_8h.html#a3022c455f1cba43742240f417e0cf113" title="ゲームプレイの状態">AKGameState</a> state;</div>
+<div class="line"><a name="l00130"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#a648d8999eddccd6171893c38ae8504f6">  130</a></span>&#160;<span class="keyword">@property</span> (nonatomic, retain)<a class="code" href="interface_a_k_background.html" title="背景クラス">AKBackground</a> *background;</div>
+<div class="line"><a name="l00132"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#abe352c7f4ebf4aab3d21706755a71daf">  132</a></span>&#160;<span class="keyword">@property</span> (nonatomic, retain)<a class="code" href="interface_a_k_player.html" title="自機クラス">AKPlayer</a> *player;</div>
+<div class="line"><a name="l00134"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#a61780f03ea63bf12bdc49a3f00ad7707">  134</a></span>&#160;<span class="keyword">@property</span> (nonatomic, retain)<a class="code" href="interface_a_k_character_pool.html" title="キャラクタープールクラス">AKCharacterPool</a> *playerShotPool;</div>
+<div class="line"><a name="l00136"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#a8bed70520f98c55d6f78333eb6cfa262">  136</a></span>&#160;<span class="keyword">@property</span> (nonatomic, retain)<a class="code" href="interface_a_k_character_pool.html" title="キャラクタープールクラス">AKCharacterPool</a> *enemyPool;</div>
+<div class="line"><a name="l00138"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#a149eddc40e1ba4143a79a5a287ad4540">  138</a></span>&#160;<span class="keyword">@property</span> (nonatomic, retain)<a class="code" href="interface_a_k_character_pool.html" title="キャラクタープールクラス">AKCharacterPool</a> *enemyShotPool;</div>
+<div class="line"><a name="l00140"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#ae9f1cd8190a5a2e77c046fa1e52ad12d">  140</a></span>&#160;<span class="keyword">@property</span> (nonatomic, retain)<a class="code" href="interface_a_k_character_pool.html" title="キャラクタープールクラス">AKCharacterPool</a> *effectPool;</div>
+<div class="line"><a name="l00142"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#a95177f79edcd4007d180f6392beed696">  142</a></span>&#160;<span class="keyword">@property</span> (nonatomic, retain)<a class="code" href="interface_a_k_radar.html" title="レーダークラス">AKRadar</a> *rader;</div>
+<div class="line"><a name="l00144"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#a16b17cf6317eb36aac3460289f97639e">  144</a></span>&#160;<span class="keyword">@property</span> (nonatomic, retain)<a class="code" href="interface_a_k_life_mark.html" title="残機マーク表示クラス">AKLifeMark</a> *lifeMark;</div>
+<div class="line"><a name="l00146"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#aa9ef3197edf8ac9cf86f2fc09043197c">  146</a></span>&#160;<span class="keyword">@property</span> (nonatomic)NSInteger shotCount;</div>
+<div class="line"><a name="l00148"></a><span class="lineno"><a class="code" href="interface_a_k_game_scene.html#ac04aa99d83631e55c89aefa88a45f553">  148</a></span>&#160;<span class="keyword">@property</span> (nonatomic)NSInteger hitCount;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="comment">// ゲームシーンクラス取得</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;+ (<a class="code" href="interface_a_k_game_scene.html" title="ゲームプレイシーン">AKGameScene</a> *)getInstance;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="comment">// リザルト画面取得</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;- (<a class="code" href="interface_a_k_result_layer.html" title="ステージクリア結果レイヤー">AKResultLayer</a> *)resultLayer;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="comment">// 入力レイヤー取得</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;- (<a class="code" href="interface_a_k_game_i_f_layer.html" title="ゲームプレイ画面インターフェースクラス">AKGameIFLayer</a> *)interfaceLayer;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="comment">// ゲーム開始時の更新処理</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;- (void)updateStart:(ccTime)dt;</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="comment">// プレイ中の更新処理</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;- (void)updatePlaying:(ccTime)dt;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment">// クリア表示中の更新処理</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;- (void)updateClear:(ccTime)dt;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">// スリープ中の更新処理</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;- (void)updateSleep:(ccTime)dt;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="comment">// 自機の移動</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;- (void)movePlayerByVX:(<span class="keywordtype">float</span>)vx VY:(<span class="keywordtype">float</span>)vy;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">// 自機弾の発射</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;- (void)firePlayerShot;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="comment">// 敵の生成</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;- (void)entryEnemy:(enum <a class="code" href="_a_k_game_scene_8h.html#aaa0de1f13982298a42195364a61ff91f" title="敵の種類">AKEnemyType</a>)type</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;              PosX:(NSInteger)posx PosY:(NSInteger)posy Angle:(<span class="keywordtype">float</span>)angle;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="comment">// 敵弾の生成</span></div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;- (void)fireEnemyShot:(enum <a class="code" href="_a_k_enemy_shot_8h.html#ab6539cdc43fa3b1615a99afbfe1f2e5d" title="敵弾の種類">ENEMY_SHOT_TYPE</a>)type</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                 PosX:(NSInteger)posx PosY:(NSInteger)posy Angle:(<span class="keywordtype">float</span>)angle;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="comment">// 画面効果の生成</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;- (void)entryEffect:(NSString *)fileName startRect:(CGRect)rect</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;         frameCount:(NSInteger)count delay:(<span class="keywordtype">float</span>)delay</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;               posX:(<span class="keywordtype">float</span>)posx posY:(<span class="keywordtype">float</span>)posy;</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="comment">// 自機破壊時の処理</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;- (void)miss;</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="comment">// ゲーム状態リセット</span></div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;- (void)resetAll:(NSInteger)stage;</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="comment">// スコア加算</span></div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;- (void)addScore:(NSInteger)score;</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="comment">// ポーズ(効果音有無指定)</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;- (void)pause:(BOOL)isUseSE;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="comment">// ポーズ</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;- (void)pause;</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="comment">// ゲーム再開</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;- (void)resume;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="comment">// スクリプト読込</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;- (void)readScriptOfStage:(NSInteger)stage Wave:(NSInteger)wave;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="comment">// ウェーブクリア</span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;- (void)clearWave;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="comment">// ステージクリア結果スキップ</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;- (void)skipResult;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="comment">// ステージクリア</span></div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;- (void)clearStage;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="comment">// ハイスコアファイルの読込</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;- (void)readHiScore;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="comment">// ハイスコアファイルの書込</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;- (void)writeHiScore;</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="comment">// 命中率更新</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;- (void)updateHit;</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="comment">// プレイ時間更新</span></div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;- (void)updateTime;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<span class="comment">// 情報レイヤーへのラベル配置</span></div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;- (void)setLabelToInfoLayer:(NSString *)str atPos:(CGPoint)pos tag:(NSInteger)tag frame:(enum <a class="code" href="_a_k_label_8h.html#a1964b93b31b3074dddd0b91018b1d0a9" title="ラベルの枠のタイプ">AKLabelFrame</a>)frame;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;<span class="comment">// タイトル画面に戻る</span></div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;- (void)backToTitle;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;<span class="comment">// リザルト画面表示</span></div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;- (void)viewResult;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="comment">// 終了メニュー表示</span></div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;- (void)viewQuitMenu;</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;<span class="comment">// 終了メニュー実行</span></div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;- (void)execQuitMenu;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;<span class="comment">// 終了メニューキャンセル</span></div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;- (void)cancelQuitMenu;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="comment">// 再開ボタン選択</span></div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;- (void)selectResumeButton;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="comment">// 終了ボタン選択</span></div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;- (void)selectQuitButton;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="comment">// 終了メニューNOボタン選択</span></div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;- (void)selectQuitNoButton;</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;<span class="comment">// ツイートボタン選択</span></div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;- (void)selectTweetButton;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;<span class="comment">// ツイート内容作成</span></div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;- (NSString *)makeTweet;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="comment">// コンティニューボタン選択</span></div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;- (void)selectContinueButton;</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;<span class="comment">// BGM再生</span></div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;- (void)startBGM;</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="keyword">@end</span></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+傾撃に対してMon Feb 18 2013 15:51:04に生成されました。 &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.3
+</small></address>
+</body>
+</html>

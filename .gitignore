@@ -1,9 +1,5 @@
-# Xcode
+# GitHubの自動生成
 .DS_Store
-# 外部ライブラリは管理から除外する
-libs/
-# 音楽ファイルは管理から除外する
-Resources/Sound/
 build/
 *.pbxuser
 !default.pbxuser
@@ -20,3 +16,16 @@ profile
 *.moved-aside
 DerivedData
 .idea/
+# Xcodeプロジェクト関連
+*.xcodeproj/
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/default.*
+*.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+# 外部ライブラリ
+libs/
+# 音楽ファイル
+Resources/Sound/
+# 画像ファイル
+picture/work/
+Thumbs.db

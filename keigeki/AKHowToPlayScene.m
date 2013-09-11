@@ -73,7 +73,7 @@ static const float kAKHowToPagePosTopPoint = 20.0f;
 /// 戻るボタンの位置、右からの位置
 static const float kAKHowToBackPosRightPoint = 26.0f;
 /// 戻るボタンの位置、上からの位置
-static const float kAKHowToBackPosTopPoint = 26.0f;
+static const float kAKHowToBackPosTopPoint = 34.0f;
 
 /// メッセージボックスの1行の文字数
 static const NSInteger kAKHowToMsgLength = 20;

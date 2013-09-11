@@ -44,7 +44,7 @@
 /// アプリのURL
 static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id569653828?l=ja&ls=1&mt=8";
 /// AdMobパブリッシャーID
-static NSString *kAKAdMobID = @"0fc25f9edb6a4772";
+static NSString *kAKAdMobID = @"ca-app-pub-8055460627535570/7187368047";
 
 /*!
  @brief UINavigationControllerのカスタマイズ

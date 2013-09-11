@@ -17,16 +17,17 @@
 		0C03CCD315FCD515003AA059 /* BackButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C03CCD215FCD514003AA059 /* BackButton.png */; };
 		0C03CCD515FCD529003AA059 /* NextButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C03CCD415FCD527003AA059 /* NextButton.png */; };
 		0C03CCD715FCD539003AA059 /* PrevButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C03CCD615FCD539003AA059 /* PrevButton.png */; };
+		0C0A686D17E0B22100CAAE33 /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C116638164EA35200098322 /* libGoogleAdMobAds.a */; };
+		0C0A686E17E0B22600CAAE33 /* libAdapterIAd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C116642164F3DC300098322 /* libAdapterIAd.a */; };
+		0C0A686F17E0B22B00CAAE33 /* libNendAd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C1166491651A1BE00098322 /* libNendAd.a */; };
+		0C0A687017E0B22F00CAAE33 /* libAdapterNend.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C0A686B17E0AFE300CAAE33 /* libAdapterNend.a */; };
 		0C1166221649A9AB00098322 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C1166211649A9AB00098322 /* iAd.framework */; };
 		0C116635164E8BB400098322 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C116634164E8BB400098322 /* MessageUI.framework */; };
 		0C116637164E8BC200098322 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C116636164E8BC200098322 /* SystemConfiguration.framework */; };
-		0C116639164EA35200098322 /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C116638164EA35200098322 /* libGoogleAdMobAds.a */; };
 		0C11663B164EA4FC00098322 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C11663A164EA4FC00098322 /* StoreKit.framework */; };
 		0C11663D164EA57300098322 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C11663C164EA57300098322 /* AdSupport.framework */; };
-		0C116643164F3DC300098322 /* libAdapterIAd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C116642164F3DC300098322 /* libAdapterIAd.a */; };
 		0C11664616503D8400098322 /* AKInAppPurchaseHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C11664516503D8400098322 /* AKInAppPurchaseHelper.m */; };
 		0C11664C1651A1EB00098322 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C11664B1651A1EB00098322 /* Security.framework */; };
-		0C11665B1652F27F00098322 /* AKAppBankNetworkBanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C11665A1652F27F00098322 /* AKAppBankNetworkBanner.m */; };
 		0C183EC716293D4200B40B7B /* AKGameCenterHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C183EC616293D4200B40B7B /* AKGameCenterHelper.m */; };
 		0C183ECB162984E800B40B7B /* AKNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C183ECA162984E800B40B7B /* AKNavigationController.m */; };
 		0C183ECE162A838100B40B7B /* AKOptionScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C183ECD162A838000B40B7B /* AKOptionScene.m */; };
@@ -261,7 +262,6 @@
 		0CC071A81607632000201D47 /* Enemy2.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CC071A71607632000201D47 /* Enemy2.png */; };
 		0CC071AA1607BD4500201D47 /* Enemy3.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CC071A91607BD4500201D47 /* Enemy3.png */; };
 		0CC071AC1607C68C00201D47 /* Enemy4.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CC071AB1607C68C00201D47 /* Enemy4.png */; };
-		0CD3416A16559E560090F2A9 /* libNendAd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C1166491651A1BE00098322 /* libNendAd.a */; };
 		0CD34173165AD9C40090F2A9 /* Enemy6.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CD34171165AD9C40090F2A9 /* Enemy6.png */; };
 		0CD34174165AD9C40090F2A9 /* Enemy7.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CD34172165AD9C40090F2A9 /* Enemy7.png */; };
 		0CE2AE6B1616EEDB00FD3AE3 /* AKScreenSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE2AE6A1616EEDB00FD3AE3 /* AKScreenSize.m */; };
@@ -296,6 +296,7 @@
 		0C03CCD215FCD514003AA059 /* BackButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BackButton.png; sourceTree = "<group>"; };
 		0C03CCD415FCD527003AA059 /* NextButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NextButton.png; sourceTree = "<group>"; };
 		0C03CCD615FCD539003AA059 /* PrevButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PrevButton.png; sourceTree = "<group>"; };
+		0C0A686B17E0AFE300CAAE33 /* libAdapterNend.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAdapterNend.a; path = libs/NendAd/libAdapterNend.a; sourceTree = "<group>"; };
 		0C1166211649A9AB00098322 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		0C116626164E8AEF00098322 /* GADAdMobExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GADAdMobExtras.h; path = libs/admob/GADAdMobExtras.h; sourceTree = "<group>"; };
 		0C116627164E8AEF00098322 /* GADAdNetworkExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GADAdNetworkExtras.h; path = libs/admob/GADAdNetworkExtras.h; sourceTree = "<group>"; };
@@ -311,14 +312,12 @@
 		0C116638164EA35200098322 /* libGoogleAdMobAds.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAdMobAds.a; path = libs/admob/libGoogleAdMobAds.a; sourceTree = "<group>"; };
 		0C11663A164EA4FC00098322 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		0C11663C164EA57300098322 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
-		0C116642164F3DC300098322 /* libAdapterIAd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAdapterIAd.a; path = libs/admob/libAdapterIAd.a; sourceTree = "<group>"; };
+		0C116642164F3DC300098322 /* libAdapterIAd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAdapterIAd.a; path = /Users/kaneda/Dropbox/src/keigeki/keigeki/libs/admob/libAdapterIAd.a; sourceTree = "<absolute>"; };
 		0C11664416503D8400098322 /* AKInAppPurchaseHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKInAppPurchaseHelper.h; sourceTree = "<group>"; };
 		0C11664516503D8400098322 /* AKInAppPurchaseHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKInAppPurchaseHelper.m; sourceTree = "<group>"; };
 		0C1166491651A1BE00098322 /* libNendAd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNendAd.a; path = libs/NendAd/libNendAd.a; sourceTree = "<group>"; };
 		0C11664A1651A1BE00098322 /* NADView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NADView.h; path = libs/NendAd/NADView.h; sourceTree = "<group>"; };
 		0C11664B1651A1EB00098322 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		0C1166591652F27F00098322 /* AKAppBankNetworkBanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAppBankNetworkBanner.h; sourceTree = "<group>"; };
-		0C11665A1652F27F00098322 /* AKAppBankNetworkBanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAppBankNetworkBanner.m; sourceTree = "<group>"; };
 		0C1166F3165515FF00098322 /* DFPBannerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFPBannerView.h; sourceTree = "<group>"; };
 		0C1166F4165515FF00098322 /* DFPExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFPExtras.h; sourceTree = "<group>"; };
 		0C1166F5165515FF00098322 /* DFPInterstitial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFPInterstitial.h; sourceTree = "<group>"; };
@@ -753,24 +752,25 @@
 			files = (
 				0C11664C1651A1EB00098322 /* Security.framework in Frameworks */,
 				0C11663D164EA57300098322 /* AdSupport.framework in Frameworks */,
+				0C0A687017E0B22F00CAAE33 /* libAdapterNend.a in Frameworks */,
+				0C0A686E17E0B22600CAAE33 /* libAdapterIAd.a in Frameworks */,
 				0C11663B164EA4FC00098322 /* StoreKit.framework in Frameworks */,
 				0C116637164E8BC200098322 /* SystemConfiguration.framework in Frameworks */,
 				0C116635164E8BB400098322 /* MessageUI.framework in Frameworks */,
 				0C1166221649A9AB00098322 /* iAd.framework in Frameworks */,
+				0C0A686F17E0B22B00CAAE33 /* libNendAd.a in Frameworks */,
 				0CEA5B6F163B3734005747F4 /* Accounts.framework in Frameworks */,
 				0CEA5B6116388ED8005747F4 /* Twitter.framework in Frameworks */,
 				0C3705F415C6BEC900295D96 /* QuartzCore.framework in Frameworks */,
 				0C3705F615C6BEC900295D96 /* OpenGLES.framework in Frameworks */,
 				0C3705F815C6BEC900295D96 /* OpenAL.framework in Frameworks */,
+				0C0A686D17E0B22100CAAE33 /* libGoogleAdMobAds.a in Frameworks */,
 				0C3705FA15C6BEC900295D96 /* AudioToolbox.framework in Frameworks */,
 				0C3705FC15C6BEC900295D96 /* AVFoundation.framework in Frameworks */,
 				0C3705FE15C6BEC900295D96 /* UIKit.framework in Frameworks */,
 				0C37060015C6BEC900295D96 /* Foundation.framework in Frameworks */,
 				0C37060215C6BEC900295D96 /* CoreGraphics.framework in Frameworks */,
 				0C37060415C6BEC900295D96 /* GameKit.framework in Frameworks */,
-				0C116639164EA35200098322 /* libGoogleAdMobAds.a in Frameworks */,
-				0C116643164F3DC300098322 /* libAdapterIAd.a in Frameworks */,
-				0CD3416A16559E560090F2A9 /* libNendAd.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -807,6 +807,7 @@
 		0C1166471651A1AA00098322 /* NendAd */ = {
 			isa = PBXGroup;
 			children = (
+				0C0A686B17E0AFE300CAAE33 /* libAdapterNend.a */,
 				0C1166491651A1BE00098322 /* libNendAd.a */,
 				0C11664A1651A1BE00098322 /* NADView.h */,
 			);
@@ -958,73 +959,71 @@
 		0C37060515C6BEC900295D96 /* keigeki */ = {
 			isa = PBXGroup;
 			children = (
-				0C37077D15C6BED200295D96 /* AppDelegate.h */,
-				0C37077E15C6BED200295D96 /* AppDelegate.m */,
-				0C3707AB15C6C82B00295D96 /* GameConfig.h */,
-				0C3707AA15C6C82B00295D96 /* AKCommon.h */,
-				0CEA5B5B16374275005747F4 /* AKCommon.m */,
-				0CE2AE691616EEDB00FD3AE3 /* AKScreenSize.h */,
-				0CE2AE6A1616EEDB00FD3AE3 /* AKScreenSize.m */,
-				0C56288015F1B0900048F056 /* AKLabel.h */,
-				0C56288115F1B0950048F056 /* AKLabel.m */,
-				0C56288315F1B8590048F056 /* AKFont.h */,
-				0C56288415F1B85B0048F056 /* AKFont.m */,
-				0C03CCB715F69E2B003AA059 /* AKMenuItem.h */,
-				0C03CCB815F69E2D003AA059 /* AKMenuItem.m */,
-				0C03CCB415F69CE5003AA059 /* AKInterface.h */,
-				0C03CCB515F69CF9003AA059 /* AKInterface.m */,
 				0C1928B615D9A19D00496717 /* AKBackground.h */,
 				0C3707A615C6C82B00295D96 /* AKBackground.m */,
 				0C3707A715C6C82B00295D96 /* AKCharacter.h */,
 				0C3707A815C6C82B00295D96 /* AKCharacter.m */,
-				0C21F1B715D3F4C9004C64E9 /* AKEnemy.h */,
-				0C21F1B815D3F4C9004C64E9 /* AKEnemy.m */,
 				0C21F1AD15CE6472004C64E9 /* AKCharacterPool.h */,
 				0C21F1AE15CE6474004C64E9 /* AKCharacterPool.m */,
-				0C3707AE15C6C82C00295D96 /* AKGameScene.h */,
-				0C3707AF15C6C82C00295D96 /* AKGameScene.m */,
-				0C3707AC15C6C82B00295D96 /* AKGameIFLayer.h */,
-				0C3707AD15C6C82B00295D96 /* AKGameIFLayer.m */,
-				0C3707B015C6C82C00295D96 /* AKPlayer.h */,
-				0C3707B115C6C82C00295D96 /* AKPlayer.m */,
-				0C69226F15E1231C002656AD /* AKShot.h */,
-				0C69227015E1231C002656AD /* AKShot.m */,
-				0C1928B715D9A43200496717 /* AKPlayerShot.h */,
-				0C3707B315C6C82C00295D96 /* AKPlayerShot.m */,
-				0C69227615E127A8002656AD /* AKEnemyShot.h */,
-				0C69227715E127A8002656AD /* AKEnemyShot.m */,
-				0C1928B315D99CCF00496717 /* AKRadar.h */,
-				0C1928B415D99CCF00496717 /* AKRadar.m */,
-				0C1928BA15DF4D3D00496717 /* AKEffect.h */,
-				0C1928BB15DF4D3F00496717 /* AKEffect.m */,
-				0C1928BF15DFC29300496717 /* AKLifeMark.h */,
-				0C1928C015DFC29500496717 /* AKLifeMark.m */,
-				0C1928C415E0D10400496717 /* AKHiScoreFile.h */,
-				0C1928C515E0D10500496717 /* AKHiScoreFile.m */,
-				0C56281615E908240048F056 /* AKResultLayer.h */,
-				0C56281715E908250048F056 /* AKResultLayer.m */,
-				0C03CCAF15F551BD003AA059 /* AKTitleScene.h */,
-				0C03CCBA15F93FB9003AA059 /* AKTitleScene.m */,
-				0C03CCCF15FCA912003AA059 /* AKHowToPlayScene.h */,
-				0C03CCD015FCA91F003AA059 /* AKHowToPlayScene.m */,
-				0C183ECC162A838000B40B7B /* AKOptionScene.h */,
-				0C183ECD162A838000B40B7B /* AKOptionScene.m */,
-				0C183EC516293D4200B40B7B /* AKGameCenterHelper.h */,
-				0C183EC616293D4200B40B7B /* AKGameCenterHelper.m */,
-				0C183EC9162984E800B40B7B /* AKNavigationController.h */,
-				0C183ECA162984E800B40B7B /* AKNavigationController.m */,
-				0CEA5B5D16388A2B005747F4 /* AKTwitterHelper.h */,
-				0CEA5B5E16388A2B005747F4 /* AKTwitterHelper.m */,
-				0C11664416503D8400098322 /* AKInAppPurchaseHelper.h */,
-				0C11664516503D8400098322 /* AKInAppPurchaseHelper.m */,
-				0C1166591652F27F00098322 /* AKAppBankNetworkBanner.h */,
-				0C11665A1652F27F00098322 /* AKAppBankNetworkBanner.m */,
+				0C3707AA15C6C82B00295D96 /* AKCommon.h */,
+				0CEA5B5B16374275005747F4 /* AKCommon.m */,
 				0C61DE3C167DFFC00017D9B4 /* AKCreditScene.h */,
 				0C61DE3D167DFFC10017D9B4 /* AKCreditScene.m */,
-				0C2A3A2015D64B12005B9272 /* StageScript */,
+				0C1928BA15DF4D3D00496717 /* AKEffect.h */,
+				0C1928BB15DF4D3F00496717 /* AKEffect.m */,
+				0C21F1B715D3F4C9004C64E9 /* AKEnemy.h */,
+				0C21F1B815D3F4C9004C64E9 /* AKEnemy.m */,
+				0C69227615E127A8002656AD /* AKEnemyShot.h */,
+				0C69227715E127A8002656AD /* AKEnemyShot.m */,
+				0C56288315F1B8590048F056 /* AKFont.h */,
+				0C56288415F1B85B0048F056 /* AKFont.m */,
+				0C183EC516293D4200B40B7B /* AKGameCenterHelper.h */,
+				0C183EC616293D4200B40B7B /* AKGameCenterHelper.m */,
+				0C3707AC15C6C82B00295D96 /* AKGameIFLayer.h */,
+				0C3707AD15C6C82B00295D96 /* AKGameIFLayer.m */,
+				0C3707AE15C6C82C00295D96 /* AKGameScene.h */,
+				0C3707AF15C6C82C00295D96 /* AKGameScene.m */,
+				0C1928C415E0D10400496717 /* AKHiScoreFile.h */,
+				0C1928C515E0D10500496717 /* AKHiScoreFile.m */,
+				0C03CCCF15FCA912003AA059 /* AKHowToPlayScene.h */,
+				0C03CCD015FCA91F003AA059 /* AKHowToPlayScene.m */,
+				0C11664416503D8400098322 /* AKInAppPurchaseHelper.h */,
+				0C11664516503D8400098322 /* AKInAppPurchaseHelper.m */,
+				0C03CCB415F69CE5003AA059 /* AKInterface.h */,
+				0C03CCB515F69CF9003AA059 /* AKInterface.m */,
+				0C56288015F1B0900048F056 /* AKLabel.h */,
+				0C56288115F1B0950048F056 /* AKLabel.m */,
+				0C1928BF15DFC29300496717 /* AKLifeMark.h */,
+				0C1928C015DFC29500496717 /* AKLifeMark.m */,
+				0C03CCB715F69E2B003AA059 /* AKMenuItem.h */,
+				0C03CCB815F69E2D003AA059 /* AKMenuItem.m */,
+				0C183EC9162984E800B40B7B /* AKNavigationController.h */,
+				0C183ECA162984E800B40B7B /* AKNavigationController.m */,
+				0C183ECC162A838000B40B7B /* AKOptionScene.h */,
+				0C183ECD162A838000B40B7B /* AKOptionScene.m */,
+				0C3707B015C6C82C00295D96 /* AKPlayer.h */,
+				0C3707B115C6C82C00295D96 /* AKPlayer.m */,
+				0C1928B715D9A43200496717 /* AKPlayerShot.h */,
+				0C3707B315C6C82C00295D96 /* AKPlayerShot.m */,
+				0C1928B315D99CCF00496717 /* AKRadar.h */,
+				0C1928B415D99CCF00496717 /* AKRadar.m */,
+				0C56281615E908240048F056 /* AKResultLayer.h */,
+				0C56281715E908250048F056 /* AKResultLayer.m */,
+				0CE2AE691616EEDB00FD3AE3 /* AKScreenSize.h */,
+				0CE2AE6A1616EEDB00FD3AE3 /* AKScreenSize.m */,
+				0C69226F15E1231C002656AD /* AKShot.h */,
+				0C69227015E1231C002656AD /* AKShot.m */,
+				0C03CCAF15F551BD003AA059 /* AKTitleScene.h */,
+				0C03CCBA15F93FB9003AA059 /* AKTitleScene.m */,
+				0CEA5B5D16388A2B005747F4 /* AKTwitterHelper.h */,
+				0CEA5B5E16388A2B005747F4 /* AKTwitterHelper.m */,
+				0C37077D15C6BED200295D96 /* AppDelegate.h */,
+				0C37077E15C6BED200295D96 /* AppDelegate.m */,
+				0C3707AB15C6C82B00295D96 /* GameConfig.h */,
 				0C03CCC315FC5D7E003AA059 /* Languages */,
-				0C37060615C6BEC900295D96 /* Resources */,
 				0C37062015C6BEC900295D96 /* libs */,
+				0C37060615C6BEC900295D96 /* Resources */,
+				0C2A3A2015D64B12005B9272 /* StageScript */,
 				0C37077915C6BED200295D96 /* Supporting Files */,
 			);
 			path = keigeki;
@@ -1495,7 +1494,7 @@
 		0C3705E615C6BEC900295D96 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0500;
 			};
 			buildConfigurationList = 0C3705E915C6BEC900295D96 /* Build configuration list for PBXProject "keigeki" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1780,7 +1779,6 @@
 				0CEA5B5C16374276005747F4 /* AKCommon.m in Sources */,
 				0CEA5B5F16388A2C005747F4 /* AKTwitterHelper.m in Sources */,
 				0C11664616503D8400098322 /* AKInAppPurchaseHelper.m in Sources */,
-				0C11665B1652F27F00098322 /* AKAppBankNetworkBanner.m in Sources */,
 				0C61DE3E167DFFC10017D9B4 /* AKCreditScene.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1813,8 +1811,9 @@
 		0C37078615C6BED200295D96 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -1828,10 +1827,14 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "C2422986-6959-40B7-BAC3-1EED4D0BDBF9";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C2422986-6959-40B7-BAC3-1EED4D0BDBF9";
 				SDKROOT = iphoneos;
@@ -1842,8 +1845,9 @@
 		0C37078715C6BED200295D96 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -1855,8 +1859,11 @@
 					"NS_BLOCK_ASSERTIONS=1",
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PROVISIONING_PROFILE = "C2422986-6959-40B7-BAC3-1EED4D0BDBF9";
@@ -1881,9 +1888,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/keigeki/libs/admob\"",
-					"\"$(SRCROOT)/keigeki/libs/admob/Add-ons/GoogleAnalyticsiOS_2.0beta3/Library\"",
-					"\"$(SRCROOT)/keigeki/libs/NendAd\"",
+					/Users/kaneda/Dropbox/src/keigeki/keigeki/libs/NendAd,
+					/Users/kaneda/Dropbox/src/keigeki/keigeki/libs/admob,
 				);
 				OTHER_LDFLAGS = (
 					"-lz",
@@ -1911,9 +1917,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/keigeki/libs/admob\"",
-					"\"$(SRCROOT)/keigeki/libs/admob/Add-ons/GoogleAnalyticsiOS_2.0beta3/Library\"",
-					"\"$(SRCROOT)/keigeki/libs/NendAd\"",
+					/Users/kaneda/Dropbox/src/keigeki/keigeki/libs/NendAd,
+					/Users/kaneda/Dropbox/src/keigeki/keigeki/libs/admob,
 				);
 				OTHER_LDFLAGS = (
 					"-lz",
@@ -1930,8 +1935,9 @@
 		0CD2CADC168F9D3C00088557 /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -1943,8 +1949,11 @@
 					"NS_BLOCK_ASSERTIONS=1",
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PROVISIONING_PROFILE = "34D9B98B-2138-4337-B393-B341630B55B6";
@@ -1968,9 +1977,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/keigeki/libs/admob\"",
-					"\"$(SRCROOT)/keigeki/libs/admob/Add-ons/GoogleAnalyticsiOS_2.0beta3/Library\"",
-					"\"$(SRCROOT)/keigeki/libs/NendAd\"",
+					/Users/kaneda/Dropbox/src/keigeki/keigeki/libs/NendAd,
+					/Users/kaneda/Dropbox/src/keigeki/keigeki/libs/admob,
 				);
 				OTHER_LDFLAGS = (
 					"-lz",

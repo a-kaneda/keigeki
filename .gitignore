@@ -25,7 +25,7 @@ DerivedData
 # 外部ライブラリ
 libs/
 # 音楽ファイル
-Resources/Sound/
+keigeki/Resources/Sound/
 # 画像ファイル
 picture/work/
 Thumbs.db

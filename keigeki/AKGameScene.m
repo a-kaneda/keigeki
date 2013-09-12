@@ -111,23 +111,23 @@ static const float kAKGameOverInterval = 2.0f;
 /// スコアの表示位置、左からの位置
 static const float kAKScorePosLeftPoint = 10.0f;
 /// スコアの表示位置、上からの位置
-static const float kAKScorePosTopPoint = 26.0f;
+static const float kAKScorePosTopPoint = 20.0f;
 /// ハイスコアの表示位置、左からの位置
 static const float kAKHiScorePosLeftPoint = 20.0f;
 /// ハイスコアの表示位置、上からの位置
-static const float kAKHiScorePosTopPoint = 26.0f;
+static const float kAKHiScorePosTopPoint = 20.0f;
 /// Wave番号の表示位置、左からの位置
 static const float kAKWaveNoPosLeftPoint = 20.0f;
 /// Wave番号の表示位置、上からの位置
-static const float kAKWaveNoPosTopPoint = 26.0f;
+static const float kAKWaveNoPosTopPoint = 20.0f;
 /// 命中率の表示位置、左からの位置
 static const float kAKHitPosLeftPoint = 10.0f;
 /// 命中率の表示位置、上からの位置
-static const float kAKHitPosTopPoint = 46.0f;
+static const float kAKHitPosTopPoint = 40.0f;
 /// プレイ時間の表示位置、左からの位置
 static const float kAKTimePosLeftPoint = 20.0f;
 /// プレイ時間の表示位置、上からの位置
-static const float kAKTimePosTopPoint = 46.0f;
+static const float kAKTimePosTopPoint = 40.0f;
 
 /// メニュー項目の数
 static const NSInteger kAKItemCount = 8;

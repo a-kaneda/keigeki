@@ -82,7 +82,7 @@ static const float kAKNextPosRightPoint = 40.0f;
 /// 戻るボタンの位置、右からの位置
 static const float kAKBackPosRightPoint = 26.0f;
 /// 戻るボタンの位置、上からの位置
-static const float kAKBackPosTopPoint = 34.0f;
+static const float kAKBackPosTopPoint = 26.0f;
 
 /// Game Centerのキャプション
 static NSString *kAKGameCenterCaption = @"GAME CENTER";

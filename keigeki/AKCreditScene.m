@@ -100,7 +100,7 @@ enum {
     // 戻るボタンの位置、右からの位置
     const float kAKBackPosRightPoint = 26.0f;
     // 戻るボタンの位置、上からの位置
-    const float kAKBackPosTopPoint = 34.0f;
+    const float kAKBackPosTopPoint = 26.0f;
     // リンクボタンのキャプション
     NSString *kAKLinkCaption = @"WEB SITE";
     // ボタンの位置、左からの比率

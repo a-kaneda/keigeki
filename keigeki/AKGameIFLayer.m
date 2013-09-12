@@ -142,7 +142,7 @@ static float AKAccel2Ratio(float accel);
     // ポーズボタンの配置位置、右からの位置
     const float kAKPauseButtonPosRightPoint = 26.0f;
     // ポーズボタンの配置位置、上からの位置
-    const float kAKPauseButtonPosTopPoint = 34.0f;
+    const float kAKPauseButtonPosTopPoint = 26.0f;
 
     // ショットボタンを追加する
     [self addMenuWithFile:kAKShotButtonImageFile

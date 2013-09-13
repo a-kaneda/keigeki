@@ -177,7 +177,7 @@ static NSString *kAKScoreCountSE = @"ScoreCount.caf";
                                  [AKScreenSize positionFromTopPoint:position])];
     
     // 縦方向の位置を下へずらす
-    position += kAKCaptionPosMargin;
+    position += margin;
     
     // 命中率キャプションラベルを生成する
     [self createLabelWithString:kAKHitCaption
@@ -195,7 +195,7 @@ static NSString *kAKScoreCountSE = @"ScoreCount.caf";
                                  [AKScreenSize positionFromTopPoint:position])];
     
     // 縦方向の位置を下へずらす
-    position += kAKCaptionPosMargin;
+    position += margin;
 
     // 残機キャプションラベルを生成する
     [self createLabelWithString:kAKRestCaption
@@ -213,7 +213,7 @@ static NSString *kAKScoreCountSE = @"ScoreCount.caf";
                                  [AKScreenSize positionFromTopPoint:position])];
     
     // 縦方向の位置を下へずらす
-    position += kAKCaptionPosMargin;
+    position += margin;
 
     // スコアキャプションラベルを生成する
     [self createLabelWithString:kAKScoreCaption
